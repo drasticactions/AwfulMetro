@@ -11,5 +11,7 @@ namespace BusinessObjects.Tools
         public const string BASE_URL = "http://forums.somethingawful.com/";
 
         public const string COOKIE_FILE = "SACookie2.txt";
+
+        public const string GOTO_NEW_POST = "";
     }
 }

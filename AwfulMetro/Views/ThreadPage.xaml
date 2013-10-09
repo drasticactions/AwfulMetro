@@ -207,13 +207,14 @@
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,120,40"/>
         </Grid>
         <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
-            <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="100" Height="100" Style="{StaticResource ComboBoxStyle1}">
+            <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="30" Height="30">
                 <ItemsPanelTemplate>
                     <CarouselPanel/>
                 </ItemsPanelTemplate>
             </ComboBox>
             <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
+            <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload"/>
         </StackPanel>
         <ListView Grid.Row="1" x:Name="ThreadList" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None">
             <ListView.ItemTemplate>
@@ -231,6 +232,13 @@
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <WebView x:Name="PostRawView" Height="500" Width="1000" web:WebViewHelper.Html="{Binding PostHTML}" ></WebView>
+                            <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
+                                <Button x:Name="UserProfileButton" Content="Profile"/>
+                                <Button x:Name="PostHistoryButton" Content="Post History"/>
+                                <Button x:Name="RapSheetButton" Content="RapSheet"/>
+                                <Button x:Name="ReportButton" Content="Report"/>
+                                <Button x:Name="QuoteButton" Content="Quote"/>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

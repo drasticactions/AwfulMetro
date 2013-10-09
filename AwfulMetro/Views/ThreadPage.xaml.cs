@@ -1,6 +1,7 @@
 ﻿using AwfulMetro.Common;
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
+using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -74,13 +75,14 @@ namespace AwfulMetro.Views
             String urlLocation = string.Empty;
             if(forumThread.HasBeenViewed)
             {
-                forumThread.Location = forumThread.Location + "&goto=newpost";
+                forumThread.Location = forumThread.Location + Constants.GOTO_NEW_POST;
             }
             List<ForumPostEntity> threadPosts = await ParseManager.GetThreadPosts(forumThread);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = forumThread.CurrentPage;
             BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
+            ReplyButton.IsEnabled = !forumThread.IsLocked;
             this.DefaultViewModel["Posts"] = threadPosts;
         }
 
