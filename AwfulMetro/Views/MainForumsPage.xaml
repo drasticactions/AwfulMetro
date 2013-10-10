@@ -50,7 +50,7 @@
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="8"
-            Padding="116,0,40,46"
+            Padding="0,0,40,46"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
@@ -59,12 +59,12 @@
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Grid HorizontalAlignment="Left" Width="700" Height="100">
-                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                <Border Background="#FF415B64">
                                     <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                                 </Border>
-                                <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
-                                    <TextBlock Text="{Binding Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                                <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                    <TextBlock Text="{Binding Name}" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                                    <TextBlock Text="{Binding Description}" Foreground="Black" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -118,17 +118,10 @@
         <!-- Back button and page title -->
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <AppBarButton x:Name="backButton" Icon="Back" Height="95" Margin="10,46,10,0"
-                          Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}" 
-                          Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=Self}}"
-                          AutomationProperties.Name="Back"
-                          AutomationProperties.AutomationId="BackButton"
-                          AutomationProperties.ItemType="Navigation Button"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="15,0,30,40"/>
         </Grid>
     </Grid>
 </Page>

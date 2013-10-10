@@ -245,7 +245,7 @@
             <ListView x:Name="ForumThreadList" ItemClick="ForumThreadList_ItemClick" Grid.Column="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Background="#FFF1F1F1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="80"/>
                                 <ColumnDefinition Width="*"/>
@@ -255,7 +255,7 @@
                                 <Image Source="{Binding ImageIconLocation}"  AutomationProperties.Name="{Binding Title}"/>
                             </Border>
 
-                            <StackPanel MinWidth="300" Grid.Column="1">
+                            <StackPanel Width="700" Grid.Column="1">
                                 <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
                                 <TextBlock x:Name="TotalPages" Text="{Binding TotalPages}"></TextBlock>
                             </StackPanel>
