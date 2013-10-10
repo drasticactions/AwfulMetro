@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using BusinessObjects.Tools;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace BusinessObjects.Entity
             this.UserDateJoined = postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Contains("registered")).FirstOrDefault().InnerHtml;
             if (postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault() != null)
             {
-                this.AvatarTitle = this.RemoveNewLine(postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault().InnerText);
+                this.AvatarTitle = WebUtility.HtmlDecode(this.RemoveNewLine(postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault().InnerText));
             }
             if (postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Contains("title")).FirstOrDefault().Descendants("img").FirstOrDefault() != null)
             {
@@ -80,7 +81,7 @@ namespace BusinessObjects.Entity
         /// <returns></returns>
         private String FixPostHtmlImage(String postHtml)
         {
-            return "<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"></head><body style=\"background-color: rgb(29, 29, 29);\"></head><body>" + postHtml + "</body></html>";
+            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body style=\"background-color: rgb(29, 29, 29);\"></head><body>" + postHtml + "</body></html>";
         }
 
         private String RemoveNewLine (String text)
