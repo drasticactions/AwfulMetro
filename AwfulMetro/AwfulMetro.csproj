@@ -134,7 +134,11 @@
     <None Include="Common\ReadMe.txt" />
     <None Include="AwfulMetro_TemporaryKey.pfx" />
     <Content Include="Assets\bbcode.css" />
+    <Content Include="Assets\forums.combined.js" />
     <Content Include="Assets\forums.css" />
+    <Content Include="Assets\jquery-ui.css" />
+    <Content Include="Assets\jquery-ui.min.js" />
+    <Content Include="Assets\jquery.min.js" />
     <Content Include="Assets\main.css" />
     <Content Include="Assets\ui-light.css" />
     <None Include="packages.config" />

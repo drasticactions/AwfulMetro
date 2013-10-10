@@ -71,7 +71,7 @@ namespace BusinessObjects.Entity
         /// <returns></returns>
         private String FixPostHtml(String postHtml)
         {
-            return "<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"></head><body></head><body>" + postHtml + "</body></html>";
+            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body></head><body>" + postHtml + "</body></html>";
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace BusinessObjects.Entity
         /// <returns></returns>
         private String FixPostHtmlImage(String postHtml)
         {
-            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body style=\"background-color: rgb(29, 29, 29);\"></head><body>" + postHtml + "</body></html>";
+            return "<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"></head><body style=\"background-color: rgb(29, 29, 29);\"></head><body>" + postHtml + "</body></html>";
         }
 
         private String RemoveNewLine (String text)
