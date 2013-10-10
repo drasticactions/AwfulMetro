@@ -1,11 +1,12 @@
 ﻿using AwfulMetro.Common;
-using AwfulMetro.Views;
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
+using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -16,17 +17,26 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
+// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
-namespace AwfulMetro
+namespace AwfulMetro.Views
 {
     /// <summary>
-    /// A page that displays a grouped collection of items.
+    /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class MainForumsPage : Page
+    public sealed partial class RapSheetView : Page
     {
+
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private int currentPage = 1;
+        /// <summary>
+        /// This can be changed to a strongly typed view model.
+        /// </summary>
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return this.defaultViewModel; }
+        }
 
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
@@ -37,23 +47,17 @@ namespace AwfulMetro
             get { return this.navigationHelper; }
         }
 
-        /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
 
-        public MainForumsPage()
+        public RapSheetView()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
+            this.navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
         /// <summary>
-        /// Populates the page with content passed during navigation.  Any saved state is also
+        /// Populates the page with content passed during navigation. Any saved state is also
         /// provided when recreating a page from a prior session.
         /// </summary>
         /// <param name="sender">
@@ -62,42 +66,24 @@ namespace AwfulMetro
         /// <param name="e">Event data that provides both the navigation parameter passed to
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
-        /// session.  The state will be null the first time a page is visited.</param>
+        /// session. The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategory();
-            this.DefaultViewModel["Groups"] = forumGroupList;
-            this.DefaultViewModel["ForumCategory"] = forumGroupList;
+            ForwardButton.IsEnabled = true;
+            BackButton.IsEnabled = false;
+            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
         }
 
         /// <summary>
-        /// Invoked when a group header is clicked.
+        /// Preserves state associated with this page in case the application is suspended or the
+        /// page is discarded from the navigation cache.  Values must conform to the serialization
+        /// requirements of <see cref="SuspensionManager.SessionState"/>.
         /// </summary>
-        /// <param name="sender">The Button used as a group header for the selected group.</param>
-        /// <param name="e">Event data that describes how the click was initiated.</param>
-        void Header_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
+        /// <param name="e">Event data that provides an empty dictionary to be populated with
+        /// serializable state.</param>
+        private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            // TODO: Implement Zoom using Headers.
-
-            // Determine what group the Button instance represents
-            //var group = (sender as FrameworkElement).DataContext;
-            // Navigate to the appropriate destination page, configuring the new page
-            // by passing required information as a navigation parameter
-            //this.Frame.Navigate(typeof(GroupDetailPage), ((SampleDataGroup)group).UniqueId);
-        }
-
-        /// <summary>
-        /// Invoked when an item within a group is clicked.
-        /// </summary>
-        /// <param name="sender">The GridView (or ListView when the application is snapped)
-        /// displaying the item clicked.</param>
-        /// <param name="e">Event data that describes the item clicked.</param>
-        void ItemView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            // Navigate to the appropriate destination page, configuring the new page
-            // by passing required information as a navigation parameter
-            var itemId = ((ForumEntity)e.ClickedItem);
-            this.Frame.Navigate(typeof(ThreadListPage), itemId);
         }
 
         #region NavigationHelper registration
@@ -123,15 +109,18 @@ namespace AwfulMetro
 
         #endregion
 
-        private void CategoryView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var itemId = ((ForumCategoryEntity)e.ClickedItem);
-            itemGridView.ScrollIntoView(itemId);
+            currentPage--;
+            BackButton.IsEnabled = currentPage >= 2 ? true : false;
+            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
         }
 
-        private void RapSheetButton_Click(object sender, RoutedEventArgs e)
+        private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(RapSheetView));
+            currentPage++;
+            BackButton.IsEnabled = currentPage >= 2 ? true : false;
+            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
         }
     }
 }

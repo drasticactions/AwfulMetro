@@ -18,7 +18,7 @@ namespace BusinessObjects.Manager
 
             if (forumThread.CurrentPage > 0)
             {
-                url = forumThread.Location + Constants.PAGE_NUMBER + forumThread.CurrentPage;
+                url = forumThread.Location + string.Format(Constants.PAGE_NUMBER, forumThread.CurrentPage);
             }
 
             List<ForumPostEntity> forumThreadPosts = new List<ForumPostEntity>();

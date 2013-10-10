@@ -117,6 +117,9 @@
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RapSheetView.xaml.cs">
+      <DependentUpon>RapSheetView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReplyView.xaml.cs">
       <DependentUpon>ReplyView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +128,9 @@
     </Compile>
     <Compile Include="Views\ThreadPage.xaml.cs">
       <DependentUpon>ThreadPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfileView.xaml.cs">
+      <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +171,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RapSheetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ReplyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -174,6 +184,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ThreadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -60,7 +60,7 @@ HorizontalScrollMode="Disabled">
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            ItemClick="ItemView_ItemClick" HorizontalAlignment="Center">
+            ItemClick="ItemView_ItemClick" HorizontalAlignment="Left">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="700" Height="100">
@@ -110,4 +110,11 @@ HorizontalScrollMode="Disabled">
                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="15,0,30,40"/>
         </Grid>
     </Grid>
+    <Page.TopAppBar>
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.TopAppBar>
 </Page>

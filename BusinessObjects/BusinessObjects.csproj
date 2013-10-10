@@ -109,9 +109,12 @@
     <Compile Include="Entity\ForumPostEntity.cs" />
     <Compile Include="Entity\ForumEntity.cs" />
     <Compile Include="Entity\ForumThreadEntity.cs" />
+    <Compile Include="Entity\ForumUserEntity.cs" />
+    <Compile Include="Entity\ForumUserRapSheetEntity.cs" />
     <Compile Include="Entity\ThreadReplyEntity.cs" />
     <Compile Include="Manager\AuthManager.cs" />
     <Compile Include="Manager\ForumManager.cs" />
+    <Compile Include="Manager\RapSheetManager.cs" />
     <Compile Include="Manager\WebManager.cs" />
     <Compile Include="Manager\PostManager.cs" />
     <Compile Include="Manager\ThreadManager.cs" />

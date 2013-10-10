@@ -23,7 +23,7 @@ namespace BusinessObjects.Manager
             String url = forumCategory.Location;
             if (forumCategory.CurrentPage > 0)
             {
-                url = forumCategory.Location + Constants.PAGE_NUMBER + forumCategory.CurrentPage;
+                url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER,forumCategory.CurrentPage);
             }
 
             HttpWebRequest request = await AuthManager.CreateGetRequest(url);
