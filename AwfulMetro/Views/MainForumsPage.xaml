@@ -43,77 +43,63 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <SemanticZoom Grid.Row="1">
-            <SemanticZoom.ZoomedInView>
-                <GridView
+        <ScrollViewer
+x:Name="itemGridScrollViewer"
+AutomationProperties.AutomationId="GridScrollViewer"
+Grid.Row="1"
+Margin="0,-4,0,0"
+HorizontalScrollMode="Disabled">
+        <GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="8"
+            Grid.Row="1" 
             Padding="0,0,40,46"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            ItemClick="ItemView_ItemClick">
-                    <GridView.ItemTemplate>
+            ItemClick="ItemView_ItemClick" HorizontalAlignment="Center">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                    <Grid HorizontalAlignment="Left" Width="700" Height="100">
+                        <Border Background="#FF415B64">
+                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                            <TextBlock Text="{Binding Name}" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding Description}" Foreground="Black" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
                         <DataTemplate>
-                            <Grid HorizontalAlignment="Left" Width="700" Height="100">
-                                <Border Background="#FF415B64">
-                                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                                </Border>
-                                <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
-                                    <TextBlock Text="{Binding Name}" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
-                                    <TextBlock Text="{Binding Description}" Foreground="Black" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid GroupPadding="0,0,70,0"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                    <GridView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="1,0,0,6">
-                                        <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
+                            <Grid Margin="1,0,0,6">
+                                <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
                                     AutomationProperties.Name="Group Title"
-                                    Click="Header_Click"
                                     Style="{StaticResource TextBlockButtonStyle}" >
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Name}" Margin="3,-7,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                                <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                            </StackPanel>
-                                        </Button>
-                                    </Grid>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </GridView.GroupStyle>
-                </GridView>
-            </SemanticZoom.ZoomedInView>
-            <SemanticZoom.ZoomedOutView>
-                <GridView
-                    x:Name="CategoryView"
-                    SelectionMode="None"
-                    IsItemClickEnabled="True"
-                    Grid.RowSpan="1"
-                     ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}">
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Width="500">
-                                <TextBlock FontSize="50" Text="{Binding Name}" TextWrapping="Wrap" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Margin="3,-7,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                                        <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
-            </SemanticZoom.ZoomedOutView>
-        </SemanticZoom>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </GridView.GroupStyle>
+        </GridView>
         <!-- Horizontal scrolling grid -->
-        
+        </ScrollViewer>
 
         <!-- Back button and page title -->
         <Grid>

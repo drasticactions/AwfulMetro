@@ -20,6 +20,10 @@ html, body {
     -ms-scroll-translation: vertical-to-horizontal;
 }
 
+.bbc-block {
+    background-color: #f4f4f4;
+}
+
 .title {
     background-color: rgb(29, 29, 29);
     position: absolute;
