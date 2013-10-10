@@ -214,7 +214,7 @@
             </ComboBox>
             <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
-            <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload"/>
+            <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
         </StackPanel>
         <ListView Grid.Row="1" x:Name="ThreadList" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None">
             <ListView.ItemTemplate>

@@ -46,6 +46,8 @@ namespace BusinessObjects.Entity
 
         public int CurrentPage { get; set; }
 
+        public long ThreadId { get; private set; }
+
         /// <summary>
         /// Parses a thread HTML node to extract the information from it.
         /// </summary>
@@ -72,6 +74,7 @@ namespace BusinessObjects.Entity
             }
             this.TotalPages = (this.ReplyCount / 40) + 1;
             this.Location = Constants.BASE_URL + threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("thread_title")).FirstOrDefault().GetAttributeValue("href","");
+            this.ThreadId = Convert.ToInt64(this.Location.Split('=')[1]);
             this.ImageIconLocation = threadNode.Descendants("td").Where(node => node.GetAttributeValue("class", "").Equals("icon")).FirstOrDefault().Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
         }
     }

@@ -18,11 +18,14 @@ namespace BusinessObjects.Entity
         {
             this.Name = name;
             this.Location = Constants.BASE_URL + location;
+            this.CategoryId = Convert.ToInt64(location.Split('=')[1]);
             this.ForumList = new List<ForumEntity>();
         }
         public String Name { get; private set; }
 
         public String Location { get; private set; }
+
+        public long CategoryId { get; private set; }
 
         /// <summary>
         /// The forums that belong to that category (Ex. GBS, FYAD)

@@ -76,7 +76,7 @@ namespace AwfulMetro.Views
             //CurrentPage.Text = forumCategory.CurrentPage.ToString();
             
             pageTitle.Text = forumCategory.Name;
-            forumThreadList = await ParseManager.GetForumThreadsAndSubforums(forumCategory);
+            forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumCategory.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
             this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
@@ -131,7 +131,7 @@ namespace AwfulMetro.Views
             {
                 forumCategory.CurrentPage--;
                 CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
-                forumThreadList = await ParseManager.GetForumThreadsAndSubforums(forumCategory);
+                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
                 this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
                 this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
                 this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
@@ -145,7 +145,7 @@ namespace AwfulMetro.Views
             CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
             BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = forumCategory.CurrentPage != forumCategory.TotalPages ? true : false;
-            forumThreadList = await ParseManager.GetForumThreadsAndSubforums(forumCategory);
+            forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
             this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
             this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
             this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
@@ -158,7 +158,7 @@ namespace AwfulMetro.Views
                 forumCategory.CurrentPage = (int)CurrentPageSelector.SelectedValue;
                 BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
                 ForwardButton.IsEnabled = forumCategory.CurrentPage != forumCategory.TotalPages ? true : false;
-                forumThreadList = await ParseManager.GetForumThreadsAndSubforums(forumCategory);
+                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
                 this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
                 this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
                 this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;

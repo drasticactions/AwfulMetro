@@ -1,7 +1,5 @@
 ﻿using AwfulMetro.Common;
 using BusinessObjects.Entity;
-using BusinessObjects.Manager;
-using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +22,7 @@ namespace AwfulMetro.Views
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class ThreadPage : Page
+    public sealed partial class ReplyView : Page
     {
 
         private NavigationHelper navigationHelper;
@@ -49,7 +47,7 @@ namespace AwfulMetro.Views
         }
 
 
-        public ThreadPage()
+        public ReplyView()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -68,25 +66,10 @@ namespace AwfulMetro.Views
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session. The state will be null the first time a page is visited.</param>
-        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             forumThread = (ForumThreadEntity)e.NavigationParameter;
-            pageTitle.Text = forumThread.Name;
-            String urlLocation = string.Empty;
-            if(forumThread.HasBeenViewed)
-            {
-                forumThread.Location = forumThread.Location + Constants.GOTO_NEW_POST;
-            }
-            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
-            CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumThread.TotalPages).ToArray();
-            CurrentPageSelector.SelectedValue = forumThread.CurrentPage;
-            BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-            ReplyButton.IsEnabled = !forumThread.IsLocked;
-            this.DefaultViewModel["Posts"] = threadPosts;
         }
-
-
 
         /// <summary>
         /// Preserves state associated with this page in case the application is suspended or the
@@ -123,42 +106,9 @@ namespace AwfulMetro.Views
 
         #endregion
 
-        private async void BackButton_Click(object sender, RoutedEventArgs e)
+        private void PostButton_Click(object sender, RoutedEventArgs e)
         {
-            if(forumThread.CurrentPage > 1)
-            {
-                forumThread.CurrentPage--;
-                BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-                ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
-                this.DefaultViewModel["Posts"] = threadPosts;
-            }
-        }
 
-        private async void ForwardButton_Click(object sender, RoutedEventArgs e)
-        {
-            forumThread.CurrentPage++;
-            BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
-            this.DefaultViewModel["Posts"] = threadPosts;
-        }
-
-        private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (forumThread.CurrentPage != (int)CurrentPageSelector.SelectedValue)
-            {
-                forumThread.CurrentPage = (int)CurrentPageSelector.SelectedValue;
-                BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-                ForwardButton.IsEnabled = forumThread.CurrentPage != forumThread.TotalPages ? true : false;
-                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
-                this.DefaultViewModel["Posts"] = threadPosts;
-            }
-        }
-
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ReplyView), forumThread);
         }
     }
 }

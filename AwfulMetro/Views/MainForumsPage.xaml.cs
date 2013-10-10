@@ -65,7 +65,7 @@ namespace AwfulMetro
         /// session.  The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            List<ForumCategoryEntity> forumGroupList = await ParseManager.GetForumCategory();
+            List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategory();
             this.DefaultViewModel["Groups"] = forumGroupList;
             this.DefaultViewModel["ForumCategory"] = forumGroupList;
         }
