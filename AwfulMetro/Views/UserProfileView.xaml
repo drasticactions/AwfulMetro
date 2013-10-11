@@ -8,11 +8,17 @@
     xmlns:common="using:AwfulMetro.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:web="using:BusinessObjects.Tools"
     mc:Ignorable="d">
 
     <Page.Resources>
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
-
+        <CollectionViewSource
+        x:Name="itemsViewSource"
+        Source="{Binding RapSheet}"/>
+        <CollectionViewSource
+        x:Name="postHistorySource"
+        Source="{Binding UserSearch}"/>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">My Application</x:String>
 
@@ -42,86 +48,83 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-                    <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                    <TextBlock x:Name="pageTitle" Text="{Binding UserEntity.Username}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Top"/>
                 </Grid>
             </Hub.Header>
 
-            <HubSection Width="780" Margin="0,0,80,0">
+            <HubSection Width="500" Margin="0,0,0,0">
                 <HubSection.Background>
                     <ImageBrush Stretch="UniformToFill" />
                 </HubSection.Background>
-            </HubSection>
-            <HubSection Width="500" Header="Section 1">
                 <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Image Stretch="Fill" Width="420" Height="280"/>
+                    <StackPanel HorizontalAlignment="Left">
+                        <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding UserEntity.AvatarLink}" HorizontalAlignment="Left"></WebView>
+                        <TextBlock x:Name="UserAvatarTitle" TextWrapping="Wrap" Text="{Binding UserEntity.AvatarTitle}" Margin="0,0,0,60" FontSize="20"/>
                         <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Margin="0,10,0,0" TextWrapping="Wrap" 
-                                   Text="Lorem ipsum dolor sit nonumy sed consectetuer ising elit, sed diam"/>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Grid.Row="2" Margin="0,10,0,0"
-                                   Text="Description text:"/>
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" 
-                                   Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. "/>
-                    </Grid>
-                </DataTemplate>
-            </HubSection>
-            <HubSection Width="520" Header="Section 2">
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,10"
-                                   Text="Item Title" />
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" 
-                                   Text="Quisque in porta lorem dolor amet sed consectetuer ising elit, sed diam non my nibh uis mod wisi quip."/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Grid.Row="2" Margin="0,20,0,0"
-                                   Text="Item Sub Title"/>
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" 
-                                   Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper."/>
-                    </Grid>
-                </DataTemplate>
-            </HubSection>
-
-            <HubSection Header="Section 3">
-                <DataTemplate>
-                    <!-- width of 400 -->
-                    <StackPanel Orientation="Vertical">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="130"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="270"/>
-                                <RowDefinition Height="95"/>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Image Grid.ColumnSpan="5" Stretch="Fill" Margin="0,0,0,10"/>
-                            <Image Grid.Row="1" Stretch="Fill"/>
-                            <Image Grid.Row="1" Grid.Column="2" Stretch="Fill"/>
-                            <Image Grid.Row="1" Grid.Column="4" Stretch="Fill"/>
-                            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Grid.Row="2" Grid.ColumnSpan="5" Margin="0,15,0,0"
-                                       Text="Description Text:"/>
-                            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" Grid.ColumnSpan="5" 
-                                       Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper."/>
-                        </Grid>
+                                   Text="{Binding UserEntity.AboutUser}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Member Since: " FontSize="25"/>
+                            <TextBlock FontSize="25" Text="{Binding UserEntity.UserDateJoined}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="25" Text="Post Count: "/>
+                            <TextBlock FontSize="25" Text="{Binding UserEntity.PostCount}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="25" Text="Post Rate: "/>
+                            <TextBlock FontSize="25" Text="{Binding UserEntity.PostRate}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="25" Text="Last Post: "/>
+                            <TextBlock FontSize="25" Text="{Binding UserEntity.LastPostDate}"/>
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </HubSection>
+            <HubSection Margin="0,0,80,0" Width="750" Header="Post History">
+                <DataTemplate>
+                    <ListView x:Name="PostHistoryView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource postHistorySource}}" SelectionMode="None" IsItemClickEnabled="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="3" BorderBrush="Gainsboro" >
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="250"/>
+                                            <ColumnDefinition Width="400"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding ThreadTitle}" TextWrapping="Wrap" Grid.Column="0"/>
+                                        <TextBlock Text="{Binding PostContent}" TextWrapping="Wrap" Grid.Column="1"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DataTemplate>
+            </HubSection>
+            <HubSection Width="700" Header="Rap Sheet">
+                <DataTemplate>
+                    <ListView x:Name="RapSheetListView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="3" BorderBrush="Gainsboro" >
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="300"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Type}" Grid.Column="0"/>
+                                        <TextBlock Text="{Binding Date}" Grid.Column="1"/>
+                                        <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap" Grid.Column="3"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DataTemplate>
+            </HubSection>
+            
         </Hub>
     </Grid>
 </Page>

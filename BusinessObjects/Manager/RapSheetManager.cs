@@ -23,11 +23,14 @@ namespace BusinessObjects.Manager
             HtmlDocument doc = await WebManager.DownloadHtml(request);
             HtmlNode rapSheetNode = doc.DocumentNode.Descendants("table").Where(node => node.GetAttributeValue("class", "").Contains("standard full")).FirstOrDefault();
             rapSheetNode.Descendants("tr").FirstOrDefault().Remove();
-            foreach (HtmlNode tableRow in rapSheetNode.Descendants("tr"))
+            if (rapSheetNode.Descendants("tr").Any())
             {
-                ForumUserRapSheetEntity row = new ForumUserRapSheetEntity();
-                row.Parse(tableRow);
-                rapSheet.Add(row);
+                foreach (HtmlNode tableRow in rapSheetNode.Descendants("tr"))
+                {
+                    ForumUserRapSheetEntity row = new ForumUserRapSheetEntity();
+                    row.Parse(tableRow);
+                    rapSheet.Add(row);
+                }
             }
             return rapSheet;
         }

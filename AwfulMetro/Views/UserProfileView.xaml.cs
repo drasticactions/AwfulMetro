@@ -1,8 +1,12 @@
 ﻿using AwfulMetro.Common;
+using BusinessObjects.Entity;
+using BusinessObjects.Manager;
+using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -61,9 +65,23 @@ namespace AwfulMetro.Views
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Assign a collection of bindable groups to this.DefaultViewModel["Groups"]
+            ForumUserEntity user = (ForumUserEntity)e.NavigationParameter;
+            long userId;
+            if(user == null)
+            {
+                userId = (long)e.NavigationParameter;
+                user = new ForumUserEntity();
+            }
+            else
+            {
+                userId = user.id;
+            }
+            this.DefaultViewModel["UserEntity"] = await ForumUserManager.GetUserFromProfilePage(user, userId);
+            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+            this.DefaultViewModel["UserSearch"] = await ForumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         #region NavigationHelper registration

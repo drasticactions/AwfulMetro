@@ -25,7 +25,7 @@ html, body {
 }
 
 .title {
-    background-color: rgb(29, 29, 29);
+    background-color: white;
     position: absolute;
     left:0;
     top:0;
@@ -2607,7 +2607,7 @@ These classes reverse the colors on the subtree to which they are applied.
 }
 .win-ui-dark {
     color: rgb(255, 255, 255);
-    background-color: rgb(29, 29, 29);
+    background-color: rgb(255, 255, 255);
 }
 
 /*

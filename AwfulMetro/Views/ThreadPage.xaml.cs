@@ -160,5 +160,12 @@ namespace AwfulMetro.Views
         {
             this.Frame.Navigate(typeof(ReplyView), forumThread);
         }
+
+        private void UserProfileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = e.OriginalSource as Button;
+            var forumPost = (ForumPostEntity)button.DataContext;
+            this.Frame.Navigate(typeof(UserProfileView), forumPost.User);
+        }
     }
 }

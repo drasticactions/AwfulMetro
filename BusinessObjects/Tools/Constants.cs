@@ -16,8 +16,6 @@ namespace BusinessObjects.Tools
 
         public const string USER_PROFILE = "member.php?action=getinfo&userid={0}";
 
-        public const string USER_POST_HISTORY = "search.php?action=results&requestid={0}";
-
         public const string USER_RAP_SHEET = "banlist.php?userid={0}";
 
         public const string RAP_SHEET = "banlist.php?";
@@ -25,6 +23,8 @@ namespace BusinessObjects.Tools
         public const string QUOTE_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&postid={0}";
 
         public const string THREAD_POST_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&threadid={0}";
+
+        public const string USER_POST_HISTORY = BASE_URL + "search.php?action=do_search_posthistory&userid={0}";
 
         public const string PAGE_NUMBER = "&pagenumber={0}";
 

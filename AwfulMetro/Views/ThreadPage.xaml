@@ -233,7 +233,7 @@
                         <StackPanel Grid.Column="1">
                             <WebView x:Name="PostRawView" Height="500" Width="1000" web:WebViewHelper.Html="{Binding PostHTML}" ></WebView>
                             <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
-                                <Button x:Name="UserProfileButton" Content="Profile"/>
+                                <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
                                 <Button x:Name="PostHistoryButton" Content="Post History"/>
                                 <Button x:Name="RapSheetButton" Content="RapSheet"/>
                                 <Button x:Name="ReportButton" Content="Report"/>
