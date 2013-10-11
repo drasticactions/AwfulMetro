@@ -129,6 +129,9 @@
     <Compile Include="Views\ThreadPage.xaml.cs">
       <DependentUpon>ThreadPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserPostHistoryPage.xaml.cs">
+      <DependentUpon>UserPostHistoryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserProfileView.xaml.cs">
       <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
@@ -184,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ThreadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserPostHistoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

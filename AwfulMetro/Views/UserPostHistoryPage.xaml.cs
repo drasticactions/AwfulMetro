@@ -1,5 +1,4 @@
 ﻿using AwfulMetro.Common;
-using BusinessObjects.Entity;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
 using System;
@@ -24,12 +23,12 @@ namespace AwfulMetro.Views
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class RapSheetView : Page
+    public sealed partial class UserPostHistoryPage : Page
     {
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private int currentPage = 1;
+
         /// <summary>
         /// This can be changed to a strongly typed view model.
         /// </summary>
@@ -48,7 +47,7 @@ namespace AwfulMetro.Views
         }
 
 
-        public RapSheetView()
+        public UserPostHistoryPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -69,17 +68,8 @@ namespace AwfulMetro.Views
         /// session. The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            ForwardButton.IsEnabled = true;
-            BackButton.IsEnabled = false;
-            if(e.NavigationParameter != null)
-            {
-                long userId = (long)e.NavigationParameter;
-                this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
-            }
-            else
-            {
-                this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
-            }      
+            long userId = (long)e.NavigationParameter;
+            this.DefaultViewModel["UserHistory"] = await ForumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         /// <summary>
@@ -116,19 +106,5 @@ namespace AwfulMetro.Views
         }
 
         #endregion
-
-        private async void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            currentPage--;
-            BackButton.IsEnabled = currentPage >= 2 ? true : false;
-            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
-        }
-
-        private async void ForwardButton_Click(object sender, RoutedEventArgs e)
-        {
-            currentPage++;
-            BackButton.IsEnabled = currentPage >= 2 ? true : false;
-            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
-        }
     }
 }
