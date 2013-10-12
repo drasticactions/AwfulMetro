@@ -22,6 +22,9 @@
         x:Name="subforumViewSource"
         Source="{Binding Groups}"/>
         <CollectionViewSource
+        x:Name="itemsViewSource"
+        Source="{Binding PopularThreads}"/>
+        <CollectionViewSource
             x:Name="groupedItemsViewSource"
             Source="{Binding Groups}"
             IsSourceGrouped="true"
@@ -43,13 +46,14 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
         <ScrollViewer
 x:Name="itemGridScrollViewer"
 AutomationProperties.AutomationId="GridScrollViewer"
 Grid.Row="1"
 Margin="0,-4,0,0"
 HorizontalScrollMode="Disabled">
-        <GridView
+   <GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
