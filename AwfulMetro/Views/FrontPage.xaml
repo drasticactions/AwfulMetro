@@ -1,0 +1,207 @@
+﻿<Page
+    x:Name="pageRoot"
+    x:Class="AwfulMetro.Views.FrontPage"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AwfulMetro.Views"
+    xmlns:common="using:AwfulMetro.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource
+        x:Name="itemsViewSource"
+        Source="{Binding PopularThreads}"/>
+        <CollectionViewSource
+        x:Name="trendsViewSource"
+        Source="{Binding PopularTrends}"/>
+        <CollectionViewSource
+        x:Name="frontPageFeatureViewSource"
+        Source="{Binding FrontPageFeatures}"/>
+        <CollectionViewSource
+        x:Name="frontPageViewSource"
+        Source="{Binding FrontPageArticles}"/>
+        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
+        <x:String x:Key="AppName">Front Page</x:String>
+        <Style x:Key="ListViewItemStyle1" TargetType="ListViewItem">
+        	<Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+        	<Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+        	<Setter Property="Background" Value="Transparent"/>
+        	<Setter Property="TabNavigation" Value="Local"/>
+        	<Setter Property="IsHoldingEnabled" Value="True"/>
+        	<Setter Property="Margin" Value="0,0,0,-8"/>
+        	<Setter Property="HorizontalContentAlignment" Value="Left"/>
+        	<Setter Property="VerticalContentAlignment" Value="Top"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="ListViewItem">
+        				<ListViewItemPresenter CheckHintBrush="{ThemeResource ListViewItemCheckHintThemeBrush}" CheckBrush="{ThemeResource ListViewItemCheckThemeBrush}" ContentMargin="4" ContentTransitions="{TemplateBinding ContentTransitions}" CheckSelectingBrush="{ThemeResource ListViewItemCheckSelectingThemeBrush}" DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" FocusBorderBrush="{ThemeResource ListViewItemFocusBorderThemeBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" PointerOverBackgroundMargin="1" ReorderHintOffset="{ThemeResource ListViewItemReorderHintThemeOffset}" SelectedPointerOverBorderBrush="{ThemeResource ListViewItemSelectedPointerOverBorderThemeBrush}" SelectionCheckMarkVisualEnabled="True" SelectedForeground="{ThemeResource ListViewItemSelectedForegroundThemeBrush}" SelectedPointerOverBackground="{ThemeResource ListViewItemSelectedPointerOverBackgroundThemeBrush}" SelectedBorderThickness="{ThemeResource ListViewItemCompactSelectedBorderThemeThickness}" SelectedBackground="{ThemeResource ListViewItemSelectedBackgroundThemeBrush}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
+    </Page.Resources>
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Back button and page title -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                        Style="{StaticResource NavigationBackButtonNormalStyle}"
+                        VerticalAlignment="Top"
+                        AutomationProperties.Name="Back"
+                        AutomationProperties.AutomationId="BackButton"
+                        AutomationProperties.ItemType="Navigation Button"/>
+            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="550"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border BorderThickness="4" BorderBrush="#FF415B64" Width="180" Height="180" Grid.Column="0">
+                            <Image Source="{Binding MainArticle.ArticleImage}"/>
+                        </Border>
+                        <StackPanel Margin="0,30,0,0" Grid.Column="1">
+                            <TextBlock FontSize="30" Text="{Binding MainArticle.Title}" TextWrapping="WrapWholeWords"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Date:" Foreground="Gray" FontSize="15"/>
+                                <TextBlock Margin="10,0,0,0" Text="{Binding MainArticle.Date}" Foreground="Gray" FontSize="15"/>
+                                <TextBlock Margin="10,0,0,0" Text="Author:" Foreground="Gray" FontSize="15"/>
+                                <TextBlock Margin="10,0,0,0" Text="{Binding MainArticle.Author}" Foreground="Gray" FontSize="15"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding MainArticle.ArticleText}" FontSize="20" TextWrapping="WrapWholeWords"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Header="New Articles" FontSize="20" Grid.Column="0" Width="500" ItemsSource="{Binding Source={StaticResource frontPageViewSource}}" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="150">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="400"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border BorderThickness="4" VerticalAlignment="Top" BorderBrush="#FF415B64" Width="80" Height="80" Grid.Column="0">
+                                        <Image Source="{Binding ArticleImage}"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Top" Height="200" Grid.Column="1">
+                                        <TextBlock FontSize="15" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Date:" Foreground="Gray" FontSize="11"/>
+                                            <TextBlock Margin="10,0,0,0" Text="{Binding Date}" Foreground="Gray" FontSize="11"/>
+                                            <TextBlock Margin="10,0,0,0" Text="Author:" Foreground="Gray" FontSize="11"/>
+                                            <TextBlock Margin="10,0,0,0" Text="{Binding Author}" Foreground="Gray" FontSize="11"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding ArticleText}" FontSize="13" TextWrapping="WrapWholeWords"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <ListView Header="Features" FontSize="20" Grid.Column="1" ItemsSource="{Binding Source={StaticResource frontPageFeatureViewSource}}" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="140">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="250"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border VerticalAlignment="Top" BorderThickness="4" BorderBrush="#FF415B64" Width="50" Height="50" Grid.Column="0">
+                                        <Image Source="{Binding ArticleImage}"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Top" Height="200" Grid.Column="1">
+                                        <TextBlock FontSize="15" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="10,0,0,0" Text="Feature:" Foreground="Gray" FontSize="11"/>
+                                            <TextBlock Margin="10,0,0,0" Text="{Binding FeatureTitle}" Foreground="Gray" FontSize="11"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding ArticleText}" FontSize="13" TextWrapping="WrapWholeWords"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+                
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="390"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ListView Header="Popular Threads" Grid.Row="0"  FontSize="30" Width="550" Height="390" x:Name="ForumThreadList" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="#FFF1F1F1" Height="40">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Grid.Column="0" Width="60" Height="15">
+                                    <Image Source="{Binding Tag}"  AutomationProperties.Name="{Binding Title}"/>
+                                </Border>
+                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Width="500" Grid.Column="1">
+                                    <TextBlock  x:Name="ThreadTitle" TextWrapping="WrapWholeWords" Text="{Binding Title}"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView Header="What's Hot" Grid.Row="1"  FontSize="30" Width="550" Height="300" x:Name="ForumTrendList" ItemsSource="{Binding Source={StaticResource trendsViewSource}}" SelectionMode="None" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="#FFF1F1F1" Height="40">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Width="500" Grid.Column="1">
+                                    <TextBlock  x:Name="TrendTitle" TextWrapping="WrapWholeWords" Text="{Binding Title}"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+        
+    </Grid>
+</Page>

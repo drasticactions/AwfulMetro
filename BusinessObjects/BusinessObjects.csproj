@@ -112,7 +112,8 @@
     <Compile Include="Entity\ForumThreadEntity.cs" />
     <Compile Include="Entity\ForumUserEntity.cs" />
     <Compile Include="Entity\ForumUserRapSheetEntity.cs" />
-    <Compile Include="Entity\PopularThreadsEntity.cs" />
+    <Compile Include="Entity\FrontPageArticleEntity.cs" />
+    <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
     <Compile Include="Entity\ThreadReplyEntity.cs" />
     <Compile Include="Manager\AuthManager.cs" />
     <Compile Include="Manager\ForumManager.cs" />

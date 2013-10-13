@@ -68,8 +68,6 @@ namespace AwfulMetro
             List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategory();
             this.DefaultViewModel["Groups"] = forumGroupList;
             this.DefaultViewModel["ForumCategory"] = forumGroupList;
-            //List<PopularThreadsEntity> popularThreadList = await FrontPageManager.GetPopularThreads();
-            //this.DefaultViewModel["PopularThreads"] = popularThreadList;
         }
 
         /// <summary>
@@ -134,6 +132,11 @@ namespace AwfulMetro
         private void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(RapSheetView));
+        }
+
+        private void FrontPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(FrontPage));
         }
     }
 }

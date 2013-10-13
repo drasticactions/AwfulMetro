@@ -105,6 +105,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FrontPage.xaml.cs">
+      <DependentUpon>FrontPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainForumsPage.xaml.cs">
       <DependentUpon>MainForumsPage.xaml</DependentUpon>
     </Compile>
@@ -166,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\FrontPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainForumsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
