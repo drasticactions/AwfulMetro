@@ -113,5 +113,13 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void PopularThreadList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            PopularThreadsTrendsEntity threadEntity = e.ClickedItem as PopularThreadsTrendsEntity;
+            ForumThreadEntity thread = new ForumThreadEntity();
+            thread.ParseFromPopularThread(threadEntity.Title, threadEntity.Id);
+            this.Frame.Navigate(typeof(ThreadPage), thread);
+        }
     }
 }

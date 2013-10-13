@@ -150,7 +150,7 @@
                                     <StackPanel VerticalAlignment="Top" Height="200" Grid.Column="1">
                                         <TextBlock FontSize="15" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="10,0,0,0" Text="Feature:" Foreground="Gray" FontSize="11"/>
+                                            <TextBlock Text="Feature:" Foreground="Gray" FontSize="11"/>
                                             <TextBlock Margin="10,0,0,0" Text="{Binding FeatureTitle}" Foreground="Gray" FontSize="11"/>
                                         </StackPanel>
                                         <TextBlock Text="{Binding ArticleText}" FontSize="13" TextWrapping="WrapWholeWords"/>
@@ -167,7 +167,7 @@
                     <RowDefinition Height="390"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ListView Header="Popular Threads" Grid.Row="0"  FontSize="30" Width="550" Height="390" x:Name="ForumThreadList" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
+                <ListView Header="Popular Threads" Grid.Row="0"  FontSize="30" Width="550" Height="390" ItemClick="PopularThreadList_ItemClick"  x:Name="PopularThreadList" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid Background="#FFF1F1F1" Height="40">

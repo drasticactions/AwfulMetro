@@ -77,5 +77,13 @@ namespace BusinessObjects.Entity
             this.ThreadId = Convert.ToInt64(this.Location.Split('=')[1]);
             this.ImageIconLocation = threadNode.Descendants("td").Where(node => node.GetAttributeValue("class", "").Equals("icon")).FirstOrDefault().Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
         }
+
+        public void ParseFromPopularThread(String name, long threadId)
+        {
+            this.Name = name;
+            this.ThreadId = threadId;
+            this.Location = string.Format(Constants.THREAD_PAGE, threadId);
+            this.CurrentPage = 0;
+        }
     }
 }
