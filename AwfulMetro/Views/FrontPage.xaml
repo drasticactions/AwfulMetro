@@ -92,7 +92,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border BorderThickness="4" BorderBrush="#FF415B64" Width="180" Height="180" Grid.Column="0">
-                            <Image Source="{Binding MainArticle.ArticleImage}"/>
+                            <Image x:Name="ArticleImage" Source="{Binding MainArticle.ArticleImage}"/>
                         </Border>
                         <StackPanel Margin="0,30,0,0" Grid.Column="1">
                             <TextBlock FontSize="30" Text="{Binding MainArticle.Title}" TextWrapping="WrapWholeWords"/>
@@ -120,17 +120,17 @@
                                         <ColumnDefinition Width="400"/>
                                     </Grid.ColumnDefinitions>
                                     <Border BorderThickness="4" VerticalAlignment="Top" BorderBrush="#FF415B64" Width="80" Height="80" Grid.Column="0">
-                                        <Image Source="{Binding ArticleImage}"/>
+                                        <Image Tapped="ArticleImage_Tapped" Source="{Binding ArticleImage}"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Top" Height="200" Grid.Column="1">
-                                        <TextBlock FontSize="15" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
+                                        <TextBlock x:Name="ArticleTitle" Tapped="ArticleTitle_Tapped"  FontSize="15" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Date:" Foreground="Gray" FontSize="11"/>
                                             <TextBlock Margin="10,0,0,0" Text="{Binding Date}" Foreground="Gray" FontSize="11"/>
-                                            <TextBlock Margin="10,0,0,0" Text="Author:" Foreground="Gray" FontSize="11"/>
+                                            <TextBlock x:Name="AuthorField" Tapped="AuthorField_Tapped" Margin="10,0,0,0" Text="Author:" Foreground="Gray" FontSize="11"/>
                                             <TextBlock Margin="10,0,0,0" Text="{Binding Author}" Foreground="Gray" FontSize="11"/>
                                         </StackPanel>
-                                        <TextBlock Text="{Binding ArticleText}" FontSize="13" TextWrapping="WrapWholeWords"/>
+                                        <TextBlock Tapped="ArticleTitle_Tapped" Text="{Binding ArticleText}" FontSize="13" TextWrapping="WrapWholeWords"/>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>
@@ -145,13 +145,13 @@
                                         <ColumnDefinition Width="250"/>
                                     </Grid.ColumnDefinitions>
                                     <Border VerticalAlignment="Top" BorderThickness="4" BorderBrush="#FF415B64" Width="50" Height="50" Grid.Column="0">
-                                        <Image Source="{Binding ArticleImage}"/>
+                                        <Image Tapped="ArticleImage_Tapped" Source="{Binding ArticleImage}"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Top" Height="200" Grid.Column="1">
-                                        <TextBlock FontSize="15" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
+                                        <TextBlock Tapped="ArticleTitle_Tapped" FontSize="15" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Feature:" Foreground="Gray" FontSize="11"/>
-                                            <TextBlock Margin="10,0,0,0" Text="{Binding FeatureTitle}" Foreground="Gray" FontSize="11"/>
+                                            <TextBlock x:Name="FeatureField" Tapped="FeatureField_Tapped" Margin="10,0,0,0" Text="{Binding FeatureTitle}" Foreground="Gray" FontSize="11"/>
                                         </StackPanel>
                                         <TextBlock Text="{Binding ArticleText}" FontSize="13" TextWrapping="WrapWholeWords"/>
                                     </StackPanel>
@@ -194,7 +194,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Width="500" Grid.Column="1">
-                                    <TextBlock  x:Name="TrendTitle" TextWrapping="WrapWholeWords" Text="{Binding Title}"></TextBlock>
+                                    <TextBlock  x:Name="TrendTitle" Tapped="TrendTitle_Tapped" TextWrapping="WrapWholeWords" Text="{Binding Title}"></TextBlock>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>

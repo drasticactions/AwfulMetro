@@ -1,6 +1,7 @@
 ﻿using AwfulMetro.Common;
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
+using BusinessObjects.Tools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -73,8 +74,9 @@ namespace AwfulMetro.Views
             this.DefaultViewModel["PopularThreads"] = FrontPageManager.GetPopularThreads(doc);
             this.DefaultViewModel["PopularTrends"] = FrontPageManager.GetPopularTrends(doc);
             List<FrontPageArticleEntity> frontPageArticles = FrontPageManager.GetFrontPageArticles(doc);
-            this.DefaultViewModel["MainArticle"] = frontPageArticles.FirstOrDefault();
-            frontPageArticles.Remove(frontPageArticles.FirstOrDefault());
+            FrontPageArticleEntity mainArticle = frontPageArticles.FirstOrDefault();
+            this.DefaultViewModel["MainArticle"] = mainArticle;
+            frontPageArticles.Remove(mainArticle);
             this.DefaultViewModel["FrontPageArticles"] = frontPageArticles;
             this.DefaultViewModel["FrontPageFeatures"] = FrontPageManager.GetFeatures(doc);
         }
@@ -120,6 +122,41 @@ namespace AwfulMetro.Views
             ForumThreadEntity thread = new ForumThreadEntity();
             thread.ParseFromPopularThread(threadEntity.Title, threadEntity.Id);
             this.Frame.Navigate(typeof(ThreadPage), thread);
+        }
+
+        private async void ArticleImage_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var image = e.OriginalSource as Image;
+            FrontPageArticleEntity frontPageArticle = image.DataContext as FrontPageArticleEntity;
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.ArticleLink));
+        }
+
+        private async void ArticleTitle_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var textBlock = e.OriginalSource as TextBlock;
+            FrontPageArticleEntity frontPageArticle = textBlock.DataContext as FrontPageArticleEntity;
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.ArticleLink));
+        }
+
+        private async void AuthorField_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var textBlock = e.OriginalSource as TextBlock;
+            FrontPageArticleEntity frontPageArticle = textBlock.DataContext as FrontPageArticleEntity;
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.AuthorLink));
+        }
+
+        private async void FeatureField_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var textBlock = e.OriginalSource as TextBlock;
+            FrontPageArticleEntity frontPageArticle = textBlock.DataContext as FrontPageArticleEntity;
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.FeatureLink));
+        }
+
+        private async void TrendTitle_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var textBlock = e.OriginalSource as TextBlock;
+            PopularThreadsTrendsEntity frontPageArticle = textBlock.DataContext as PopularThreadsTrendsEntity;
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(frontPageArticle.LocationUrl));
         }
     }
 }

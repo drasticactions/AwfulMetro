@@ -29,7 +29,7 @@ namespace BusinessObjects.Entity
         public void ParseTrend(HtmlNode popularTrendsNode)
         {
             this.Title = WebUtility.HtmlDecode(popularTrendsNode.Descendants("a").FirstOrDefault().InnerText);
-            this.LocationUrl = Constants.BASE_URL + popularTrendsNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", "");
+            this.LocationUrl = Constants.FRONT_PAGE + popularTrendsNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", "");
         }
 
     }
