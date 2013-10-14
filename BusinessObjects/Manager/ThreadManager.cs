@@ -16,6 +16,29 @@ namespace BusinessObjects.Manager
     public class ThreadManager
     {
 
+        public static async Task<ForumCollectionEntity> GetBookmarks(ForumEntity forumCategory)
+        {
+            List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
+            List<ForumThreadEntity> forumThreadList = new List<ForumThreadEntity>();
+            String url = forumCategory.Location;
+            if (forumCategory.CurrentPage > 0)
+            {
+                url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER, forumCategory.CurrentPage);
+            }
+
+            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
+            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            HtmlNode forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("class", "").Contains("threadlist")).FirstOrDefault();
+
+            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
+            {
+                ForumThreadEntity threadEntity = new ForumThreadEntity();
+                threadEntity.Parse(threadNode);
+                forumThreadList.Add(threadEntity);
+            }
+            return new ForumCollectionEntity(WebUtility.HtmlDecode(forumNode.InnerText), forumThreadList, forumSubcategoryList);
+        }
+
         public static async Task<ForumCollectionEntity> GetForumThreadsAndSubforums(ForumEntity forumCategory)
         {
             List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();

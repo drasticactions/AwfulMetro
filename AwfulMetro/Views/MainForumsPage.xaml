@@ -119,6 +119,7 @@ HorizontalScrollMode="Disabled">
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet"/>
                 <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page"/>
+                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_Click"  Label="Bookmarks"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>

@@ -76,7 +76,15 @@ namespace AwfulMetro.Views
             //CurrentPage.Text = forumCategory.CurrentPage.ToString();
             
             pageTitle.Text = forumCategory.Name;
-            forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
+            if(forumCategory.IsBookmarks)
+            {
+                forumThreadList = await ThreadManager.GetBookmarks(forumCategory);
+            }
+            else
+            {
+                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
+            }
+           
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumCategory.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
             this.DefaultViewModel["Groups"] = forumThreadList.ForumType;

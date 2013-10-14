@@ -19,7 +19,11 @@ namespace BusinessObjects.Entity
         {
             this.Name = name;
             this.Location = Constants.BASE_URL + location;
-            this.ForumId = Convert.ToInt64(location.Split('=')[1]);
+            string[] ForumId = location.Split('=');
+            if(ForumId.Length > 1)
+            {
+                this.ForumId = Convert.ToInt64(location.Split('=')[1]);
+            }
             this.Description = description;
             this.CurrentPage = 1;
             this.TotalPages = 1;
@@ -35,5 +39,7 @@ namespace BusinessObjects.Entity
         public int TotalPages { get; set; }
 
         public long ForumId { get; private set; }
+
+        public bool IsBookmarks { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using AwfulMetro.Views;
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
+using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -137,6 +138,13 @@ namespace AwfulMetro
         private void FrontPageButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(FrontPage));
+        }
+
+        private void BookmarkButton_Click(object sender, RoutedEventArgs e)
+        {
+            ForumEntity forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
+            forum.IsBookmarks = true;
+            this.Frame.Navigate(typeof(ThreadListPage), forum);
         }
     }
 }
