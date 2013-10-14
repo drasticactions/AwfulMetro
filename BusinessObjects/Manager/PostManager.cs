@@ -3,9 +3,11 @@ using BusinessObjects.Tools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
@@ -24,7 +26,22 @@ namespace BusinessObjects.Manager
             List<ForumPostEntity> forumThreadPosts = new List<ForumPostEntity>();
             HttpWebRequest request = await AuthManager.CreateGetRequest(url);
 
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            //TEMP CODE
+            HtmlDocument doc;
+            var response = await request.GetResponseAsync();
+            var stream = response.GetResponseStream();
+            using (var reader = new StreamReader(stream))
+            {
+                string html = reader.ReadToEnd();
+                doc = new HtmlDocument();
+                doc.LoadHtml(html);
+            }
+            string[] test = response.ResponseUri.AbsoluteUri.Split('#');
+            if (test.Length > 1)
+            {
+              forumThread.ScrollToPost = Int32.Parse(Regex.Match(response.ResponseUri.AbsoluteUri.Split('#')[1], @"\d+").Value);
+            }
+            //HtmlDocument doc = await WebManager.DownloadHtml(request);
             HtmlNode threadNode = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("id", "").Contains("thread")).FirstOrDefault();
 
             foreach (HtmlNode postNode in threadNode.Descendants("table").Where(node => node.GetAttributeValue("class", "").Contains("post")))

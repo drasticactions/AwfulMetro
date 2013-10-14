@@ -30,8 +30,6 @@ namespace BusinessObjects.Entity
 
         public String KilledBy { get; private set; }
 
-        public String Icon { get; private set; }
-
         public bool IsSticky { get; private set; }
 
         public bool IsLocked { get; private set; }
@@ -46,6 +44,8 @@ namespace BusinessObjects.Entity
 
         public int CurrentPage { get; set; }
 
+        public int ScrollToPost { get; set; }
+
         public long ThreadId { get; private set; }
 
         /// <summary>
@@ -55,11 +55,12 @@ namespace BusinessObjects.Entity
         public void Parse(HtmlNode threadNode)
         {
             this.Name = WebUtility.HtmlDecode(threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("thread_title")).FirstOrDefault().InnerText);
-            this.KilledBy = threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("author")).FirstOrDefault().InnerText;
+            this.KilledBy = threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("author")).LastOrDefault().InnerText;
             this.IsSticky = threadNode.Descendants("td").Where(node => node.GetAttributeValue("class", "").Contains("title_sticky")).Any();
             this.IsLocked = threadNode.GetAttributeValue("class", "").Contains("closed");
             this.CanMarkAsUnread = threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("x")).Any();
             this.HasBeenViewed = this.CanMarkAsUnread;
+            this.Author = threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("author")).FirstOrDefault().InnerText;
             if (threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("count")).Any())
             {
                 this.RepliesSinceLastOpened = Convert.ToInt32(threadNode.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("count")).FirstOrDefault().InnerText);

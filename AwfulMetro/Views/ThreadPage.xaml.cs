@@ -84,6 +84,10 @@ namespace AwfulMetro.Views
             ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
             ReplyButton.IsEnabled = !forumThread.IsLocked;
             this.DefaultViewModel["Posts"] = threadPosts;
+            if (forumThread.ScrollToPost > 0)
+            {
+                ThreadList.ScrollIntoView(threadPosts[forumThread.ScrollToPost - 1]);
+            }
         }
 
 

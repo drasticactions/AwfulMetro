@@ -242,7 +242,7 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-            <ListView x:Name="ForumThreadList" ItemClick="ForumThreadList_ItemClick" Grid.Column="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+            <ListView x:Name="ForumThreadList" HorizontalAlignment="Left" Width="800" ItemClick="ForumThreadList_ItemClick" Grid.Column="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="#FFF1F1F1">
@@ -257,7 +257,16 @@
 
                             <StackPanel Width="700" Grid.Column="1">
                                 <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
-                                <TextBlock x:Name="TotalPages" Text="{Binding TotalPages}"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Pages:"></TextBlock>
+                                    <TextBlock x:Name="TotalPages" Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
+                                    <TextBlock Text="Author:" Margin="5,0,0,0" />
+                                    <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
+                                    <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
+                                    <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
+                                    <TextBlock x:Name="Sticky" Margin="5,0,0,0" Text="Sticky" Visibility="{Binding IsSticky, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                    <TextBlock x:Name="Locked" Margin="5,0,0,0" Text="Locked" Visibility="{Binding IsLocked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                </StackPanel>
                             </StackPanel>
                             <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
                                 <StackPanel Orientation="Horizontal">
