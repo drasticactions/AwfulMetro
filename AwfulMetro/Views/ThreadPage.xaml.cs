@@ -70,6 +70,7 @@ namespace AwfulMetro.Views
         /// session. The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             forumThread = (ForumThreadEntity)e.NavigationParameter;
             pageTitle.Text = forumThread.Name;
             String urlLocation = string.Empty;
@@ -88,6 +89,7 @@ namespace AwfulMetro.Views
             {
                 ThreadList.ScrollIntoView(threadPosts[forumThread.ScrollToPost - 1]);
             }
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
 
@@ -131,32 +133,38 @@ namespace AwfulMetro.Views
         {
             if(forumThread.CurrentPage > 1)
             {
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 forumThread.CurrentPage--;
                 BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
                 ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
                 List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
                 this.DefaultViewModel["Posts"] = threadPosts;
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             forumThread.CurrentPage++;
             BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
             List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
             this.DefaultViewModel["Posts"] = threadPosts;
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (forumThread.CurrentPage != (int)CurrentPageSelector.SelectedValue)
             {
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 forumThread.CurrentPage = (int)CurrentPageSelector.SelectedValue;
                 BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
                 ForwardButton.IsEnabled = forumThread.CurrentPage != forumThread.TotalPages ? true : false;
                 List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
                 this.DefaultViewModel["Posts"] = threadPosts;
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
         }
 

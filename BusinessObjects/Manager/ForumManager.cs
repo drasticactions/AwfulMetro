@@ -10,6 +10,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace BusinessObjects.Manager
 {
@@ -19,8 +21,7 @@ namespace BusinessObjects.Manager
         {
             List<ForumCategoryEntity> forumGroupList = new List<ForumCategoryEntity>();
             List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
-            HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.BASE_URL);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            HtmlDocument doc = await ForumManager.GetForumFrontPageHtml();
             HtmlNode forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("id", "").Contains("forums")).FirstOrDefault();
 
             foreach (HtmlNode link in forumNode.Descendants("tr"))
@@ -42,6 +43,34 @@ namespace BusinessObjects.Manager
 #endif
 
             return forumGroupList;
+        }
+
+        public static async Task<HtmlDocument> GetForumFrontPageHtml()
+        {
+            StorageFile file;
+            HtmlDocument doc;
+            string forumHtml = string.Format(Constants.HTML_FILE, "forum");
+            bool htmlFileExists = await WebViewHelper.HtmlExists(forumHtml);
+            if(htmlFileExists)
+            {
+                file = await ApplicationData.Current.LocalFolder.GetFileAsync(forumHtml);
+                string html = await FileIO.ReadTextAsync(file);
+                HtmlDocument document = new HtmlDocument();
+                document.LoadHtml(html);
+                return document;
+            }
+            else
+            {
+                file = await ApplicationData.Current.LocalFolder.CreateFileAsync(forumHtml, CreationCollisionOption.ReplaceExisting);
+                HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.BASE_URL);
+                doc = await WebManager.DownloadHtml(request);
+                MemoryStream memoryStream = new MemoryStream();
+                doc.Save(memoryStream);
+                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+                StreamReader streamReader = new StreamReader(memoryStream);
+                await FileIO.WriteBytesAsync(file, memoryStream.ToArray());
+            }
+            return doc;
         }
 
         private static ForumEntity AddDebugForum()

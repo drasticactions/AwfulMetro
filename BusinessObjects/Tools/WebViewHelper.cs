@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -68,6 +70,19 @@ namespace BusinessObjects.Tools
 
             var htmlUri = (Uri)e.NewValue;
             browser.Navigate(htmlUri);
+        }
+
+        public static async Task<bool> HtmlExists(string htmlFile)
+        {
+            try
+            {
+                await ApplicationData.Current.LocalFolder.GetFileAsync(htmlFile);
+                return true;
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
         }
     }
 }

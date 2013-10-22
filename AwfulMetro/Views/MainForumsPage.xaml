@@ -46,27 +46,21 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <ScrollViewer
-x:Name="itemGridScrollViewer"
-AutomationProperties.AutomationId="GridScrollViewer"
-Grid.Row="1"
-Margin="0,-4,0,0"
-HorizontalScrollMode="Disabled">
-   <GridView
+
+        <GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="8"
-            Grid.Row="1" 
+            Grid.Row="1"
             Padding="0,0,40,46"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            ItemClick="ItemView_ItemClick" HorizontalAlignment="Left">
-                <GridView.ItemTemplate>
-                    <DataTemplate>
+            ItemClick="ItemView_ItemClick">
+            <GridView.ItemTemplate>
+                <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="700" Height="100">
                         <Border Background="#FF415B64">
                             <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
@@ -80,31 +74,14 @@ HorizontalScrollMode="Disabled">
             </GridView.ItemTemplate>
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left"/>
+                    <ItemsWrapGrid GroupPadding="0,0,70,0"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
-            <GridView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="1,0,0,6">
-                                <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
-                                    AutomationProperties.Name="Group Title"
-                                    Style="{StaticResource TextBlockButtonStyle}" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" Margin="3,-7,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                        <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                    </StackPanel>
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </GridView.GroupStyle>
         </GridView>
         <!-- Horizontal scrolling grid -->
-        </ScrollViewer>
-
+        <Grid Canvas.ZIndex="99">
+            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
+        </Grid>
         <!-- Back button and page title -->
         <Grid>
             <Grid.ColumnDefinitions>

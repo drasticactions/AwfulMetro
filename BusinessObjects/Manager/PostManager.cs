@@ -37,7 +37,7 @@ namespace BusinessObjects.Manager
                 doc.LoadHtml(html);
             }
             string[] test = response.ResponseUri.AbsoluteUri.Split('#');
-            if (test.Length > 1)
+            if (test.Length > 1 && test.Contains("pti"))
             {
               forumThread.ScrollToPost = Int32.Parse(Regex.Match(response.ResponseUri.AbsoluteUri.Split('#')[1], @"\d+").Value);
             }

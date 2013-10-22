@@ -70,6 +70,7 @@ namespace AwfulMetro.Views
         /// session. The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             // TODO: Assign a bindable collection of items to this.DefaultViewModel["Items"]
             forumCategory = (ForumEntity)e.NavigationParameter;
             BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
@@ -90,6 +91,7 @@ namespace AwfulMetro.Views
             this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
             this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
             this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         /// <summary>
@@ -137,18 +139,21 @@ namespace AwfulMetro.Views
         {
             if (forumCategory.CurrentPage > 1)
             {
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 forumCategory.CurrentPage--;
                 CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
                 forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
                 this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
                 this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
                 this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
             BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             forumCategory.CurrentPage++;
             CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
             BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
@@ -157,12 +162,14 @@ namespace AwfulMetro.Views
             this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
             this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
             this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if ((int)CurrentPageSelector.SelectedValue != forumCategory.CurrentPage)
             {
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 forumCategory.CurrentPage = (int)CurrentPageSelector.SelectedValue;
                 BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
                 ForwardButton.IsEnabled = forumCategory.CurrentPage != forumCategory.TotalPages ? true : false;
@@ -170,6 +177,7 @@ namespace AwfulMetro.Views
                 this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
                 this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
                 this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
+                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
         }
 

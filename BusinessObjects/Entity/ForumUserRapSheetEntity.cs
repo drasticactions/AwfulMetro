@@ -33,7 +33,7 @@ namespace BusinessObjects.Entity
         public void Parse(HtmlNode RapSheetNode)
         {
             var rapSheetRows = RapSheetNode.Descendants("td");
-            this.Type = rapSheetRows.First().Descendants("a").FirstOrDefault().InnerText;
+            this.Type = rapSheetRows.First().Descendants("b").FirstOrDefault().InnerText;
             rapSheetRows.First().Remove();
             this.Date = rapSheetRows.First().InnerText;
             rapSheetRows.First().Remove();

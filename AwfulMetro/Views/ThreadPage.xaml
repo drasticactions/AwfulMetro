@@ -223,6 +223,9 @@
             <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,120,40"/>
         </Grid>
+        <Grid Canvas.ZIndex="99">
+            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
+        </Grid>
         <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
             <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="30" Height="30">
                 <ItemsPanelTemplate>

@@ -280,6 +280,8 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        
+        <Grid Canvas.ZIndex="99">
+            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
+        </Grid>
     </Grid>
 </Page>

@@ -66,9 +66,11 @@ namespace AwfulMetro
         /// session.  The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategory();
             this.DefaultViewModel["Groups"] = forumGroupList;
             this.DefaultViewModel["ForumCategory"] = forumGroupList;
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         /// <summary>
@@ -146,5 +148,24 @@ namespace AwfulMetro
             forum.IsBookmarks = true;
             this.Frame.Navigate(typeof(ThreadListPage), forum);
         }
+
+        private void ForumEntry_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            if (element != null)
+            {
+                FlyoutBase.ShowAttachedFlyout(element);
+            }
+        }
+
+        private void ForumEntry_Holding(object sender, HoldingRoutedEventArgs e)
+        {
+            FrameworkElement element = sender as FrameworkElement;
+            if (element != null)
+            {
+                FlyoutBase.ShowAttachedFlyout(element);
+            }
+        }
+
     }
 }
