@@ -67,7 +67,7 @@ namespace AwfulMetro
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategory();
+            List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategoryMainPage();
             this.DefaultViewModel["Groups"] = forumGroupList;
             this.DefaultViewModel["ForumCategory"] = forumGroupList;
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;

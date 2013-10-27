@@ -114,6 +114,9 @@
     <Compile Include="Entity\ForumUserRapSheetEntity.cs" />
     <Compile Include="Entity\FrontPageArticleEntity.cs" />
     <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
+    <Compile Include="Entity\SmileCategoryEntity.cs" />
+    <Compile Include="Entity\SmileEntity.cs" />
+    <Compile Include="Entity\TagEntity.cs" />
     <Compile Include="Entity\ThreadReplyEntity.cs" />
     <Compile Include="Manager\AuthManager.cs" />
     <Compile Include="Manager\ForumManager.cs" />
@@ -121,6 +124,8 @@
     <Compile Include="Manager\ForumUserManager.cs" />
     <Compile Include="Manager\FrontPageManager.cs" />
     <Compile Include="Manager\RapSheetManager.cs" />
+    <Compile Include="Manager\SmileManager.cs" />
+    <Compile Include="Manager\TagManager.cs" />
     <Compile Include="Manager\WebManager.cs" />
     <Compile Include="Manager\PostManager.cs" />
     <Compile Include="Manager\ThreadManager.cs" />

@@ -1,6 +1,6 @@
 ﻿<Page
     x:Name="pageRoot"
-    x:Class="AwfulMetro.Views.ReplyView"
+    x:Class="AwfulMetro.Views.CreateThreadView"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -51,7 +51,7 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="Reply" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+            <TextBlock x:Name="pageTitle" Text="Create Thread" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
         <Grid Grid.Row="1">
@@ -64,6 +64,14 @@
                     <ColumnDefinition Width="700"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="20" VerticalAlignment="Center" Padding="0,0,25,0" Text="Subject:"/>
+                        <TextBox x:Name="PostTitle" Width="500"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="TagButton" Margin="0,0,25,0" Content="Tag" Click="TagButton_Click"/>
+                        <Image x:Name="TagImage" Width="60" Height="23"/>
+                    </StackPanel>
                     <TextBox x:Name="ReplyText" TextChanged="ReplyText_TextChanged" Width="700" Height="400" TextWrapping="Wrap"/>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="PostButton" Content="Post" Click="PostButton_Click"/>

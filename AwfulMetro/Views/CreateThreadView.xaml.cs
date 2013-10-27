@@ -23,12 +23,12 @@ namespace AwfulMetro.Views
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class ReplyView : Page
+    public sealed partial class CreateThreadView : Page
     {
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private ForumThreadEntity forumThread;
+        private ForumEntity forum;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -48,7 +48,7 @@ namespace AwfulMetro.Views
         }
 
 
-        public ReplyView()
+        public CreateThreadView()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -69,7 +69,7 @@ namespace AwfulMetro.Views
         /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            forumThread = (ForumThreadEntity)e.NavigationParameter;
+            forum = (ForumEntity)e.NavigationParameter;
         }
 
         /// <summary>
@@ -128,6 +128,14 @@ namespace AwfulMetro.Views
         private void BBcodeButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private async void TagButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            List<TagEntity> tagList = await TagManager.GetTagList(forum.ForumId);
+            this.DefaultViewModel["Groups"] = tagList;
+            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
     }
 }

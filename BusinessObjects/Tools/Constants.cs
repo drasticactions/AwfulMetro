@@ -20,6 +20,12 @@ namespace BusinessObjects.Tools
 
         public const string RAP_SHEET = "banlist.php?";
 
+        public const string FORUM_LIST_PAGE = "http://forums.somethingawful.com/forumdisplay.php?forumid=48";
+
+        public const string FORUM_PAGE = "forumdisplay.php?forumid={0}";
+
+        public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
+
         public const string QUOTE_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&postid={0}";
 
         public const string THREAD_POST_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&threadid={0}";
@@ -31,6 +37,8 @@ namespace BusinessObjects.Tools
         public const string THREAD_PAGE = BASE_URL + "showthread.php?threadid={0}";
 
         public const string FRONT_PAGE = "http://www.somethingawful.com";
+
+        public const string SMILE_URL = BASE_URL + "misc.php?action=showsmilies";
 
         public const string USER_CP = "usercp.php?";
 

@@ -123,6 +123,9 @@
     <Compile Include="Views\RapSheetView.xaml.cs">
       <DependentUpon>RapSheetView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CreateThreadView.xaml.cs">
+      <DependentUpon>CreateThreadView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReplyView.xaml.cs">
       <DependentUpon>ReplyView.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Page Include="Views\CreateThreadView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <None Include="Common\ReadMe.txt" />
     <None Include="AwfulMetro_TemporaryKey.pfx" />
     <Content Include="Assets\bbcode.css" />

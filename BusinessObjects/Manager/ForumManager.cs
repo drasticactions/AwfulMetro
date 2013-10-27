@@ -17,6 +17,47 @@ namespace BusinessObjects.Manager
 {
     public class ForumManager
     {
+
+        public static async Task<List<ForumCategoryEntity>> GetForumCategoryMainPage()
+        {
+            List<ForumCategoryEntity> forumGroupList = new List<ForumCategoryEntity>();
+            List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
+            HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.FORUM_LIST_PAGE);
+            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            //HtmlDocument descriptionDoc = await ForumManager.GetForumFrontPageHtml();
+            HtmlNode forumNode = doc.DocumentNode.Descendants("select")
+                .Where(node => node.GetAttributeValue("name", "").Equals("forumid"))
+                .FirstOrDefault();
+            if (forumNode != null)
+            {
+                var forumNodes = forumNode.Descendants("option").ToArray();
+
+                foreach (var node in forumNodes)
+                {
+                    var value = node.Attributes["value"].Value;
+                    int id = -1;
+                    if (int.TryParse(value, out id) && id > -1)
+                    {
+                        if (node.NextSibling.InnerText.Contains("--"))
+                        {
+                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", ""));
+                            forumName.Trim();
+                            ForumEntity forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value), "");
+                            forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
+                        }
+                        else
+                        {
+                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText);
+                            forumName.Trim();
+                            ForumCategoryEntity forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
+                            forumGroupList.Add(forumGroup);
+                        }
+                    }
+                }
+            }
+            return forumGroupList;
+        }
+
         public static async Task<List<ForumCategoryEntity>> GetForumCategory()
         {
             List<ForumCategoryEntity> forumGroupList = new List<ForumCategoryEntity>();
