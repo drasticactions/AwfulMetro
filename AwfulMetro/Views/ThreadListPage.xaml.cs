@@ -77,6 +77,7 @@ namespace AwfulMetro.Views
             //CurrentPage.Text = forumCategory.CurrentPage.ToString();
             
             pageTitle.Text = forumCategory.Name;
+            pageSnapTitle.Text = forumCategory.Name;
             if(forumCategory.IsBookmarks)
             {
                 forumThreadList = await ThreadManager.GetBookmarks(forumCategory);
@@ -120,6 +121,18 @@ namespace AwfulMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+            var bounds = Window.Current.Bounds;
+            if (bounds.Width <= 620)
+            {
+                VisualStateManager.GoToState(this, "Snapped", false);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "FullScreen", false);
+            }
+
+            this.Loaded += PageLoaded;
+            this.Unloaded += PageUnloaded;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -191,6 +204,33 @@ namespace AwfulMetro.Views
         {
             var itemId = forumCategory;
             this.Frame.Navigate(typeof(CreateThreadView), itemId);
+        }
+
+        private void PageUnloaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SizeChanged -= Window_SizeChanged;
+        }
+
+        private void PageLoaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SizeChanged += Window_SizeChanged;
+        }
+
+        private void Window_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
+        {
+            if (e.Size.Width <= 620)
+            {
+                VisualStateManager.GoToState(this, "Snapped", false);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "FullScreen", false);
+            }
+
+            //else if (e.Size.Height > e.Size.Width)
+            //{
+            //   //VisualStateManager.GoToState(this, state.State, transitions);
+            //}
         }
     }
 }

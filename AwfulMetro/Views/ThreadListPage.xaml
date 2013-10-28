@@ -192,6 +192,53 @@
         </CommandBar>
     </Page.TopAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="VisualStateGroup">
+    			<VisualState x:Name="Snapped">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewFullScreen">
+    						<DiscreteObjectKeyFrame KeyTime="0">
+    							<DiscreteObjectKeyFrame.Value>
+    								<Visibility>Collapsed</Visibility>
+    							</DiscreteObjectKeyFrame.Value>
+    						</DiscreteObjectKeyFrame>
+    					</ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewSnapped">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="pageTitle">
+                        	<DiscreteObjectKeyFrame KeyTime="0">
+                        		<DiscreteObjectKeyFrame.Value>
+                        			<Visibility>Collapsed</Visibility>
+                        		</DiscreteObjectKeyFrame.Value>
+                        	</DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+                <VisualState x:Name="FullScreen">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewFullScreen">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewSnapped">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -227,7 +274,7 @@
             <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
         </StackPanel>
-        <Grid Grid.Row="1">
+        <Grid x:Name="ThreadViewFullScreen" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="115"/>
                 <ColumnDefinition Width="*"/>
@@ -263,6 +310,69 @@
                             </Border>
 
                             <StackPanel Width="700" Grid.Column="1">
+                                <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Pages:"></TextBlock>
+                                    <TextBlock x:Name="TotalPages" Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
+                                    <TextBlock Text="Author:" Margin="5,0,0,0" />
+                                    <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
+                                    <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
+                                    <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
+                                    <TextBlock x:Name="Sticky" Margin="5,0,0,0" Text="Sticky" Visibility="{Binding IsSticky, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                    <TextBlock x:Name="Locked" Margin="5,0,0,0" Text="Locked" Visibility="{Binding IsLocked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="15" x:Name="ReplyCount" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
+                                    <TextBlock FontSize="35" Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="5,-19,0,0" TextWrapping="NoWrap" />
+                                </StackPanel>
+                            </Border>
+
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Grid x:Name="ThreadViewSnapped" Visibility="Collapsed" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="115"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GridView x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid HorizontalAlignment="Left" Width="100" Height="100">
+                                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                        <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                                        <TextBlock Text="{Binding Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            <TextBlock x:Name="pageSnapTitle" Grid.Row="0" Style="{StaticResource HeaderTextBlockStyle}" FontSize="20" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="0,0,0,0"/>
+            <ListView x:Name="ForumThreadListSnapped" HorizontalAlignment="Left" Width="500" ItemClick="ForumThreadList_ItemClick" Grid.Row="2" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="#FFF1F1F1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Grid.Column="0" Width="60" Height="15">
+                                <Image Source="{Binding ImageIconLocation}"  AutomationProperties.Name="{Binding Title}"/>
+                            </Border>
+
+                            <StackPanel Width="300" Grid.Column="1">
                                 <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Pages:"></TextBlock>

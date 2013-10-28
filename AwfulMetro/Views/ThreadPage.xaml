@@ -197,6 +197,36 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="VisualStateGroup">
+    			<VisualState x:Name="Snapped">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadListSnapped">
+    						<DiscreteObjectKeyFrame KeyTime="0">
+    							<DiscreteObjectKeyFrame.Value>
+    								<Visibility>Visible</Visibility>
+    							</DiscreteObjectKeyFrame.Value>
+    						</DiscreteObjectKeyFrame>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadListFullScreen">
+    						<DiscreteObjectKeyFrame KeyTime="0">
+    							<DiscreteObjectKeyFrame.Value>
+    								<Visibility>Collapsed</Visibility>
+    							</DiscreteObjectKeyFrame.Value>
+    						</DiscreteObjectKeyFrame>
+    					</ObjectAnimationUsingKeyFrames>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="pageTitle">
+    						<DiscreteObjectKeyFrame KeyTime="0">
+    							<DiscreteObjectKeyFrame.Value>
+    								<Visibility>Collapsed</Visibility>
+    							</DiscreteObjectKeyFrame.Value>
+    						</DiscreteObjectKeyFrame>
+    					</ObjectAnimationUsingKeyFrames>
+    				</Storyboard>
+    			</VisualState>
+    			<VisualState x:Name="FullScreen"/>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -236,7 +266,7 @@
             <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
             <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
         </StackPanel>
-        <ListView Grid.Row="1" x:Name="ThreadList" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
+        <ListView Grid.Row="1" x:Name="ThreadListFullScreen" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -252,6 +282,36 @@
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <WebView x:Name="PostRawView" Height="500" Width="1000" web:WebViewHelper.Html="{Binding PostHTML}" ></WebView>
+                            <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
+                                <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
+                                <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>
+                                <Button x:Name="RapSheetButton" Click="RapSheetButton_Click" Content="RapSheet"/>
+                                <Button x:Name="ReportButton" Content="Report"/>
+                                <Button x:Name="QuoteButton" Click="QuoteButton_Click" Content="Quote"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView Grid.Row="1" Visibility="Collapsed" x:Name="ThreadListSnapped" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="130"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0">
+                            <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
+                            <StackPanel>
+                                <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
+                                <TextBlock x:Name="UserAvatarTitle" Text="{Binding User.AvatarTitle}"></TextBlock>
+                                <TextBlock x:Name="UserRegDate" Text="{Binding User.UserDateJoined}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <WebView x:Name="PostRawView" Height="500" Width="450" web:WebViewHelper.Html="{Binding PostHTML}" ></WebView>
                             <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
                                 <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
                                 <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>

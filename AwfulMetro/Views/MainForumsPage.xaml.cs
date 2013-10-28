@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -117,6 +119,19 @@ namespace AwfulMetro
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+
+            var bounds = Window.Current.Bounds;
+            if (bounds.Width <= 620)
+            {
+                VisualStateManager.GoToState(this, "Snapped", false);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "FullScreen", false);
+            }
+
+            this.Loaded += PageLoaded;
+            this.Unloaded += PageUnloaded;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -165,6 +180,33 @@ namespace AwfulMetro
             {
                 FlyoutBase.ShowAttachedFlyout(element);
             }
+        }
+
+        private void PageUnloaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SizeChanged -= Window_SizeChanged;
+        }
+
+        private void PageLoaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SizeChanged += Window_SizeChanged;
+        }
+
+        private void Window_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
+        {
+            if (e.Size.Width <= 620)
+            {
+                VisualStateManager.GoToState(this, "Snapped", false);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "FullScreen", false);
+            }
+
+            //else if (e.Size.Height > e.Size.Width)
+            //{
+            //   //VisualStateManager.GoToState(this, state.State, transitions);
+            //}
         }
 
     }

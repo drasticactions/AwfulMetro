@@ -37,6 +37,46 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+    	<VisualStateManager.VisualStateGroups>
+    		<VisualStateGroup x:Name="VisualStateGroup">
+    			<VisualState x:Name="Snapped">
+    				<Storyboard>
+    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="itemGridView">
+    						<DiscreteObjectKeyFrame KeyTime="0">
+    							<DiscreteObjectKeyFrame.Value>
+    								<Visibility>Collapsed</Visibility>
+    							</DiscreteObjectKeyFrame.Value>
+    						</DiscreteObjectKeyFrame>
+    					</ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="itemGridScrollViewer">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+    			</VisualState>
+    			<VisualState x:Name="FullScreen">
+    				<Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="itemGridScrollViewer">
+    						<DiscreteObjectKeyFrame KeyTime="0">
+    							<DiscreteObjectKeyFrame.Value>
+    								<Visibility>Collapsed</Visibility>
+    							</DiscreteObjectKeyFrame.Value>
+    						</DiscreteObjectKeyFrame>
+    					</ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="itemGridView">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+    			</VisualState>
+    		</VisualStateGroup>
+    	</VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -53,6 +93,7 @@
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="8"
             Grid.Row="1"
+            Visibility="Visible"
             Padding="0,0,40,46"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
             SelectionMode="None"
@@ -78,6 +119,65 @@
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </GridView>
+
+        <ScrollViewer
+x:Name="itemGridScrollViewer"
+AutomationProperties.AutomationId="GridScrollViewer"
+Grid.Row="1"
+Margin="0,-4,0,0"
+HorizontalScrollMode="Disabled"
+            Visibility="Collapsed">
+            <GridView
+            x:Name="itemGridViewSnap"
+            AutomationProperties.AutomationId="ItemGridView"
+            AutomationProperties.Name="Grouped Items"
+            Grid.RowSpan="8"
+            Grid.Row="1" 
+            Padding="0,0,40,46"
+            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+            SelectionMode="None"
+            IsSwipeEnabled="false"
+            IsItemClickEnabled="True"
+            ItemClick="ItemView_ItemClick" HorizontalAlignment="Center">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left" Width="450" Height="100">
+                            <Border Background="#FF415B64">
+                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                <TextBlock Text="{Binding Name}" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                                <TextBlock Text="{Binding Description}" Foreground="Black" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid Margin="1,0,0,6">
+                                    <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
+                                    AutomationProperties.Name="Group Title"
+                                    Style="{StaticResource TextBlockButtonStyle}" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" Margin="3,-7,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                                            <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-7,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </GridView.GroupStyle>
+            </GridView>
+            <!-- Horizontal scrolling grid -->
+        </ScrollViewer>
         <!-- Horizontal scrolling grid -->
         <Grid Canvas.ZIndex="99">
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
