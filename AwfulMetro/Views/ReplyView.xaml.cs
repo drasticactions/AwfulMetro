@@ -1,6 +1,7 @@
 ﻿using AwfulMetro.Common;
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
+using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,10 @@ namespace AwfulMetro.Views
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private List<SmileCategoryEntity> smileCategoryList = new List<SmileCategoryEntity>();
+        private List<BBCodeCategoryEntity> bbCodeList = new List<BBCodeCategoryEntity>();
         private ForumThreadEntity forumThread;
+        private ForumPostEntity forumPost;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -69,7 +73,16 @@ namespace AwfulMetro.Views
         /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            forumThread = (ForumThreadEntity)e.NavigationParameter;
+            var item = e.NavigationParameter;
+            if(item.GetType() == typeof(ForumThreadEntity))
+            {
+                forumThread = (ForumThreadEntity)e.NavigationParameter;
+            }
+            else
+            {
+                forumPost = (ForumPostEntity)e.NavigationParameter;
+                ReplyText.Text = string.Format(Constants.QUOTE_EXP, forumPost.User.Username, forumPost.PostId, forumPost.PostFormatted);
+            }
         }
 
         /// <summary>
@@ -120,14 +133,49 @@ namespace AwfulMetro.Views
         private async void SimilesButton_Click(object sender, RoutedEventArgs e)
         {
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            List<SmileCategoryEntity> smileCategoryList = await SmileManager.GetSmileList();
+            if (!smileCategoryList.Any())
+            {
+                smileCategoryList = await SmileManager.GetSmileList();
+            }
             this.DefaultViewModel["Groups"] = smileCategoryList;
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private void BBcodeButton_Click(object sender, RoutedEventArgs e)
         {
+            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            if (!bbCodeList.Any())
+            {
+                bbCodeList = BBCodeManager.GetBBCodes();
+            }
+            this.DefaultViewModel["Groups"] = bbCodeList;
+            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
 
+        private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if (item.GetType() == typeof(SmileEntity))
+            {
+                SmileEntity smile = (SmileEntity)e.ClickedItem;
+                ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, smile.Title);
+            }
+
+            if (item.GetType() == typeof(BBCodeEntity))
+            {
+                BBCodeEntity bbcode = (BBCodeEntity)e.ClickedItem;
+                if (!string.IsNullOrEmpty(ReplyText.SelectedText))
+                {
+                    string selectedText = "[{0}]" + ReplyText.SelectedText + "[/{0}]";
+                    ReplyText.SelectedText = string.Format(selectedText, bbcode.Code);
+                }
+                else
+                {
+                    string text = string.Format("[{0}][/{0}]", bbcode.Code);
+                    ReplyText.Text = ReplyText.Text.Insert(ReplyText.SelectionStart, text);
+                }
+            }
         }
     }
 }

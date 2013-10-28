@@ -24,6 +24,8 @@ namespace BusinessObjects.Tools
 
         public const string FORUM_PAGE = "forumdisplay.php?forumid={0}";
 
+        public const string QUOTE_EXP = "[quote=\"{0}\" post=\"{1}\"]{2}[/quote]";
+
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
         public const string QUOTE_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&postid={0}";

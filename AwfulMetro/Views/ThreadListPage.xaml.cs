@@ -186,5 +186,11 @@ namespace AwfulMetro.Views
             var itemId = ((ForumEntity)e.ClickedItem);
             this.Frame.Navigate(typeof(ThreadListPage), itemId);
         }
+
+        private void AddThreadButton_Click(object sender, RoutedEventArgs e)
+        {
+            var itemId = forumCategory;
+            this.Frame.Navigate(typeof(CreateThreadView), itemId);
+        }
     }
 }

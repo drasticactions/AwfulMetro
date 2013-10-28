@@ -15,7 +15,7 @@ namespace BusinessObjects.Manager
     public class TagManager
     {
 
-        public static async Task<List<TagEntity>> GetTagList(long forumId)
+        public static async Task<List<TagCategoryEntity>> GetTagList(long forumId)
         {
             List<TagEntity> tagList = new List<TagEntity>();
             HttpWebRequest request = await AuthManager.CreateGetRequest(string.Format(Constants.NEW_THREAD, forumId));
@@ -29,7 +29,10 @@ namespace BusinessObjects.Manager
                 tag.Parse(icon);
                 tagList.Add(tag);
             }
-            return tagList;
+            List<TagCategoryEntity> tagCategoryList = new List<TagCategoryEntity>();
+            TagCategoryEntity tagCategory = new TagCategoryEntity("Tags", tagList);
+            tagCategoryList.Add(tagCategory);
+            return tagCategoryList;
         }
 
     }

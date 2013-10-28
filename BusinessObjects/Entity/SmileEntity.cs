@@ -11,14 +11,14 @@ namespace BusinessObjects.Entity
 {
     public class SmileEntity
     {
-        public string SmileText { get; private set; }
+        public string Title { get; private set; }
 
-        public string SmileUrl { get; private set; }
+        public string ImageUrl { get; private set; }
 
         public void Parse(HtmlNode smileNode)
         {
-            this.SmileText = smileNode.Descendants("div").FirstOrDefault().InnerText;
-            this.SmileUrl = smileNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
+            this.Title = smileNode.Descendants("div").FirstOrDefault().InnerText;
+            this.ImageUrl = smileNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
         }
     }
 }

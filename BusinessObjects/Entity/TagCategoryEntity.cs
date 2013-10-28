@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace BusinessObjects.Entity
 {
-    public class SmileCategoryEntity
+    public class TagCategoryEntity
     {
-        public List<SmileEntity> List { get; private set; }
+        public List<TagEntity> List { get; private set; }
 
         public string Category { get; private set; }
 
-        public SmileCategoryEntity(string category, List<SmileEntity> smileList)
+        public TagCategoryEntity(string category, List<TagEntity> list)
         {
-            this.List = smileList;
+            this.List = list;
             this.Category = category;
         }
     }

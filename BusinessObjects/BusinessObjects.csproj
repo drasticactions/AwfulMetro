@@ -104,6 +104,8 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\BBCodeCategoryEntity.cs" />
+    <Compile Include="Entity\BBCodeEntity.cs" />
     <Compile Include="Entity\ForumCategoryEntity.cs" />
     <Compile Include="Entity\ForumCollectionEntity.cs" />
     <Compile Include="Entity\ForumPostEntity.cs" />
@@ -116,9 +118,11 @@
     <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
     <Compile Include="Entity\SmileCategoryEntity.cs" />
     <Compile Include="Entity\SmileEntity.cs" />
+    <Compile Include="Entity\TagCategoryEntity.cs" />
     <Compile Include="Entity\TagEntity.cs" />
     <Compile Include="Entity\ThreadReplyEntity.cs" />
     <Compile Include="Manager\AuthManager.cs" />
+    <Compile Include="Manager\BBCodeManager.cs" />
     <Compile Include="Manager\ForumManager.cs" />
     <Compile Include="Manager\ForumSearchManager.cs" />
     <Compile Include="Manager\ForumUserManager.cs" />

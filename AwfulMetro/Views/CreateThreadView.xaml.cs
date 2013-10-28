@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -28,7 +29,11 @@ namespace AwfulMetro.Views
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private List<SmileCategoryEntity> smileCategoryList = new List<SmileCategoryEntity>();
+        private List<BBCodeCategoryEntity> bbCodeList = new List<BBCodeCategoryEntity>();
+        private List<TagCategoryEntity> tagList = new List<TagCategoryEntity>();
         private ForumEntity forum;
+        private TagEntity SelectedTag;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -120,22 +125,68 @@ namespace AwfulMetro.Views
         private async void SimilesButton_Click(object sender, RoutedEventArgs e)
         {
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            List<SmileCategoryEntity> smileCategoryList = await SmileManager.GetSmileList();
+            if(!smileCategoryList.Any())
+            {
+                smileCategoryList = await SmileManager.GetSmileList();
+            }
             this.DefaultViewModel["Groups"] = smileCategoryList;
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private void BBcodeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            if(!bbCodeList.Any())
+            {
+                bbCodeList = BBCodeManager.GetBBCodes();
+            }
+            this.DefaultViewModel["Groups"] = bbCodeList;
+            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private async void TagButton_Click(object sender, RoutedEventArgs e)
         {
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            List<TagEntity> tagList = await TagManager.GetTagList(forum.ForumId);
+            if(!tagList.Any())
+            {
+                tagList = await TagManager.GetTagList(forum.ForumId);
+            }
             this.DefaultViewModel["Groups"] = tagList;
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+
+        private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var item = e.ClickedItem;
+
+            if(item.GetType() == typeof(TagEntity))
+            {
+                SelectedTag = (TagEntity)e.ClickedItem;
+                BitmapImage imgSource = new BitmapImage();
+                imgSource.UriSource = new Uri(SelectedTag.ImageUrl, UriKind.Absolute);
+                TagImage.Source = imgSource;
+            }
+
+            if (item.GetType() == typeof(SmileEntity))
+            {
+                SmileEntity smile = (SmileEntity)e.ClickedItem;
+                ReplyText.Text = ReplyText.Text.Insert(ReplyText.SelectionStart, smile.Title);
+            }
+
+            if (item.GetType() == typeof(BBCodeEntity))
+            {
+                BBCodeEntity bbcode = (BBCodeEntity)e.ClickedItem;
+                if(!string.IsNullOrEmpty(ReplyText.SelectedText))
+                {
+                    string selectedText = "[{0}]" + ReplyText.SelectedText + "[/{0}]";
+                    ReplyText.SelectedText = string.Format(selectedText, bbcode.Code);
+                }
+                else
+                {
+                    string text = string.Format("[{0}][/{0}]", bbcode.Code);
+                    ReplyText.Text = ReplyText.Text.Insert(ReplyText.SelectionStart, text);
+                }
+            }
         }
     }
 }

@@ -257,7 +257,7 @@
                                 <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>
                                 <Button x:Name="RapSheetButton" Click="RapSheetButton_Click" Content="RapSheet"/>
                                 <Button x:Name="ReportButton" Content="Report"/>
-                                <Button x:Name="QuoteButton" Content="Quote"/>
+                                <Button x:Name="QuoteButton" Click="QuoteButton_Click" Content="Quote"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
