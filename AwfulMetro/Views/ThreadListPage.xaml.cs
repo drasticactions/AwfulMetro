@@ -92,6 +92,11 @@ namespace AwfulMetro.Views
             this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
             this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
             this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
+            if(!forumThreadList.ForumSubcategoryList.Any())
+            {
+                ThreadViewSnapped.RowDefinitions[1].Height = new GridLength(0);
+                ThreadViewFullScreen.ColumnDefinitions[0].Width = new GridLength(0);
+            }
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
