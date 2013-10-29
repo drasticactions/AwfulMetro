@@ -127,7 +127,11 @@ namespace AwfulMetro.Views
         {
             navigationHelper.OnNavigatedTo(e);
             var bounds = Window.Current.Bounds;
-            if (bounds.Width <= 620)
+            if (bounds.Height > bounds.Width)
+            {
+                VisualStateManager.GoToState(this, "Portrait", false);
+            }
+            else if (bounds.Width <= 620)
             {
                 VisualStateManager.GoToState(this, "Snapped", false);
             }
@@ -223,7 +227,11 @@ namespace AwfulMetro.Views
 
         private void Window_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
-            if (e.Size.Width <= 620)
+            if (e.Size.Height > e.Size.Width)
+            {
+                VisualStateManager.GoToState(this, "Portrait", false);
+            }
+            else if (e.Size.Width <= 620)
             {
                 VisualStateManager.GoToState(this, "Snapped", false);
             }
@@ -231,11 +239,6 @@ namespace AwfulMetro.Views
             {
                 VisualStateManager.GoToState(this, "FullScreen", false);
             }
-
-            //else if (e.Size.Height > e.Size.Width)
-            //{
-            //   //VisualStateManager.GoToState(this, state.State, transitions);
-            //}
         }
     }
 }

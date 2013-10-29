@@ -237,6 +237,18 @@
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
+                <VisualState x:Name="Portrait">
+                	<Storyboard>
+                		<DoubleAnimation Duration="0" To="30" Storyboard.TargetProperty="(TextBlock.FontSize)" Storyboard.TargetName="pageTitle" d:IsOptimized="True"/>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ForumThreadList">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <x:Double>600</x:Double>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
             </VisualStateGroup>
     	</VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
