@@ -79,6 +79,15 @@ namespace BusinessObjects.Manager
             return request;
         }
 
+        public static async Task<HttpClientHandler> CreateGetRequestHandler()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            handler.UseCookies = true;
+            handler.CookieContainer = await AuthManager.Loadcookie(Constants.COOKIE_FILE);
+            return handler;
+        }
+
         public static async Task<HttpWebRequest> CreateGetRequest(string url)
         {
             var uri = new Uri(url);

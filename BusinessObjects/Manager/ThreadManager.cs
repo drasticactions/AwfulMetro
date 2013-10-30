@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -26,8 +27,8 @@ namespace BusinessObjects.Manager
                 url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER, forumCategory.CurrentPage);
             }
 
-            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            HttpClientHandler handler = await AuthManager.CreateGetRequestHandler();
+            HtmlDocument doc = await WebManager.DownloadHtmlClient(new HttpClient(handler), url);
             HtmlNode forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("class", "").Contains("threadlist")).FirstOrDefault();
 
             foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))

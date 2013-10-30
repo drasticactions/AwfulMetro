@@ -1,5 +1,6 @@
 ﻿using AwfulMetro.Common;
 using AwfulMetro.Views;
+using BackgroundStatus;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
 using System;
@@ -10,6 +11,7 @@ using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -60,7 +62,9 @@ namespace AwfulMetro
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            
+            Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+            Windows.UI.Notifications.BadgeUpdateManager.CreateBadgeUpdaterForApplication().Clear();
+            Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
             if (rootFrame == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
@@ -93,6 +97,7 @@ namespace AwfulMetro
                 CookieContainer cookieTest = await AuthManager.Loadcookie(Constants.COOKIE_FILE);
                 if(cookieTest.Count <= 0)
                 {
+          
                     if (!rootFrame.Navigate(typeof(LoginPage)))
                     {
                         throw new Exception("Failed to create initial page");
@@ -100,6 +105,11 @@ namespace AwfulMetro
                 }
                 else
                 {
+                    BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
+                   // var task = BackgroundTaskUtils.RegisterBackgroundTask(BackgroundTaskUtils.BackgroundTaskEntryPoint,
+                     //                                                                 BackgroundTaskUtils.BackgroundTaskName,
+                       //                                                                 new TimeTrigger(15, false),
+                         //                                                             null);
                     if (!rootFrame.Navigate(typeof(MainForumsPage)))
                     {
                         throw new Exception("Failed to create initial page");
