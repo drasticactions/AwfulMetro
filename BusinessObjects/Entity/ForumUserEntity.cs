@@ -1,69 +1,68 @@
 ﻿using BusinessObjects.Tools;
+
 using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObjects.Entity
 {
     public class ForumUserEntity
     {
-        public String Username { get; private set; }
+        public string Username { get; private set; }
 
-        public String AvatarLink { get; private set; }
+        public string AvatarLink { get; private set; }
 
-        public String AvatarTitle { get; private set; }
+        public string AvatarTitle { get; private set; }
 
-        public String UserDateJoined { get; private set; }
+        public string UserDateJoined { get; private set; }
 
-        public String UserProfileLink { get; private set; }
+        public string UserProfileLink { get; private set; }
 
-        public String UserPrivateMessageLink { get; private set; }
+        public string UserPrivateMessageLink { get; private set; }
 
-        public String UserPostHistoryLink { get; private set; }
+        public string UserPostHistoryLink { get; private set; }
 
-        public String UserRapSheetLink { get; private set; }
+        public string UserRapSheetLink { get; private set; }
 
         public bool CanSendPrivateMessage { get; private set; }
 
-        public String ICQContactString { get; private set; }
+        public string ICQContactString { get; private set; }
 
-        public String AIMContactString { get; private set; }
+        public string AIMContactString { get; private set; }
 
-        public String YahooContactString { get; private set; }
+        public string YahooContactString { get; private set; }
 
-        public String HomePageString { get; private set; }
+        public string HomePageString { get; private set; }
 
         public int PostCount { get; private set; }
 
-        public String LastPostDate { get; private set; }
+        public string LastPostDate { get; private set; }
 
-        public String UserLocation { get; private set; }
+        public string UserLocation { get; private set; }
 
-        public String AboutUser { get; private set; }
+        public string AboutUser { get; private set; }
 
         public bool IsMod { get; private set; }
 
-        public long id { get; private set; }
+        public long Id { get; private set; }
 
         public string PostRate { get; private set; }
 
         public void ParseFromPost(HtmlNode postNode)
         {
-            this.Username = WebUtility.HtmlDecode(postNode.Descendants("dt").Where(node => node.GetAttributeValue("class", "").Contains("author")).FirstOrDefault().InnerHtml);
-            this.UserDateJoined = postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Contains("registered")).FirstOrDefault().InnerHtml;
-            if (postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault() != null)
+            this.Username = WebUtility.HtmlDecode(postNode.Descendants("dt").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("author")).InnerHtml);
+            this.UserDateJoined = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("registered")).InnerHtml;
+            if (postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("title")) != null)
             {
-                this.AvatarTitle = WebUtility.HtmlDecode(this.RemoveNewLine(postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault().InnerText.Trim()));
+                this.AvatarTitle = WebUtility.HtmlDecode(postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("title")).InnerText.WithoutNewLines().Trim());
             }
-            if (postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Contains("title")).FirstOrDefault().Descendants("img").FirstOrDefault() != null)
+            if (postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("title")).Descendants("img").FirstOrDefault() != null)
             {
-                this.AvatarLink = this.FixPostHtmlImage(postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Contains("title")).FirstOrDefault().Descendants("img").FirstOrDefault().OuterHtml);
+                this.AvatarLink = FixPostHtmlImage(postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("title")).Descendants("img").FirstOrDefault().OuterHtml);
             }
-            this.id = Convert.ToInt64(postNode.DescendantsAndSelf("td").Where(node => node.GetAttributeValue("class", "").Contains("userinfo")).FirstOrDefault().GetAttributeValue("class", "").Split('-')[1]);
+            this.Id = Convert.ToInt64(postNode.DescendantsAndSelf("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("userinfo")).GetAttributeValue("class", "").Split('-')[1]);
         }
 
         public void ParseFromUserProfile(HtmlNode profileNode)
@@ -71,10 +70,9 @@ namespace BusinessObjects.Entity
             this.AboutUser = string.Empty;
             foreach (HtmlNode aboutParagraph in profileNode.Descendants("p"))
             {
-                this.AboutUser += WebUtility.HtmlDecode(this.RemoveNewLine(aboutParagraph.InnerText).Trim()) + System.Environment.NewLine + System.Environment.NewLine;
-                //this.AboutUser += this.RemoveNewLine(aboutParagraph.InnerText);
+                this.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) + Environment.NewLine + Environment.NewLine;
             }
-            HtmlNode additionalNode = profileNode.Descendants("dl").Where(node => node.GetAttributeValue("class", "").Contains("additional")).FirstOrDefault();
+            HtmlNode additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("additional"));
             this.UserDateJoined = additionalNode.Descendants("dd").FirstOrDefault().InnerText;
             additionalNode.Descendants("dd").FirstOrDefault().Remove();
             this.PostCount = Convert.ToInt32(additionalNode.Descendants("dd").FirstOrDefault().InnerText);
@@ -95,27 +93,9 @@ namespace BusinessObjects.Entity
         /// </summary>
         /// <param name="postHtml"></param>
         /// <returns></returns>
-        private String FixPostHtmlImage(String postHtml)
+        private static string FixPostHtmlImage(String postHtml)
         {
             return "<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"></head><body style=\"background-color: white;\"></head><body>" + postHtml + "</body></html>";
-        }
-
-        private String RemoveNewLine(String text)
-        {
-
-            var sb = new StringBuilder(text.Length);
-            foreach (char i in text)
-            { 
-                if (i != '\n' && i != '\r' && i != '\t')
-                {
-                    sb.Append(i);
-                }
-                else if (i == '\n')
-                {
-                    sb.Append(' ');
-                }
-            }
-            return sb.ToString();
         }
     }
 }

@@ -77,7 +77,7 @@ namespace AwfulMetro.Views
             }
             else
             {
-                userId = user.id;
+                userId = user.Id;
             }
             this.DefaultViewModel["UserEntity"] = await ForumUserManager.GetUserFromProfilePage(user, userId);
             this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
