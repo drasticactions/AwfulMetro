@@ -286,7 +286,7 @@
                         <StackPanel Grid.Column="0">
                             <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
                             <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
-                            <TextBlock x:Name="UserAvatarTitle" Text="{Binding User.AvatarTitle}"></TextBlock>
+                            <TextBlock x:Name="UserAvatarTitle" Width="250" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"></TextBlock>
                             <TextBlock x:Name="UserRegDate" Text="{Binding User.UserDateJoined}"></TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="1">

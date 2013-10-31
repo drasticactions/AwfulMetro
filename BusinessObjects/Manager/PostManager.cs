@@ -36,10 +36,14 @@ namespace BusinessObjects.Manager
                 doc = new HtmlDocument();
                 doc.LoadHtml(html);
             }
+            /* TODO: The following checks the thread URL for "pti" (which indicated which post to scroll to)
+             * Having it in the post manager though, is wrong. This needs to be refactored and a better method of 
+             * getting this needs to be put in.
+             */
             string[] test = response.ResponseUri.AbsoluteUri.Split('#');
-            if (test.Length > 1 && test.Contains("pti"))
+            if (test.Length > 1 && test[1].Contains("pti"))
             {
-              forumThread.ScrollToPost = Int32.Parse(Regex.Match(response.ResponseUri.AbsoluteUri.Split('#')[1], @"\d+").Value);
+              forumThread.ScrollToPost = Int32.Parse(Regex.Match(response.ResponseUri.AbsoluteUri.Split('#')[1], @"\d+").Value) - 1;
             }
             //HtmlDocument doc = await WebManager.DownloadHtml(request);
             HtmlNode threadNode = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("id", "").Contains("thread")).FirstOrDefault();

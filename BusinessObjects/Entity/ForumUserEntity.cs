@@ -57,7 +57,7 @@ namespace BusinessObjects.Entity
             this.UserDateJoined = postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Contains("registered")).FirstOrDefault().InnerHtml;
             if (postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault() != null)
             {
-                this.AvatarTitle = WebUtility.HtmlDecode(this.RemoveNewLine(postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault().InnerText));
+                this.AvatarTitle = WebUtility.HtmlDecode(this.RemoveNewLine(postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Equals("title")).FirstOrDefault().InnerText.Trim()));
             }
             if (postNode.Descendants("dd").Where(node => node.GetAttributeValue("class", "").Contains("title")).FirstOrDefault().Descendants("img").FirstOrDefault() != null)
             {

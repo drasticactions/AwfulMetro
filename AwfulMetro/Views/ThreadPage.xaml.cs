@@ -87,7 +87,8 @@ namespace AwfulMetro.Views
             this.DefaultViewModel["Posts"] = threadPosts;
             if (forumThread.ScrollToPost > 0)
             {
-                //ThreadList.ScrollIntoView(threadPosts[forumThread.ScrollToPost - 1]);
+                ThreadListSnapped.ScrollIntoView(threadPosts[forumThread.ScrollToPost]);
+                ThreadListFullScreen.ScrollIntoView(threadPosts[forumThread.ScrollToPost]);
             }
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
@@ -233,11 +234,6 @@ namespace AwfulMetro.Views
             {
                 VisualStateManager.GoToState(this, "FullScreen", false);
             }
-
-            //else if (e.Size.Height > e.Size.Width)
-            //{
-            //   //VisualStateManager.GoToState(this, state.State, transitions);
-            //}
         }
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
