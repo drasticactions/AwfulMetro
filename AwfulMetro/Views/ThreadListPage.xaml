@@ -286,6 +286,7 @@
             </ComboBox>
             <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
+            <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
         </StackPanel>
         <Grid x:Name="ThreadViewFullScreen" Grid.Row="1">
             <Grid.ColumnDefinitions>

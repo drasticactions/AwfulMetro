@@ -239,5 +239,13 @@ namespace AwfulMetro.Views
             //   //VisualStateManager.GoToState(this, state.State, transitions);
             //}
         }
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+            this.DefaultViewModel["Posts"] = threadPosts;
+            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
     }
 }

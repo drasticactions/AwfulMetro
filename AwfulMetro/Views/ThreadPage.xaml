@@ -250,8 +250,8 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,120,40"/>
+            <TextBlock x:Name="pageTitle" FontSize="25" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,279,40" Height="61"/>
         </Grid>
         <Grid Canvas.ZIndex="99">
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
@@ -265,6 +265,7 @@
             <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
             <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
+            <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
         </StackPanel>
         <ListView Grid.Row="1" x:Name="ThreadListFullScreen" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
             <ListView.ItemTemplate>

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.ApplicationSettings;
@@ -79,15 +80,7 @@ namespace AwfulMetro.Views
             
             pageTitle.Text = forumCategory.Name;
             pageSnapTitle.Text = forumCategory.Name;
-            if(forumCategory.IsBookmarks)
-            {
-                BookmarkSettings.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                forumThreadList = await ThreadManager.GetBookmarks(forumCategory);
-            }
-            else
-            {
-                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
-            }
+            await this.GetForumThreads();
            
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumCategory.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
@@ -268,6 +261,30 @@ namespace AwfulMetro.Views
         {
             BookmarkSettingsFlyout up = new BookmarkSettingsFlyout();
             up.Show();
+        }
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            await this.GetForumThreads();
+        }
+
+        private async Task GetForumThreads()
+        {
+            if (forumCategory.IsBookmarks)
+            {
+                AddThreadButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                BookmarkSettings.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                forumThreadList = await ThreadManager.GetBookmarks(forumCategory);
+            }
+            else
+            {
+                // TODO: Add/Refactor function to support page specific loads.
+                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
+            }
+
+            this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
+            this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
+            this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
         }
     }
 }
