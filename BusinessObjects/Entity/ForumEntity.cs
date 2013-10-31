@@ -1,9 +1,5 @@
 ﻿using BusinessObjects.Tools;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObjects.Entity
 {
@@ -19,8 +15,8 @@ namespace BusinessObjects.Entity
         {
             this.Name = name;
             this.Location = Constants.BASE_URL + location;
-            string[] ForumId = location.Split('=');
-            if(ForumId.Length > 1)
+            string[] forumId = location.Split('=');
+            if(forumId.Length > 1)
             {
                 this.ForumId = Convert.ToInt64(location.Split('=')[1]);
             }
@@ -28,11 +24,11 @@ namespace BusinessObjects.Entity
             this.CurrentPage = 1;
             this.TotalPages = 1;
         }
-        public String Name { get; private set; }
+        public string Name { get; private set; }
 
-        public String Location { get; set; }
+        public string Location { get; set; }
 
-        public String Description { get; private set; }
+        public string Description { get; private set; }
 
         public int CurrentPage { get; set; }
 

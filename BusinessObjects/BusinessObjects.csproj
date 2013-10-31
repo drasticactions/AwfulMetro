@@ -127,6 +127,7 @@
     <Compile Include="Manager\ForumSearchManager.cs" />
     <Compile Include="Manager\ForumUserManager.cs" />
     <Compile Include="Manager\FrontPageManager.cs" />
+    <Compile Include="Manager\IAuthenticationManager.cs" />
     <Compile Include="Manager\RapSheetManager.cs" />
     <Compile Include="Manager\SmileManager.cs" />
     <Compile Include="Manager\TagManager.cs" />
@@ -136,7 +137,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Constants.cs" />
     <Compile Include="Tools\CookieSerializer.cs" />
-    <Compile Include="Tools\UserMetadata.cs" />
+    <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\WebViewHelper.cs" />
   </ItemGroup>
   <ItemGroup>

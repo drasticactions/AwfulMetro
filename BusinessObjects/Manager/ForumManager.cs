@@ -6,50 +6,39 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.Storage.Streams;
 
 namespace BusinessObjects.Manager
 {
     public class ForumManager
     {
-
         public static async Task<List<ForumCategoryEntity>> GetForumCategoryMainPage()
         {
-            List<ForumCategoryEntity> forumGroupList = new List<ForumCategoryEntity>();
-            List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
+            var forumGroupList = new List<ForumCategoryEntity>();
             HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.FORUM_LIST_PAGE);
             HtmlDocument doc = await WebManager.DownloadHtml(request);
-            //HtmlDocument descriptionDoc = await ForumManager.GetForumFrontPageHtml();
-            HtmlNode forumNode = doc.DocumentNode.Descendants("select")
-                .Where(node => node.GetAttributeValue("name", "").Equals("forumid"))
-                .FirstOrDefault();
+            HtmlNode forumNode = doc.DocumentNode.Descendants("select").FirstOrDefault(node => node.GetAttributeValue("name", string.Empty).Equals("forumid"));
             if (forumNode != null)
             {
-                var forumNodes = forumNode.Descendants("option").ToArray();
+                var forumNodes = forumNode.Descendants("option");
 
                 foreach (var node in forumNodes)
                 {
                     var value = node.Attributes["value"].Value;
-                    int id = -1;
+                    int id;
                     if (int.TryParse(value, out id) && id > -1)
                     {
                         if (node.NextSibling.InnerText.Contains("--"))
                         {
-                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", ""));
-                            forumName.Trim();
-                            ForumEntity forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value), "");
+                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
+                            var forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value), string.Empty);
                             forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
                         }
                         else
                         {
                             string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText);
-                            forumName.Trim();
-                            ForumCategoryEntity forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
+                            var forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
                             forumGroupList.Add(forumGroup);
                         }
                     }
@@ -60,21 +49,20 @@ namespace BusinessObjects.Manager
 
         public static async Task<List<ForumCategoryEntity>> GetForumCategory()
         {
-            List<ForumCategoryEntity> forumGroupList = new List<ForumCategoryEntity>();
-            List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
-            HtmlDocument doc = await ForumManager.GetForumFrontPageHtml();
-            HtmlNode forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("id", "").Contains("forums")).FirstOrDefault();
+            var forumGroupList = new List<ForumCategoryEntity>();
+            HtmlDocument doc = await GetForumFrontPageHtml();
+            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("forums"));
 
             foreach (HtmlNode link in forumNode.Descendants("tr"))
             {
                 if (link.Descendants("th").Any())
                 {
-                    ForumCategoryEntity forumGroup = new ForumCategoryEntity(WebUtility.HtmlDecode(link.Descendants("a").FirstOrDefault().InnerText), link.Descendants("a").FirstOrDefault().GetAttributeValue("href", ""));
+                    var forumGroup = new ForumCategoryEntity(WebUtility.HtmlDecode(link.Descendants("a").FirstOrDefault().InnerText), link.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty));
                     forumGroupList.Add(forumGroup);
                 }
                 else if (link.Descendants("td").Any())
                 {
-                    ForumEntity forumSubCategory = new ForumEntity(WebUtility.HtmlDecode(link.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("forum")).FirstOrDefault().InnerText), link.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("forum")).FirstOrDefault().GetAttributeValue("href", ""), link.Descendants("a").Where(node => node.GetAttributeValue("class", "").Equals("forum")).FirstOrDefault().GetAttributeValue("title", ""));
+                    var forumSubCategory = new ForumEntity(WebUtility.HtmlDecode(link.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("forum")).InnerText), link.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("forum")).GetAttributeValue("href", string.Empty), link.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("forum")).GetAttributeValue("title", string.Empty));
                     forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
                 }
             }
@@ -96,20 +84,20 @@ namespace BusinessObjects.Manager
             {
                 file = await ApplicationData.Current.LocalFolder.GetFileAsync(forumHtml);
                 string html = await FileIO.ReadTextAsync(file);
-                HtmlDocument document = new HtmlDocument();
+                var document = new HtmlDocument();
                 document.LoadHtml(html);
                 return document;
             }
-            else
+
+            file = await ApplicationData.Current.LocalFolder.CreateFileAsync(forumHtml, CreationCollisionOption.ReplaceExisting);
+            HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.BASE_URL);
+            doc = await WebManager.DownloadHtml(request);
+            using (var memoryStream = new MemoryStream())
             {
-                file = await ApplicationData.Current.LocalFolder.CreateFileAsync(forumHtml, CreationCollisionOption.ReplaceExisting);
-                HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.BASE_URL);
-                doc = await WebManager.DownloadHtml(request);
-                MemoryStream memoryStream = new MemoryStream();
                 doc.Save(memoryStream);
-                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
-                StreamReader streamReader = new StreamReader(memoryStream);
+                memoryStream.Seek(0, SeekOrigin.Begin);
                 await FileIO.WriteBytesAsync(file, memoryStream.ToArray());
+                    
             }
             return doc;
         }

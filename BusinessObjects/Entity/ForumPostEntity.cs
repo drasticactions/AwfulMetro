@@ -1,11 +1,10 @@
 ﻿using BusinessObjects.Tools;
 using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+
 namespace BusinessObjects.Entity
 {
     /// <summary>
@@ -15,17 +14,17 @@ namespace BusinessObjects.Entity
     {
 
         public ForumUserEntity User { get; private set; }
-        public String PostDate { get; private set; }
+        public string PostDate { get; private set; }
 
-        public String PostReportLink { get; private set; }
+        public string PostReportLink { get; private set; }
 
-        public String PostQuoteLink { get; private set; }
+        public string PostQuoteLink { get; private set; }
 
-        public String PostLink { get; private set; }
+        public string PostLink { get; private set; }
 
-        public String PostFormatted { get; private set; }
+        public string PostFormatted { get; private set; }
 
-        public String PostHTML { get; private set; }
+        public string PostHTML { get; private set; }
 
         public long PostId { get; private set; }
 
@@ -43,17 +42,15 @@ namespace BusinessObjects.Entity
         {
             this.User = new ForumUserEntity();
             this.User.ParseFromPost(postNode);
-            HtmlNode postDateNode = postNode.Descendants()
-                          .Where(node => node.GetAttributeValue("class", "").Equals("postdate"))
-                          .FirstOrDefault();
+            HtmlNode postDateNode = postNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("postdate"));
             string postDateString = postDateNode == null ? string.Empty : postDateNode.InnerText;
             if(postDateString != null)
             {
-                this.PostDate = this.RemoveNewLine(postDateString).Trim();
+                this.PostDate = postDateString.WithoutNewLines().Trim();
             }
             this.PostId = Int64.Parse(postNode.GetAttributeValue("id", "").Replace("post", "").Replace("#", ""));
-            this.PostFormatted = this.RemoveNewLine(WebUtility.HtmlDecode(postNode.Descendants("td").Where(node => node.GetAttributeValue("class", "").Equals("postbody")).FirstOrDefault().InnerHtml));
-            this.PostHTML = this.FixPostHtml(WebUtility.HtmlDecode(postNode.Descendants("td").Where(node => node.GetAttributeValue("class", "").Equals("postbody")).FirstOrDefault().InnerHtml));
+            this.PostFormatted = WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("postbody")).InnerHtml).WithoutNewLines();
+            this.PostHTML = FixPostHtml(WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("postbody")).InnerHtml));
         }
 
         /// <summary>
@@ -61,27 +58,9 @@ namespace BusinessObjects.Entity
         /// </summary>
         /// <param name="postHtml"></param>
         /// <returns></returns>
-        private String FixPostHtml(String postHtml)
+        private static string FixPostHtml(String postHtml)
         {
             return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body></head><body>" + postHtml + "</body></html>";
-        }
-
-        private String RemoveNewLine(String text)
-        {
-
-            var sb = new StringBuilder(text.Length);
-            foreach (char i in text)
-            {
-                if (i != '\n' && i != '\r' && i != '\t' && i != '#' && i != '?')
-                {
-                    sb.Append(i);
-                }
-                else if (i == '\n')
-                {
-                    sb.Append(' ');
-                }
-            }
-            return sb.ToString();
         }
     }
 }

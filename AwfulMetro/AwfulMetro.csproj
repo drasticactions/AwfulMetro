@@ -105,6 +105,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\AsyncDelegateCommand.cs" />
+    <Compile Include="Common\NotifierBase.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="Views\FrontPage.xaml.cs">
       <DependentUpon>FrontPage.xaml</DependentUpon>
     </Compile>

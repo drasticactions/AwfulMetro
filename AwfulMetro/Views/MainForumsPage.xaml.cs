@@ -5,18 +5,10 @@ using BusinessObjects.Manager;
 using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
@@ -28,31 +20,23 @@ namespace AwfulMetro
     /// </summary>
     public sealed partial class MainForumsPage : Page
     {
-        private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
         /// process lifetime management
         /// </summary>
-        public NavigationHelper NavigationHelper
-        {
-            get { return this.navigationHelper; }
-        }
+        public NavigationHelper NavigationHelper { get; private set; }
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
+        public ObservableDictionary DefaultViewModel { get; private set; }
 
         public MainForumsPage()
         {
+            DefaultViewModel = new ObservableDictionary();
             this.InitializeComponent();
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += navigationHelper_LoadState;
+            this.NavigationHelper = new NavigationHelper(this);
+            this.NavigationHelper.LoadState += navigationHelper_LoadState;
         }
 
         /// <summary>
@@ -118,7 +102,7 @@ namespace AwfulMetro
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            navigationHelper.OnNavigatedTo(e);
+            this.NavigationHelper.OnNavigatedTo(e);
 
             var bounds = Window.Current.Bounds;
             if (bounds.Width <= 620)
@@ -136,7 +120,7 @@ namespace AwfulMetro
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            navigationHelper.OnNavigatedFrom(e);
+            this.NavigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion

@@ -4,8 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObjects.Tools
 {
@@ -13,25 +11,19 @@ namespace BusinessObjects.Tools
     {
         public static void Serialize(CookieCollection cookies, Uri address, Stream stream)
         {
-            DataContractSerializer formatter = new DataContractSerializer(typeof(List<Cookie>));
-            List<Cookie> cookieList = new List<Cookie>();
-            for (var enumerator = cookies.GetEnumerator(); enumerator.MoveNext(); )
-            {
-                var cookie = enumerator.Current as Cookie;
-                if (cookie == null) continue;
-                cookieList.Add(cookie);
+            var formatter = new DataContractSerializer(typeof(List<Cookie>));
+            List<Cookie> cookieList = cookies.OfType<Cookie>().ToList();
 
-            }
             formatter.WriteObject(stream, cookieList);
         }
 
         public static CookieContainer Deserialize(Stream stream, Uri uri)
         {
-            List<Cookie> cookies = new List<Cookie>();
-            CookieContainer container = new CookieContainer();
-            DataContractSerializer formatter = new DataContractSerializer(typeof(List<Cookie>));
+            var cookies = new List<Cookie>();
+            var container = new CookieContainer();
+            var formatter = new DataContractSerializer(typeof(List<Cookie>));
             cookies = (List<Cookie>)formatter.ReadObject(stream);
-            CookieCollection cookieco = new CookieCollection();
+            var cookieco = new CookieCollection();
 
             foreach (Cookie cookie in cookies)
             {

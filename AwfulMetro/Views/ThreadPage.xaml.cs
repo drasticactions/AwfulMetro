@@ -196,14 +196,14 @@ namespace AwfulMetro.Views
         {
             var button = e.OriginalSource as Button;
             var forumPost = (ForumPostEntity)button.DataContext;
-            this.Frame.Navigate(typeof(RapSheetView), forumPost.User.id);
+            this.Frame.Navigate(typeof(RapSheetView), forumPost.User.Id);
         }
 
         private void PostHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
             var forumPost = (ForumPostEntity)button.DataContext;
-            this.Frame.Navigate(typeof(UserPostHistoryPage), forumPost.User.id);
+            this.Frame.Navigate(typeof(UserPostHistoryPage), forumPost.User.Id);
         }
 
         private void QuoteButton_Click(object sender, RoutedEventArgs e)
