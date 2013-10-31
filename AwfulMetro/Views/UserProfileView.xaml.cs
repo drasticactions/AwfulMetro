@@ -3,18 +3,7 @@ using BusinessObjects.Entity;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Hub Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=286574
@@ -28,6 +17,10 @@ namespace AwfulMetro.Views
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+
+        private readonly ForumUserManager forumUserManager = new ForumUserManager();
+        private readonly RapSheetManager rapSheetManager = new RapSheetManager();
+        private readonly ForumSearchManager forumSearchManager = new ForumSearchManager();
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -79,9 +72,9 @@ namespace AwfulMetro.Views
             {
                 userId = user.Id;
             }
-            this.DefaultViewModel["UserEntity"] = await ForumUserManager.GetUserFromProfilePage(user, userId);
-            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
-            this.DefaultViewModel["UserSearch"] = await ForumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+            this.DefaultViewModel["UserEntity"] = await forumUserManager.GetUserFromProfilePage(user, userId);
+            this.DefaultViewModel["RapSheet"] = await rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+            this.DefaultViewModel["UserSearch"] = await forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         #region NavigationHelper registration

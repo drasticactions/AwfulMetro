@@ -3,20 +3,24 @@ using BusinessObjects.Tools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
 {
     public class ThreadManager
     {
+        
+        private readonly IWebManager webManager;
+        public ThreadManager(IWebManager webManager)
+        {
+            this.webManager = webManager;
+        }
 
-        public static async Task<ForumCollectionEntity> GetBookmarks(ForumEntity forumCategory)
+        public ThreadManager() : this(new WebManager()) { }
+
+        public async Task<ForumCollectionEntity> GetBookmarks(ForumEntity forumCategory)
         {
             List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
             List<ForumThreadEntity> forumThreadList = new List<ForumThreadEntity>();
@@ -26,9 +30,8 @@ namespace BusinessObjects.Manager
                 url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER, forumCategory.CurrentPage);
             }
 
-            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
-            HtmlNode forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("class", "").Contains("threadlist")).FirstOrDefault();
+            HtmlDocument doc = (await webManager.DownloadHtml(url)).Document;
+            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("threadlist"));
 
             foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
             {
@@ -39,7 +42,7 @@ namespace BusinessObjects.Manager
             return new ForumCollectionEntity(WebUtility.HtmlDecode(forumNode.InnerText), forumThreadList, forumSubcategoryList);
         }
 
-        public static async Task<ForumCollectionEntity> GetForumThreadsAndSubforums(ForumEntity forumCategory)
+        public async Task<ForumCollectionEntity> GetForumThreadsAndSubforums(ForumEntity forumCategory)
         {
             List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
             List<ForumThreadEntity> forumThreadList = new List<ForumThreadEntity>();
@@ -49,13 +52,12 @@ namespace BusinessObjects.Manager
                 url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER,forumCategory.CurrentPage);
             }
 
-            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            HtmlDocument doc = (await webManager.DownloadHtml(url)).Document;
             HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
 
             forumCategory.TotalPages = Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", ""));
 
-            HtmlNode forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("class", "").Contains("threadlist")).FirstOrDefault();
+            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("threadlist"));
 
             foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
             {
@@ -64,9 +66,9 @@ namespace BusinessObjects.Manager
                 forumThreadList.Add(threadEntity);
             }
 
-            if (doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("id", "").Contains("subforums")).Any())
+            if (doc.DocumentNode.Descendants().Any(node => node.GetAttributeValue("id", "").Contains("subforums")))
             {
-                forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("id", "").Contains("subforums")).FirstOrDefault();
+                forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", "").Contains("subforums"));
                 foreach (HtmlNode subforumNode in forumNode.Descendants("tr"))
                 {
                     if (subforumNode.Descendants("a").Any())
@@ -76,7 +78,7 @@ namespace BusinessObjects.Manager
                     }
                 }
             }
-            forumNode = doc.DocumentNode.Descendants().Where(node => node.GetAttributeValue("class", "").Contains("bclast")).FirstOrDefault();
+            forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("bclast"));
             return new ForumCollectionEntity(WebUtility.HtmlDecode(forumNode.InnerText), forumThreadList, forumSubcategoryList);
         }
 

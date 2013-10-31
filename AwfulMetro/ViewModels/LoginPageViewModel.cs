@@ -64,7 +64,7 @@ namespace AwfulMetro.ViewModels
             this.authManager = authManager;
         }
 
-        public LoginPageViewModel() : this(new AuthManager())
+        public LoginPageViewModel() : this(new AuthenticationManager())
         {
             
         }

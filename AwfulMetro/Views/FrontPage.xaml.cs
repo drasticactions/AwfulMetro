@@ -70,15 +70,16 @@ namespace AwfulMetro.Views
         /// session. The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            HtmlDocument doc = await FrontPageManager.GetFrontPage();
-            this.DefaultViewModel["PopularThreads"] = FrontPageManager.GetPopularThreads(doc);
-            this.DefaultViewModel["PopularTrends"] = FrontPageManager.GetPopularTrends(doc);
-            List<FrontPageArticleEntity> frontPageArticles = FrontPageManager.GetFrontPageArticles(doc);
+            var frontPageManager = new FrontPageManager();
+            HtmlDocument doc = await frontPageManager.GetFrontPage();
+            this.DefaultViewModel["PopularThreads"] = frontPageManager.GetPopularThreads(doc);
+            this.DefaultViewModel["PopularTrends"] = frontPageManager.GetPopularTrends(doc);
+            List<FrontPageArticleEntity> frontPageArticles = frontPageManager.GetFrontPageArticles(doc);
             FrontPageArticleEntity mainArticle = frontPageArticles.FirstOrDefault();
             this.DefaultViewModel["MainArticle"] = mainArticle;
             frontPageArticles.Remove(mainArticle);
             this.DefaultViewModel["FrontPageArticles"] = frontPageArticles;
-            this.DefaultViewModel["FrontPageFeatures"] = FrontPageManager.GetFeatures(doc);
+            this.DefaultViewModel["FrontPageFeatures"] = frontPageManager.GetFeatures(doc);
         }
 
         /// <summary>

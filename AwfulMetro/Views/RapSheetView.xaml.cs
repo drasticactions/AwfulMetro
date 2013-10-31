@@ -1,20 +1,9 @@
 ﻿using AwfulMetro.Common;
-using BusinessObjects.Entity;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -30,6 +19,8 @@ namespace AwfulMetro.Views
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private int currentPage = 1;
+
+        private readonly RapSheetManager rapSheetManager = new RapSheetManager();
         /// <summary>
         /// This can be changed to a strongly typed view model.
         /// </summary>
@@ -74,11 +65,11 @@ namespace AwfulMetro.Views
             if(e.NavigationParameter != null)
             {
                 long userId = (long)e.NavigationParameter;
-                this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+                this.DefaultViewModel["RapSheet"] = await rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
             }
             else
             {
-                this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
+                this.DefaultViewModel["RapSheet"] = await rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
             }      
         }
 
@@ -121,14 +112,14 @@ namespace AwfulMetro.Views
         {
             currentPage--;
             BackButton.IsEnabled = currentPage >= 2 ? true : false;
-            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
+            this.DefaultViewModel["RapSheet"] = await rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
             currentPage++;
             BackButton.IsEnabled = currentPage >= 2 ? true : false;
-            this.DefaultViewModel["RapSheet"] = await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
+            this.DefaultViewModel["RapSheet"] = await rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET + string.Format(Constants.PAGE_NUMBER, currentPage));
         }
     }
 }

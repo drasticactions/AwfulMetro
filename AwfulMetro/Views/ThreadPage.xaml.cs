@@ -4,17 +4,9 @@ using BusinessObjects.Manager;
 using BusinessObjects.Tools;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -31,6 +23,8 @@ namespace AwfulMetro.Views
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private ForumThreadEntity forumThread;
 
+        //TODO: inject this
+        private readonly PostManager postManager = new PostManager();
         /// <summary>
         /// This can be changed to a strongly typed view model.
         /// </summary>
@@ -78,11 +72,11 @@ namespace AwfulMetro.Views
             {
                 forumThread.Location = forumThread.Location + Constants.GOTO_NEW_POST;
             }
-            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+            List<ForumPostEntity> threadPosts = await postManager.GetThreadPosts(forumThread);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = forumThread.CurrentPage;
-            BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
+            BackButton.IsEnabled = this.forumThread.CurrentPage > 1;
+            ForwardButton.IsEnabled = this.forumThread.TotalPages != this.forumThread.CurrentPage;
             ReplyButton.IsEnabled = !forumThread.IsLocked;
             this.DefaultViewModel["Posts"] = threadPosts;
             if (forumThread.ScrollToPost > 0)
@@ -149,7 +143,7 @@ namespace AwfulMetro.Views
                 forumThread.CurrentPage--;
                 BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
                 ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+                List<ForumPostEntity> threadPosts = await postManager.GetThreadPosts(forumThread);
                 this.DefaultViewModel["Posts"] = threadPosts;
                 loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
@@ -161,7 +155,7 @@ namespace AwfulMetro.Views
             forumThread.CurrentPage++;
             BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+            List<ForumPostEntity> threadPosts = await postManager.GetThreadPosts(forumThread);
             this.DefaultViewModel["Posts"] = threadPosts;
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
@@ -174,7 +168,7 @@ namespace AwfulMetro.Views
                 forumThread.CurrentPage = (int)CurrentPageSelector.SelectedValue;
                 BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
                 ForwardButton.IsEnabled = forumThread.CurrentPage != forumThread.TotalPages ? true : false;
-                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+                List<ForumPostEntity> threadPosts = await postManager.GetThreadPosts(forumThread);
                 this.DefaultViewModel["Posts"] = threadPosts;
                 loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }

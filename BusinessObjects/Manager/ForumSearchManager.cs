@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using BusinessObjects.Entity;
 using BusinessObjects.Tools;
@@ -17,25 +12,35 @@ namespace BusinessObjects.Manager
 {
     public class ForumSearchManager
     {
-        public static async Task<List<ForumSearchEntity>> GetSearchResults(String url)
+        private readonly IWebManager webManager;
+        public ForumSearchManager(IWebManager webManager)
         {
-            List<ForumSearchEntity> searchResults = new List<ForumSearchEntity>();
-            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
-            HtmlNode searchNode = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Contains("inner")).FirstOrDefault();
+            this.webManager = webManager;
+        }
+
+        public ForumSearchManager() : this(new WebManager()) { }
+
+        public async Task<List<ForumSearchEntity>> GetSearchResults(String url)
+        {
+            var searchResults = new List<ForumSearchEntity>();
+
+            //inject this
+            var doc = (await webManager.DownloadHtml(url)).Document;
+
+            HtmlNode searchNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("inner"));
             url = Constants.BASE_URL + "search.php" + searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", "");
-            request = await AuthManager.CreateGetRequest(url);
-            doc = await WebManager.DownloadHtml(request);
+
+            doc = (await webManager.DownloadHtml(url)).Document;
             //Test persisting Html from search page.
             //HtmlDocument doc = new HtmlDocument();
             //string html = await LoadSearchPage("search.txt");
             //doc.LoadHtml(html);
-            searchResults = ForumSearchManager.ParseSearchRows(doc.DocumentNode.Descendants("table").Where(node => node.GetAttributeValue("id", "").Contains("main_full")).FirstOrDefault());
+            searchResults = ParseSearchRows(doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("id", "").Contains("main_full")));
             //ForumSearchManager.SaveSearchPage("search.txt", doc.DocumentNode.OuterHtml.ToString());
             return searchResults;
         }
 
-        private static List<ForumSearchEntity> ParseSearchRows(HtmlNode searchNode)
+        private List<ForumSearchEntity> ParseSearchRows(HtmlNode searchNode)
         {
             List<ForumSearchEntity> searchRowEntityList = new List<ForumSearchEntity>();
             var searchRowNodes = searchNode.Descendants("tr");
@@ -50,7 +55,7 @@ namespace BusinessObjects.Manager
             return searchRowEntityList;
         }
 
-        private static async void SaveSearchPage(string filename, string text)
+        private async void SaveSearchPage(string filename, string text)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             StorageFile sampleFile = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
@@ -65,16 +70,14 @@ namespace BusinessObjects.Manager
             } 
         }
 
-        public static async Task<string> LoadSearchPage(string filename)
+        public async Task<string> LoadSearchPage(string filename)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile;
-            string test;
             try
             {
-                sampleFile = await localFolder.GetFileAsync(filename);
-                var stream = await sampleFile.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
-                var size = stream.Size;
+                StorageFile sampleFile = await localFolder.GetFileAsync(filename);
+                var stream = await sampleFile.OpenAsync(FileAccessMode.ReadWrite);
+                string test;
                 using (var inputStream = stream.GetInputStreamAt(0))
                 {
                     test = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);

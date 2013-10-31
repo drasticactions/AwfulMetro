@@ -20,6 +20,8 @@ namespace AwfulMetro
     /// </summary>
     public sealed partial class MainForumsPage : Page
     {
+        private readonly ForumManager forumManager = new ForumManager();
+
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
         /// process lifetime management
@@ -53,7 +55,8 @@ namespace AwfulMetro
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategoryMainPage();
+            //inject forum manager
+            List<ForumCategoryEntity> forumGroupList = await forumManager.GetForumCategoryMainPage();
             this.DefaultViewModel["Groups"] = forumGroupList;
             this.DefaultViewModel["ForumCategory"] = forumGroupList;
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;

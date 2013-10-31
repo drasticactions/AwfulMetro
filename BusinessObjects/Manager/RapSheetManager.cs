@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using BusinessObjects.Entity;
-using BusinessObjects.Tools;
 using HtmlAgilityPack;
 
 
@@ -16,12 +9,21 @@ namespace BusinessObjects.Manager
 {
     public class RapSheetManager
     {
-        public static async Task<List<ForumUserRapSheetEntity>> GetRapSheet(string url)
+        private readonly IWebManager webManager;
+        public RapSheetManager(IWebManager webManager)
+        {
+            this.webManager = webManager;
+        }
+
+        public RapSheetManager() : this(new WebManager()) { }
+
+        public async Task<List<ForumUserRapSheetEntity>> GetRapSheet(string url)
         {
             List<ForumUserRapSheetEntity> rapSheet = new List<ForumUserRapSheetEntity>();
-            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
-            HtmlNode rapSheetNode = doc.DocumentNode.Descendants("table").Where(node => node.GetAttributeValue("class", "").Contains("standard full")).FirstOrDefault();
+            //inject this
+            var doc = (await webManager.DownloadHtml(url)).Document;
+            
+            HtmlNode rapSheetNode = doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("standard full"));
             rapSheetNode.Descendants("tr").FirstOrDefault().Remove();
             if (rapSheetNode.Descendants("tr").Any())
             {

@@ -3,10 +3,7 @@ using BusinessObjects.Tools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -14,9 +11,17 @@ namespace BusinessObjects.Manager
 {
     public class PostManager
     {
-        public static async Task<List<ForumPostEntity>> GetThreadPosts(ForumThreadEntity forumThread)
+        private readonly IWebManager webManager;
+        public PostManager(IWebManager webManager)
         {
-            String url = forumThread.Location;
+            this.webManager = webManager;
+        }
+
+        public PostManager() : this(new WebManager()) { }
+
+        public async Task<List<ForumPostEntity>> GetThreadPosts(ForumThreadEntity forumThread)
+        {
+            string url = forumThread.Location;
 
             if (forumThread.CurrentPage > 0)
             {
@@ -24,35 +29,31 @@ namespace BusinessObjects.Manager
             }
 
             List<ForumPostEntity> forumThreadPosts = new List<ForumPostEntity>();
-            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
-
+            
             //TEMP CODE
-            HtmlDocument doc;
-            var response = await request.GetResponseAsync();
-            var stream = response.GetResponseStream();
-            using (var reader = new StreamReader(stream))
-            {
-                string html = reader.ReadToEnd();
-                doc = new HtmlDocument();
-                doc.LoadHtml(html);
-            }
-            string[] test = response.ResponseUri.AbsoluteUri.Split('#');
+            //Inject
+            
+            var result = await webManager.DownloadHtml(url);
+            HtmlDocument doc = result.Document;
+            string responseUri = result.AbsoluteUri;
+            
+            string[] test = responseUri.Split('#');
             if (test.Length > 1 && test.Contains("pti"))
             {
-              forumThread.ScrollToPost = Int32.Parse(Regex.Match(response.ResponseUri.AbsoluteUri.Split('#')[1], @"\d+").Value);
+                forumThread.ScrollToPost = int.Parse(Regex.Match(responseUri.Split('#')[1], @"\d+").Value);
             }
             //HtmlDocument doc = await WebManager.DownloadHtml(request);
-            HtmlNode threadNode = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("id", "").Contains("thread")).FirstOrDefault();
+            HtmlNode threadNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("id", "").Contains("thread"));
 
             foreach (HtmlNode postNode in threadNode.Descendants("table").Where(node => node.GetAttributeValue("class", "").Contains("post")))
             {
-                ForumPostEntity post = new ForumPostEntity();
+                var post = new ForumPostEntity();
                 post.Parse(postNode);
                 forumThreadPosts.Add(post);
             }
 
-            threadNode = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Contains("pages top")).FirstOrDefault();
-            threadNode = threadNode.Descendants("option").Where(node => node.GetAttributeValue("selected", "").Contains("selected")).FirstOrDefault();
+            threadNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("pages top"));
+            threadNode = threadNode.Descendants("option").FirstOrDefault(node => node.GetAttributeValue("selected", "").Contains("selected"));
 
             if (forumThread.CurrentPage <= 0)
             {
@@ -69,13 +70,9 @@ namespace BusinessObjects.Manager
         {
             if (threadNode != null && !string.IsNullOrEmpty(threadNode.GetAttributeValue("value", "")))
             {
-
                 return Convert.ToInt32(threadNode.GetAttributeValue("value", ""));
             }
-            else
-            {
-                return 1;
-            }
+            return 1;
         }
     }
 }

@@ -2,18 +2,9 @@
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -29,6 +20,7 @@ namespace AwfulMetro.Views
         private NavigationHelper navigationHelper;
         ForumCollectionEntity forumThreadList;
         ForumEntity forumCategory;
+        private readonly ThreadManager threadManager = new ThreadManager();
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
         /// <summary>
@@ -80,11 +72,11 @@ namespace AwfulMetro.Views
             pageSnapTitle.Text = forumCategory.Name;
             if(forumCategory.IsBookmarks)
             {
-                forumThreadList = await ThreadManager.GetBookmarks(forumCategory);
+                forumThreadList = await threadManager.GetBookmarks(forumCategory);
             }
             else
             {
-                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
+                forumThreadList = await threadManager.GetForumThreadsAndSubforums(forumCategory);
             }
            
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumCategory.TotalPages).ToArray();
@@ -164,7 +156,7 @@ namespace AwfulMetro.Views
                 loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 forumCategory.CurrentPage--;
                 CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
-                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
+                forumThreadList = await threadManager.GetForumThreadsAndSubforums(forumCategory);
                 this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
                 this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
                 this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
@@ -178,9 +170,9 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             forumCategory.CurrentPage++;
             CurrentPageSelector.SelectedValue = forumCategory.CurrentPage;
-            BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = forumCategory.CurrentPage != forumCategory.TotalPages ? true : false;
-            forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
+            BackButton.IsEnabled = this.forumCategory.CurrentPage > 1;
+            ForwardButton.IsEnabled = this.forumCategory.CurrentPage != this.forumCategory.TotalPages;
+            forumThreadList = await threadManager.GetForumThreadsAndSubforums(forumCategory);
             this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
             this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
             this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;
@@ -193,9 +185,9 @@ namespace AwfulMetro.Views
             {
                 loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 forumCategory.CurrentPage = (int)CurrentPageSelector.SelectedValue;
-                BackButton.IsEnabled = forumCategory.CurrentPage > 1 ? true : false;
-                ForwardButton.IsEnabled = forumCategory.CurrentPage != forumCategory.TotalPages ? true : false;
-                forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(forumCategory);
+                BackButton.IsEnabled = this.forumCategory.CurrentPage > 1;
+                ForwardButton.IsEnabled = this.forumCategory.CurrentPage != this.forumCategory.TotalPages;
+                forumThreadList = await threadManager.GetForumThreadsAndSubforums(forumCategory);
                 this.DefaultViewModel["Groups"] = forumThreadList.ForumType;
                 this.DefaultViewModel["Threads"] = forumThreadList.ForumThreadList;
                 this.DefaultViewModel["Subforums"] = forumThreadList.ForumSubcategoryList;

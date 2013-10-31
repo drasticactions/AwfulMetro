@@ -2,18 +2,7 @@
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
@@ -28,7 +17,7 @@ namespace AwfulMetro.Views
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-
+        private readonly ForumSearchManager forumSearchManager = new ForumSearchManager();
         /// <summary>
         /// This can be changed to a strongly typed view model.
         /// </summary>
@@ -69,7 +58,7 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             long userId = (long)e.NavigationParameter;
-            this.DefaultViewModel["UserHistory"] = await ForumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+            this.DefaultViewModel["UserHistory"] = await forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         /// <summary>

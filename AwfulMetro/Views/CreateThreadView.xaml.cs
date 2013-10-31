@@ -3,17 +3,9 @@ using BusinessObjects.Entity;
 using BusinessObjects.Manager;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -30,10 +22,13 @@ namespace AwfulMetro.Views
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private List<SmileCategoryEntity> smileCategoryList = new List<SmileCategoryEntity>();
-        private List<BBCodeCategoryEntity> bbCodeList = new List<BBCodeCategoryEntity>();
+        private IEnumerable<BBCodeCategoryEntity> bbCodeList = new List<BBCodeCategoryEntity>();
         private List<TagCategoryEntity> tagList = new List<TagCategoryEntity>();
         private ForumEntity forum;
         private TagEntity SelectedTag;
+        private readonly TagManager tagManager = new TagManager();
+
+        private readonly SmileManager smileManager = new SmileManager();
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -127,7 +122,7 @@ namespace AwfulMetro.Views
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             if(!smileCategoryList.Any())
             {
-                smileCategoryList = await SmileManager.GetSmileList();
+                smileCategoryList = await smileManager.GetSmileList();
             }
             this.DefaultViewModel["Groups"] = smileCategoryList;
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
@@ -138,7 +133,7 @@ namespace AwfulMetro.Views
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             if(!bbCodeList.Any())
             {
-                bbCodeList = BBCodeManager.GetBBCodes();
+                bbCodeList = BBCodeManager.BBCodes;
             }
             this.DefaultViewModel["Groups"] = bbCodeList;
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
@@ -149,7 +144,7 @@ namespace AwfulMetro.Views
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
             if(!tagList.Any())
             {
-                tagList = await TagManager.GetTagList(forum.ForumId);
+                tagList = await tagManager.GetTagList(forum.ForumId);
             }
             this.DefaultViewModel["Groups"] = tagList;
             this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
