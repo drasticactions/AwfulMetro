@@ -90,7 +90,7 @@ namespace AwfulMetro
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                CookieContainer cookieTest = await AuthManager.Loadcookie(Constants.COOKIE_FILE);
+                CookieContainer cookieTest = await AuthManager.LoadCookie(Constants.COOKIE_FILE);
                 if(cookieTest.Count <= 0)
                 {
                     if (!rootFrame.Navigate(typeof(LoginPage)))
