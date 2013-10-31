@@ -105,11 +105,6 @@ namespace AwfulMetro
                 }
                 else
                 {
-                    BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
-                   // var task = BackgroundTaskUtils.RegisterBackgroundTask(BackgroundTaskUtils.BackgroundTaskEntryPoint,
-                     //                                                                 BackgroundTaskUtils.BackgroundTaskName,
-                       //                                                                 new TimeTrigger(15, false),
-                         //                                                             null);
                     if (!rootFrame.Navigate(typeof(MainForumsPage)))
                     {
                         throw new Exception("Failed to create initial page");

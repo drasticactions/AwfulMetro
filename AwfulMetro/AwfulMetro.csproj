@@ -105,6 +105,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BookmarkSettingsFlyout.xaml.cs">
+      <DependentUpon>BookmarkSettingsFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FrontPage.xaml.cs">
       <DependentUpon>FrontPage.xaml</DependentUpon>
     </Compile>
@@ -148,6 +151,10 @@
     </AppxManifest>
     <Content Include="Assets\BadgeLogo.scale-180.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
+    <Page Include="Views\BookmarkSettingsFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CreateThreadView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

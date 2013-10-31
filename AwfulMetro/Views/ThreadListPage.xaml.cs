@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -80,6 +81,7 @@ namespace AwfulMetro.Views
             pageSnapTitle.Text = forumCategory.Name;
             if(forumCategory.IsBookmarks)
             {
+                BookmarkSettings.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 forumThreadList = await ThreadManager.GetBookmarks(forumCategory);
             }
             else
@@ -126,6 +128,7 @@ namespace AwfulMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+            SettingsPane.GetForCurrentView().CommandsRequested += onCommandsRequested;
             var bounds = Window.Current.Bounds;
             if (bounds.Height > bounds.Width)
             {
@@ -146,10 +149,30 @@ namespace AwfulMetro.Views
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested -= onCommandsRequested;
             navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
+
+        /// <summary>
+        /// Handler for the CommandsRequested event. Add custom SettingsCommands here.
+        /// </summary>
+        /// <param name="e">Event data that includes a vector of commands (ApplicationCommands)</param>
+        void onCommandsRequested(SettingsPane settingsPane, SettingsPaneCommandsRequestedEventArgs e)
+        {
+            if (forumCategory.IsBookmarks)
+            {
+                SettingsCommand bookmarksCommand = new SettingsCommand("bookmarkSettings", "Bookmarks",
+                    (handler) =>
+                    {
+                        BookmarkSettingsFlyout up = new BookmarkSettingsFlyout();
+                        up.Show();
+                    });
+                e.Request.ApplicationCommands.Add(bookmarksCommand);
+            }
+
+        }
 
         private void ForumThreadList_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -239,6 +262,12 @@ namespace AwfulMetro.Views
             {
                 VisualStateManager.GoToState(this, "FullScreen", false);
             }
+        }
+
+        private void BookmarkSettings_Click(object sender, RoutedEventArgs e)
+        {
+            BookmarkSettingsFlyout up = new BookmarkSettingsFlyout();
+            up.Show();
         }
     }
 }

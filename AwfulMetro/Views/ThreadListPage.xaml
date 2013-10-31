@@ -188,6 +188,7 @@
         <CommandBar>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="AddThreadButton" Click="AddThreadButton_Click" Icon="Add" Label="New Thread"/>
+                <AppBarButton x:Name="BookmarkSettings" Visibility="Collapsed" Click="BookmarkSettings_Click" Icon="Setting" Label="Bookmark Settings"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>

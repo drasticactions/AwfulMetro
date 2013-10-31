@@ -8,6 +8,8 @@ namespace BusinessObjects.Tools
 {
     public class Constants
     {
+        public const string BOOKMARK_BACKGROUND = "BookmarkBackground";
+
         public const string BASE_URL = "http://forums.somethingawful.com/";
 
         public const string COOKIE_FILE = "SACookie2.txt";
