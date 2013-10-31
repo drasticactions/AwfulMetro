@@ -1,217 +1,194 @@
-﻿using AwfulMetro.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Windows.Foundation;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+using AwfulMetro.Common;
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
 namespace AwfulMetro.Views
 {
     /// <summary>
-    /// A basic page that provides characteristics common to most applications.
+    ///     A basic page that provides characteristics common to most applications.
     /// </summary>
     public sealed partial class ThreadPage : Page
     {
-
-        private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private ForumThreadEntity forumThread;
-        List<ForumPostEntity> threadPosts;
-        /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
-
-        /// <summary>
-        /// NavigationHelper is used on each page to aid in navigation and 
-        /// process lifetime management
-        /// </summary>
-        public NavigationHelper NavigationHelper
-        {
-            get { return this.navigationHelper; }
-        }
-
+        private readonly NavigationHelper _navigationHelper;
+        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private ForumThreadEntity _forumThread;
+        private List<ForumPostEntity> _threadPosts;
 
         public ThreadPage()
         {
-            this.InitializeComponent();
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += navigationHelper_LoadState;
-            this.navigationHelper.SaveState += navigationHelper_SaveState;
+            InitializeComponent();
+            _navigationHelper = new NavigationHelper(this);
+            _navigationHelper.LoadState += navigationHelper_LoadState;
+            _navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
         /// <summary>
-        /// Populates the page with content passed during navigation. Any saved state is also
-        /// provided when recreating a page from a prior session.
+        ///     This can be changed to a strongly typed view model.
+        /// </summary>
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return _defaultViewModel; }
+        }
+
+        /// <summary>
+        ///     NavigationHelper is used on each page to aid in navigation and
+        ///     process lifetime management
+        /// </summary>
+        public NavigationHelper NavigationHelper
+        {
+            get { return _navigationHelper; }
+        }
+
+
+        /// <summary>
+        ///     Populates the page with content passed during navigation. Any saved state is also
+        ///     provided when recreating a page from a prior session.
         /// </summary>
         /// <param name="sender">
-        /// The source of the event; typically <see cref="NavigationHelper"/>
+        ///     The source of the event; typically <see cref="NavigationHelper" />
         /// </param>
-        /// <param name="e">Event data that provides both the navigation parameter passed to
-        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
-        /// a dictionary of state preserved by this page during an earlier
-        /// session. The state will be null the first time a page is visited.</param>
+        /// <param name="e">
+        ///     Event data that provides both the navigation parameter passed to
+        ///     <see cref="Frame.Navigate(Type, Object)" /> when this page was initially requested and
+        ///     a dictionary of state preserved by this page during an earlier
+        ///     session. The state will be null the first time a page is visited.
+        /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            forumThread = (ForumThreadEntity)e.NavigationParameter;
-            pageTitle.Text = forumThread.Name;
+            loadingProgressBar.Visibility = Visibility.Visible;
+            _forumThread = (ForumThreadEntity) e.NavigationParameter;
+            pageTitle.Text = _forumThread.Name;
             String urlLocation = string.Empty;
-            if(forumThread.HasBeenViewed)
+            if (_forumThread.HasBeenViewed)
             {
-                forumThread.Location = forumThread.Location + Constants.GOTO_NEW_POST;
+                _forumThread.Location = _forumThread.Location + Constants.GOTO_NEW_POST;
             }
-            threadPosts = await PostManager.GetThreadPosts(forumThread);
-            CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumThread.TotalPages).ToArray();
-            CurrentPageSelector.SelectedValue = forumThread.CurrentPage;
-            BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-            ReplyButton.IsEnabled = !forumThread.IsLocked;
-            this.DefaultViewModel["Posts"] = threadPosts;
-            if (forumThread.ScrollToPost > 0)
+            _threadPosts = await PostManager.GetThreadPosts(_forumThread);
+            CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
+            CurrentPageSelector.SelectedValue = _forumThread.CurrentPage;
+            BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
+            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
+            ReplyButton.IsEnabled = !_forumThread.IsLocked;
+            DefaultViewModel["Posts"] = _threadPosts;
+            if (_forumThread.ScrollToPost > 0)
             {
-                ThreadListSnapped.ScrollIntoView(threadPosts[forumThread.ScrollToPost]);
-                ThreadListFullScreen.ScrollIntoView(threadPosts[forumThread.ScrollToPost]);
+                ThreadListSnapped.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
+                ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
             }
-            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
 
-
         /// <summary>
-        /// Preserves state associated with this page in case the application is suspended or the
-        /// page is discarded from the navigation cache.  Values must conform to the serialization
-        /// requirements of <see cref="SuspensionManager.SessionState"/>.
+        ///     Preserves state associated with this page in case the application is suspended or the
+        ///     page is discarded from the navigation cache.  Values must conform to the serialization
+        ///     requirements of <see cref="SuspensionManager.SessionState" />.
         /// </summary>
-        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
-        /// <param name="e">Event data that provides an empty dictionary to be populated with
-        /// serializable state.</param>
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper" /></param>
+        /// <param name="e">
+        ///     Event data that provides an empty dictionary to be populated with
+        ///     serializable state.
+        /// </param>
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
 
-        #region NavigationHelper registration
-
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// 
-        /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
-        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            navigationHelper.OnNavigatedTo(e);
-            var bounds = Window.Current.Bounds;
-            if (bounds.Width <= 620)
-            {
-                VisualStateManager.GoToState(this, "Snapped", false);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "FullScreen", false);
-            }
-
-            this.Loaded += PageLoaded;
-            this.Unloaded += PageUnloaded;
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            navigationHelper.OnNavigatedFrom(e);
-        }
-
-        #endregion
-
         private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if(forumThread.CurrentPage > 1)
+            if (_forumThread.CurrentPage > 1)
             {
-                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                forumThread.CurrentPage--;
-                BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-                ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
-                this.DefaultViewModel["Posts"] = threadPosts;
-                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                loadingProgressBar.Visibility = Visibility.Visible;
+                _forumThread.CurrentPage--;
+                BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
+                ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
+                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(_forumThread);
+                DefaultViewModel["Posts"] = threadPosts;
+                loadingProgressBar.Visibility = Visibility.Collapsed;
             }
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            forumThread.CurrentPage++;
-            BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-            threadPosts = await PostManager.GetThreadPosts(forumThread);
-            this.DefaultViewModel["Posts"] = threadPosts;
-            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            loadingProgressBar.Visibility = Visibility.Visible;
+            _forumThread.CurrentPage++;
+            BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
+            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
+            _threadPosts = await PostManager.GetThreadPosts(_forumThread);
+            DefaultViewModel["Posts"] = _threadPosts;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (forumThread.CurrentPage != (int)CurrentPageSelector.SelectedValue)
+            if (CurrentPageSelector != null && CurrentPageSelector.SelectedValue != null)
             {
-                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                forumThread.CurrentPage = (int)CurrentPageSelector.SelectedValue;
-                BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
-                ForwardButton.IsEnabled = forumThread.CurrentPage != forumThread.TotalPages ? true : false;
-                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
-                this.DefaultViewModel["Posts"] = threadPosts;
-                loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                if (_forumThread.CurrentPage != (int) CurrentPageSelector.SelectedValue)
+                {
+                    loadingProgressBar.Visibility = Visibility.Visible;
+                    _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
+                    BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
+                    ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages ? true : false;
+                    List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(_forumThread);
+                    DefaultViewModel["Posts"] = threadPosts;
+                    loadingProgressBar.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ReplyView), forumThread);
+            Frame.Navigate(typeof (ReplyView), _forumThread);
         }
 
         private void UserProfileButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            var forumPost = (ForumPostEntity)button.DataContext;
-            this.Frame.Navigate(typeof(UserProfileView), forumPost.User);
+            if (button != null)
+            {
+                var forumPost = (ForumPostEntity) button.DataContext;
+                Frame.Navigate(typeof (UserProfileView), forumPost.User);
+            }
         }
 
         private void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            var forumPost = (ForumPostEntity)button.DataContext;
-            this.Frame.Navigate(typeof(RapSheetView), forumPost.User.Id);
+            if (button != null)
+            {
+                var forumPost = (ForumPostEntity) button.DataContext;
+                Frame.Navigate(typeof (RapSheetView), forumPost.User.Id);
+            }
         }
 
         private void PostHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            var forumPost = (ForumPostEntity)button.DataContext;
-            this.Frame.Navigate(typeof(UserPostHistoryPage), forumPost.User.Id);
+            if (button != null)
+            {
+                var forumPost = (ForumPostEntity) button.DataContext;
+                Frame.Navigate(typeof (UserPostHistoryPage), forumPost.User.Id);
+            }
         }
 
         private void QuoteButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            var forumPost = (ForumPostEntity)button.DataContext;
-            this.Frame.Navigate(typeof(ReplyView), forumPost);
+            if (button != null)
+            {
+                var forumPost = (ForumPostEntity) button.DataContext;
+                Frame.Navigate(typeof (ReplyView), forumPost);
+            }
         }
 
         private void PageUnloaded(object sender, RoutedEventArgs e)
@@ -224,7 +201,7 @@ namespace AwfulMetro.Views
             Window.Current.SizeChanged += Window_SizeChanged;
         }
 
-        private void Window_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
+        private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
             if (e.Size.Width <= 620)
             {
@@ -238,16 +215,52 @@ namespace AwfulMetro.Views
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            threadPosts = await PostManager.GetThreadPosts(forumThread);
-            this.DefaultViewModel["Posts"] = threadPosts;
-            loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            loadingProgressBar.Visibility = Visibility.Visible;
+            _threadPosts = await PostManager.GetThreadPosts(_forumThread);
+            DefaultViewModel["Posts"] = _threadPosts;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void GoToLastPostButton_Click(object sender, RoutedEventArgs e)
         {
-            ThreadListSnapped.ScrollIntoView(threadPosts.Last());
-            ThreadListFullScreen.ScrollIntoView(threadPosts.Last());
+            ThreadListSnapped.ScrollIntoView(_threadPosts.Last());
+            ThreadListFullScreen.ScrollIntoView(_threadPosts.Last());
         }
+
+        #region NavigationHelper registration
+
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// 
+        /// Page specific logic should be placed in event handlers for the
+        /// <see cref="GridCS.Common.NavigationHelper.LoadState" />
+        /// and
+        /// <see cref="GridCS.Common.NavigationHelper.SaveState" />
+        /// .
+        /// The navigation parameter is available in the LoadState method 
+        /// in addition to page state preserved during an earlier session.
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _navigationHelper.OnNavigatedTo(e);
+            Rect bounds = Window.Current.Bounds;
+            if (bounds.Width <= 620)
+            {
+                VisualStateManager.GoToState(this, "Snapped", false);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "FullScreen", false);
+            }
+
+            Loaded += PageLoaded;
+            Unloaded += PageUnloaded;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            _navigationHelper.OnNavigatedFrom(e);
+        }
+
+        #endregion
     }
 }

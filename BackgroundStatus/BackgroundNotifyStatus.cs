@@ -1,52 +1,53 @@
-﻿using BusinessObjects.Entity;
-using BusinessObjects.Manager;
-using BusinessObjects.Tools;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using Windows.Storage;
+using BusinessObjects.Entity;
+using BusinessObjects.Manager;
+using BusinessObjects.Tools;
 
 namespace BackgroundStatus
 {
     public sealed class BackgroundNotifyStatus : IBackgroundTask
-    {  
-        List<long> ThreadIds = new List<long>();
+    {
+        private List<long> _threadIds = new List<long>();
+
         public async void Run(IBackgroundTaskInstance taskInstance)
         {
+            //
             BackgroundTaskDeferral deferral = taskInstance.GetDeferral();
             if (NotifyStatusTile.IsInternet())
             {
                 await Update(taskInstance);
             }
             deferral.Complete();
-
         }
 
         private async Task Update(IBackgroundTaskInstance taskInstance)
         {
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            ForumEntity forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
-            var ForumCollection = await ThreadManager.GetBookmarks(forumCategory);
-            var ForumThreads = ForumCollection.ForumThreadList.Where(thread => thread.RepliesSinceLastOpened > 0).ToList();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            var forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
+            ForumCollectionEntity forumCollection = await ThreadManager.GetBookmarks(forumCategory);
+            List<ForumThreadEntity> forumThreads =
+                forumCollection.ForumThreadList.Where(thread => thread.RepliesSinceLastOpened > 0).ToList();
 
-            if (localSettings.Values.ContainsKey("ThreadIds"))
+            if (localSettings.Values.ContainsKey("_threadIds"))
             {
-                ThreadIds = (List<long>)localSettings.Values["ThreadIds"];
-                ForumThreads = (List<ForumThreadEntity>)ForumThreads.Where(thread => ThreadIds.Contains(thread.ThreadId));
+                _threadIds = (List<long>) localSettings.Values["_threadIds"];
+                forumThreads =
+                    (List<ForumThreadEntity>) forumThreads.Where(thread => _threadIds.Contains(thread.ThreadId));
             }
 
-            this.CreateBookmarkLiveTiles(ForumThreads);
+            CreateBookmarkLiveTiles(forumThreads);
         }
 
-        private void CreateBookmarkLiveTiles(List<ForumThreadEntity> forumThreads)
+        private void CreateBookmarkLiveTiles(IEnumerable<ForumThreadEntity> forumThreads)
         {
-            foreach(var thread in forumThreads)
+            foreach (ForumThreadEntity thread in forumThreads)
             {
                 NotifyStatusTile.CreateBookmarkLiveTile(thread);
             }
         }
-
-       
     }
 }
