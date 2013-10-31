@@ -274,6 +274,8 @@ namespace AwfulMetro.Views
             {
                 AddThreadButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 BookmarkSettings.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                ForwardButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                BackButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 forumThreadList = await ThreadManager.GetBookmarks(forumCategory);
             }
             else

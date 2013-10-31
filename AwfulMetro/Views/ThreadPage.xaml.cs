@@ -30,7 +30,7 @@ namespace AwfulMetro.Views
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private ForumThreadEntity forumThread;
-
+        List<ForumPostEntity> threadPosts;
         /// <summary>
         /// This can be changed to a strongly typed view model.
         /// </summary>
@@ -78,7 +78,7 @@ namespace AwfulMetro.Views
             {
                 forumThread.Location = forumThread.Location + Constants.GOTO_NEW_POST;
             }
-            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+            threadPosts = await PostManager.GetThreadPosts(forumThread);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = forumThread.CurrentPage;
             BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
@@ -161,7 +161,7 @@ namespace AwfulMetro.Views
             forumThread.CurrentPage++;
             BackButton.IsEnabled = forumThread.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = forumThread.TotalPages != forumThread.CurrentPage ? true : false;
-            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+            threadPosts = await PostManager.GetThreadPosts(forumThread);
             this.DefaultViewModel["Posts"] = threadPosts;
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
@@ -243,9 +243,15 @@ namespace AwfulMetro.Views
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(forumThread);
+            threadPosts = await PostManager.GetThreadPosts(forumThread);
             this.DefaultViewModel["Posts"] = threadPosts;
             loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        }
+
+        private void GoToLastPostButton_Click(object sender, RoutedEventArgs e)
+        {
+            ThreadListSnapped.ScrollIntoView(threadPosts.Last());
+            ThreadListFullScreen.ScrollIntoView(threadPosts.Last());
         }
     }
 }

@@ -191,6 +191,14 @@
         </Style>
     </Page.Resources>
 
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click" Label="Go To Last Post On Page"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
@@ -251,13 +259,13 @@
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
             <TextBlock x:Name="pageTitle" FontSize="25" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,279,40" Height="61"/>
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,297,40" Height="61"/>
         </Grid>
         <Grid Canvas.ZIndex="99">
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
         </Grid>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
-            <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="30" Height="30">
+        <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal" Margin="0,26" Width="485">
+            <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
                 <ItemsPanelTemplate>
                     <CarouselPanel/>
                 </ItemsPanelTemplate>
