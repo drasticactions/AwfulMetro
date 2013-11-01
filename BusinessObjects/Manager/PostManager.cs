@@ -11,10 +11,10 @@ namespace AwfulMetro.Core.Manager
 {
     public class PostManager
     {
-        private readonly IWebManager webManager;
+        private readonly IWebManager _webManager;
         public PostManager(IWebManager webManager)
         {
-            this.webManager = webManager;
+            this._webManager = webManager;
         }
 
         public PostManager() : this(new WebManager()) { }
@@ -28,11 +28,11 @@ namespace AwfulMetro.Core.Manager
                 url = forumThread.Location + string.Format(Constants.PAGE_NUMBER, forumThread.CurrentPage);
             }
 
-            List<ForumPostEntity> forumThreadPosts = new List<ForumPostEntity>();
+            var forumThreadPosts = new List<ForumPostEntity>();
             
             //TEMP CODE
             //Inject
-            var result = await webManager.DownloadHtml(url);
+            var result = await _webManager.DownloadHtml(url);
             HtmlDocument doc = result.Document;
             string responseUri = result.AbsoluteUri;
             

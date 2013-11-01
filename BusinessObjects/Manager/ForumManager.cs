@@ -13,10 +13,10 @@ namespace AwfulMetro.Core.Manager
 {
     public class ForumManager
     {
-        private readonly IWebManager webManager;
+        private readonly IWebManager _webManager;
         public ForumManager(IWebManager webManager)
         {
-            this.webManager = webManager;
+            this._webManager = webManager;
         }
 
         public ForumManager() : this(new WebManager()) { }
@@ -24,9 +24,8 @@ namespace AwfulMetro.Core.Manager
         public async Task<List<ForumCategoryEntity>> GetForumCategoryMainPage()
         {
             var forumGroupList = new List<ForumCategoryEntity>();
-            //inject this
 
-            var doc = (await webManager.DownloadHtml(Constants.FORUM_LIST_PAGE)).Document;
+            var doc = (await _webManager.DownloadHtml(Constants.FORUM_LIST_PAGE)).Document;
             
             HtmlNode forumNode = doc.DocumentNode.Descendants("select").FirstOrDefault(node => node.GetAttributeValue("name", string.Empty).Equals("forumid"));
             if (forumNode != null)
@@ -100,7 +99,7 @@ namespace AwfulMetro.Core.Manager
 
             file = await ApplicationData.Current.LocalFolder.CreateFileAsync(forumHtml, CreationCollisionOption.ReplaceExisting);
             
-            HtmlDocument doc = (await webManager.DownloadHtml(Constants.BASE_URL)).Document;
+            HtmlDocument doc = (await _webManager.DownloadHtml(Constants.BASE_URL)).Document;
             using (var memoryStream = new MemoryStream())
             {
                 doc.Save(memoryStream);

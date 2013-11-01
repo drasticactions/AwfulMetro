@@ -5,42 +5,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace AwfulMetro.Core.Manager
 {
     public class ThreadManager
     {
-        
-        private readonly IWebManager webManager;
+        private readonly IWebManager _webManager;
         public ThreadManager(IWebManager webManager)
         {
-            this.webManager = webManager;
+            this._webManager = webManager;
         }
 
         public ThreadManager() : this(new WebManager()) { }
 
         public async Task<ForumCollectionEntity> GetBookmarks(ForumEntity forumCategory)
         {
-            List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
-            List<ForumThreadEntity> forumThreadList = new List<ForumThreadEntity>();
+            var forumSubcategoryList = new List<ForumEntity>();
+            var forumThreadList = new List<ForumThreadEntity>();
             String url = forumCategory.Location;
             if (forumCategory.CurrentPage > 0)
             {
                 url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER, forumCategory.CurrentPage);
             }
 
-            HtmlDocument doc = (await webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
             HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("threadlist"));
 
 
             foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
             {
-                ForumThreadEntity threadEntity = new ForumThreadEntity();
+                var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
                 forumThreadList.Add(threadEntity);
             }
@@ -49,15 +44,15 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<ForumCollectionEntity> GetForumThreadsAndSubforums(ForumEntity forumCategory)
         {
-            List<ForumEntity> forumSubcategoryList = new List<ForumEntity>();
-            List<ForumThreadEntity> forumThreadList = new List<ForumThreadEntity>();
+            var forumSubcategoryList = new List<ForumEntity>();
+            var forumThreadList = new List<ForumThreadEntity>();
             String url = forumCategory.Location;
             if (forumCategory.CurrentPage > 0)
             {
                 url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER,forumCategory.CurrentPage);
             }
 
-            HtmlDocument doc = (await webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
             HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
 
             forumCategory.TotalPages = Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", ""));
@@ -66,7 +61,7 @@ namespace AwfulMetro.Core.Manager
 
             foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
             {
-                ForumThreadEntity threadEntity = new ForumThreadEntity();
+                var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
                 forumThreadList.Add(threadEntity);
             }
@@ -78,7 +73,7 @@ namespace AwfulMetro.Core.Manager
                 {
                     if (subforumNode.Descendants("a").Any())
                     {
-                        ForumEntity forumSubCategory = new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", ""), "");
+                        var forumSubCategory = new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", ""), "");
                         forumSubcategoryList.Add(forumSubCategory);
                     }
                 }
