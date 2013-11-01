@@ -14,9 +14,9 @@
         <StackPanel Width="500" VerticalAlignment="Center">
             <TextBlock HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Text="This is a truly AWFUL Windows 8 Application" FontSize="70" Margin="0,0,0,25" VerticalAlignment="Center"/>
             <StackPanel Width="300">
-                <TextBox x:Name="Username" PlaceholderText="Username" Margin="0,0,0,15" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></TextBox>
-                <PasswordBox x:Name="Password" PlaceholderText="Password" Margin="0,0,0,15" Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></PasswordBox>
-                <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Command="{Binding ClickLoginButtonCommand}"></Button>
+                <TextBox x:Name="Username" PlaceholderText="Username" Margin="0,0,0,15" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <PasswordBox x:Name="Password" PlaceholderText="Password" Margin="0,0,0,15" Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Command="{Binding ClickLoginButtonCommand}" />
             </StackPanel>
         </StackPanel>
     </Grid>

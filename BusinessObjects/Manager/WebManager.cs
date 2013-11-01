@@ -20,6 +20,11 @@ namespace AwfulMetro.Core.Manager
 
         public WebManager() : this(new LocalStorageManager()) { }
 
+        static WebManager()
+        {
+            CookieJar = new List<Cookie>();
+        }
+
         private const string ACCEPT = "text/html, application/xhtml+xml, */*";
 
         private const string POST_CONTENT_TYPE = "application/x-www-form-urlencoded";
