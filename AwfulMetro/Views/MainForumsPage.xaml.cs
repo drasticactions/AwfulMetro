@@ -23,7 +23,7 @@ namespace AwfulMetro
     /// </summary>
     public sealed partial class MainForumsPage : Page
     {
-        private readonly ForumManager forumManager = new ForumManager();
+        private readonly ForumManager _forumManager = new ForumManager();
         public MainForumsPage()
         {
             DefaultViewModel = new ObservableDictionary();
@@ -60,7 +60,7 @@ namespace AwfulMetro
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            List<ForumCategoryEntity> forumGroupList = await forumManager.GetForumCategoryMainPage();
+            List<ForumCategoryEntity> forumGroupList = await this._forumManager.GetForumCategoryMainPage();
             DefaultViewModel["Groups"] = forumGroupList;
             DefaultViewModel["ForumCategory"] = forumGroupList;
             loadingProgressBar.Visibility = Visibility.Collapsed;

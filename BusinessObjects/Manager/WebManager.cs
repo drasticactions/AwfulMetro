@@ -12,10 +12,10 @@ namespace AwfulMetro.Core.Manager
 {
     public class WebManager : IWebManager
     {
-        private readonly ILocalStorageManager localStorageManager;
+        private readonly ILocalStorageManager _localStorageManager;
         public WebManager(ILocalStorageManager localStorageManager)
         {
-            this.localStorageManager = localStorageManager;
+            this._localStorageManager = localStorageManager;
         }
 
         public WebManager() : this(new LocalStorageManager()) { }
@@ -66,7 +66,6 @@ namespace AwfulMetro.Core.Manager
 
         private static async Task<HttpWebRequest> CreateGetRequest(string url, ILocalStorageManager localStorageManager)
         {
-            var uri = new Uri(url);
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Accept = ACCEPT;
             request.CookieContainer = await localStorageManager.LoadCookie(Constants.COOKIE_FILE);
@@ -78,7 +77,7 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<Result> DownloadHtml(string url)
         {
-            var request = await CreateGetRequest(url, localStorageManager);
+            var request = await CreateGetRequest(url, this._localStorageManager);
 
             using (var response = await request.GetResponseAsync())
             using (var stream = response.GetResponseStream())

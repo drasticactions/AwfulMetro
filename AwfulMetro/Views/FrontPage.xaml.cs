@@ -22,7 +22,7 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
-        private readonly FrontPageManager frontPageManager = new FrontPageManager();
+        private readonly FrontPageManager _frontPageManager = new FrontPageManager();
         public FrontPage()
         {
             InitializeComponent();
@@ -64,17 +64,17 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            HtmlDocument doc = await frontPageManager.GetFrontPage();
-            DefaultViewModel["PopularThreads"] = frontPageManager.GetPopularThreads(doc);
-            DefaultViewModel["PopularTrends"] = frontPageManager.GetPopularTrends(doc);
-            List<FrontPageArticleEntity> frontPageArticles = frontPageManager.GetFrontPageArticles(doc);
+            HtmlDocument doc = await this._frontPageManager.GetFrontPage();
+            DefaultViewModel["PopularThreads"] = this._frontPageManager.GetPopularThreads(doc);
+            DefaultViewModel["PopularTrends"] = this._frontPageManager.GetPopularTrends(doc);
+            List<FrontPageArticleEntity> frontPageArticles = this._frontPageManager.GetFrontPageArticles(doc);
 
             FrontPageArticleEntity mainArticle = frontPageArticles.FirstOrDefault();
             DefaultViewModel["MainArticle"] = mainArticle;
             frontPageArticles.Remove(mainArticle);
 
             DefaultViewModel["FrontPageArticles"] = frontPageArticles;
-            DefaultViewModel["FrontPageFeatures"] = frontPageManager.GetFeatures(doc);
+            DefaultViewModel["FrontPageFeatures"] = this._frontPageManager.GetFeatures(doc);
 
         }
 

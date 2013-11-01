@@ -12,10 +12,10 @@ namespace AwfulMetro.Core.Manager
 {
     public class ForumSearchManager
     {
-        private readonly IWebManager webManager;
+        private readonly IWebManager _webManager;
         public ForumSearchManager(IWebManager webManager)
         {
-            this.webManager = webManager;
+            this._webManager = webManager;
         }
 
         public ForumSearchManager() : this(new WebManager()) { }
@@ -25,12 +25,12 @@ namespace AwfulMetro.Core.Manager
             var searchResults = new List<ForumSearchEntity>();
 
             //inject this
-            var doc = (await webManager.DownloadHtml(url)).Document;
+            var doc = (await _webManager.DownloadHtml(url)).Document;
 
             HtmlNode searchNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("inner"));
             url = Constants.BASE_URL + "search.php" + searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", "");
 
-            doc = (await webManager.DownloadHtml(url)).Document;
+            doc = (await _webManager.DownloadHtml(url)).Document;
             //Test persisting Html from search page.
             //HtmlDocument doc = new HtmlDocument();
             //string html = await LoadSearchPage("search.txt");

@@ -17,7 +17,7 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
-        private readonly RapSheetManager rapSheetManager = new RapSheetManager();
+        private readonly RapSheetManager _rapSheetManager = new RapSheetManager();
         private int _currentPage = 1;
 
         public RapSheetView()
@@ -68,12 +68,12 @@ namespace AwfulMetro.Views
                 var userId = (long) e.NavigationParameter;
                 DefaultViewModel["RapSheet"] =
                     await
-                        rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+                        this._rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
             }
             else
             {
                 DefaultViewModel["RapSheet"] =
-                    await rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
+                    await this._rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
             }
         }
 
@@ -97,7 +97,7 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
             DefaultViewModel["RapSheet"] =
                 await
-                    rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
+                    this._rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
                                                 string.Format(Constants.PAGE_NUMBER, _currentPage));
         }
 
@@ -107,7 +107,7 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
             DefaultViewModel["RapSheet"] =
                 await
-                    rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
+                    this._rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
                                                 string.Format(Constants.PAGE_NUMBER, _currentPage));
         }
 

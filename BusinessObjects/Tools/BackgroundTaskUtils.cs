@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
@@ -17,10 +14,8 @@ namespace AwfulMetro.Core.Tools
 
         public async static Task<BackgroundTaskRegistration> RegisterBackgroundTask(String taskEntryPoint, String name, IBackgroundTrigger trigger, IBackgroundCondition condition)
         {
-            var builder = new BackgroundTaskBuilder();
+            var builder = new BackgroundTaskBuilder { Name = name, TaskEntryPoint = taskEntryPoint };
 
-            builder.Name = name;
-            builder.TaskEntryPoint = taskEntryPoint;
             builder.SetTrigger(trigger);
 
 
@@ -72,7 +67,7 @@ namespace AwfulMetro.Core.Tools
             var settings = ApplicationData.Current.LocalSettings;
             if (settings.Values.ContainsKey(name))
             {
-                status += " - " + settings.Values[name].ToString();
+                status += " - " + settings.Values[name];
             }
 
             return status;

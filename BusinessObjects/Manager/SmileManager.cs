@@ -9,20 +9,20 @@ namespace AwfulMetro.Core.Manager
 {
     public class SmileManager
     {
-        private readonly IWebManager webManager;
+        private readonly IWebManager _webManager;
         public SmileManager(IWebManager webManager)
         {
-            this.webManager = webManager;
+            this._webManager = webManager;
         }
 
         public SmileManager() : this(new WebManager()) { }
 
         public async Task<List<SmileCategoryEntity>> GetSmileList()
         {
-            List<SmileCategoryEntity> smileCategoryList = new List<SmileCategoryEntity>();
+            var smileCategoryList = new List<SmileCategoryEntity>();
 
             //inject this
-            var doc = (await webManager.DownloadHtml(Constants.SMILE_URL)).Document;
+            var doc = (await _webManager.DownloadHtml(Constants.SMILE_URL)).Document;
            
             var smileCategoryTitles = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("inner")).Descendants("h3");
             List<string> categoryTitles = smileCategoryTitles.Select(smileCategoryTitle => WebUtility.HtmlDecode(smileCategoryTitle.InnerText)).ToList();
@@ -30,11 +30,11 @@ namespace AwfulMetro.Core.Manager
             int smileCount = 0;
             foreach(var smileNode in smileNodes)
             {
-                List<SmileEntity> smileList = new List<SmileEntity>();
+                var smileList = new List<SmileEntity>();
                 var smileIcons = smileNode.Descendants("li");
                 foreach(var smileIcon in smileIcons)
                 {
-                    SmileEntity smileEntity = new SmileEntity();
+                    var smileEntity = new SmileEntity();
                     smileEntity.Parse(smileIcon);
                     smileList.Add(smileEntity);
                 }

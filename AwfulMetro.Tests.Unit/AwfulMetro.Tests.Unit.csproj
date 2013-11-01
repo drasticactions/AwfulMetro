@@ -116,6 +116,7 @@
     <Compile Include="Mocks\FakeWebManager.cs" />
     <Compile Include="When_Authenticating_With_SomethingAwful.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="When_Serializing_Cookies.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

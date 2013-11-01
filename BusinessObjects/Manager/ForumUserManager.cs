@@ -7,10 +7,10 @@ namespace AwfulMetro.Core.Manager
 {
     public class ForumUserManager
     {
-        private readonly IWebManager webManager;
+        private readonly IWebManager _webManager;
         public ForumUserManager(IWebManager webManager)
         {
-            this.webManager = webManager;
+            this._webManager = webManager;
         }
 
         public ForumUserManager() : this(new WebManager()) { }
@@ -19,7 +19,7 @@ namespace AwfulMetro.Core.Manager
         {
             string url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
             //inject this
-            var doc = (await webManager.DownloadHtml(url)).Document;
+            var doc = (await _webManager.DownloadHtml(url)).Document;
             
             if(string.IsNullOrEmpty(user.Username))
             {

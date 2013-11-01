@@ -17,6 +17,9 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
+        private readonly ForumUserManager _forumUserManager = new ForumUserManager();
+        private readonly RapSheetManager _rapSheetManager = new RapSheetManager();
+        private readonly ForumSearchManager _forumSearchManager = new ForumSearchManager();
 
         public UserProfileView()
         {
@@ -24,10 +27,6 @@ namespace AwfulMetro.Views
             _navigationHelper = new NavigationHelper(this);
             _navigationHelper.LoadState += navigationHelper_LoadState;
         }
-
-        private readonly ForumUserManager forumUserManager = new ForumUserManager();
-        private readonly RapSheetManager rapSheetManager = new RapSheetManager();
-        private readonly ForumSearchManager forumSearchManager = new ForumSearchManager();
 
         /// <summary>
         ///     This can be changed to a strongly typed view model.
@@ -75,11 +74,11 @@ namespace AwfulMetro.Views
                 userId = user.Id;
             }
 
-            DefaultViewModel["UserEntity"] = await forumUserManager.GetUserFromProfilePage(user, userId);
+            DefaultViewModel["UserEntity"] = await this._forumUserManager.GetUserFromProfilePage(user, userId);
             DefaultViewModel["RapSheet"] =
-                await rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+                await this._rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
             DefaultViewModel["UserSearch"] =
-                await forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+                await this._forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         #region NavigationHelper registration

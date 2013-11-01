@@ -16,7 +16,7 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
-        private readonly ForumSearchManager forumSearchManager = new ForumSearchManager();
+        private readonly ForumSearchManager _forumSearchManager = new ForumSearchManager();
 
         public UserPostHistoryPage()
         {
@@ -62,7 +62,7 @@ namespace AwfulMetro.Views
 
             var userId = (long) e.NavigationParameter;
             DefaultViewModel["UserHistory"] =
-                await forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+                await this._forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         /// <summary>

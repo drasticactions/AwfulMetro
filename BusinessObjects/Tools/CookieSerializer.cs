@@ -11,25 +11,24 @@ namespace AwfulMetro.Core.Tools
     {
         public static void Serialize(CookieCollection cookies, Uri address, Stream stream)
         {
-            var formatter = new DataContractSerializer(typeof(List<Cookie>));
-            List<Cookie> cookieList = cookies.OfType<Cookie>().ToList();
+            var serializer = new DataContractSerializer(typeof(IEnumerable<Cookie>));
+            var cookieList = cookies.OfType<Cookie>();
 
-            formatter.WriteObject(stream, cookieList);
+            serializer.WriteObject(stream, cookieList);
         }
 
-        public static CookieContainer Deserialize(Stream stream, Uri uri)
+        public static CookieContainer Deserialize(Uri uri, Stream stream)
         {
-            var cookies = new List<Cookie>();
             var container = new CookieContainer();
-            var formatter = new DataContractSerializer(typeof(List<Cookie>));
-            cookies = (List<Cookie>)formatter.ReadObject(stream);
-            var cookieco = new CookieCollection();
+            var serializer = new DataContractSerializer(typeof(IEnumerable<Cookie>));
+            var cookies = (IEnumerable<Cookie>)serializer.ReadObject(stream);
+            var cookieCollection = new CookieCollection();
 
             foreach (Cookie cookie in cookies)
             {
-                cookieco.Add(cookie);
+                cookieCollection.Add(cookie);
             }
-            container.Add(uri, cookieco);
+            container.Add(uri, cookieCollection);
             return container;
         }
     }

@@ -9,10 +9,10 @@ namespace AwfulMetro.Core.Manager
 {
     public class FrontPageManager
     {
-        private readonly IWebManager webManager;
+        private readonly IWebManager _webManager;
         public FrontPageManager(IWebManager webManager)
         {
-            this.webManager = webManager;
+            this._webManager = webManager;
         }
 
         public FrontPageManager() : this(new WebManager()) { }
@@ -75,7 +75,7 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<HtmlDocument> GetFrontPage()
         {
-            return (await webManager.DownloadHtml(Constants.FRONT_PAGE)).Document;
+            return (await _webManager.DownloadHtml(Constants.FRONT_PAGE)).Document;
         }
     }
 }
