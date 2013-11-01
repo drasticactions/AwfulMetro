@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
@@ -99,6 +100,19 @@ namespace BusinessObjects.Manager
             {
                 this.Document = document;
                 this.AbsoluteUri = absoluteUri;
+            }
+        }
+
+        public static async Task<HtmlDocument> DownloadHtmlClient(HttpClient request, string url)
+        {
+            var response = await request.GetAsync(url);
+            var stream = await response.Content.ReadAsStreamAsync();
+            using (var reader = new StreamReader(stream))
+            {
+                string html = reader.ReadToEnd();
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                return doc;
             }
         }
     }

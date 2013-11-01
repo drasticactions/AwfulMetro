@@ -188,6 +188,7 @@
         <CommandBar>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="AddThreadButton" Click="AddThreadButton_Click" Icon="Add" Label="New Thread"/>
+                <AppBarButton x:Name="BookmarkSettings" Visibility="Collapsed" Click="BookmarkSettings_Click" Icon="Setting" Label="Bookmark Settings"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
@@ -285,6 +286,7 @@
             </ComboBox>
             <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
+            <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
         </StackPanel>
         <Grid x:Name="ThreadViewFullScreen" Grid.Row="1">
             <Grid.ColumnDefinitions>

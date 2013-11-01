@@ -191,6 +191,14 @@
         </Style>
     </Page.Resources>
 
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click" Label="Go To Last Post On Page"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
@@ -250,14 +258,14 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,120,40"/>
+            <TextBlock x:Name="pageTitle" FontSize="25" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,297,40" Height="61"/>
         </Grid>
         <Grid Canvas.ZIndex="99">
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
         </Grid>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
-            <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="30" Height="30">
+        <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal" Margin="0,26" Width="485">
+            <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
                 <ItemsPanelTemplate>
                     <CarouselPanel/>
                 </ItemsPanelTemplate>
@@ -265,6 +273,7 @@
             <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
             <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
+            <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
         </StackPanel>
         <ListView Grid.Row="1" x:Name="ThreadListFullScreen" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
             <ListView.ItemTemplate>
@@ -277,7 +286,7 @@
                         <StackPanel Grid.Column="0">
                             <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
                             <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
-                            <TextBlock x:Name="UserAvatarTitle" Text="{Binding User.AvatarTitle}"></TextBlock>
+                            <TextBlock x:Name="UserAvatarTitle" Width="250" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"></TextBlock>
                             <TextBlock x:Name="UserRegDate" Text="{Binding User.UserDateJoined}"></TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="1">

@@ -5,6 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
@@ -32,6 +36,7 @@ namespace BusinessObjects.Manager
 
             HtmlDocument doc = (await webManager.DownloadHtml(url)).Document;
             HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("threadlist"));
+
 
             foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
             {

@@ -1,9 +1,8 @@
-﻿using AwfulMetro.ViewModels;
-using System;
+﻿using System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
-
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+using AwfulMetro.ViewModels;
 
 namespace AwfulMetro.Views
 {

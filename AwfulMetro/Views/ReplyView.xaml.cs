@@ -1,129 +1,92 @@
-﻿using AwfulMetro.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+using AwfulMetro.Common;
 using BusinessObjects.Entity;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
 namespace AwfulMetro.Views
 {
     /// <summary>
-    /// A basic page that provides characteristics common to most applications.
+    ///     A basic page that provides characteristics common to most applications.
     /// </summary>
     public sealed partial class ReplyView : Page
     {
-
-        private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private List<SmileCategoryEntity> smileCategoryList = new List<SmileCategoryEntity>();
-        private IEnumerable<BBCodeCategoryEntity> bbCodeList = new List<BBCodeCategoryEntity>();
-        private ForumThreadEntity forumThread;
-        private ForumPostEntity forumPost;
-
-        private readonly SmileManager smileManager = new SmileManager();
-        /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
-
-        /// <summary>
-        /// NavigationHelper is used on each page to aid in navigation and 
-        /// process lifetime management
-        /// </summary>
-        public NavigationHelper NavigationHelper
-        {
-            get { return this.navigationHelper; }
-        }
+        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private readonly NavigationHelper _navigationHelper;
+        private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
+        private ForumPostEntity _forumPost;
+        private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
 
 
         public ReplyView()
         {
-            this.InitializeComponent();
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += navigationHelper_LoadState;
-            this.navigationHelper.SaveState += navigationHelper_SaveState;
+            InitializeComponent();
+            _navigationHelper = new NavigationHelper(this);
+            _navigationHelper.LoadState += navigationHelper_LoadState;
+            _navigationHelper.SaveState += navigationHelper_SaveState;
+        }
+
+        private readonly SmileManager smileManager = new SmileManager();
+        /// <summary>
+        ///     This can be changed to a strongly typed view model.
+        /// </summary>
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return _defaultViewModel; }
         }
 
         /// <summary>
-        /// Populates the page with content passed during navigation. Any saved state is also
-        /// provided when recreating a page from a prior session.
+        ///     NavigationHelper is used on each page to aid in navigation and
+        ///     process lifetime management
+        /// </summary>
+        public NavigationHelper NavigationHelper
+        {
+            get { return _navigationHelper; }
+        }
+
+
+        /// <summary>
+        ///     Populates the page with content passed during navigation. Any saved state is also
+        ///     provided when recreating a page from a prior session.
         /// </summary>
         /// <param name="sender">
-        /// The source of the event; typically <see cref="NavigationHelper"/>
+        ///     The source of the event; typically <see cref="NavigationHelper" />
         /// </param>
-        /// <param name="e">Event data that provides both the navigation parameter passed to
-        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
-        /// a dictionary of state preserved by this page during an earlier
-        /// session. The state will be null the first time a page is visited.</param>
+        /// <param name="e">
+        ///     Event data that provides both the navigation parameter passed to
+        ///     <see cref="Frame.Navigate(Type, Object)" /> when this page was initially requested and
+        ///     a dictionary of state preserved by this page during an earlier
+        ///     session. The state will be null the first time a page is visited.
+        /// </param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var item = e.NavigationParameter;
-            if(item.GetType() == typeof(ForumThreadEntity))
-            {
-                forumThread = (ForumThreadEntity)e.NavigationParameter;
-            }
-            else
-            {
-                forumPost = (ForumPostEntity)e.NavigationParameter;
-                ReplyText.Text = string.Format(Constants.QUOTE_EXP, forumPost.User.Username, forumPost.PostId, forumPost.PostFormatted);
-            }
+            _forumPost = (ForumPostEntity) e.NavigationParameter;
+            ReplyText.Text = string.Format(Constants.QUOTE_EXP, _forumPost.User.Username, _forumPost.PostId, _forumPost.PostFormatted);
         }
 
         /// <summary>
-        /// Preserves state associated with this page in case the application is suspended or the
-        /// page is discarded from the navigation cache.  Values must conform to the serialization
-        /// requirements of <see cref="SuspensionManager.SessionState"/>.
+        ///     Preserves state associated with this page in case the application is suspended or the
+        ///     page is discarded from the navigation cache.  Values must conform to the serialization
+        ///     requirements of <see cref="SuspensionManager.SessionState" />.
         /// </summary>
-        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
-        /// <param name="e">Event data that provides an empty dictionary to be populated with
-        /// serializable state.</param>
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper" /></param>
+        /// <param name="e">
+        ///     Event data that provides an empty dictionary to be populated with
+        ///     serializable state.
+        /// </param>
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
         }
 
-        #region NavigationHelper registration
-
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// 
-        /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
-        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            navigationHelper.OnNavigatedTo(e);
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            navigationHelper.OnNavigatedFrom(e);
-        }
-
-        #endregion
-
         private void PostButton_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void ReplyText_TextChanged(object sender, TextChangedEventArgs e)
@@ -133,39 +96,39 @@ namespace AwfulMetro.Views
 
         private async void SimilesButton_Click(object sender, RoutedEventArgs e)
         {
-            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            if (!smileCategoryList.Any())
+            loadingProgressBar.Visibility = Visibility.Visible;
+            if (!_smileCategoryList.Any())
             {
-                smileCategoryList = await smileManager.GetSmileList();
+                _smileCategoryList = await smileManager.GetSmileList();
             }
-            this.DefaultViewModel["Groups"] = smileCategoryList;
-            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            DefaultViewModel["Groups"] = _smileCategoryList;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void BBcodeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            if (!bbCodeList.Any())
+            loadingProgressBar.Visibility = Visibility.Visible;
+            if (!_bbCodeList.Any())
             {
-                bbCodeList = BBCodeManager.BBCodes;
+                _bbCodeList = BBCodeManager.BBCodes;
             }
-            this.DefaultViewModel["Groups"] = bbCodeList;
-            this.loadingProgressBar.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            DefaultViewModel["Groups"] = _bbCodeList;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var item = e.ClickedItem;
+            object item = e.ClickedItem;
 
-            if (item.GetType() == typeof(SmileEntity))
+            if (item.GetType() == typeof (SmileEntity))
             {
-                SmileEntity smile = (SmileEntity)e.ClickedItem;
+                var smile = (SmileEntity) e.ClickedItem;
                 ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, smile.Title);
             }
 
-            if (item.GetType() == typeof(BBCodeEntity))
+            if (item.GetType() == typeof (BBCodeEntity))
             {
-                BBCodeEntity bbcode = (BBCodeEntity)e.ClickedItem;
+                var bbcode = (BBCodeEntity) e.ClickedItem;
                 if (!string.IsNullOrEmpty(ReplyText.SelectedText))
                 {
                     string selectedText = "[{0}]" + ReplyText.SelectedText + "[/{0}]";
@@ -174,9 +137,34 @@ namespace AwfulMetro.Views
                 else
                 {
                     string text = string.Format("[{0}][/{0}]", bbcode.Code);
-                    ReplyText.Text = ReplyText.Text.Insert(ReplyText.SelectionStart, text);
+                    string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
+                    ReplyText.Text = replyText.Insert(ReplyText.SelectionStart, text);
                 }
             }
         }
+
+        #region NavigationHelper registration
+
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// 
+        /// Page specific logic should be placed in event handlers for the
+        /// <see cref="GridCS.Common.NavigationHelper.LoadState" />
+        /// and
+        /// <see cref="GridCS.Common.NavigationHelper.SaveState" />
+        /// .
+        /// The navigation parameter is available in the LoadState method 
+        /// in addition to page state preserved during an earlier session.
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _navigationHelper.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            _navigationHelper.OnNavigatedFrom(e);
+        }
+
+        #endregion
     }
 }

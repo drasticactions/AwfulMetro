@@ -56,7 +56,7 @@ namespace BusinessObjects.Entity
             this.UserDateJoined = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("registered")).InnerHtml;
             if (postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("title")) != null)
             {
-                this.AvatarTitle = WebUtility.HtmlDecode(postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("title")).InnerText.WithoutNewLines());
+                this.AvatarTitle = WebUtility.HtmlDecode(postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("title")).InnerText.WithoutNewLines().Trim());
             }
             if (postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("title")).Descendants("img").FirstOrDefault() != null)
             {
@@ -71,7 +71,6 @@ namespace BusinessObjects.Entity
             foreach (HtmlNode aboutParagraph in profileNode.Descendants("p"))
             {
                 this.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) + Environment.NewLine + Environment.NewLine;
-                //this.AboutUser += this.RemoveNewLine(aboutParagraph.InnerText);
             }
             HtmlNode additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("additional"));
             this.UserDateJoined = additionalNode.Descendants("dd").FirstOrDefault().InnerText;

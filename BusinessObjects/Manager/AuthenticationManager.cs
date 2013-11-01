@@ -1,7 +1,6 @@
 ﻿using BusinessObjects.Tools;
 using System;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
