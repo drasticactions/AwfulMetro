@@ -10,7 +10,7 @@
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AwfulMetro.BackgroundStatus</RootNamespace>
-    <AssemblyName>BackgroundStatus</AssemblyName>
+    <AssemblyName>AwfulMetro.BackgroundStatus</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>

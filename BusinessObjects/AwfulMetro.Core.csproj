@@ -9,8 +9,8 @@
     <ProjectGuid>{3B2BFA3C-0EAF-4E71-B9E2-45DB1E9A4EBE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BusinessObjects</RootNamespace>
-    <AssemblyName>BusinessObjects</AssemblyName>
+    <RootNamespace>AwfulMetro.Core</RootNamespace>
+    <AssemblyName>AwfulMetro.Core</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
