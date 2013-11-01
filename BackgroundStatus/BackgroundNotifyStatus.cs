@@ -11,6 +11,7 @@ namespace BackgroundStatus
 {
     public sealed class BackgroundNotifyStatus : IBackgroundTask
     {
+        private readonly ThreadManager threadManager = new ThreadManager();
         private List<long> _threadIds = new List<long>();
 
         public async void Run(IBackgroundTaskInstance taskInstance)
@@ -28,7 +29,7 @@ namespace BackgroundStatus
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             var forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
-            ForumCollectionEntity forumCollection = await ThreadManager.GetBookmarks(forumCategory);
+            ForumCollectionEntity forumCollection = await threadManager.GetBookmarks(forumCategory);
             List<ForumThreadEntity> forumThreads =
                 forumCollection.ForumThreadList.Where(thread => thread.RepliesSinceLastOpened > 0).ToList();
 

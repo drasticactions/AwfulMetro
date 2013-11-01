@@ -20,11 +20,13 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
-        private List<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
+        private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
         private ForumEntity _forum;
         private TagEntity _selectedTag;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
         private List<TagCategoryEntity> _tagList = new List<TagCategoryEntity>();
+        private readonly SmileManager smileManager = new SmileManager();
+        private readonly TagManager tagManager = new TagManager();
 
         public CreateThreadView()
         {
@@ -98,7 +100,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_smileCategoryList.Any())
             {
-                _smileCategoryList = await SmileManager.GetSmileList();
+                _smileCategoryList = await smileManager.GetSmileList();
             }
             DefaultViewModel["Groups"] = _smileCategoryList;
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -109,7 +111,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_bbCodeList.Any())
             {
-                _bbCodeList = BBCodeManager.GetBBCodes();
+                _bbCodeList = BBCodeManager.BBCodes;
             }
             DefaultViewModel["Groups"] = _bbCodeList;
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -120,7 +122,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_tagList.Any())
             {
-                _tagList = await TagManager.GetTagList(_forum.ForumId);
+                _tagList = await tagManager.GetTagList(_forum.ForumId);
             }
             DefaultViewModel["Groups"] = _tagList;
             loadingProgressBar.Visibility = Visibility.Collapsed;

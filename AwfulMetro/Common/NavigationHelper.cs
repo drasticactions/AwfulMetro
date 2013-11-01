@@ -116,13 +116,7 @@ namespace AwfulMetro.Common
         {
             get
             {
-                if (_goBackCommand == null)
-                {
-                    _goBackCommand = new RelayCommand(
-                        () => this.GoBack(),
-                        () => this.CanGoBack());
-                }
-                return _goBackCommand;
+                return this._goBackCommand ?? (this._goBackCommand = new RelayCommand(this.GoBack, this.CanGoBack));
             }
             set
             {

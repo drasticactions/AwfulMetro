@@ -1,9 +1,9 @@
-﻿using System;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
+using System;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -16,6 +16,7 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
+        private readonly ForumSearchManager forumSearchManager = new ForumSearchManager();
 
         public UserPostHistoryPage()
         {
@@ -58,9 +59,10 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+
             var userId = (long) e.NavigationParameter;
             DefaultViewModel["UserHistory"] =
-                await ForumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+                await forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         /// <summary>

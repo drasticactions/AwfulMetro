@@ -1,10 +1,10 @@
-﻿using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using BusinessObjects.Manager;
 using BusinessObjects.Tools;
+using System;
+﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -17,6 +17,7 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
+        private readonly RapSheetManager rapSheetManager = new RapSheetManager();
         private int _currentPage = 1;
 
         public RapSheetView()
@@ -67,12 +68,12 @@ namespace AwfulMetro.Views
                 var userId = (long) e.NavigationParameter;
                 DefaultViewModel["RapSheet"] =
                     await
-                        RapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+                        rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
             }
             else
             {
                 DefaultViewModel["RapSheet"] =
-                    await RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
+                    await rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
             }
         }
 
@@ -96,7 +97,7 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
             DefaultViewModel["RapSheet"] =
                 await
-                    RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
+                    rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
                                                 string.Format(Constants.PAGE_NUMBER, _currentPage));
         }
 
@@ -106,7 +107,7 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
             DefaultViewModel["RapSheet"] =
                 await
-                    RapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
+                    rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
                                                 string.Format(Constants.PAGE_NUMBER, _currentPage));
         }
 

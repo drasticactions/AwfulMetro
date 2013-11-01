@@ -13,11 +13,21 @@ namespace BusinessObjects.Manager
 {
     public class ForumManager
     {
-        public static async Task<List<ForumCategoryEntity>> GetForumCategoryMainPage()
+        private readonly IWebManager webManager;
+        public ForumManager(IWebManager webManager)
+        {
+            this.webManager = webManager;
+        }
+
+        public ForumManager() : this(new WebManager()) { }
+
+        public async Task<List<ForumCategoryEntity>> GetForumCategoryMainPage()
         {
             var forumGroupList = new List<ForumCategoryEntity>();
-            HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.FORUM_LIST_PAGE);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            //inject this
+
+            var doc = (await webManager.DownloadHtml(Constants.FORUM_LIST_PAGE)).Document;
+            
             HtmlNode forumNode = doc.DocumentNode.Descendants("select").FirstOrDefault(node => node.GetAttributeValue("name", string.Empty).Equals("forumid"));
             if (forumNode != null)
             {
@@ -47,7 +57,7 @@ namespace BusinessObjects.Manager
             return forumGroupList;
         }
 
-        public static async Task<List<ForumCategoryEntity>> GetForumCategory()
+        public async Task<List<ForumCategoryEntity>> GetForumCategory()
         {
             var forumGroupList = new List<ForumCategoryEntity>();
             HtmlDocument doc = await GetForumFrontPageHtml();
@@ -68,16 +78,15 @@ namespace BusinessObjects.Manager
             }
 
 #if DEBUG
-            forumGroupList[3].ForumList.Add(ForumManager.AddDebugForum());
+            forumGroupList[3].ForumList.Add(AddDebugForum());
 #endif
 
             return forumGroupList;
         }
 
-        public static async Task<HtmlDocument> GetForumFrontPageHtml()
+        public async Task<HtmlDocument> GetForumFrontPageHtml()
         {
             StorageFile file;
-            HtmlDocument doc;
             string forumHtml = string.Format(Constants.HTML_FILE, "forum");
             bool htmlFileExists = await WebViewHelper.HtmlExists(forumHtml);
             if(htmlFileExists)
@@ -90,8 +99,8 @@ namespace BusinessObjects.Manager
             }
 
             file = await ApplicationData.Current.LocalFolder.CreateFileAsync(forumHtml, CreationCollisionOption.ReplaceExisting);
-            HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.BASE_URL);
-            doc = await WebManager.DownloadHtml(request);
+            
+            HtmlDocument doc = (await webManager.DownloadHtml(Constants.BASE_URL)).Document;
             using (var memoryStream = new MemoryStream())
             {
                 doc.Save(memoryStream);
@@ -102,7 +111,7 @@ namespace BusinessObjects.Manager
             return doc;
         }
 
-        private static ForumEntity AddDebugForum()
+        private ForumEntity AddDebugForum()
         {
             return new ForumEntity("Apps In Developmental States", "forumdisplay.php?forumid=261", "Debug Forum");
         }

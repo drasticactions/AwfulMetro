@@ -1,4 +1,7 @@
-﻿using System;
+using AwfulMetro.Common;
+using BusinessObjects.Entity;
+using BusinessObjects.Manager;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -7,9 +10,6 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using AwfulMetro.Common;
-using BusinessObjects.Entity;
-using BusinessObjects.Manager;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -24,6 +24,7 @@ namespace AwfulMetro.Views
         private readonly NavigationHelper _navigationHelper;
         private ForumEntity _forumCategory;
         private ForumCollectionEntity _forumThreadList;
+        private readonly ThreadManager threadManager = new ThreadManager();
 
         public ThreadListPage()
         {
@@ -68,6 +69,7 @@ namespace AwfulMetro.Views
         {
             loadingProgressBar.Visibility = Visibility.Visible;
             // TODO: Assign a bindable collection of items to this.DefaultViewModel["Items"]
+
             _forumCategory = (ForumEntity) e.NavigationParameter;
             BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
             //CurrentPage.Text = _forumCategory.CurrentPage.ToString();
@@ -132,10 +134,11 @@ namespace AwfulMetro.Views
         {
             if (_forumCategory.CurrentPage > 1)
             {
+
                 loadingProgressBar.Visibility = Visibility.Visible;
                 _forumCategory.CurrentPage--;
                 CurrentPageSelector.SelectedValue = _forumCategory.CurrentPage;
-                _forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(_forumCategory);
+                _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
                 DefaultViewModel["Groups"] = _forumThreadList.ForumType;
                 DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
                 DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
@@ -146,12 +149,13 @@ namespace AwfulMetro.Views
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
+
             loadingProgressBar.Visibility = Visibility.Visible;
             _forumCategory.CurrentPage++;
             CurrentPageSelector.SelectedValue = _forumCategory.CurrentPage;
             BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = _forumCategory.CurrentPage != _forumCategory.TotalPages ? true : false;
-            _forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(_forumCategory);
+            _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
             DefaultViewModel["Groups"] = _forumThreadList.ForumType;
             DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
             DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
@@ -169,7 +173,7 @@ namespace AwfulMetro.Views
                     _forumCategory.CurrentPage = (int) CurrentPageSelector.SelectedValue;
                     BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
                     ForwardButton.IsEnabled = _forumCategory.CurrentPage != _forumCategory.TotalPages ? true : false;
-                    _forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(_forumCategory);
+                    _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
                     DefaultViewModel["Groups"] = _forumThreadList.ForumType;
                     DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
                     DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
@@ -235,12 +239,12 @@ namespace AwfulMetro.Views
                 BookmarkSettings.Visibility = Visibility.Visible;
                 ForwardButton.Visibility = Visibility.Collapsed;
                 BackButton.Visibility = Visibility.Collapsed;
-                _forumThreadList = await ThreadManager.GetBookmarks(_forumCategory);
+                _forumThreadList = await threadManager.GetBookmarks(_forumCategory);
             }
             else
             {
                 // TODO: Add/Refactor function to support page specific loads.
-                _forumThreadList = await ThreadManager.GetForumThreadsAndSubforums(_forumCategory);
+                _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
             }
 
             DefaultViewModel["Groups"] = _forumThreadList.ForumType;

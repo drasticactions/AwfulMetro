@@ -1,29 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using BusinessObjects.Entity;
 using BusinessObjects.Tools;
-using HtmlAgilityPack;
+
 namespace BusinessObjects.Manager
 {
     public class ForumUserManager
     {
-        public static async Task<ForumUserEntity> GetUserFromProfilePage(ForumUserEntity user, long userId)
+        private readonly IWebManager webManager;
+        public ForumUserManager(IWebManager webManager)
         {
-            String url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
-            HttpWebRequest request = await AuthManager.CreateGetRequest(url);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
+            this.webManager = webManager;
+        }
+
+        public ForumUserManager() : this(new WebManager()) { }
+
+        public async Task<ForumUserEntity> GetUserFromProfilePage(ForumUserEntity user, long userId)
+        {
+            string url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
+            //inject this
+            var doc = (await webManager.DownloadHtml(url)).Document;
+            
             if(string.IsNullOrEmpty(user.Username))
             {
-                user.ParseFromPost(doc.DocumentNode.Descendants("td").Where(node => node.GetAttributeValue("id", "").Contains("thread")).FirstOrDefault());
+                user.ParseFromPost(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("id", "").Contains("thread")));
             }
-            user.ParseFromUserProfile(doc.DocumentNode.Descendants("td").Where(node => node.GetAttributeValue("class", "").Contains("info")).FirstOrDefault());
+            user.ParseFromUserProfile(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("info")));
             return user;
         }
     }

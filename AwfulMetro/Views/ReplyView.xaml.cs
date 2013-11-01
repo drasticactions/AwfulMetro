@@ -20,9 +20,10 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
-        private List<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
+        private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
         private ForumPostEntity _forumPost;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
+
 
         public ReplyView()
         {
@@ -32,6 +33,7 @@ namespace AwfulMetro.Views
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
+        private readonly SmileManager smileManager = new SmileManager();
         /// <summary>
         ///     This can be changed to a strongly typed view model.
         /// </summary>
@@ -97,7 +99,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_smileCategoryList.Any())
             {
-                _smileCategoryList = await SmileManager.GetSmileList();
+                _smileCategoryList = await smileManager.GetSmileList();
             }
             DefaultViewModel["Groups"] = _smileCategoryList;
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -108,7 +110,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_bbCodeList.Any())
             {
-                _bbCodeList = BBCodeManager.GetBBCodes();
+                _bbCodeList = BBCodeManager.BBCodes;
             }
             DefaultViewModel["Groups"] = _bbCodeList;
             loadingProgressBar.Visibility = Visibility.Collapsed;

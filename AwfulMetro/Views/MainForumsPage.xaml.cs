@@ -22,6 +22,7 @@ namespace AwfulMetro
     /// </summary>
     public sealed partial class MainForumsPage : Page
     {
+        private readonly ForumManager forumManager = new ForumManager();
         public MainForumsPage()
         {
             DefaultViewModel = new ObservableDictionary();
@@ -29,6 +30,7 @@ namespace AwfulMetro
             NavigationHelper = new NavigationHelper(this);
             NavigationHelper.LoadState += navigationHelper_LoadState;
         }
+
 
         /// <summary>
         ///     NavigationHelper is used on each page to aid in navigation and
@@ -57,7 +59,7 @@ namespace AwfulMetro
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            List<ForumCategoryEntity> forumGroupList = await ForumManager.GetForumCategoryMainPage();
+            List<ForumCategoryEntity> forumGroupList = await forumManager.GetForumCategoryMainPage();
             DefaultViewModel["Groups"] = forumGroupList;
             DefaultViewModel["ForumCategory"] = forumGroupList;
             loadingProgressBar.Visibility = Visibility.Collapsed;

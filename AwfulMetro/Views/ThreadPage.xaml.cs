@@ -33,6 +33,8 @@ namespace AwfulMetro.Views
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
+        //TODO: inject this
+        private readonly PostManager postManager = new PostManager();
         /// <summary>
         ///     This can be changed to a strongly typed view model.
         /// </summary>
@@ -74,7 +76,8 @@ namespace AwfulMetro.Views
             {
                 _forumThread.Location = _forumThread.Location + Constants.GOTO_NEW_POST;
             }
-            _threadPosts = await PostManager.GetThreadPosts(_forumThread);
+
+            _threadPosts = await postManager.GetThreadPosts(_forumThread);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = _forumThread.CurrentPage;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
@@ -82,6 +85,7 @@ namespace AwfulMetro.Views
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
             DefaultViewModel["Posts"] = _threadPosts;
             if (_forumThread.ScrollToPost > 0)
+
             {
                 ThreadListSnapped.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
                 ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
@@ -112,7 +116,7 @@ namespace AwfulMetro.Views
                 _forumThread.CurrentPage--;
                 BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
                 ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
-                List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(_forumThread);
+                List<ForumPostEntity> threadPosts = await postManager.GetThreadPosts(_forumThread);
                 DefaultViewModel["Posts"] = threadPosts;
                 loadingProgressBar.Visibility = Visibility.Collapsed;
             }
@@ -124,7 +128,7 @@ namespace AwfulMetro.Views
             _forumThread.CurrentPage++;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
-            _threadPosts = await PostManager.GetThreadPosts(_forumThread);
+            _threadPosts = await postManager.GetThreadPosts(_forumThread);
             DefaultViewModel["Posts"] = _threadPosts;
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
@@ -139,7 +143,7 @@ namespace AwfulMetro.Views
                     _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
                     BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
                     ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages ? true : false;
-                    List<ForumPostEntity> threadPosts = await PostManager.GetThreadPosts(_forumThread);
+                    List<ForumPostEntity> threadPosts = await postManager.GetThreadPosts(_forumThread);
                     DefaultViewModel["Posts"] = threadPosts;
                     loadingProgressBar.Visibility = Visibility.Collapsed;
                 }
@@ -216,7 +220,7 @@ namespace AwfulMetro.Views
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _threadPosts = await PostManager.GetThreadPosts(_forumThread);
+            _threadPosts = await postManager.GetThreadPosts(_forumThread);
             DefaultViewModel["Posts"] = _threadPosts;
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }

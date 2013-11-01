@@ -6,16 +6,18 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3B2BFA3C-0EAF-4E71-B9E2-45DB1E9A4EBE}</ProjectGuid>
+    <ProjectGuid>{B2C52665-6238-4F2D-877D-BD1C83BD2032}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BusinessObjects</RootNamespace>
-    <AssemblyName>BusinessObjects</AssemblyName>
+    <RootNamespace>AwfulMetro.Tests.Unit</RootNamespace>
+    <AssemblyName>AwfulMetro.Tests.Unit</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>AwfulMetro.Tests.Unit_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxBundle>Never</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -100,58 +102,46 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <AppXPackage>True</AppXPackage>
+    <AppxPackageIncludePrivateSymbols>true</AppxPackageIncludePrivateSymbols>
+  </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
+    <SDKReference Include="MSTestFramework, Version=11.0" />
+    <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\BBCodeCategoryEntity.cs" />
-    <Compile Include="Entity\BBCodeEntity.cs" />
-    <Compile Include="Entity\ForumCategoryEntity.cs" />
-    <Compile Include="Entity\ForumCollectionEntity.cs" />
-    <Compile Include="Entity\ForumPostEntity.cs" />
-    <Compile Include="Entity\ForumEntity.cs" />
-    <Compile Include="Entity\ForumSearchEntity.cs" />
-    <Compile Include="Entity\ForumThreadEntity.cs" />
-    <Compile Include="Entity\ForumUserEntity.cs" />
-    <Compile Include="Entity\ForumUserRapSheetEntity.cs" />
-    <Compile Include="Entity\FrontPageArticleEntity.cs" />
-    <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
-    <Compile Include="Entity\SmileCategoryEntity.cs" />
-    <Compile Include="Entity\SmileEntity.cs" />
-    <Compile Include="Entity\TagCategoryEntity.cs" />
-    <Compile Include="Entity\TagEntity.cs" />
-    <Compile Include="Entity\ThreadReplyEntity.cs" />
-    <Compile Include="Manager\AuthenticationManager.cs" />
-    <Compile Include="Manager\BBCodeManager.cs" />
-    <Compile Include="Manager\ForumManager.cs" />
-    <Compile Include="Manager\ForumSearchManager.cs" />
-    <Compile Include="Manager\ForumUserManager.cs" />
-    <Compile Include="Manager\FrontPageManager.cs" />
-    <Compile Include="Manager\IAuthenticationManager.cs" />
-    <Compile Include="Manager\IWebManager.cs" />
-    <Compile Include="Manager\LocalStorageManager.cs" />
-    <Compile Include="Manager\LoginFailedException.cs" />
-    <Compile Include="Manager\RapSheetManager.cs" />
-    <Compile Include="Manager\SmileManager.cs" />
-    <Compile Include="Manager\TagManager.cs" />
-    <Compile Include="Manager\WebManager.cs" />
-    <Compile Include="Manager\PostManager.cs" />
-    <Compile Include="Manager\ThreadManager.cs" />
+    <Compile Include="Mocks\FakeLocalStorageManager.cs" />
+    <Compile Include="Mocks\FakeWebManager.cs" />
+    <Compile Include="When_Authenticating_With_SomethingAwful.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\BackgroundTaskUtils.cs" />
-    <Compile Include="Tools\Constants.cs" />
-    <Compile Include="Tools\CookieSerializer.cs" />
-    <Compile Include="Tools\NotifyStatusTile.cs" />
-    <Compile Include="Tools\Extensions.cs" />
-    <Compile Include="Tools\WebViewHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\winrt45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="AwfulMetro.Tests.Unit_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Content Include="Images\UnitTestLogo.scale-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestSmallLogo.scale-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestSplashScreen.scale-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestStoreLogo.scale-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj">
+      <Project>{3b2bfa3c-0eaf-4e71-b9e2-45db1e9a4ebe}</Project>
+      <Name>BusinessObjects</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
@@ -160,7 +150,7 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target>  
   <Target Name="AfterBuild">
   </Target>
   -->

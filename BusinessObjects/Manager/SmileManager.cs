@@ -1,31 +1,31 @@
 ﻿using BusinessObjects.Entity;
 using BusinessObjects.Tools;
-using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
 {
     public class SmileManager
     {
-        public static async Task<List<SmileCategoryEntity>> GetSmileList()
+        private readonly IWebManager webManager;
+        public SmileManager(IWebManager webManager)
+        {
+            this.webManager = webManager;
+        }
+
+        public SmileManager() : this(new WebManager()) { }
+
+        public async Task<List<SmileCategoryEntity>> GetSmileList()
         {
             List<SmileCategoryEntity> smileCategoryList = new List<SmileCategoryEntity>();
 
-            HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.SMILE_URL);
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
-            var smileCategoryTitles = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Contains("inner")).FirstOrDefault().Descendants("h3");
-            List<string> categoryTitles = new List<string>();
-            foreach(var smileCategoryTitle in smileCategoryTitles)
-            {
-                categoryTitles.Add(WebUtility.HtmlDecode(smileCategoryTitle.InnerText));
-            }
+            //inject this
+            var doc = (await webManager.DownloadHtml(Constants.SMILE_URL)).Document;
+           
+            var smileCategoryTitles = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("inner")).Descendants("h3");
+            List<string> categoryTitles = smileCategoryTitles.Select(smileCategoryTitle => WebUtility.HtmlDecode(smileCategoryTitle.InnerText)).ToList();
             var smileNodes = doc.DocumentNode.Descendants("ul").Where(node => node.GetAttributeValue("class", "").Contains("smilie_group"));
             int smileCount = 0;
             foreach(var smileNode in smileNodes)

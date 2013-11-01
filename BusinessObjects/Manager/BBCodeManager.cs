@@ -1,39 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BusinessObjects.Entity;
 
 namespace BusinessObjects.Manager
 {
-    public class BBCodeManager
+    public static class BBCodeManager
     {
-        public static List<BBCodeCategoryEntity> GetBBCodes()
+        private static IEnumerable<BBCodeCategoryEntity> bbCodes;
+        public static IEnumerable<BBCodeCategoryEntity> BBCodes
         {
-            List<BBCodeCategoryEntity> bbCodeCategoryList = new List<BBCodeCategoryEntity>();
-            List<BBCodeEntity> bbCodeList = new List<BBCodeEntity>();
-            bbCodeList.Add(new BBCodeEntity("url", "url"));
-            bbCodeList.Add(new BBCodeEntity("email", "email"));
-            bbCodeList.Add(new BBCodeEntity("img", "img"));
-            bbCodeList.Add(new BBCodeEntity("timg", "timg"));
-            bbCodeList.Add(new BBCodeEntity("video", "video"));
-            bbCodeList.Add(new BBCodeEntity("b", "b"));
-            bbCodeList.Add(new BBCodeEntity("s", "s"));
-            bbCodeList.Add(new BBCodeEntity("u", "u"));
-            bbCodeList.Add(new BBCodeEntity("i", "i"));
-            bbCodeList.Add(new BBCodeEntity("spoiler", "spoiler"));
-            bbCodeList.Add(new BBCodeEntity("fixed", "fixed"));
-            bbCodeList.Add(new BBCodeEntity("super", "super"));
-            bbCodeList.Add(new BBCodeEntity("sub", "sub"));
-            bbCodeList.Add(new BBCodeEntity("size", "size"));
-            bbCodeList.Add(new BBCodeEntity("color", "color"));
-            bbCodeList.Add(new BBCodeEntity("quote", "quote"));
-            bbCodeList.Add(new BBCodeEntity("url", "url"));
-            bbCodeList.Add(new BBCodeEntity("pre", "pre"));
-            bbCodeList.Add(new BBCodeEntity("code", "code"));
-            bbCodeList.Add(new BBCodeEntity("php", "php"));
-            bbCodeList.Add(new BBCodeEntity("list", "list"));
+            get
+            {
+                return bbCodes ?? (bbCodes = GetBBCodes());
+            }
+        }
+
+        private static IEnumerable<BBCodeCategoryEntity> GetBBCodes()
+        {
+            var bbCodeCategoryList = new List<BBCodeCategoryEntity>();
+            var bbCodeList = new List<BBCodeEntity>
+                                            {
+                                                new BBCodeEntity("url", "url"),
+                                                new BBCodeEntity("email", "email"),
+                                                new BBCodeEntity("img", "img"),
+                                                new BBCodeEntity("timg", "timg"),
+                                                new BBCodeEntity("video", "video"),
+                                                new BBCodeEntity("b", "b"),
+                                                new BBCodeEntity("s", "s"),
+                                                new BBCodeEntity("u", "u"),
+                                                new BBCodeEntity("i", "i"),
+                                                new BBCodeEntity("spoiler", "spoiler"),
+                                                new BBCodeEntity("fixed", "fixed"),
+                                                new BBCodeEntity("super", "super"),
+                                                new BBCodeEntity("sub", "sub"),
+                                                new BBCodeEntity("size", "size"),
+                                                new BBCodeEntity("color", "color"),
+                                                new BBCodeEntity("quote", "quote"),
+                                                new BBCodeEntity("url", "url"),
+                                                new BBCodeEntity("pre", "pre"),
+                                                new BBCodeEntity("code", "code"),
+                                                new BBCodeEntity("php", "php"),
+                                                new BBCodeEntity("list", "list")
+                                            };
             bbCodeCategoryList.Add(new BBCodeCategoryEntity("BBCode", bbCodeList));
             return bbCodeCategoryList;
         }

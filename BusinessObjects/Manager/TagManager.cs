@@ -1,25 +1,27 @@
 ﻿using BusinessObjects.Entity;
 using BusinessObjects.Tools;
-using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
 {
     public class TagManager
     {
+        private readonly IWebManager webManager;
+        public TagManager(IWebManager webManager)
+        {
+            this.webManager = webManager;
+        }
 
-        public static async Task<List<TagCategoryEntity>> GetTagList(long forumId)
+        public TagManager() : this(new WebManager()) { }
+        public async Task<List<TagCategoryEntity>> GetTagList(long forumId)
         {
             List<TagEntity> tagList = new List<TagEntity>();
-            HttpWebRequest request = await AuthManager.CreateGetRequest(string.Format(Constants.NEW_THREAD, forumId));
-            HtmlDocument doc = await WebManager.DownloadHtml(request);
+
+            //inject this
+            var doc = (await webManager.DownloadHtml(string.Format(Constants.NEW_THREAD, forumId))).Document;
+            
             var iconArray = doc.DocumentNode.Descendants("div")
                 .Where(node => node.GetAttributeValue("class", "").Equals("posticon"))
                 .ToArray();

@@ -1,21 +1,26 @@
 ﻿using BusinessObjects.Entity;
 using BusinessObjects.Tools;
 using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessObjects.Manager
 {
     public class FrontPageManager
     {
-        public static List<PopularThreadsTrendsEntity> GetPopularThreads(HtmlDocument doc)
+        private readonly IWebManager webManager;
+        public FrontPageManager(IWebManager webManager)
+        {
+            this.webManager = webManager;
+        }
+
+        public FrontPageManager() : this(new WebManager()) { }
+
+        public List<PopularThreadsTrendsEntity> GetPopularThreads(HtmlDocument doc)
         {
             List<PopularThreadsTrendsEntity> popularThreadsList = new List<PopularThreadsTrendsEntity>();
-            HtmlNode popularThreadNodeList = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Contains("popular_threads")).FirstOrDefault();
+            HtmlNode popularThreadNodeList = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("popular_threads"));
             foreach(HtmlNode popularThreadNode in popularThreadNodeList.Descendants("li"))
             {
                 PopularThreadsTrendsEntity popularThread = new PopularThreadsTrendsEntity();
@@ -25,10 +30,10 @@ namespace BusinessObjects.Manager
             return popularThreadsList;
         }
 
-        public static List<PopularThreadsTrendsEntity> GetPopularTrends(HtmlDocument doc)
+        public List<PopularThreadsTrendsEntity> GetPopularTrends(HtmlDocument doc)
         {
             List<PopularThreadsTrendsEntity> popularTrendsList = new List<PopularThreadsTrendsEntity>();
-            HtmlNode popularTrendsNodeList = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Contains("organ whatshot")).FirstOrDefault();
+            HtmlNode popularTrendsNodeList = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("organ whatshot"));
             foreach (HtmlNode popularThreadNode in popularTrendsNodeList.Descendants("li"))
             {
                 PopularThreadsTrendsEntity popularTrend = new PopularThreadsTrendsEntity();
@@ -38,14 +43,14 @@ namespace BusinessObjects.Manager
             return popularTrendsList;
         }
 
-        public static List<FrontPageArticleEntity> GetFrontPageArticles(HtmlDocument doc)
+        public List<FrontPageArticleEntity> GetFrontPageArticles(HtmlDocument doc)
         {
             List<FrontPageArticleEntity> frontPageArticleList = new List<FrontPageArticleEntity>();
-            HtmlNode frontPageNode = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Contains("main_article")).FirstOrDefault();
+            HtmlNode frontPageNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("main_article"));
             FrontPageArticleEntity mainArticle = new FrontPageArticleEntity();
             mainArticle.ParseMainArticle(frontPageNode);
             frontPageArticleList.Add(mainArticle);
-            frontPageNode = doc.DocumentNode.Descendants("ul").Where(node => node.GetAttributeValue("class", "").Contains("news")).FirstOrDefault();
+            frontPageNode = doc.DocumentNode.Descendants("ul").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("news"));
             foreach(HtmlNode frontPageNewsArticle in frontPageNode.Descendants("li"))
             {
                 FrontPageArticleEntity article = new FrontPageArticleEntity();
@@ -55,10 +60,10 @@ namespace BusinessObjects.Manager
             return frontPageArticleList;
         }
 
-        public static List<FrontPageArticleEntity> GetFeatures(HtmlDocument doc)
+        public List<FrontPageArticleEntity> GetFeatures(HtmlDocument doc)
         {
             List<FrontPageArticleEntity> frontPageFeatureList = new List<FrontPageArticleEntity>();
-            HtmlNode frontPageNode = doc.DocumentNode.Descendants("ul").Where(node => node.GetAttributeValue("class", "").Contains("featured")).FirstOrDefault();
+            HtmlNode frontPageNode = doc.DocumentNode.Descendants("ul").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("featured"));
             foreach (HtmlNode frontPageFeature in frontPageNode.Descendants("li"))
             {
                 FrontPageArticleEntity article = new FrontPageArticleEntity();
@@ -68,10 +73,9 @@ namespace BusinessObjects.Manager
             return frontPageFeatureList;
         }
 
-        public static async Task<HtmlDocument> GetFrontPage()
+        public async Task<HtmlDocument> GetFrontPage()
         {
-            HttpWebRequest request = await AuthManager.CreateGetRequest(Constants.FRONT_PAGE);
-            return await WebManager.DownloadHtml(request);
+            return (await webManager.DownloadHtml(Constants.FRONT_PAGE)).Document;
         }
     }
 }
