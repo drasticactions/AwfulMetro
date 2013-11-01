@@ -1,15 +1,16 @@
-using AwfulMetro.Common;
-using AwfulMetro.Core.Entity;
-using AwfulMetro.Core.Manager;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using AwfulMetro.Common;
+using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -22,9 +23,9 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
+        private readonly ThreadManager _threadManager = new ThreadManager();
         private ForumEntity _forumCategory;
         private ForumCollectionEntity _forumThreadList;
-        private readonly ThreadManager threadManager = new ThreadManager();
 
         public ThreadListPage()
         {
@@ -134,11 +135,10 @@ namespace AwfulMetro.Views
         {
             if (_forumCategory.CurrentPage > 1)
             {
-
                 loadingProgressBar.Visibility = Visibility.Visible;
                 _forumCategory.CurrentPage--;
                 CurrentPageSelector.SelectedValue = _forumCategory.CurrentPage;
-                _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
+                _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
                 DefaultViewModel["Groups"] = _forumThreadList.ForumType;
                 DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
                 DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
@@ -149,13 +149,12 @@ namespace AwfulMetro.Views
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
-
             loadingProgressBar.Visibility = Visibility.Visible;
             _forumCategory.CurrentPage++;
             CurrentPageSelector.SelectedValue = _forumCategory.CurrentPage;
             BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
             ForwardButton.IsEnabled = _forumCategory.CurrentPage != _forumCategory.TotalPages ? true : false;
-            _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
+            _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
             DefaultViewModel["Groups"] = _forumThreadList.ForumType;
             DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
             DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
@@ -173,7 +172,7 @@ namespace AwfulMetro.Views
                     _forumCategory.CurrentPage = (int) CurrentPageSelector.SelectedValue;
                     BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
                     ForwardButton.IsEnabled = _forumCategory.CurrentPage != _forumCategory.TotalPages ? true : false;
-                    _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
+                    _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
                     DefaultViewModel["Groups"] = _forumThreadList.ForumType;
                     DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
                     DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
@@ -206,17 +205,27 @@ namespace AwfulMetro.Views
 
         private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
-            if (e.Size.Height > e.Size.Width)
+            ChangeViewTemplate(e.Size.Width);
+        }
+
+        private void ChangeViewTemplate(double width)
+        {
+            ApplicationView currentView = ApplicationView.GetForCurrentView();
+
+            if (currentView.Orientation == ApplicationViewOrientation.Landscape)
             {
-                VisualStateManager.GoToState(this, "Portrait", false);
-            }
-            else if (e.Size.Width <= 620)
-            {
-                VisualStateManager.GoToState(this, "Snapped", false);
+                VisualStateManager.GoToState(this, "FullScreen", false);
             }
             else
             {
-                VisualStateManager.GoToState(this, "FullScreen", false);
+                if (width <= 620)
+                {
+                    VisualStateManager.GoToState(this, "Snapped", false);
+                }
+                else
+                {
+                    VisualStateManager.GoToState(this, "Portrait", false);
+                }
             }
         }
 
@@ -239,12 +248,12 @@ namespace AwfulMetro.Views
                 BookmarkSettings.Visibility = Visibility.Visible;
                 ForwardButton.Visibility = Visibility.Collapsed;
                 BackButton.Visibility = Visibility.Collapsed;
-                _forumThreadList = await threadManager.GetBookmarks(_forumCategory);
+                _forumThreadList = await _threadManager.GetBookmarks(_forumCategory);
             }
             else
             {
                 // TODO: Add/Refactor function to support page specific loads.
-                _forumThreadList = await threadManager.GetForumThreadsAndSubforums(_forumCategory);
+                _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
             }
 
             DefaultViewModel["Groups"] = _forumThreadList.ForumType;
@@ -269,18 +278,7 @@ namespace AwfulMetro.Views
             _navigationHelper.OnNavigatedTo(e);
             SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
             Rect bounds = Window.Current.Bounds;
-            if (bounds.Height > bounds.Width)
-            {
-                VisualStateManager.GoToState(this, "Portrait", false);
-            }
-            else if (bounds.Width <= 620)
-            {
-                VisualStateManager.GoToState(this, "Snapped", false);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "FullScreen", false);
-            }
+            ChangeViewTemplate(bounds.Width);
 
             Loaded += PageLoaded;
             Unloaded += PageUnloaded;

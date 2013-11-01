@@ -12,6 +12,7 @@ using AwfulMetro.Views;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using Windows.UI.ViewManagement;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
@@ -97,12 +98,6 @@ namespace AwfulMetro
             Frame.Navigate(typeof (ThreadListPage), itemId);
         }
 
-        private void CategoryView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var itemId = ((ForumCategoryEntity) e.ClickedItem);
-            itemGridView.ScrollIntoView(itemId);
-        }
-
         private void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof (RapSheetView));
@@ -120,24 +115,6 @@ namespace AwfulMetro
             Frame.Navigate(typeof (ThreadListPage), forum);
         }
 
-        private void ForumEntry_RightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            var element = sender as FrameworkElement;
-            if (element != null)
-            {
-                FlyoutBase.ShowAttachedFlyout(element);
-            }
-        }
-
-        private void ForumEntry_Holding(object sender, HoldingRoutedEventArgs e)
-        {
-            var element = sender as FrameworkElement;
-            if (element != null)
-            {
-                FlyoutBase.ShowAttachedFlyout(element);
-            }
-        }
-
         private void PageUnloaded(object sender, RoutedEventArgs e)
         {
             Window.Current.SizeChanged -= Window_SizeChanged;
@@ -150,19 +127,28 @@ namespace AwfulMetro
 
         private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
-            if (e.Size.Width <= 620)
-            {
-                VisualStateManager.GoToState(this, "Snapped", false);
-            }
-            else
+            ChangeViewTemplate(e.Size.Width);
+        }
+
+        private void ChangeViewTemplate(double width)
+        {
+            ApplicationView currentView = ApplicationView.GetForCurrentView();
+
+            if (currentView.Orientation == ApplicationViewOrientation.Landscape)
             {
                 VisualStateManager.GoToState(this, "FullScreen", false);
             }
-
-            //else if (e.Size.Height > e.Size.Width)
-            //{
-            //   //VisualStateManager.GoToState(this, state.State, transitions);
-            //}
+            else
+            {
+                if (width <= 620)
+                {
+                    VisualStateManager.GoToState(this, "Snapped", false);
+                }
+                else
+                {
+                    VisualStateManager.GoToState(this, "Portrait", false);
+                }
+            }
         }
 
         #region NavigationHelper registration
@@ -182,14 +168,7 @@ namespace AwfulMetro
             NavigationHelper.OnNavigatedTo(e);
 
             Rect bounds = Window.Current.Bounds;
-            if (bounds.Width <= 620)
-            {
-                VisualStateManager.GoToState(this, "Snapped", false);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "FullScreen", false);
-            }
+            ChangeViewTemplate(bounds.Width);
 
             Loaded += PageLoaded;
             Unloaded += PageUnloaded;
