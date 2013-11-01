@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-# Visual Studio Express 2013 for Windows
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwfulMetro", "AwfulMetro\AwfulMetro.csproj", "{C718897C-0AB7-4758-829F-4BBAEF27EA13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObjects", "BusinessObjects\BusinessObjects.csproj", "{3B2BFA3C-0EAF-4E71-B9E2-45DB1E9A4EBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwfulMetro.Core", "BusinessObjects\AwfulMetro.Core.csproj", "{3B2BFA3C-0EAF-4E71-B9E2-45DB1E9A4EBE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwfulMetro.Tests.Unit", "AwfulMetro.Tests.Unit\AwfulMetro.Tests.Unit.csproj", "{B2C52665-6238-4F2D-877D-BD1C83BD2032}"
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundStatus", "BackgroundStatus\BackgroundStatus.csproj", "{D7FBA7EE-E522-41E8-B47C-0D49292D4848}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwfulMetro.BackgroundStatus", "BackgroundStatus\AwfulMetro.BackgroundStatus.csproj", "{D7FBA7EE-E522-41E8-B47C-0D49292D4848}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

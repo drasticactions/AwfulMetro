@@ -22,7 +22,7 @@
         <m2:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="white" />
       </m2:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundStatus.BackgroundNotifyStatus">
+        <Extension Category="windows.backgroundTasks" EntryPoint="AwfulMetro.BackgroundStatus.BackgroundNotifyStatus">
           <BackgroundTasks>
             <Task Type="systemEvent" />
             <Task Type="timer" />

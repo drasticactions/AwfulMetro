@@ -1,4 +1,4 @@
-﻿using BusinessObjects.Entity;
+﻿using AwfulMetro.Core.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using Windows.Data.Xml.Dom;
 using Windows.Networking.Connectivity;
 using Windows.UI.Notifications;
 
-namespace BusinessObjects.Tools
+namespace AwfulMetro.Core.Tools
 {
     public class NotifyStatusTile
     {

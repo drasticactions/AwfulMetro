@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BusinessObjects.Entity;
+using AwfulMetro.Core.Entity;
 using HtmlAgilityPack;
 
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public class RapSheetManager
     {

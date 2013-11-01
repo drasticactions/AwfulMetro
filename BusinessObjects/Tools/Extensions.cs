@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace BusinessObjects.Tools
+namespace AwfulMetro.Core.Tools
 {
     public static class Extensions
     {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Tools;
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public interface IAuthenticationManager
     {

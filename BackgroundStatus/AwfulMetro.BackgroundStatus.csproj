@@ -9,7 +9,7 @@
     <ProjectGuid>{D7FBA7EE-E522-41E8-B47C-0D49292D4848}</ProjectGuid>
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BackgroundStatus</RootNamespace>
+    <RootNamespace>AwfulMetro.BackgroundStatus</RootNamespace>
     <AssemblyName>BackgroundStatus</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
@@ -102,9 +102,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj">
+    <ProjectReference Include="..\BusinessObjects\AwfulMetro.Core.csproj">
       <Project>{3b2bfa3c-0eaf-4e71-b9e2-45db1e9a4ebe}</Project>
-      <Name>BusinessObjects</Name>
+      <Name>AwfulMetro.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

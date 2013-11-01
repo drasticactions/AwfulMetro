@@ -1,4 +1,4 @@
-﻿using BusinessObjects.Tools;
+﻿using AwfulMetro.Core.Tools;
 
 using HtmlAgilityPack;
 using System;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace BusinessObjects.Entity
+namespace AwfulMetro.Core.Entity
 {
     public class ForumUserEntity
     {

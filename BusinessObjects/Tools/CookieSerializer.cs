@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 
-namespace BusinessObjects.Tools
+namespace AwfulMetro.Core.Tools
 {
     public class CookieSerializer
     {

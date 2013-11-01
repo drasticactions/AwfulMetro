@@ -1,4 +1,4 @@
-﻿namespace BusinessObjects.Entity
+﻿namespace AwfulMetro.Core.Entity
 {
     public class BBCodeEntity
     {

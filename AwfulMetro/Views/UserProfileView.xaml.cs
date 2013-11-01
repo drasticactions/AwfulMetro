@@ -2,9 +2,9 @@
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
-using BusinessObjects.Entity;
-using BusinessObjects.Manager;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 
 // The Hub Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=286574
 

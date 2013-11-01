@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using BusinessObjects.Manager;
+using AwfulMetro.Core.Manager;
 
 namespace AwfulMetro.Tests.Unit.Mocks
 {

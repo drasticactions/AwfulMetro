@@ -1,6 +1,6 @@
 using AwfulMetro.Common;
-using BusinessObjects.Manager;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 using System;
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

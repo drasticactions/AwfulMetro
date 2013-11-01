@@ -1,7 +1,7 @@
-﻿using BusinessObjects.Tools;
+﻿using AwfulMetro.Core.Tools;
 using System;
 
-namespace BusinessObjects.Entity
+namespace AwfulMetro.Core.Entity
 {
     public class ForumEntity
     {

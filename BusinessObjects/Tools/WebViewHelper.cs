@@ -8,7 +8,7 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace BusinessObjects.Tools
+namespace AwfulMetro.Core.Tools
 {
     /// <summary>
     /// Used to bind Webviews to lists.

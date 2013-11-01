@@ -2,8 +2,8 @@
 using System.Net;
 using System.Threading.Tasks;
 using AwfulMetro.Tests.Unit.Mocks;
-using BusinessObjects.Manager;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace AwfulMetro.Tests.Unit

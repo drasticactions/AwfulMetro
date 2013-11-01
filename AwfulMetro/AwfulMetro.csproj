@@ -234,13 +234,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BackgroundStatus\BackgroundStatus.csproj">
+    <ProjectReference Include="..\BackgroundStatus\AwfulMetro.BackgroundStatus.csproj">
       <Project>{d7fba7ee-e522-41e8-b47c-0d49292d4848}</Project>
-      <Name>BackgroundStatus</Name>
+      <Name>AwfulMetro.BackgroundStatus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj">
+    <ProjectReference Include="..\BusinessObjects\AwfulMetro.Core.csproj">
       <Project>{3b2bfa3c-0eaf-4e71-b9e2-45db1e9a4ebe}</Project>
-      <Name>BusinessObjects</Name>
+      <Name>AwfulMetro.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

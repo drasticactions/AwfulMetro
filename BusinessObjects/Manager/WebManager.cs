@@ -1,5 +1,5 @@
 ﻿using System.Net.NetworkInformation;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public class WebManager : IWebManager
     {

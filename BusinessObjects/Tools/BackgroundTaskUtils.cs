@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
 
-namespace BusinessObjects.Tools
+namespace AwfulMetro.Core.Tools
 {
     public class BackgroundTaskUtils
     {

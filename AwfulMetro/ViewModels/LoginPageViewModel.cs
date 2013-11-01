@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AwfulMetro.Common;
-using BusinessObjects.Manager;
+using AwfulMetro.Core.Manager;
 
 namespace AwfulMetro.ViewModels
 {

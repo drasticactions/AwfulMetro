@@ -3,15 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
-using BusinessObjects.Entity;
-using BusinessObjects.Manager;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 
-namespace BackgroundStatus
+namespace AwfulMetro.BackgroundStatus
 {
     public sealed class BackgroundNotifyStatus : IBackgroundTask
     {
-        private readonly ThreadManager threadManager = new ThreadManager();
+        private readonly ThreadManager _threadManager = new ThreadManager();
         private List<long> _threadIds = new List<long>();
 
         public async void Run(IBackgroundTaskInstance taskInstance)
@@ -29,7 +29,7 @@ namespace BackgroundStatus
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             var forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
-            ForumCollectionEntity forumCollection = await threadManager.GetBookmarks(forumCategory);
+            ForumCollectionEntity forumCollection = await _threadManager.GetBookmarks(forumCategory);
             List<ForumThreadEntity> forumThreads =
                 forumCollection.ForumThreadList.Where(thread => thread.RepliesSinceLastOpened > 0).ToList();
 

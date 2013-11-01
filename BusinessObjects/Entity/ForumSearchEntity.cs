@@ -1,4 +1,4 @@
-﻿using BusinessObjects.Tools;
+﻿using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace BusinessObjects.Entity
+namespace AwfulMetro.Core.Entity
 {
     public class ForumSearchEntity
     {

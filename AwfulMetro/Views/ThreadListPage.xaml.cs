@@ -1,6 +1,6 @@
 using AwfulMetro.Common;
-using BusinessObjects.Entity;
-using BusinessObjects.Manager;
+using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

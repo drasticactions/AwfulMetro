@@ -3,7 +3,7 @@ using Windows.ApplicationModel.Background;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Tools;
 
 // The Settings Flyout item template is documented at http://go.microsoft.com/fwlink/?LinkId=273769
 

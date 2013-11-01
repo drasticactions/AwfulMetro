@@ -1,10 +1,10 @@
-﻿using BusinessObjects.Entity;
-using BusinessObjects.Tools;
+﻿using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Tools;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public class TagManager
     {

@@ -6,8 +6,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
-using BusinessObjects.Entity;
-using BusinessObjects.Manager;
+using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 

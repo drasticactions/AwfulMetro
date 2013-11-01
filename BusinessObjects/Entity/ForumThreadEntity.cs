@@ -1,10 +1,10 @@
-﻿using BusinessObjects.Tools;
+﻿using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 using System;
 using System.Linq;
 using System.Net;
 
-namespace BusinessObjects.Entity
+namespace AwfulMetro.Core.Entity
 {
     /// <summary>
     /// Represents a thread in a forum.

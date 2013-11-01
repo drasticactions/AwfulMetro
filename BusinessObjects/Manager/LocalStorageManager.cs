@@ -3,9 +3,9 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Windows.Storage;
-using BusinessObjects.Tools;
+using AwfulMetro.Core.Tools;
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public interface ILocalStorageManager
     {

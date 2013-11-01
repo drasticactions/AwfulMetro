@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public class LoginFailedException : Exception
     {

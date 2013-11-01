@@ -1,8 +1,8 @@
-﻿using BusinessObjects.Tools;
+﻿using AwfulMetro.Core.Tools;
 using System;
 using System.Collections.Generic;
 
-namespace BusinessObjects.Entity
+namespace AwfulMetro.Core.Entity
 {
     public class ForumCategoryEntity
     {

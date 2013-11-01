@@ -1,4 +1,4 @@
-﻿namespace BusinessObjects.Tools
+﻿namespace AwfulMetro.Core.Tools
 {
     public class Constants
     {

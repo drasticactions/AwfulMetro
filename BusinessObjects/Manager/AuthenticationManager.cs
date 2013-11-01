@@ -1,9 +1,9 @@
-﻿using BusinessObjects.Tools;
+﻿using AwfulMetro.Core.Tools;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public class AuthenticationManager : IAuthenticationManager
     {

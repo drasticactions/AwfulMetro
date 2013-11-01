@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using BusinessObjects.Entity;
+using AwfulMetro.Core.Entity;
 
-namespace BusinessObjects.Manager
+namespace AwfulMetro.Core.Manager
 {
     public static class BBCodeManager
     {
