@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace AwfulMetro.Tests.Unit
 {
+    // ReSharper disable InconsistentNaming
     [TestClass]
     public class When_Serializing_Cookies
     {

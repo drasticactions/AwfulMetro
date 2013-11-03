@@ -1,19 +1,16 @@
 ﻿using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AwfulMetro.Core.Entity
 {
     public class PopularThreadsTrendsEntity
     {
-        public String Tag { get; private set; }
+        public string Tag { get; private set; }
 
-        public String Title { get; private set; }
+        public string Title { get; private set; }
 
         public long Id { get; private set; }
 

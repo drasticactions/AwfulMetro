@@ -1,11 +1,5 @@
-﻿using AwfulMetro.Core.Tools;
-using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
+﻿using HtmlAgilityPack;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AwfulMetro.Core.Entity
 {

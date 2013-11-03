@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AwfulMetro.Core.Entity
+﻿namespace AwfulMetro.Core.Entity
 {
     public class ThreadReplyEntity
     {
@@ -15,27 +9,13 @@ namespace AwfulMetro.Core.Entity
             this.FormKey = formKey;
             this.FormCookie = formCookie;
         }
-        public long ThreadId 
-        { 
-            get; 
-            private set; 
-        }
 
-        public string Post
-        {
-            get;
-            private set;
-        }
-        public string FormKey
-        {
-            get;
-            private set;
-        }
+        public long ThreadId {  get;  private set;  }
 
-        public string FormCookie
-        {
-            get;
-            private set;
-        }
+        public string Post { get; private set; }
+
+        public string FormKey { get; private set; }
+
+        public string FormCookie { get; private set; }
     }
 }

@@ -12,7 +12,7 @@ namespace AwfulMetro.Core.Tools
         public static string BackgroundTaskProgress = "";
         public static bool BackgroundTaskRegistered = false;
 
-        public async static Task<BackgroundTaskRegistration> RegisterBackgroundTask(String taskEntryPoint, String name, IBackgroundTrigger trigger, IBackgroundCondition condition)
+        public async static Task<BackgroundTaskRegistration> RegisterBackgroundTask(string taskEntryPoint, string name, IBackgroundTrigger trigger, IBackgroundCondition condition)
         {
             var builder = new BackgroundTaskBuilder { Name = name, TaskEntryPoint = taskEntryPoint };
 
@@ -42,7 +42,7 @@ namespace AwfulMetro.Core.Tools
             UpdateBackgroundTaskStatus(name, false);
         }
 
-        public static void UpdateBackgroundTaskStatus(String name, bool registered)
+        public static void UpdateBackgroundTaskStatus(string name, bool registered)
         {
             switch (name)
             {
@@ -52,7 +52,7 @@ namespace AwfulMetro.Core.Tools
             }
         }
 
-        public static String GetBackgroundTaskStatus(String name)
+        public static string GetBackgroundTaskStatus(string name)
         {
             var registered = false;
             switch (name)

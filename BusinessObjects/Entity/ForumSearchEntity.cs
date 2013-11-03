@@ -1,32 +1,28 @@
-﻿using AwfulMetro.Core.Tools;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace AwfulMetro.Core.Entity
 {
     public class ForumSearchEntity
     {
-        public String Tag { get; private set; }
+        public string Tag { get; private set; }
 
-        public String ThreadTitle { get; private set; }
+        public string ThreadTitle { get; private set; }
 
-        public String PostContent { get; private set; }
+        public string PostContent { get; private set; }
 
         public long PostId { get; private set; }
 
         public long ThreadId { get; private set; }
 
-        public String ForumTitle { get; private set; }
+        public string ForumTitle { get; private set; }
 
         public long ForumId { get; private set; }
 
-        public String Author { get; private set; }
+        public string Author { get; private set; }
 
         public long AuthorId { get; private set; }
 
@@ -34,7 +30,7 @@ namespace AwfulMetro.Core.Entity
 
         public int ThreadViewCount { get; private set; }
 
-        public String Date { get; private set; }
+        public string Date { get; private set; }
 
         public void Parse(HtmlNode searchRow)
         {

@@ -3,17 +3,16 @@ using HtmlAgilityPack;
 using System;
 using System.Linq;
 using System.Net;
-using System.Text;
 
-namespace AwfulMetro.Core.Entity
+namespace AwfulMetro.Core.Entity 
 {
     /// <summary>
     /// Represents an individual post in a thread.
     /// </summary>
     public class ForumPostEntity
     {
-
         public ForumUserEntity User { get; private set; }
+
         public string PostDate { get; private set; }
 
         public string PostReportLink { get; private set; }

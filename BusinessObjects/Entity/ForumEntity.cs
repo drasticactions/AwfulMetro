@@ -11,7 +11,7 @@ namespace AwfulMetro.Core.Entity
         /// <param name="name">The name of the forum.</param>
         /// <param name="location">The URL location of the forum.</param>
         /// <param name="description">The forum description.</param>
-        public ForumEntity(string name, string location, String description)
+        public ForumEntity(string name, string location, string description)
         {
             this.Name = name;
             this.Location = Constants.BASE_URL + location;
@@ -23,10 +23,12 @@ namespace AwfulMetro.Core.Entity
             this.Description = description;
             this.CurrentPage = 1;
             this.TotalPages = 1;
+            this.IsBookmarks = name == "Bookmarks";
         }
+
         public string Name { get; private set; }
 
-        public string Location { get; set; }
+        public string Location { get; private set; }
 
         public string Description { get; private set; }
 
@@ -36,6 +38,6 @@ namespace AwfulMetro.Core.Entity
 
         public long ForumId { get; private set; }
 
-        public bool IsBookmarks { get; set; }
+        public bool IsBookmarks { get; private set; }
     }
 }

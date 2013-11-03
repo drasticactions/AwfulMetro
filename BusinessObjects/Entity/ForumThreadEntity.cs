@@ -76,7 +76,7 @@ namespace AwfulMetro.Core.Entity
             this.ImageIconLocation = threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("icon")).Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
         }
 
-        public void ParseFromPopularThread(String name, long threadId)
+        public void ParseFromPopularThread(string name, long threadId)
         {
             this.Name = name;
             this.ThreadId = threadId;
