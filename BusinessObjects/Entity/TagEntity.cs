@@ -11,8 +11,8 @@ namespace AwfulMetro.Core.Entity
 
         public void Parse(HtmlNode tagNode)
         {
-            this.Title = tagNode.Descendants("img").FirstOrDefault().GetAttributeValue("alt", "");
-            this.ImageUrl = tagNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
+            this.Title = tagNode.Descendants("img").FirstOrDefault().GetAttributeValue("alt", string.Empty);
+            this.ImageUrl = tagNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
         }
     }
 }

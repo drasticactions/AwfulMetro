@@ -10,6 +10,8 @@ namespace AwfulMetro.Core.Entity
     // Food for thought: This might be better served as a ForumUser entity, with a ForumUserProfile subclass.
     public class ForumUserEntity
     {
+        private ForumUserEntity() { }
+
         public string Username { get; private set; }
 
         public string AvatarLink { get; private set; }
@@ -54,44 +56,54 @@ namespace AwfulMetro.Core.Entity
 
         public string SellerRating { get; private set; }
 
-        public void ParseFromPost(HtmlNode postNode)
+        public static ForumUserEntity FromPost(HtmlNode postNode)
         {
-            this.Username = WebUtility.HtmlDecode(postNode.Descendants("dt").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("author")).InnerHtml);
-            this.DateJoined = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("registered")).InnerHtml;
-            if (postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("title")) != null)
+            var user = new ForumUserEntity();
+            user.Username = WebUtility.HtmlDecode(postNode.Descendants("dt").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author")).InnerHtml);
+            user.DateJoined = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("registered")).InnerHtml;
+            var avatarTitle = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
+            var avatarImage = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("title")).Descendants("img").FirstOrDefault();
+
+            if (avatarTitle != null)
             {
-                this.AvatarTitle = WebUtility.HtmlDecode(postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("title")).InnerText.WithoutNewLines().Trim());
+                user.AvatarTitle = WebUtility.HtmlDecode(avatarTitle.InnerText.WithoutNewLines().Trim());
             }
-            if (postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("title")).Descendants("img").FirstOrDefault() != null)
+            if (avatarImage != null)
             {
-                this.AvatarLink = FixPostHtmlImage(postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("title")).Descendants("img").FirstOrDefault().OuterHtml);
+                user.AvatarLink = FixPostHtmlImage(avatarImage.OuterHtml);
             }
-            this.Id = Convert.ToInt64(postNode.DescendantsAndSelf("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("userinfo")).GetAttributeValue("class", "").Split('-')[1]);
+            user.Id = Convert.ToInt64(postNode.DescendantsAndSelf("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo")).GetAttributeValue("class", string.Empty).Split('-')[1]);
+            return user;
         }
 
-        public void ParseFromUserProfile(HtmlNode profileNode)
+        public static ForumUserEntity FromUserProfile(HtmlNode profileNode)
         {
-            this.AboutUser = string.Empty;
+            var user = new ForumUserEntity();
+
+            user.AboutUser = string.Empty;
             foreach (var aboutParagraph in profileNode.Descendants("p"))
             {
-                this.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) + Environment.NewLine + Environment.NewLine;
+                user.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) + Environment.NewLine + Environment.NewLine;
             }
-            var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("additional"));
-            
+
+            user.Username = profileNode.Descendants("dt").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author")).InnerText;
+            var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));
+
             var additionalProfileAttributes = ParseAdditionalProfileAttributes(additionalNode);
 
-            this.DateJoined = additionalProfileAttributes["Member Since"];
-            this.PostCount = int.Parse(additionalProfileAttributes["Post Count"]);
-            this.PostRate = additionalProfileAttributes["Post Rate"];
-            this.LastPostDate = additionalProfileAttributes["Last Post"];
+            user.DateJoined = additionalProfileAttributes["Member Since"];
+            user.PostCount = int.Parse(additionalProfileAttributes["Post Count"]);
+            user.PostRate = additionalProfileAttributes["Post Rate"];
+            user.LastPostDate = additionalProfileAttributes["Last Post"];
             if (additionalProfileAttributes.ContainsKey("Seller Rating"))
             {
-                this.SellerRating = additionalProfileAttributes["Seller Rating"];
+                user.SellerRating = additionalProfileAttributes["Seller Rating"];
             }
             if (additionalProfileAttributes.ContainsKey("Location"))
             {
-                this.Location = additionalProfileAttributes["Location"];
+                user.Location = additionalProfileAttributes["Location"];
             }
+            return user;
         }
 
         private static Dictionary<string, string> ParseAdditionalProfileAttributes(HtmlNode additionalNode)

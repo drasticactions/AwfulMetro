@@ -36,18 +36,18 @@ namespace AwfulMetro.Core.Entity
         {
             if (!searchRow.Descendants("td").FirstOrDefault().InnerText.Contains("no permission"))
             {
-                this.Tag = searchRow.Descendants("td").FirstOrDefault().Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
+                this.Tag = searchRow.Descendants("td").FirstOrDefault().Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
                 searchRow.Descendants("td").FirstOrDefault().Remove();
                 this.ThreadTitle = WebUtility.HtmlDecode(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().InnerText);
-                this.ThreadId = Int64.Parse(Regex.Match(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Split('=')[1], @"\d+").Value);
+                this.ThreadId = Int64.Parse(Regex.Match(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[1], @"\d+").Value);
                 this.PostContent = WebUtility.HtmlDecode(searchRow.Descendants("td").FirstOrDefault().Descendants("div").FirstOrDefault().InnerText);
-                this.PostId = Int64.Parse(Regex.Match(searchRow.Descendants("td").FirstOrDefault().Descendants("a").LastOrDefault().GetAttributeValue("href", "").Split('=')[3], @"\d+").Value);
+                this.PostId = Int64.Parse(Regex.Match(searchRow.Descendants("td").FirstOrDefault().Descendants("a").LastOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3], @"\d+").Value);
                 searchRow.Descendants("td").FirstOrDefault().Remove();
                 this.ForumTitle = WebUtility.HtmlDecode(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().InnerText);
-                this.ForumId = Int64.Parse(Regex.Match(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Split('=')[1], @"\d+").Value);
+                this.ForumId = Int64.Parse(Regex.Match(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[1], @"\d+").Value);
                 searchRow.Descendants("td").FirstOrDefault().Remove();
                 this.Author = WebUtility.HtmlDecode(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().InnerText);
-                this.AuthorId = Convert.ToInt64(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Split('=')[2]);
+                this.AuthorId = Convert.ToInt64(searchRow.Descendants("td").FirstOrDefault().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[2]);
                 searchRow.Descendants("td").FirstOrDefault().Remove();
                 this.ReplyCount = Convert.ToInt32(searchRow.Descendants("td").FirstOrDefault().InnerText);
                 searchRow.Descendants("td").FirstOrDefault().Remove();

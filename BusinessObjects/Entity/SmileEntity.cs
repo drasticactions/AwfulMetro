@@ -13,7 +13,7 @@ namespace AwfulMetro.Core.Entity
         public void Parse(HtmlNode smileNode)
         {
             this.Title = smileNode.Descendants("div").FirstOrDefault().InnerText;
-            this.ImageUrl = smileNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
+            this.ImageUrl = smileNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
         }
     }
 }

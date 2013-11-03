@@ -34,15 +34,15 @@ namespace AwfulMetro.Core.Entity
             this.Date = rapSheetRows.First().InnerText;
             rapSheetRows.First().Remove();
             this.HorribleJerk = rapSheetRows.First().Descendants("a").FirstOrDefault().InnerText;
-            this.HorribleJerkId = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Split('=')[3]);
+            this.HorribleJerkId = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
             rapSheetRows.First().Remove();
             this.PunishmentReason = rapSheetRows.First().InnerText;
             rapSheetRows.First().Remove();
             this.RequestedBy = rapSheetRows.First().Descendants("a").FirstOrDefault().InnerText;
-            this.RequestedById = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Split('=')[3]);
+            this.RequestedById = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
             rapSheetRows.First().Remove();
             this.ApprovedBy = rapSheetRows.First().Descendants("a").FirstOrDefault().InnerText;
-            this.ApprovedById = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Split('=')[3]);
+            this.ApprovedById = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
             rapSheetRows.First().Remove();
         }
     }

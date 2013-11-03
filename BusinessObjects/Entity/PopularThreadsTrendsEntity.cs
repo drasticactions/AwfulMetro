@@ -18,15 +18,15 @@ namespace AwfulMetro.Core.Entity
 
         public void ParseThread(HtmlNode popularThreadsNode)
         {
-            this.Tag = popularThreadsNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
+            this.Tag = popularThreadsNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
             this.Title = WebUtility.HtmlDecode(popularThreadsNode.Descendants("a").FirstOrDefault().InnerText);
-            this.Id = Convert.ToInt64(popularThreadsNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", "").Split('=')[1]);
+            this.Id = Convert.ToInt64(popularThreadsNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[1]);
         }
 
         public void ParseTrend(HtmlNode popularTrendsNode)
         {
             this.Title = WebUtility.HtmlDecode(popularTrendsNode.Descendants("a").FirstOrDefault().InnerText);
-            this.LocationUrl = Constants.FRONT_PAGE + popularTrendsNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", "");
+            this.LocationUrl = Constants.FRONT_PAGE + popularTrendsNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty);
         }
 
     }
