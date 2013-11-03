@@ -91,7 +91,6 @@
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
-            Grid.RowSpan="8"
             Grid.Row="1"
             Visibility="Visible"
             Padding="0,0,40,46"

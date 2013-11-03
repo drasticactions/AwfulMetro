@@ -87,7 +87,7 @@ namespace AwfulMetro.Views
         ///     displaying the item clicked.
         /// </param>
         /// <param name="e">Event data that describes the item clicked.</param>
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        public void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
@@ -95,17 +95,17 @@ namespace AwfulMetro.Views
             this.Frame.Navigate(typeof (ThreadListPage), itemId);
         }
 
-        private void RapSheetButton_Click(object sender, RoutedEventArgs e)
+        public void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof (RapSheetView));
         }
 
-        private void FrontPageButton_Click(object sender, RoutedEventArgs e)
+        public void FrontPageButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof (FrontPage));
         }
 
-        private void BookmarkButton_Click(object sender, RoutedEventArgs e)
+        public void BookmarkButton_Click(object sender, RoutedEventArgs e)
         {
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
             this.Frame.Navigate(typeof (ThreadListPage), forum);
