@@ -112,6 +112,7 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="When_Parsing_A_Forum_Thread.cs" />
     <Compile Include="When_Parsing_A_Forum_User_From_A_Post.cs" />
     <Compile Include="Helpers\TestHelpers.cs" />
     <Compile Include="Mocks\FakeLocalStorageManager.cs" />
