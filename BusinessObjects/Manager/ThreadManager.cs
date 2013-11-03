@@ -33,7 +33,7 @@ namespace AwfulMetro.Core.Manager
             HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
 
 
-            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", string.Empty).Equals("thread")))
+            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", string.Empty).StartsWith("thread")))
             {
                 var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
@@ -59,7 +59,7 @@ namespace AwfulMetro.Core.Manager
 
             HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
 
-            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", string.Empty).Equals("thread")))
+            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", string.Empty).StartsWith("thread")))
             {
                 var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
