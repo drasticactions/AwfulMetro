@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AwfulMetro.Core.Entity
 {
     public class TagCategoryEntity
     {
-        public List<TagEntity> List { get; private set; }
+        public IEnumerable<TagEntity> List { get; private set; }
 
         public string Category { get; private set; }
 
-        public TagCategoryEntity(string category, List<TagEntity> list)
+        public TagCategoryEntity(string category, IEnumerable<TagEntity> list)
         {
             this.List = list;
             this.Category = category;

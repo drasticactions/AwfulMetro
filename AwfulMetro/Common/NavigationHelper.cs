@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -134,13 +131,8 @@ namespace AwfulMetro.Common
         {
             get
             {
-                if (_goForwardCommand == null)
-                {
-                    _goForwardCommand = new RelayCommand(
-                        () => this.GoForward(),
-                        () => this.CanGoForward());
-                }
-                return _goForwardCommand;
+                return this._goForwardCommand
+                       ?? (this._goForwardCommand = new RelayCommand(this.GoForward, this.CanGoForward));
             }
         }
 
@@ -261,7 +253,7 @@ namespace AwfulMetro.Common
 
         #region Process lifetime management
 
-        private String _pageKey;
+        private string _pageKey;
 
         /// <summary>
         /// Register this event on the current page to populate the page
@@ -358,12 +350,12 @@ namespace AwfulMetro.Common
         /// The parameter value passed to <see cref="Frame.Navigate(Type, Object)"/> 
         /// when this page was initially requested.
         /// </summary>
-        public Object NavigationParameter { get; private set; }
+        public object NavigationParameter { get; private set; }
         /// <summary>
         /// A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.
         /// </summary>
-        public Dictionary<string, Object> PageState { get; private set; }
+        public Dictionary<string, object> PageState { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoadStateEventArgs"/> class.
@@ -376,8 +368,7 @@ namespace AwfulMetro.Common
         /// A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.
         /// </param>
-        public LoadStateEventArgs(Object navigationParameter, Dictionary<string, Object> pageState)
-            : base()
+        public LoadStateEventArgs(object navigationParameter, Dictionary<string, object> pageState)
         {
             this.NavigationParameter = navigationParameter;
             this.PageState = pageState;
@@ -391,14 +382,13 @@ namespace AwfulMetro.Common
         /// <summary>
         /// An empty dictionary to be populated with serializable state.
         /// </summary>
-        public Dictionary<string, Object> PageState { get; private set; }
+        public Dictionary<string, object> PageState { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SaveStateEventArgs"/> class.
         /// </summary>
         /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
-        public SaveStateEventArgs(Dictionary<string, Object> pageState)
-            : base()
+        public SaveStateEventArgs(Dictionary<string, object> pageState)
         {
             this.PageState = pageState;
         }

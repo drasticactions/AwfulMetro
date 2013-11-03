@@ -18,15 +18,13 @@ namespace AwfulMetro.Core.Manager
         public async Task<ForumUserEntity> GetUserFromProfilePage(ForumUserEntity user, long userId)
         {
             string url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
-            //inject this
             var doc = (await _webManager.DownloadHtml(url)).Document;
             
             if(string.IsNullOrEmpty(user.Username))
             {
-                user.ParseFromPost(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("id", "").Contains("thread")));
+                return ForumUserEntity.FromPost(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread")));
             }
-            user.ParseFromUserProfile(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("info")));
-            return user;
+            return ForumUserEntity.FromUserProfile(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("info")));
         }
     }
 }

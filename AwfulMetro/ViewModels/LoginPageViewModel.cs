@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AwfulMetro.Common;
+using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 
 namespace AwfulMetro.ViewModels
@@ -10,21 +11,21 @@ namespace AwfulMetro.ViewModels
         public event EventHandler<EventArgs> LoginSuccessful;
         public event EventHandler<EventArgs> LoginFailed;
 
-        private readonly IAuthenticationManager authManager;
-        private string userName;
-        private string password;
+        private readonly IAuthenticationManager _authManager;
+        private string _userName;
+        private string _password;
 
         public string UserName
         {
             get
             {
-                return userName;
+                return this._userName;
             }
             set
             {
-                if (userName != value)
+                if (this._userName != value)
                 {
-                    userName = value;
+                    this._userName = value;
                     this.OnPropertyChanged();
                     ClickLoginButtonCommand.RaiseCanExecuteChanged();
                 }
@@ -35,13 +36,13 @@ namespace AwfulMetro.ViewModels
         {
             get
             {
-                return password;
+                return this._password;
             }
             set
             {
-                if (password != value)
+                if (this._password != value)
                 {
-                    password = value;
+                    this._password = value;
                     this.OnPropertyChanged();
                     ClickLoginButtonCommand.RaiseCanExecuteChanged();
                 }
@@ -61,7 +62,7 @@ namespace AwfulMetro.ViewModels
         public LoginPageViewModel(IAuthenticationManager authManager)
         {
             ClickLoginButtonCommand = new AsyncDelegateCommand(async o => { await this.ClickLoginButton(); }, o => CanClickLoginButton);
-            this.authManager = authManager;
+            this._authManager = authManager;
         }
 
         public LoginPageViewModel() : this(new AuthenticationManager())
@@ -74,7 +75,7 @@ namespace AwfulMetro.ViewModels
             bool loginResult;
             try
             {
-                loginResult = await authManager.Authenticate(this.UserName, this.Password);
+                loginResult = await this._authManager.Authenticate(this.UserName, this.Password);
             }
             catch (LoginFailedException)
             {

@@ -18,9 +18,9 @@ namespace AwfulMetro.Core.Entity
             this.CategoryId = Convert.ToInt64(location.Split('=')[1]);
             this.ForumList = new List<ForumEntity>();
         }
-        public String Name { get; private set; }
+        public string Name { get; private set; }
 
-        public String Location { get; private set; }
+        public string Location { get; private set; }
 
         public long CategoryId { get; private set; }
 

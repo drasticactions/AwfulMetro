@@ -67,7 +67,6 @@ namespace AwfulMetro.Views
             if (user == null)
             {
                 userId = (long) e.NavigationParameter;
-                user = new ForumUserEntity();
             }
             else
             {

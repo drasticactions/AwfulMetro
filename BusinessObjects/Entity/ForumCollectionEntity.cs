@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AwfulMetro.Core.Entity
 {
     public class ForumCollectionEntity
     {
-        public List<ForumThreadEntity> ForumThreadList { get; private set; }
+        public IEnumerable<ForumThreadEntity> ForumThreadList { get; private set; }
 
-        public List<ForumEntity> ForumSubcategoryList { get; private set; }
+        public IEnumerable<ForumEntity> ForumSubcategoryList { get; private set; }
 
-        public String ForumName { get; private set; }
+        public string ForumName { get; private set; }
 
-        public List<String> ForumType { get; private set; }
+        public IEnumerable<string> ForumType { get; private set; }
 
         public int CurrentPage { get; private set; }
-        public ForumCollectionEntity(String forumName, List<ForumThreadEntity> forumThreadList, List<ForumEntity> forumSubcategoryList)
+
+        public ForumCollectionEntity(string forumName, IEnumerable<ForumThreadEntity> forumThreadList, IEnumerable<ForumEntity> forumSubcategoryList)
         {
             this.ForumThreadList = forumThreadList;
             this.ForumSubcategoryList = forumSubcategoryList;
-            this.ForumType = new List<string>();
-            this.ForumType.Add("Subforums");
-            this.ForumType.Add("Threads");
+            this.ForumType = new List<string> { "Subforums", "Threads" };
             this.ForumName = forumName;
             this.CurrentPage = 1;
         }

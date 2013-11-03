@@ -65,7 +65,7 @@
                                    Text="{Binding UserEntity.AboutUser}"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Member Since: " FontSize="25"/>
-                            <TextBlock FontSize="25" Text="{Binding UserEntity.UserDateJoined}"/>
+                            <TextBlock FontSize="25" Text="{Binding UserEntity.DateJoined}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="25" Text="Post Count: "/>

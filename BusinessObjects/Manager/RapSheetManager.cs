@@ -23,7 +23,7 @@ namespace AwfulMetro.Core.Manager
             //inject this
             var doc = (await _webManager.DownloadHtml(url)).Document;
             
-            HtmlNode rapSheetNode = doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("standard full"));
+            HtmlNode rapSheetNode = doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("standard full"));
             rapSheetNode.Descendants("tr").FirstOrDefault().Remove();
             if (rapSheetNode.Descendants("tr").Any())
             {

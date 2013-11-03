@@ -22,7 +22,7 @@ namespace AwfulMetro.Core.Manager
             //inject this
             var doc = (await _webManager.DownloadHtml(string.Format(Constants.NEW_THREAD, forumId))).Document;
 
-            var icons = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Equals("posticon"));
+            var icons = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", string.Empty).Equals("posticon"));
 
             foreach(var icon in icons)
             {

@@ -30,10 +30,10 @@ namespace AwfulMetro.Core.Manager
             }
 
             HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
-            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("threadlist"));
+            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
 
 
-            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
+            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", string.Empty).Equals("thread")))
             {
                 var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
@@ -55,30 +55,30 @@ namespace AwfulMetro.Core.Manager
             HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
             HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
 
-            forumCategory.TotalPages = Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", ""));
+            forumCategory.TotalPages = Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", string.Empty));
 
-            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("threadlist"));
+            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
 
-            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", "").Equals("thread")))
+            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", string.Empty).Equals("thread")))
             {
                 var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
                 forumThreadList.Add(threadEntity);
             }
 
-            if (doc.DocumentNode.Descendants().Any(node => node.GetAttributeValue("id", "").Contains("subforums")))
+            if (doc.DocumentNode.Descendants().Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums")))
             {
-                forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", "").Contains("subforums"));
+                forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"));
                 foreach (HtmlNode subforumNode in forumNode.Descendants("tr"))
                 {
                     if (subforumNode.Descendants("a").Any())
                     {
-                        var forumSubCategory = new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", ""), "");
+                        var forumSubCategory = new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty), string.Empty);
                         forumSubcategoryList.Add(forumSubCategory);
                     }
                 }
             }
-            forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("bclast"));
+            forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("bclast"));
             return new ForumCollectionEntity(WebUtility.HtmlDecode(forumNode.InnerText), forumThreadList, forumSubcategoryList);
         }
 

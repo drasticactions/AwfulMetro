@@ -51,32 +51,32 @@ namespace AwfulMetro.Core.Entity
         /// <param name="threadNode">The thread HTML node.</param>
         public void Parse(HtmlNode threadNode)
         {
-            this.Name = WebUtility.HtmlDecode(threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("thread_title")).InnerText);
-            this.KilledBy = threadNode.Descendants("a").LastOrDefault(node => node.GetAttributeValue("class", "").Equals("author")).InnerText;
-            this.IsSticky = threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", "").Contains("title_sticky"));
-            this.IsLocked = threadNode.GetAttributeValue("class", "").Contains("closed");
-            this.CanMarkAsUnread = threadNode.Descendants("a").Any(node => node.GetAttributeValue("class", "").Equals("x"));
+            this.Name = WebUtility.HtmlDecode(threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).InnerText);
+            this.KilledBy = threadNode.Descendants("a").LastOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author")).InnerText;
+            this.IsSticky = threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("title_sticky"));
+            this.IsLocked = threadNode.GetAttributeValue("class", string.Empty).Contains("closed");
+            this.CanMarkAsUnread = threadNode.Descendants("a").Any(node => node.GetAttributeValue("class", string.Empty).Equals("x"));
             this.HasBeenViewed = this.CanMarkAsUnread;
-            this.Author = threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("author")).InnerText;
-            if (threadNode.Descendants("a").Any(node => node.GetAttributeValue("class", "").Equals("count")))
+            this.Author = threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author")).InnerText;
+            if (threadNode.Descendants("a").Any(node => node.GetAttributeValue("class", string.Empty).Equals("count")))
             {
-                this.RepliesSinceLastOpened = Convert.ToInt32(threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("count")).InnerText);
+                this.RepliesSinceLastOpened = Convert.ToInt32(threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("count")).InnerText);
             }
-            if (threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", "").Contains("replies")))
+            if (threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("replies")))
             {
-                this.ReplyCount = Convert.ToInt32(threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("replies")).InnerText);
+                this.ReplyCount = Convert.ToInt32(threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("replies")).InnerText);
             }
             else
             {
                 this.ReplyCount = 1;
             }
             this.TotalPages = (this.ReplyCount / 40) + 1;
-            this.Location = Constants.BASE_URL + threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("thread_title")).GetAttributeValue("href","");
+            this.Location = Constants.BASE_URL + threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).GetAttributeValue("href",string.Empty);
             this.ThreadId = Convert.ToInt64(this.Location.Split('=')[1]);
-            this.ImageIconLocation = threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("icon")).Descendants("img").FirstOrDefault().GetAttributeValue("src", "");
+            this.ImageIconLocation = threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon")).Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
         }
 
-        public void ParseFromPopularThread(String name, long threadId)
+        public void ParseFromPopularThread(string name, long threadId)
         {
             this.Name = name;
             this.ThreadId = threadId;

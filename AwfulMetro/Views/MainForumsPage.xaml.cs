@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
-using AwfulMetro.Views;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
-using Windows.UI.ViewManagement;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 
-namespace AwfulMetro
+namespace AwfulMetro.Views
 {
     /// <summary>
     ///     A page that displays a grouped collection of items.
@@ -26,10 +23,10 @@ namespace AwfulMetro
         private readonly ForumManager _forumManager = new ForumManager();
         public MainForumsPage()
         {
-            DefaultViewModel = new ObservableDictionary();
-            InitializeComponent();
-            NavigationHelper = new NavigationHelper(this);
-            NavigationHelper.LoadState += navigationHelper_LoadState;
+            this.DefaultViewModel = new ObservableDictionary();
+            this.InitializeComponent();
+            this.NavigationHelper = new NavigationHelper(this);
+            this.NavigationHelper.LoadState += this.navigationHelper_LoadState;
         }
 
 
@@ -59,11 +56,11 @@ namespace AwfulMetro
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
+            this.loadingProgressBar.Visibility = Visibility.Visible;
             List<ForumCategoryEntity> forumGroupList = await this._forumManager.GetForumCategoryMainPage();
-            DefaultViewModel["Groups"] = forumGroupList;
-            DefaultViewModel["ForumCategory"] = forumGroupList;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            this.DefaultViewModel["Groups"] = forumGroupList;
+            this.DefaultViewModel["ForumCategory"] = forumGroupList;
+            this.loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -95,39 +92,38 @@ namespace AwfulMetro
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
             var itemId = ((ForumEntity) e.ClickedItem);
-            Frame.Navigate(typeof (ThreadListPage), itemId);
+            this.Frame.Navigate(typeof (ThreadListPage), itemId);
         }
 
         private void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof (RapSheetView));
+            this.Frame.Navigate(typeof (RapSheetView));
         }
 
         private void FrontPageButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof (FrontPage));
+            this.Frame.Navigate(typeof (FrontPage));
         }
 
         private void BookmarkButton_Click(object sender, RoutedEventArgs e)
         {
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
-            forum.IsBookmarks = true;
-            Frame.Navigate(typeof (ThreadListPage), forum);
+            this.Frame.Navigate(typeof (ThreadListPage), forum);
         }
 
         private void PageUnloaded(object sender, RoutedEventArgs e)
         {
-            Window.Current.SizeChanged -= Window_SizeChanged;
+            Window.Current.SizeChanged -= this.Window_SizeChanged;
         }
 
         private void PageLoaded(object sender, RoutedEventArgs e)
         {
-            Window.Current.SizeChanged += Window_SizeChanged;
+            Window.Current.SizeChanged += this.Window_SizeChanged;
         }
 
         private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
-            ChangeViewTemplate(e.Size.Width);
+            this.ChangeViewTemplate(e.Size.Width);
         }
 
         private void ChangeViewTemplate(double width)
@@ -165,18 +161,18 @@ namespace AwfulMetro
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            NavigationHelper.OnNavigatedTo(e);
+            this.NavigationHelper.OnNavigatedTo(e);
 
             Rect bounds = Window.Current.Bounds;
-            ChangeViewTemplate(bounds.Width);
+            this.ChangeViewTemplate(bounds.Width);
 
-            Loaded += PageLoaded;
-            Unloaded += PageUnloaded;
+            this.Loaded += this.PageLoaded;
+            this.Unloaded += this.PageUnloaded;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            NavigationHelper.OnNavigatedFrom(e);
+            this.NavigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion

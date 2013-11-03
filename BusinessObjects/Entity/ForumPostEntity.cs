@@ -3,17 +3,16 @@ using HtmlAgilityPack;
 using System;
 using System.Linq;
 using System.Net;
-using System.Text;
 
-namespace AwfulMetro.Core.Entity
+namespace AwfulMetro.Core.Entity 
 {
     /// <summary>
     /// Represents an individual post in a thread.
     /// </summary>
     public class ForumPostEntity
     {
-
         public ForumUserEntity User { get; private set; }
+
         public string PostDate { get; private set; }
 
         public string PostReportLink { get; private set; }
@@ -40,17 +39,17 @@ namespace AwfulMetro.Core.Entity
         /// <param name="postNode">The post HTML node.</param>
         public void Parse(HtmlNode postNode)
         {
-            this.User = new ForumUserEntity();
-            this.User.ParseFromPost(postNode);
-            HtmlNode postDateNode = postNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("postdate"));
+            this.User = ForumUserEntity.FromPost(postNode);
+            
+            HtmlNode postDateNode = postNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postdate"));
             string postDateString = postDateNode == null ? string.Empty : postDateNode.InnerText;
             if(postDateString != null)
             {
                 this.PostDate = postDateString.WithoutNewLines().Trim();
             }
-            this.PostId = Int64.Parse(postNode.GetAttributeValue("id", "").Replace("post", "").Replace("#", ""));
-            this.PostFormatted = WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("postbody")).InnerHtml).WithoutNewLines();
-            this.PostHTML = FixPostHtml(WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("postbody")).InnerHtml));
+            this.PostId = Int64.Parse(postNode.GetAttributeValue("id", string.Empty).Replace("post", string.Empty).Replace("#", string.Empty));
+            this.PostFormatted = WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody")).InnerHtml).WithoutNewLines();
+            this.PostHTML = FixPostHtml(WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody")).InnerHtml));
         }
 
         /// <summary>

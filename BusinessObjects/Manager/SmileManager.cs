@@ -24,9 +24,9 @@ namespace AwfulMetro.Core.Manager
             //inject this
             var doc = (await _webManager.DownloadHtml(Constants.SMILE_URL)).Document;
            
-            var smileCategoryTitles = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", "").Contains("inner")).Descendants("h3");
+            var smileCategoryTitles = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("inner")).Descendants("h3");
             List<string> categoryTitles = smileCategoryTitles.Select(smileCategoryTitle => WebUtility.HtmlDecode(smileCategoryTitle.InnerText)).ToList();
-            var smileNodes = doc.DocumentNode.Descendants("ul").Where(node => node.GetAttributeValue("class", "").Contains("smilie_group"));
+            var smileNodes = doc.DocumentNode.Descendants("ul").Where(node => node.GetAttributeValue("class", string.Empty).Contains("smilie_group"));
             int smileCount = 0;
             foreach(var smileNode in smileNodes)
             {

@@ -287,7 +287,7 @@
                             <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
                             <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
                             <TextBlock x:Name="UserAvatarTitle" Width="250" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"></TextBlock>
-                            <TextBlock x:Name="UserRegDate" Text="{Binding User.UserDateJoined}"></TextBlock>
+                            <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"></TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                             <WebView x:Name="PostRawView" Height="500" Width="1000" web:WebViewHelper.Html="{Binding PostHTML}" ></WebView>
@@ -316,7 +316,7 @@
                             <StackPanel>
                                 <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
                                 <TextBlock x:Name="UserAvatarTitle" Text="{Binding User.AvatarTitle}"></TextBlock>
-                                <TextBlock x:Name="UserRegDate" Text="{Binding User.UserDateJoined}"></TextBlock>
+                                <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"></TextBlock>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Row="1">
