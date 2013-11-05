@@ -66,7 +66,7 @@ namespace AwfulMetro.Core.Entity
 
             if (avatarTitle != null)
             {
-                user.AvatarTitle = WebUtility.HtmlDecode(avatarTitle.InnerText.WithoutNewLines().Trim());
+                user.AvatarTitle = WebUtility.HtmlDecode(avatarTitle.InnerText).WithoutNewLines().Trim();
             }
             if (avatarImage != null)
             {
