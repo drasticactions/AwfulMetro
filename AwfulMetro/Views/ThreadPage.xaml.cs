@@ -72,11 +72,6 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             _forumThread = (ForumThreadEntity) e.NavigationParameter;
             pageTitle.Text = _forumThread.Name;
-            String urlLocation = string.Empty;
-            if (_forumThread.HasBeenViewed)
-            {
-                _forumThread.Location = _forumThread.Location + Constants.GOTO_NEW_POST;
-            }
 
             _threadPosts = await _postManager.GetThreadPosts(_forumThread);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
@@ -88,7 +83,7 @@ namespace AwfulMetro.Views
             if (_forumThread.ScrollToPost > 0)
 
             {
-                ThreadListSnapped.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
+                //ThreadListSnapped.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
                 ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
             }
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -115,8 +110,9 @@ namespace AwfulMetro.Views
             {
                 loadingProgressBar.Visibility = Visibility.Visible;
                 _forumThread.CurrentPage--;
-                BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
-                ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
+                CurrentPageSelector.SelectedIndex--;
+                BackButton.IsEnabled = _forumThread.CurrentPage > 1;
+                ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
                 List<ForumPostEntity> threadPosts = await _postManager.GetThreadPosts(_forumThread);
                 DefaultViewModel["Posts"] = threadPosts;
                 loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -127,8 +123,9 @@ namespace AwfulMetro.Views
         {
             loadingProgressBar.Visibility = Visibility.Visible;
             _forumThread.CurrentPage++;
-            BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
+            CurrentPageSelector.SelectedIndex++;
+            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             _threadPosts = await _postManager.GetThreadPosts(_forumThread);
             DefaultViewModel["Posts"] = _threadPosts;
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -227,20 +224,20 @@ namespace AwfulMetro.Views
             // TODO: Add Portrait View State
             if (currentView.Orientation == ApplicationViewOrientation.Landscape)
             {
-                VisualStateManager.GoToState(this, "FullScreen", false);
+               // VisualStateManager.GoToState(this, "FullScreen", false);
             }
             else
             {
                 if (width <= 620)
                 {
-                    VisualStateManager.GoToState(this, "Snapped", false);
+                    //VisualStateManager.GoToState(this, "Snapped", false);
                 }
             }
         }
 
         private void GoToLastPostButton_Click(object sender, RoutedEventArgs e)
         {
-            ThreadListSnapped.ScrollIntoView(_threadPosts.Last());
+            //ThreadListSnapped.ScrollIntoView(_threadPosts.Last());
             ThreadListFullScreen.ScrollIntoView(_threadPosts.Last());
         }
 

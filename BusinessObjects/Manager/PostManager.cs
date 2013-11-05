@@ -27,6 +27,10 @@ namespace AwfulMetro.Core.Manager
             {
                 url = forumThread.Location + string.Format(Constants.PAGE_NUMBER, forumThread.CurrentPage);
             }
+            else if (forumThread.HasBeenViewed)
+            {
+                url = forumThread.Location + Constants.GOTO_NEW_POST;
+            }
 
             var forumThreadPosts = new List<ForumPostEntity>();
             
