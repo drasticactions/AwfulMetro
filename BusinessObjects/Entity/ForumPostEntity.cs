@@ -23,7 +23,9 @@ namespace AwfulMetro.Core.Entity
 
         public string PostFormatted { get; private set; }
 
-        public string PostHTML { get; private set; }
+        public string PostHtml { get; private set; }
+
+        public int PostHeight { get; private set; }
 
         public long PostId { get; private set; }
 
@@ -49,7 +51,13 @@ namespace AwfulMetro.Core.Entity
             }
             this.PostId = Int64.Parse(postNode.GetAttributeValue("id", string.Empty).Replace("post", string.Empty).Replace("#", string.Empty));
             this.PostFormatted = WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody")).InnerHtml).WithoutNewLines();
-            this.PostHTML = FixPostHtml(WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody")).InnerHtml));
+            this.PostHtml = FixPostHtml(WebUtility.HtmlDecode(postNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody")).InnerHtml));
+
+            /*
+             * Attempts to find the height of the post by counting the new lines and 
+             * multiplying by twenty. Maybe a good way to get more posts on the screen?
+             */
+            this.PostHeight = PostHtml.Count(p => p == '\n') * 20;
         }
 
         /// <summary>

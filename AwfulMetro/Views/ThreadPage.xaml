@@ -96,7 +96,7 @@
                                 <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"></TextBlock>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <WebView x:Name="PostRawView" Height="500" Width="1000" web:WebViewHelper.Html="{Binding PostHTML}" ></WebView>
+                                <WebView x:Name="PostRawView" MinHeight="200" Height="{Binding PostHeight}" MaxHeight="500" Width="1000" web:WebViewHelper.Html="{Binding PostHtml}" ></WebView>
                                 <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
                                     <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
                                     <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>
