@@ -74,8 +74,8 @@ namespace AwfulMetro.Core.Entity
 
             // Isn't this user configurable?
             this.TotalPages = (this.ReplyCount / 40) + 1;
-            this.Location = Constants.BASE_URL + threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).GetAttributeValue("href",string.Empty);
-            this.ThreadId = Convert.ToInt64(this.Location.Split('=')[1]);
+            this.Location = Constants.BASE_URL + threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).GetAttributeValue("href",string.Empty) + Constants.PER_PAGE;
+            this.ThreadId = Convert.ToInt64(threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).GetAttributeValue("href",string.Empty).Split('=')[1]);
             this.ImageIconLocation = threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon")).Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
         }
 

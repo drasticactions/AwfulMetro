@@ -10,6 +10,8 @@
 
         public const string GOTO_NEW_POST = "&goto=newpost";
 
+        public const string PER_PAGE = "&perpage=40";
+
         public const string USER_PROFILE = "member.php?action=getinfo&userid={0}";
 
         public const string USER_RAP_SHEET = "banlist.php?userid={0}";

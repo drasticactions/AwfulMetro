@@ -48,7 +48,6 @@ namespace AwfulMetro.Core.Manager
             {
                 forumThread.ScrollToPost = Int32.Parse(Regex.Match(responseUri.Split('#')[1], @"\d+").Value) - 1;
             }
-            //HtmlDocument doc = await WebManager.DownloadHtml(request);
             HtmlNode threadNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
 
             foreach (HtmlNode postNode in threadNode.Descendants("table").Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
@@ -63,11 +62,11 @@ namespace AwfulMetro.Core.Manager
 
             if (forumThread.CurrentPage <= 0)
             {
-                forumThread.CurrentPage = PostManager.GetPageNumber(threadNode);
+                forumThread.CurrentPage = GetPageNumber(threadNode);
             }
 
             HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
-            forumThread.TotalPages = Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", string.Empty));
+            forumThread.TotalPages = forumThread.CurrentPage <= 1 ? 1 : Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", string.Empty));
 
             return forumThreadPosts;
         }

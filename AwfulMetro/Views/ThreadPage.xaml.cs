@@ -76,8 +76,8 @@ namespace AwfulMetro.Views
             _threadPosts = await _postManager.GetThreadPosts(_forumThread);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = _forumThread.CurrentPage;
-            BackButton.IsEnabled = _forumThread.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage ? true : false;
+            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
             DefaultViewModel["Posts"] = _threadPosts;
             if (_forumThread.ScrollToPost > 0)
