@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AwfulMetro.Core.Entity;
 using HtmlAgilityPack;
 
-
 namespace AwfulMetro.Core.Manager
 {
     public class RapSheetManager
@@ -19,22 +18,16 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<List<ForumUserRapSheetEntity>> GetRapSheet(string url)
         {
-            var rapSheet = new List<ForumUserRapSheetEntity>();
-            //inject this
+            var rapSheets = new List<ForumUserRapSheetEntity>();
             var doc = (await _webManager.DownloadHtml(url)).Document;
             
             HtmlNode rapSheetNode = doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("standard full"));
             rapSheetNode.Descendants("tr").FirstOrDefault().Remove();
             if (rapSheetNode.Descendants("tr").Any())
             {
-                foreach (HtmlNode tableRow in rapSheetNode.Descendants("tr"))
-                {
-                    var row = new ForumUserRapSheetEntity();
-                    row.Parse(tableRow);
-                    rapSheet.Add(row);
-                }
+                rapSheets.AddRange(rapSheetNode.Descendants("tr").Select(ForumUserRapSheetEntity.FromRapSheet));
             }
-            return rapSheet;
+            return rapSheets;
         }
 
     }

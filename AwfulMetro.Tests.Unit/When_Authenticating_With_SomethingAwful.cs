@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using AwfulMetro.Tests.Unit.Helpers;
 using AwfulMetro.Tests.Unit.Mocks;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
@@ -61,8 +60,15 @@ namespace AwfulMetro.Tests.Unit
 
             var localStorage = new FakeLocalStorageManager();
             var am = new AuthenticationManager(webManager, localStorage);
-            Func<Task> authenticate = async () => await am.Authenticate("foo", "bar");
-            await authenticate.AssertThrowsExpectedException<LoginFailedException>();
+            try
+            {
+                await am.Authenticate("foo", "bar");
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            Assert.Fail();
         }
 
         [TestMethod]

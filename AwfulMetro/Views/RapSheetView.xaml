@@ -67,7 +67,7 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Type}" Grid.Column="0"/>
+                        <TextBlock Text="{Binding PunishmentType}" Grid.Column="0"/>
                         <TextBlock Text="{Binding Date}" Grid.Column="1"/>
                         <TextBlock Text="{Binding HorribleJerk}" Grid.Column="2"/>
                         <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap" Grid.Column="3"/>

@@ -152,7 +152,7 @@ namespace AwfulMetro.Tests.Unit
         public void Location_Is_Parsed_Successfully()
         {
             var thread = ParseEntity(DefaultThread);
-            Assert.AreEqual("http://forums.somethingawful.com/showthread.php?threadid=3580313", thread.Location);
+            Assert.AreEqual("http://forums.somethingawful.com/showthread.php?threadid=3580313&perpage=40", thread.Location);
         }
 
         [TestMethod]
