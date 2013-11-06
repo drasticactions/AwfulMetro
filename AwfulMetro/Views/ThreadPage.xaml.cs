@@ -87,6 +87,12 @@ namespace AwfulMetro.Views
                 ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
             }
             loadingProgressBar.Visibility = Visibility.Collapsed;
+
+            // TODO: Remove duplicate buttons and find a better way to handle navigation
+            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
+            CurrentPageSelectorSnap.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
+            CurrentPageSelectorSnap.SelectedValue = _forumThread.CurrentPage;
         }
 
 
@@ -110,6 +116,12 @@ namespace AwfulMetro.Views
             {
                 loadingProgressBar.Visibility = Visibility.Visible;
                 _forumThread.CurrentPage--;
+
+                // TODO: Remove duplicate buttons and find a better way to handle navigation
+                CurrentPageSelectorSnap.SelectedIndex--;
+                BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
+                ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
+
                 CurrentPageSelector.SelectedIndex--;
                 BackButton.IsEnabled = _forumThread.CurrentPage > 1;
                 ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
@@ -123,6 +135,12 @@ namespace AwfulMetro.Views
         {
             loadingProgressBar.Visibility = Visibility.Visible;
             _forumThread.CurrentPage++;
+
+            // TODO: Remove duplicate buttons and find a better way to handle navigation
+            CurrentPageSelectorSnap.SelectedIndex++;
+            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
+
             CurrentPageSelector.SelectedIndex++;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
@@ -224,14 +242,11 @@ namespace AwfulMetro.Views
             // TODO: Add Portrait View State
             if (currentView.Orientation == ApplicationViewOrientation.Landscape)
             {
-               // VisualStateManager.GoToState(this, "FullScreen", false);
+                VisualStateManager.GoToState(this, "FullScreen", false);
             }
             else
             {
-                if (width <= 620)
-                {
-                    //VisualStateManager.GoToState(this, "Snapped", false);
-                }
+                    VisualStateManager.GoToState(this, "Snapped", false);
             }
         }
 

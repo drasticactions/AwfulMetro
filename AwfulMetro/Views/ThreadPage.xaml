@@ -35,6 +35,25 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     	<VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
+            	<VisualState x:Name="FullScreen"/>
+            	<VisualState x:Name="Snapped">
+            		<Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewFullScreen">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadListSnapped">
+            				<DiscreteObjectKeyFrame KeyTime="0">
+            					<DiscreteObjectKeyFrame.Value>
+            						<Visibility>Visible</Visibility>
+            					</DiscreteObjectKeyFrame.Value>
+            				</DiscreteObjectKeyFrame>
+            			</ObjectAnimationUsingKeyFrames>
+            		</Storyboard>
+            	</VisualState>
             </VisualStateGroup>
     	</VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
@@ -59,8 +78,8 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" FontSize="25" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,297,40" Height="61"/>
+            <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}"  Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40" Height="61"/>
         </Grid>
         <Grid Grid.Row="0" Canvas.ZIndex="99">
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
@@ -84,32 +103,87 @@
             <ListView Grid.Column="0" x:Name="ThreadListFullScreen" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="250"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
-                                <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
-                                <TextBlock x:Name="UserAvatarTitle" Width="250" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"></TextBlock>
-                                <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <WebView x:Name="PostRawView" MinHeight="200" Height="{Binding PostHeight}" MaxHeight="500" Width="1000" web:WebViewHelper.Html="{Binding PostHtml}" ></WebView>
-                                <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
-                                    <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
-                                    <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>
-                                    <Button x:Name="RapSheetButton" Click="RapSheetButton_Click" Content="RapSheet"/>
-                                    <Button x:Name="ReportButton" Content="Report"/>
-                                    <Button x:Name="QuoteButton" Click="QuoteButton_Click" Content="Quote"/>
+                        <Viewbox>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
+                                    <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
+                                    <TextBlock x:Name="UserAvatarTitle" Width="250" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"></TextBlock>
+                                    <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"></TextBlock>
                                 </StackPanel>
-                            </StackPanel>
-                        </Grid>
+                                <StackPanel Grid.Column="1">
+                                    <WebView x:Name="PostRawView" MinHeight="200" Height="{Binding PostHeight}" MaxHeight="500" Width="1000" web:WebViewHelper.Html="{Binding PostHtml}" ></WebView>
+                                    <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
+                                        <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
+                                        <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>
+                                        <Button x:Name="RapSheetButton" Click="RapSheetButton_Click" Content="RapSheet"/>
+                                        <Button x:Name="ReportButton" Content="Report"/>
+                                        <Button x:Name="QuoteButton" Click="QuoteButton_Click" Content="Quote"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Viewbox>                     
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
+        <Grid Grid.Row="1" Visibility="Collapsed" x:Name="ThreadListSnapped">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Viewbox>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <AppBarButton x:Name="ReplyButtonSnap" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
+                <AppBarButton x:Name="BackButtonSnap" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
+                <AppBarButton x:Name="ForwardButtonSnap" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
+                <AppBarButton x:Name="RefreshButtonSnap" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
+                    <ComboBox x:Name="CurrentPageSelectorSnap" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
+                        <ItemsPanelTemplate>
+                            <CarouselPanel/>
+                        </ItemsPanelTemplate>
+                    </ComboBox>
+                </StackPanel>
+            </Viewbox>
+            <ListView Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Viewbox>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="130"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal" Grid.Row="0">
+                                    <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
+                                    <StackPanel>
+                                        <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
+                                        <TextBlock x:Name="UserAvatarTitle" Width="200" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"></TextBlock>
+                                        <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Row="1">
+                                    <WebView x:Name="PostRawView" MinHeight="200" Height="{Binding PostHeight}" MaxHeight="500" web:WebViewHelper.Html="{Binding PostHtml}" ></WebView>
+                                    <StackPanel x:Name="UserPostTools" Orientation="Horizontal">
+                                        <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
+                                        <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>
+                                        <Button x:Name="RapSheetButton" Click="RapSheetButton_Click" Content="RapSheet"/>
+                                        <Button x:Name="ReportButton" Content="Report"/>
+                                        <Button x:Name="QuoteButton" Click="QuoteButton_Click" Content="Quote"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Viewbox>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        
     </Grid>
 
 </Page>
