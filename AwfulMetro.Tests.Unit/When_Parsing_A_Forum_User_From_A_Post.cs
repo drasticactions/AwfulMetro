@@ -1,6 +1,5 @@
 ﻿using System;
 using AwfulMetro.Core.Entity;
-using AwfulMetro.Tests.Unit.Helpers;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
@@ -17,7 +16,7 @@ namespace AwfulMetro.Tests.Unit
         [TestMethod]
         public void Null_User_Throws_An_Exception()
         {
-            ((Action)(() => ForumUserEntity.FromPost(null))).AssertThrowsExpectedException<NullReferenceException>();
+            Assert.ThrowsException<NullReferenceException>(() => ForumUserEntity.FromPost(null));
         }
 
         [TestMethod]
@@ -25,7 +24,7 @@ namespace AwfulMetro.Tests.Unit
         {
             var doc = new HtmlDocument();
             doc.LoadHtml("<html><h1>oh god how did this get here i am not good at unit testing</h1></html>");
-            ((Action)(() => ForumUserEntity.FromPost(doc.DocumentNode))).AssertThrowsExpectedException<NullReferenceException>();
+            Assert.ThrowsException<NullReferenceException>(() => ForumUserEntity.FromPost(doc.DocumentNode));
         }
 
         [TestMethod]

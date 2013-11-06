@@ -6,8 +6,11 @@ namespace AwfulMetro.Core.Entity
 {
     public class ForumUserRapSheetEntity
     {
-        public string Type { get; private set; }
+        private ForumUserRapSheetEntity() { }
 
+        public string PunishmentType { get; private set; }
+
+        // Should be DateTime
         public string Date { get; private set; }
 
         public string HorribleJerk { get; private set; }
@@ -26,24 +29,26 @@ namespace AwfulMetro.Core.Entity
 
         public long RequestedById { get; private set; }
 
-        public void Parse(HtmlNode rapSheetNode)
+        public static ForumUserRapSheetEntity FromRapSheet(HtmlNode rapSheetNode)
         {
-            var rapSheetRows = rapSheetNode.Descendants("td");
-            this.Type = rapSheetRows.First().Descendants("b").FirstOrDefault().InnerText;
-            rapSheetRows.First().Remove();
-            this.Date = rapSheetRows.First().InnerText;
-            rapSheetRows.First().Remove();
-            this.HorribleJerk = rapSheetRows.First().Descendants("a").FirstOrDefault().InnerText;
-            this.HorribleJerkId = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
-            rapSheetRows.First().Remove();
-            this.PunishmentReason = rapSheetRows.First().InnerText;
-            rapSheetRows.First().Remove();
-            this.RequestedBy = rapSheetRows.First().Descendants("a").FirstOrDefault().InnerText;
-            this.RequestedById = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
-            rapSheetRows.First().Remove();
-            this.ApprovedBy = rapSheetRows.First().Descendants("a").FirstOrDefault().InnerText;
-            this.ApprovedById = Convert.ToInt64(rapSheetRows.First().Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
-            rapSheetRows.First().Remove();
+            var rapSheet = new ForumUserRapSheetEntity();
+            
+            var rapSheetData = rapSheetNode.Descendants("td").ToList();
+            rapSheet.PunishmentType = rapSheetData[0].Descendants("b").FirstOrDefault().InnerText;
+            rapSheet.Date = rapSheetData[1].InnerText;
+
+            rapSheet.HorribleJerk = rapSheetData[2].Descendants("a").FirstOrDefault().InnerText;
+            rapSheet.HorribleJerkId = Convert.ToInt64(rapSheetData[2].Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
+
+            rapSheet.PunishmentReason = rapSheetData[3].InnerText;
+
+            rapSheet.RequestedBy = rapSheetData[4].Descendants("a").FirstOrDefault().InnerText;
+            rapSheet.RequestedById = Convert.ToInt64(rapSheetData[4].Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
+
+            rapSheet.ApprovedBy = rapSheetData[5].Descendants("a").FirstOrDefault().InnerText;
+            rapSheet.ApprovedById = Convert.ToInt64(rapSheetData[5].Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Split('=')[3]);
+
+            return rapSheet;
         }
     }
 }
