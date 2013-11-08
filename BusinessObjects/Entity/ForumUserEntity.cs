@@ -86,7 +86,7 @@ namespace AwfulMetro.Core.Entity
                 user.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) + Environment.NewLine + Environment.NewLine;
             }
 
-            user.Username = profileNode.Descendants("dt").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author")).InnerText;
+            user.Username = profileNode.Descendants("h3").Where(node => node.InnerText.ToLower().Contains("about")).First().InnerText.Split()[1];
             var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));
 
             var additionalProfileAttributes = ParseAdditionalProfileAttributes(additionalNode);
