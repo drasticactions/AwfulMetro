@@ -18,8 +18,7 @@ namespace AwfulMetro.Core.Entity
 
         public string AvatarTitle { get; private set; }
 
-        //This should really be a datetime
-        public string DateJoined { get; private set; }
+        public DateTime DateJoined { get; private set; }
 
         public string ProfileLink { get; private set; }
 
@@ -41,8 +40,7 @@ namespace AwfulMetro.Core.Entity
 
         public int PostCount { get; private set; }
 
-        //Should be datetime
-        public string LastPostDate { get; private set; }
+        public DateTime LastPostDate { get; private set; }
 
         public string Location { get; private set; }
 
@@ -58,9 +56,18 @@ namespace AwfulMetro.Core.Entity
 
         public static ForumUserEntity FromPost(HtmlNode postNode)
         {
-            var user = new ForumUserEntity();
-            user.Username = WebUtility.HtmlDecode(postNode.Descendants("dt").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author")).InnerHtml);
-            user.DateJoined = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("registered")).InnerHtml;
+            var user = new ForumUserEntity
+            {
+                Username =
+                    WebUtility.HtmlDecode(
+                        postNode.Descendants("dt")
+                            .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author"))
+                            .InnerHtml),
+                DateJoined =
+                   DateTime.Parse(postNode.Descendants("dd")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("registered"))
+                        .InnerHtml)
+            };
             var avatarTitle = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
             var avatarImage = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("title")).Descendants("img").FirstOrDefault();
 
@@ -78,23 +85,26 @@ namespace AwfulMetro.Core.Entity
 
         public static ForumUserEntity FromUserProfile(HtmlNode profileNode)
         {
-            var user = new ForumUserEntity();
+            var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));
+            var additionalProfileAttributes = ParseAdditionalProfileAttributes(additionalNode);
 
-            user.AboutUser = string.Empty;
+            var user = new ForumUserEntity
+            {
+                Username =
+                    profileNode.Descendants("h3")
+                        .FirstOrDefault(node => node.InnerText.ToLower().Contains("about"))
+                        .InnerText.Split()[1],
+                AboutUser = string.Empty,
+                DateJoined = DateTime.Parse(additionalProfileAttributes["Member Since"]),
+                PostCount = int.Parse(additionalProfileAttributes["Post Count"]),
+                PostRate = additionalProfileAttributes["Post Rate"],
+                LastPostDate = DateTime.Parse(additionalProfileAttributes["Last Post"])
+            };
+
             foreach (var aboutParagraph in profileNode.Descendants("p"))
             {
                 user.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) + Environment.NewLine + Environment.NewLine;
             }
-
-            user.Username = profileNode.Descendants("h3").Where(node => node.InnerText.ToLower().Contains("about")).First().InnerText.Split()[1];
-            var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));
-
-            var additionalProfileAttributes = ParseAdditionalProfileAttributes(additionalNode);
-
-            user.DateJoined = additionalProfileAttributes["Member Since"];
-            user.PostCount = int.Parse(additionalProfileAttributes["Post Count"]);
-            user.PostRate = additionalProfileAttributes["Post Rate"];
-            user.LastPostDate = additionalProfileAttributes["Last Post"];
             if (additionalProfileAttributes.ContainsKey("Seller Rating"))
             {
                 user.SellerRating = additionalProfileAttributes["Seller Rating"];
