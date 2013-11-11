@@ -193,17 +193,17 @@
         </CommandBar>
     </Page.TopAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    	<VisualStateManager.VisualStateGroups>
-    		<VisualStateGroup x:Name="VisualStateGroup">
-    			<VisualState x:Name="Snapped">
-    				<Storyboard>
-    					<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewFullScreen">
-    						<DiscreteObjectKeyFrame KeyTime="0">
-    							<DiscreteObjectKeyFrame.Value>
-    								<Visibility>Collapsed</Visibility>
-    							</DiscreteObjectKeyFrame.Value>
-    						</DiscreteObjectKeyFrame>
-    					</ObjectAnimationUsingKeyFrames>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewFullScreen">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewSnapped">
                             <DiscreteObjectKeyFrame KeyTime="0">
                                 <DiscreteObjectKeyFrame.Value>
@@ -212,14 +212,14 @@
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="pageTitle">
-                        	<DiscreteObjectKeyFrame KeyTime="0">
-                        		<DiscreteObjectKeyFrame.Value>
-                        			<Visibility>Collapsed</Visibility>
-                        		</DiscreteObjectKeyFrame.Value>
-                        	</DiscreteObjectKeyFrame>
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-    				</Storyboard>
-    			</VisualState>
+                    </Storyboard>
+                </VisualState>
                 <VisualState x:Name="FullScreen">
                     <Storyboard>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewFullScreen">
@@ -239,8 +239,8 @@
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="Portrait">
-                	<Storyboard>
-                		<DoubleAnimation Duration="0" To="30" Storyboard.TargetProperty="(TextBlock.FontSize)" Storyboard.TargetName="pageTitle" d:IsOptimized="True"/>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0" To="30" Storyboard.TargetProperty="(TextBlock.FontSize)" Storyboard.TargetName="pageTitle" d:IsOptimized="True"/>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ForumThreadList">
                             <DiscreteObjectKeyFrame KeyTime="0">
                                 <DiscreteObjectKeyFrame.Value>
@@ -251,7 +251,7 @@
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
-    	</VisualStateManager.VisualStateGroups>
+        </VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -278,21 +278,24 @@
             <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0"/>
         </Grid>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
-            <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="100" Height="100" Style="{StaticResource ComboBoxStyle1}">
-                <ItemsPanelTemplate>
-                    <CarouselPanel/>
-                </ItemsPanelTemplate>
-            </ComboBox>
-            <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
-            <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
-            <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
-        </StackPanel>
         <Grid x:Name="ThreadViewFullScreen" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="115"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="100" Height="100" Style="{StaticResource ComboBoxStyle1}">
+                    <ItemsPanelTemplate>
+                        <CarouselPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox>
+                <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
+                <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
+                <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
+                <AppBarButton x:Name="FavoriteButton" IsEnabled="False" Click="FavoriteButton_OnClick" Label="Favorite" Icon="Favorite"/>
+                <AppBarButton x:Name="UnreadButton" IsEnabled="False" Click="UnreadButton_OnClick" Label="Unread"/>
+            </StackPanel>
             <GridView x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <GridView.ItemTemplate>
                     <DataTemplate>
@@ -310,7 +313,7 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-            <ListView x:Name="ForumThreadList" HorizontalAlignment="Left" Width="800" ItemClick="ForumThreadList_ItemClick" Grid.Column="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+            <ListView x:Name="ForumThreadList" SelectionChanged="ForumThreadList_OnSelectionChanged" HorizontalAlignment="Left" ItemClick="ForumThreadList_ItemClick" Tapped="ForumThreadList_OnTapped"  IsSwipeEnabled="True" Grid.Column="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="Extended" IsItemClickEnabled="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="#FFF1F1F1">
@@ -355,22 +358,22 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <GridView x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid HorizontalAlignment="Left" Width="100" Height="100">
-                                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
-                                        <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
-                                        <TextBlock Text="{Binding Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                                    </StackPanel>
-                                </Grid>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid HorizontalAlignment="Left" Width="100" Height="100">
+                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                                    <TextBlock Text="{Binding Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                                </StackPanel>
                             </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
             <TextBlock x:Name="pageSnapTitle" Grid.Row="0" Style="{StaticResource HeaderTextBlockStyle}" FontSize="20" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="0,0,0,0"/>
             <ListView x:Name="ForumThreadListSnapped" HorizontalAlignment="Left" Width="500" ItemClick="ForumThreadList_ItemClick" Grid.Row="2" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">

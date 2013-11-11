@@ -42,6 +42,18 @@ namespace AwfulMetro.Core.Manager
             return new ForumCollectionEntity(WebUtility.HtmlDecode(forumNode.InnerText), forumThreadList, forumSubcategoryList);
         }
 
+        public async Task<bool> AddBookmarks(List<long> threadIdList)
+        {
+            foreach (long threadId in threadIdList)
+            {
+                await this._webManager.PostData(
+                Constants.BOOKMARK, string.Format(
+                    Constants.ADD_BOOKMARK, threadId
+                   ));
+            }
+            return true;
+        }
+
         public async Task<ForumCollectionEntity> GetForumThreadsAndSubforums(ForumEntity forumCategory)
         {
             var forumSubcategoryList = new List<ForumEntity>();

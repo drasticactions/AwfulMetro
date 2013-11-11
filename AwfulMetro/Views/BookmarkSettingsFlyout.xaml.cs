@@ -30,24 +30,22 @@ namespace AwfulMetro.Views
         private void BookmarkLiveTiles_Toggled(object sender, RoutedEventArgs e)
         {
             var toggleSwitch = sender as ToggleSwitch;
-            if (toggleSwitch != null)
+            if (toggleSwitch == null) return;
+            if (toggleSwitch.IsOn)
             {
-                if (toggleSwitch.IsOn)
-                {
-                    // Run bookmark live tile creator every 15 minutes.
-                    // TODO: Change 15 to user selectable value.
-                    Task<BackgroundTaskRegistration> task =
-                        BackgroundTaskUtils.RegisterBackgroundTask(BackgroundTaskUtils.BackgroundTaskEntryPoint,
-                            BackgroundTaskUtils.BackgroundTaskName,
-                            new TimeTrigger(15, false),
-                            null);
-                    _localSettings.Values[Constants.BOOKMARK_BACKGROUND] = true;
-                }
-                else
-                {
-                    BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
-                    _localSettings.Values[Constants.BOOKMARK_BACKGROUND] = false;
-                }
+                // Run bookmark live tile creator every 15 minutes.
+                // TODO: Change 15 to user selectable value.
+                Task<BackgroundTaskRegistration> task =
+                    BackgroundTaskUtils.RegisterBackgroundTask(BackgroundTaskUtils.BackgroundTaskEntryPoint,
+                        BackgroundTaskUtils.BackgroundTaskName,
+                        new TimeTrigger(15, false),
+                        null);
+                _localSettings.Values[Constants.BOOKMARK_BACKGROUND] = true;
+            }
+            else
+            {
+                BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
+                _localSettings.Values[Constants.BOOKMARK_BACKGROUND] = false;
             }
         }
     }

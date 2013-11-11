@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -7,6 +8,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
@@ -291,5 +293,32 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var threadlist = new List<ForumThreadEntity>();
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            await _threadManager.AddBookmarks(threadIdList);
+        }
+
+        private void UnreadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+                FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+                UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+        }
     }
 }

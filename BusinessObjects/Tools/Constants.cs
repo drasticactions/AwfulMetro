@@ -1,4 +1,6 @@
-﻿namespace AwfulMetro.Core.Tools
+﻿using Windows.ApplicationModel.Contacts;
+
+namespace AwfulMetro.Core.Tools
 {
     public class Constants
     {
@@ -23,6 +25,14 @@
         public const string FORUM_PAGE = "forumdisplay.php?forumid={0}";
 
         public const string QUOTE_EXP = "[quote=\"{0}\" post=\"{1}\"]{2}[/quote]";
+
+        public const string RESET_SEEN = "/showthread.php?action=resetseen&threadid={0}";
+
+        public const string BOOKMARK = BASE_URL + "bookmarkthreads.php";
+        
+        public const string REMOVE_BOOKMARK = "json=1&action=remove&threadid={0}";
+
+        public const string ADD_BOOKMARK = "json=1&action=cat_toggle&threadid={0}";
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
