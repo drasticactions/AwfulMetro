@@ -210,7 +210,7 @@ namespace AwfulMetro.Views
                 Frame.Navigate(typeof (ReplyView), forumPost);
             }
         }
-
+        
         private void PageUnloaded(object sender, RoutedEventArgs e)
         {
             Window.Current.SizeChanged -= Window_SizeChanged;

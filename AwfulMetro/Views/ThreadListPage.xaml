@@ -285,14 +285,6 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="100" Height="100" Style="{StaticResource ComboBoxStyle1}">
-                    <ItemsPanelTemplate>
-                        <CarouselPanel/>
-                    </ItemsPanelTemplate>
-                </ComboBox>
-                <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
-                <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
-                <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
                 <AppBarButton x:Name="FavoriteButton" IsEnabled="False" Click="FavoriteButton_OnClick" Label="Favorite" Icon="Favorite"/>
                 <AppBarButton x:Name="UnreadButton" IsEnabled="False" Click="UnreadButton_OnClick" Label="Unread"/>
             </StackPanel>

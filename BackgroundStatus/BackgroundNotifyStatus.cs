@@ -29,18 +29,15 @@ namespace AwfulMetro.BackgroundStatus
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             var forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
-            ForumCollectionEntity forumCollection = await _threadManager.GetBookmarks(forumCategory);
-            List<ForumThreadEntity> forumThreads =
-                forumCollection.ForumThreadList.Where(thread => thread.RepliesSinceLastOpened > 0).ToList();
+            List<ForumThreadEntity> forumThreadEntities = await _threadManager.GetBookmarks(forumCategory);
 
             if (localSettings.Values.ContainsKey("_threadIds"))
             {
                 _threadIds = (List<long>) localSettings.Values["_threadIds"];
-                forumThreads =
-                    (List<ForumThreadEntity>) forumThreads.Where(thread => _threadIds.Contains(thread.ThreadId));
+                forumThreadEntities = (List<ForumThreadEntity>)forumThreadEntities.Where(thread => _threadIds.Contains(thread.ThreadId));
             }
 
-            CreateBookmarkLiveTiles(forumThreads);
+            CreateBookmarkLiveTiles(forumThreadEntities);
         }
 
         private void CreateBookmarkLiveTiles(IEnumerable<ForumThreadEntity> forumThreads)

@@ -110,6 +110,19 @@ namespace AwfulMetro.Core.Manager
             return doc;
         }
 
+        public async Task<List<ForumEntity>> GetSubForums(ForumEntity forumCategory)
+        {
+            var subforumList = new List<ForumEntity>();
+            var url = forumCategory.Location;
+            var doc = (await _webManager.DownloadHtml(url)).Document;
+            if (doc.DocumentNode.Descendants().Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums")))
+            {
+                var forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"));
+                subforumList.AddRange(from subforumNode in forumNode.Descendants("tr") where subforumNode.Descendants("a").Any() select new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty), string.Empty));
+            }
+            return subforumList;
+        }
+
         private ForumEntity AddDebugForum()
         {
             return new ForumEntity("Apps In Developmental States", "forumdisplay.php?forumid=261", "Debug Forum");

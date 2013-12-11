@@ -13,22 +13,24 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
-
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using AwfulMetro.Core.Tools;
 
 namespace AwfulMetro.Views
 {
     /// <summary>
     ///     A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class ThreadListPage : Page
+    public sealed partial class ThreadListPage
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
         private readonly ThreadManager _threadManager = new ThreadManager();
-        private ForumEntity _forumCategory;
-        private ForumCollectionEntity _forumThreadList;
-
+        private readonly ForumManager _forumManager = new ForumManager();
+        private ForumEntity _forumEntity;
+        private PageScrollingCollection _forumPageScrollingCollection;
+        private List<ForumThreadEntity> _forumThreadEntities;
+        private List<ForumEntity> _subForumEntities; 
         public ThreadListPage()
         {
             InitializeComponent();
@@ -73,26 +75,13 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             // TODO: Assign a bindable collection of items to this.DefaultViewModel["Items"]
 
-            _forumCategory = (ForumEntity) e.NavigationParameter;
-            BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
-            //CurrentPage.Text = _forumCategory.CurrentPage.ToString();
-
-            pageTitle.Text = _forumCategory.Name;
-            pageSnapTitle.Text = _forumCategory.Name;
+            _forumEntity = (ForumEntity) e.NavigationParameter;
+            pageTitle.Text = _forumEntity.Name;
+            pageSnapTitle.Text = _forumEntity.Name;
             await GetForumThreads();
-
-            CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumCategory.TotalPages).ToArray();
-            CurrentPageSelector.SelectedValue = _forumCategory.CurrentPage;
-            DefaultViewModel["Groups"] = _forumThreadList.ForumType;
-            DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
-            DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
-            if (!_forumThreadList.ForumSubcategoryList.Any())
-            {
-                ThreadViewSnapped.RowDefinitions[1].Height = new GridLength(0);
-                ThreadViewFullScreen.ColumnDefinitions[0].Width = new GridLength(0);
-            }
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
+
 
         /// <summary>
         ///     Preserves state associated with this page in case the application is suspended or the
@@ -115,72 +104,20 @@ namespace AwfulMetro.Views
         /// <param name="e">Event data that includes a vector of commands (ApplicationCommands)</param>
         private void OnCommandsRequested(SettingsPane settingsPane, SettingsPaneCommandsRequestedEventArgs e)
         {
-            if (_forumCategory.IsBookmarks)
-            {
-                var bookmarksCommand = new SettingsCommand("bookmarkSettings", "Bookmarks",
-                    handler =>
-                    {
-                        var up = new BookmarkSettingsFlyout();
-                        up.Show();
-                    });
-                e.Request.ApplicationCommands.Add(bookmarksCommand);
-            }
+            if (!_forumEntity.IsBookmarks) return;
+            var bookmarksCommand = new SettingsCommand("bookmarkSettings", "Bookmarks",
+                handler =>
+                {
+                    var up = new BookmarkSettingsFlyout();
+                    up.Show();
+                });
+            e.Request.ApplicationCommands.Add(bookmarksCommand);
         }
 
         private void ForumThreadList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((ForumThreadEntity) e.ClickedItem);
             Frame.Navigate(typeof (ThreadPage), itemId);
-        }
-
-        private async void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (_forumCategory.CurrentPage > 1)
-            {
-                loadingProgressBar.Visibility = Visibility.Visible;
-                _forumCategory.CurrentPage--;
-                CurrentPageSelector.SelectedValue = _forumCategory.CurrentPage;
-                _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
-                DefaultViewModel["Groups"] = _forumThreadList.ForumType;
-                DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
-                DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
-                loadingProgressBar.Visibility = Visibility.Collapsed;
-            }
-            BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
-        }
-
-        private async void ForwardButton_Click(object sender, RoutedEventArgs e)
-        {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            _forumCategory.CurrentPage++;
-            CurrentPageSelector.SelectedValue = _forumCategory.CurrentPage;
-            BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
-            ForwardButton.IsEnabled = _forumCategory.CurrentPage != _forumCategory.TotalPages ? true : false;
-            _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
-            DefaultViewModel["Groups"] = _forumThreadList.ForumType;
-            DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
-            DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
-        }
-
-        private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CurrentPageSelector != null && CurrentPageSelector.SelectedValue != null)
-            {
-                var currentPageValue = (int) CurrentPageSelector.SelectedValue;
-                if (currentPageValue != _forumCategory.CurrentPage)
-                {
-                    loadingProgressBar.Visibility = Visibility.Visible;
-                    _forumCategory.CurrentPage = (int) CurrentPageSelector.SelectedValue;
-                    BackButton.IsEnabled = _forumCategory.CurrentPage > 1 ? true : false;
-                    ForwardButton.IsEnabled = _forumCategory.CurrentPage != _forumCategory.TotalPages ? true : false;
-                    _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
-                    DefaultViewModel["Groups"] = _forumThreadList.ForumType;
-                    DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
-                    DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
-                    loadingProgressBar.Visibility = Visibility.Collapsed;
-                }
-            }
         }
 
         private void SubForumList_ItemClick(object sender, ItemClickEventArgs e)
@@ -191,7 +128,7 @@ namespace AwfulMetro.Views
 
         private void AddThreadButton_Click(object sender, RoutedEventArgs e)
         {
-            ForumEntity itemId = _forumCategory;
+            ForumEntity itemId = _forumEntity;
             Frame.Navigate(typeof (CreateThreadView), itemId);
         }
 
@@ -237,30 +174,30 @@ namespace AwfulMetro.Views
             up.Show();
         }
 
-        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            await GetForumThreads();
-        }
 
         private async Task GetForumThreads()
         {
-            if (_forumCategory.IsBookmarks)
+            if (_forumEntity.IsBookmarks)
             {
                 AddThreadButton.Visibility = Visibility.Collapsed;
                 BookmarkSettings.Visibility = Visibility.Visible;
-                ForwardButton.Visibility = Visibility.Collapsed;
-                BackButton.Visibility = Visibility.Collapsed;
-                _forumThreadList = await _threadManager.GetBookmarks(_forumCategory);
+                _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity);
+                DefaultViewModel["Threads"] = _forumThreadEntities;
+
             }
             else
             {
-                // TODO: Add/Refactor function to support page specific loads.
-                _forumThreadList = await _threadManager.GetForumThreadsAndSubforums(_forumCategory);
+                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 0);
+                _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 0);
+                foreach (var forumThread in _forumThreadEntities)
+                {
+                    _forumPageScrollingCollection.Add(forumThread);
+                }
+                _subForumEntities = await _forumManager.GetSubForums(_forumEntity);
+                DefaultViewModel["Threads"] = _forumPageScrollingCollection;
+                DefaultViewModel["Subforums"] = _subForumEntities;
             }
-
-            DefaultViewModel["Groups"] = _forumThreadList.ForumType;
-            DefaultViewModel["Threads"] = _forumThreadList.ForumThreadList;
-            DefaultViewModel["Subforums"] = _forumThreadList.ForumSubcategoryList;
+            
         }
 
         #region NavigationHelper registration
@@ -269,10 +206,6 @@ namespace AwfulMetro.Views
         /// NavigationHelper to respond to the page's navigation methods.
         /// 
         /// Page specific logic should be placed in event handlers for the
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState" />
-        /// and
-        /// <see cref="GridCS.Common.NavigationHelper.SaveState" />
-        /// .
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)

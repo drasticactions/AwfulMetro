@@ -16,11 +16,11 @@ namespace AwfulMetro.Core.Entity
 
         public ForumCollectionEntity(string forumName, IEnumerable<ForumThreadEntity> forumThreadList, IEnumerable<ForumEntity> forumSubcategoryList)
         {
-            this.ForumThreadList = forumThreadList;
-            this.ForumSubcategoryList = forumSubcategoryList;
-            this.ForumType = new List<string> { "Subforums", "Threads" };
-            this.ForumName = forumName;
-            this.CurrentPage = 1;
+            ForumThreadList = forumThreadList;
+            ForumSubcategoryList = forumSubcategoryList;
+            ForumType = new List<string> { "Subforums", "Threads" };
+            ForumName = forumName;
+            CurrentPage = 1;
         }
     }
 }
