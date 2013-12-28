@@ -22,7 +22,7 @@
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click" Label="Go To Last Post On Page"/>
+                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click" Label="Go To Last Post On Page" Icon="Download"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
@@ -94,10 +94,19 @@
                 <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
                 <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
                 <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
+                <AppBarButton x:Name="BookmarkButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Bookmark">
+                	<AppBarButton.Icon>
+                		<BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="40">
+                			<BitmapIcon.RenderTransform>
+                				<CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
+                			</BitmapIcon.RenderTransform>
+                		</BitmapIcon>
+                	</AppBarButton.Icon>
+                </AppBarButton>
                 <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
-                    <ItemsPanelTemplate>
-                        <CarouselPanel/>
-                    </ItemsPanelTemplate>
+                	<ItemsPanelTemplate>
+                		<CarouselPanel/>
+                	</ItemsPanelTemplate>
                 </ComboBox>
             </StackPanel>
             <ListView Grid.Column="0" x:Name="ThreadListFullScreen" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" >

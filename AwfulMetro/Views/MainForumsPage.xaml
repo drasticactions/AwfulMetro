@@ -194,8 +194,27 @@ HorizontalScrollMode="Disabled"
         <CommandBar>
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet"/>
-                <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page"/>
-                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_Click"  Label="Bookmarks"/>
+                <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page" RenderTransformOrigin="0.5,0.5">
+                	<AppBarButton.RenderTransform>
+                		<CompositeTransform ScaleX="0.95"/>
+                	</AppBarButton.RenderTransform>
+                	<AppBarButton.Icon>
+                		<BitmapIcon UriSource="ms-appx:///Assets/frontpage.png" RenderTransformOrigin="0.5,0.5">
+                			<BitmapIcon.RenderTransform>
+                				<CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
+                			</BitmapIcon.RenderTransform>
+                		</BitmapIcon>
+                	</AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_Click"  Label="Bookmarks">
+                	<AppBarButton.Icon>
+                		<BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon3.png" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" HorizontalAlignment="Right">
+                			<BitmapIcon.RenderTransform>
+                				<CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
+                			</BitmapIcon.RenderTransform>
+                		</BitmapIcon>
+                	</AppBarButton.Icon>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.TopAppBar>
