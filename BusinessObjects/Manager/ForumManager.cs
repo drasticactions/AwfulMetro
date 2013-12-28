@@ -53,28 +53,6 @@ namespace AwfulMetro.Core.Manager
                     }
                 }
             }
-            return forumGroupList;
-        }
-
-        public async Task<List<ForumCategoryEntity>> GetForumCategory()
-        {
-            var forumGroupList = new List<ForumCategoryEntity>();
-            HtmlDocument doc = await GetForumFrontPageHtml();
-            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("forums"));
-
-            foreach (HtmlNode link in forumNode.Descendants("tr"))
-            {
-                if (link.Descendants("th").Any())
-                {
-                    var forumGroup = new ForumCategoryEntity(WebUtility.HtmlDecode(link.Descendants("a").FirstOrDefault().InnerText), link.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty));
-                    forumGroupList.Add(forumGroup);
-                }
-                else if (link.Descendants("td").Any())
-                {
-                    var forumSubCategory = new ForumEntity(WebUtility.HtmlDecode(link.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("forum")).InnerText), link.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("forum")).GetAttributeValue("href", string.Empty), link.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("forum")).GetAttributeValue("title", string.Empty));
-                    forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
-                }
-            }
 
 #if DEBUG
             forumGroupList[3].ForumList.Add(AddDebugForum());

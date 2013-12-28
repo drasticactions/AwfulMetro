@@ -32,7 +32,7 @@ namespace AwfulMetro.Core.Tools
         
         public const string REMOVE_BOOKMARK = "json=1&action=remove&threadid={0}";
 
-        public const string ADD_BOOKMARK = "json=1&action=cat_toggle&threadid={0}";
+        public const string ADD_BOOKMARK = "json=1&action=add&threadid={0}";
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 

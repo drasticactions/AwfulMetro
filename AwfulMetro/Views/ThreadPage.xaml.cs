@@ -81,9 +81,8 @@ namespace AwfulMetro.Views
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
             DefaultViewModel["Posts"] = _threadPosts;
             if (_forumThread.ScrollToPost > 0)
-
             {
-                //ThreadListSnapped.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
+
                 ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
             }
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -174,31 +173,25 @@ namespace AwfulMetro.Views
         private void UserProfileButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            if (button != null)
-            {
-                var forumPost = (ForumPostEntity) button.DataContext;
-                Frame.Navigate(typeof (UserProfileView), forumPost.User);
-            }
+            if (button == null) return;
+            var forumPost = (ForumPostEntity) button.DataContext;
+            Frame.Navigate(typeof (UserProfileView), forumPost.User);
         }
 
         private void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            if (button != null)
-            {
-                var forumPost = (ForumPostEntity) button.DataContext;
-                Frame.Navigate(typeof (RapSheetView), forumPost.User.Id);
-            }
+            if (button == null) return;
+            var forumPost = (ForumPostEntity) button.DataContext;
+            Frame.Navigate(typeof (RapSheetView), forumPost.User.Id);
         }
 
         private void PostHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            if (button != null)
-            {
-                var forumPost = (ForumPostEntity) button.DataContext;
-                Frame.Navigate(typeof (UserPostHistoryPage), forumPost.User.Id);
-            }
+            if (button == null) return;
+            var forumPost = (ForumPostEntity) button.DataContext;
+            Frame.Navigate(typeof (UserPostHistoryPage), forumPost.User.Id);
         }
 
         private void QuoteButton_Click(object sender, RoutedEventArgs e)

@@ -7,7 +7,7 @@ namespace AwfulMetro.Core.Tools
 {
     public class BackgroundTaskUtils
     {
-        public const string BackgroundTaskEntryPoint = "BackgroundStatus.BackgroundNotifyStatus";
+        public const string BackgroundTaskEntryPoint = "AwfulMetro.BackgroundStatus.BackgroundNotifyStatus";
         public const string BackgroundTaskName = "BackgroundNotifyStatus";
         public static string BackgroundTaskProgress = string.Empty;
         public static bool BackgroundTaskRegistered = false;

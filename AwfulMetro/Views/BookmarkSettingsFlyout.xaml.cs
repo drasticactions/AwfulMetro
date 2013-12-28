@@ -27,7 +27,7 @@ namespace AwfulMetro.Views
         {
         }
 
-        private void BookmarkLiveTiles_Toggled(object sender, RoutedEventArgs e)
+        private async void BookmarkLiveTiles_Toggled(object sender, RoutedEventArgs e)
         {
             var toggleSwitch = sender as ToggleSwitch;
             if (toggleSwitch == null) return;
@@ -35,7 +35,8 @@ namespace AwfulMetro.Views
             {
                 // Run bookmark live tile creator every 15 minutes.
                 // TODO: Change 15 to user selectable value.
-                Task<BackgroundTaskRegistration> task =
+                BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
+                BackgroundTaskRegistration task = await
                     BackgroundTaskUtils.RegisterBackgroundTask(BackgroundTaskUtils.BackgroundTaskEntryPoint,
                         BackgroundTaskUtils.BackgroundTaskName,
                         new TimeTrigger(15, false),

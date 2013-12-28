@@ -229,7 +229,7 @@ namespace AwfulMetro.Views
 
         private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private async void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
