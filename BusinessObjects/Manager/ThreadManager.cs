@@ -54,6 +54,30 @@ namespace AwfulMetro.Core.Manager
             return true;
         }
 
+        public async Task<bool> RemoveBookmarks(List<long> threadIdList)
+        {
+            foreach (long threadId in threadIdList)
+            {
+                await this._webManager.PostData(
+                Constants.BOOKMARK, string.Format(
+                    Constants.REMOVE_BOOKMARK, threadId
+                   ));
+            }
+            return true;
+        }
+
+        public async Task<bool> MarkThreadUnread(List<long> threadIdList)
+        {
+            foreach (long threadId in threadIdList)
+            {
+                await this._webManager.PostData(
+                Constants.RESET_BASE, string.Format(
+                    Constants.RESET_SEEN, threadId
+                   ));
+            }
+            return true;
+        }
+
         public async Task<List<ForumThreadEntity>> GetForumThreads(ForumEntity forumCategory, int page)
         {
             // TODO: Remove parsing logic from managers. I don't think they have a place here...

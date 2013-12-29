@@ -26,7 +26,9 @@ namespace AwfulMetro.Core.Tools
 
         public const string QUOTE_EXP = "[quote=\"{0}\" post=\"{1}\"]{2}[/quote]";
 
-        public const string RESET_SEEN = "/showthread.php?action=resetseen&threadid={0}";
+        public const string RESET_SEEN = "action=resetseen&threadid={0}&json=1";
+
+        public const string RESET_BASE = BASE_URL + "showthread.php";
 
         public const string BOOKMARK = BASE_URL + "bookmarkthreads.php";
         

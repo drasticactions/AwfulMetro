@@ -243,9 +243,15 @@ namespace AwfulMetro.Views
             await _threadManager.AddBookmarks(threadIdList);
         }
 
-        private void UnreadButton_OnClick(object sender, RoutedEventArgs e)
+        private async void UnreadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var threadlist = new List<ForumThreadEntity>();
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            await _threadManager.MarkThreadUnread(threadIdList);
         }
 
         private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
