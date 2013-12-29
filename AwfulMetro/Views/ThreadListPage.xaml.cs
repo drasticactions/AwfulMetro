@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -126,10 +127,12 @@ namespace AwfulMetro.Views
             Frame.Navigate(typeof (ThreadListPage), itemId);
         }
 
-        private void AddThreadButton_Click(object sender, RoutedEventArgs e)
+        private async void AddThreadButton_Click(object sender, RoutedEventArgs e)
         {
             ForumEntity itemId = _forumEntity;
-            Frame.Navigate(typeof (CreateThreadView), itemId);
+            // TODO: Finish native new thread function.
+            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.NEW_THREAD, itemId.ForumId)));
+            //Frame.Navigate(typeof (CreateThreadView), itemId);
         }
 
         private void PageUnloaded(object sender, RoutedEventArgs e)

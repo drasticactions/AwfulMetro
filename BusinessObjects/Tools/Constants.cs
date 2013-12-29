@@ -38,9 +38,9 @@ namespace AwfulMetro.Core.Tools
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
-        public const string QUOTE_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&postid={0}";
+        public const string REPLY_BASE = BASE_URL + "newreply.php?action=newreply&threadid={0}";
 
-        public const string THREAD_POST_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&threadid={0}";
+        public const string QUOTE_BASE = BASE_URL + "newreply.php?action=newreply&postid={0}";
 
         public const string USER_POST_HISTORY = BASE_URL + "search.php?action=do_search_posthistory&userid={0}";
 

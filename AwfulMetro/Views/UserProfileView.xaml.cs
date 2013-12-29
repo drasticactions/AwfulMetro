@@ -72,8 +72,8 @@ namespace AwfulMetro.Views
             {
                 userId = user.Id;
             }
-
-            DefaultViewModel["UserEntity"] = await this._forumUserManager.GetUserFromProfilePage(user, userId);
+            var userProfile = await this._forumUserManager.GetUserFromProfilePage(user, userId);
+            DefaultViewModel["UserEntity"] = userProfile;
             DefaultViewModel["RapSheet"] =
                 await this._rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
             DefaultViewModel["UserSearch"] =

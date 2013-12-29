@@ -44,7 +44,7 @@ namespace AwfulMetro.BackgroundStatus
         {
             foreach (ForumThreadEntity thread in forumThreads)
             {
-                if(thread.ReplyCount > 0)
+                if (thread.RepliesSinceLastOpened > 0)
                 NotifyStatusTile.CreateBookmarkLiveTile(thread);
             }
         }
