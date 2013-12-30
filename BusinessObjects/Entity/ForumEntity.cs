@@ -11,9 +11,11 @@ namespace AwfulMetro.Core.Entity
         /// <param name="name">The name of the forum.</param>
         /// <param name="location">The URL location of the forum.</param>
         /// <param name="description">The forum description.</param>
-        public ForumEntity(string name, string location, string description)
+        /// <param name="isSubforum">If this specific forum is a subforum or not.</param>
+        public ForumEntity(string name, string location, string description, bool isSubforum)
         {
             this.Name = name;
+            this.IsSubforum = isSubforum;
             this.Location = Constants.BASE_URL + location;
             string[] forumId = location.Split('=');
             if(forumId.Length > 1)
@@ -33,6 +35,8 @@ namespace AwfulMetro.Core.Entity
         public string Description { get; private set; }
 
         public int CurrentPage { get; set; }
+
+        public bool IsSubforum { get; set; }
 
         public int TotalPages { get; set; }
 

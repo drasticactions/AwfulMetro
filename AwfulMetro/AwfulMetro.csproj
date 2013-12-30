@@ -109,6 +109,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\AvatarWebViewConverter.cs" />
+    <Compile Include="Tools\SubforumBodyColorConverter.cs" />
+    <Compile Include="Tools\SubforumFontColorConverter.cs" />
+    <Compile Include="Tools\SubforumHeaderColorConverter.cs" />
+    <Compile Include="Tools\ThreadHeaderColorConverter.cs" />
     <Compile Include="Views\BookmarkSettingsFlyout.xaml.cs">
       <DependentUpon>BookmarkSettingsFlyout.xaml</DependentUpon>
     </Compile>

@@ -160,14 +160,7 @@ namespace AwfulMetro.Views
             }
             else
             {
-                if (width <= 620)
-                {
-                    VisualStateManager.GoToState(this, "Snapped", false);
-                }
-                else
-                {
-                    VisualStateManager.GoToState(this, "Portrait", false);
-                }
+                VisualStateManager.GoToState(this, width <= 620 ? "Snapped" : "FullScreen", false);
             }
         }
 
@@ -186,12 +179,13 @@ namespace AwfulMetro.Views
                 BookmarkSettings.Visibility = Visibility.Visible;
                 _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity);
                 DefaultViewModel["Threads"] = _forumThreadEntities;
-
+                SubForumList.Visibility = Visibility.Collapsed;
+                SubForumListSnapped.Visibility = Visibility.Collapsed;
             }
             else
             {
-                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 0);
-                _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 0);
+                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
+                _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 1);
                 foreach (var forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);

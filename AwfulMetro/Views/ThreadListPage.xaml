@@ -238,18 +238,6 @@
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
-                <VisualState x:Name="Portrait">
-                    <Storyboard>
-                        <DoubleAnimation Duration="0" To="30" Storyboard.TargetProperty="(TextBlock.FontSize)" Storyboard.TargetName="pageTitle" d:IsOptimized="True"/>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="ForumThreadList">
-                            <DiscreteObjectKeyFrame KeyTime="0">
-                                <DiscreteObjectKeyFrame.Value>
-                                    <x:Double>600</x:Double>
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
-                        </ObjectAnimationUsingKeyFrames>
-                    </Storyboard>
-                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
@@ -267,7 +255,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="310"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
@@ -280,7 +267,7 @@
         </Grid>
         <Grid x:Name="ThreadViewFullScreen" Grid.Row="1" Margin="-5,0,5,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="115"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
@@ -304,7 +291,7 @@
                 	</AppBarButton.Icon>
                 </AppBarButton>
             </StackPanel>
-            <GridView x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+            <GridView Width="115" x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -321,40 +308,49 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-            <ListView x:Name="ForumThreadList" SelectionChanged="ForumThreadList_OnSelectionChanged" HorizontalAlignment="Left" ItemClick="ForumThreadList_ItemClick" Tapped="ForumThreadList_OnTapped"  IsSwipeEnabled="True" Grid.Column="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="Extended" IsItemClickEnabled="True">
+            <ListView x:Name="ForumThreadList" SelectionChanged="ForumThreadList_OnSelectionChanged" HorizontalAlignment="Stretch"  ItemClick="ForumThreadList_ItemClick" Tapped="ForumThreadList_OnTapped"  IsSwipeEnabled="True" Grid.Column="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="Extended" IsItemClickEnabled="True">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="#FFF1F1F1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="80"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Grid.Column="0" Width="60" Height="15">
-                                <Image Source="{Binding ImageIconLocation}"  AutomationProperties.Name="{Binding Title}"/>
-                            </Border>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Height="5" Background="{Binding Converter={StaticResource ThreadHeaderColorConverter}}"/>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Grid.Column="0" Width="60" Height="15">
+                                    <Image Source="{Binding ImageIconLocation}"  AutomationProperties.Name="{Binding Title}"/>
+                                </Border>
 
-                            <StackPanel Width="700" Grid.Column="1">
-                                <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Pages:"></TextBlock>
-                                    <TextBlock x:Name="TotalPages" Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
-                                    <TextBlock Text="Author:" Margin="5,0,0,0" />
-                                    <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
-                                    <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
-                                    <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
-                                    <TextBlock x:Name="Sticky" Margin="5,0,0,0" Text="Sticky" Visibility="{Binding IsSticky, Converter={StaticResource booleanToVisibilityConverter}}"/>
-                                    <TextBlock x:Name="Locked" Margin="5,0,0,0" Text="Locked" Visibility="{Binding IsLocked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Pages:"></TextBlock>
+                                        <TextBlock x:Name="TotalPages" Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
+                                        <TextBlock Text="Author:" Margin="5,0,0,0" />
+                                        <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
+                                        <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
+                                        <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                            <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontSize="15" x:Name="ReplyCount" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
-                                    <TextBlock FontSize="35" Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="5,-19,0,0" TextWrapping="NoWrap" />
-                                </StackPanel>
-                            </Border>
-
-                        </Grid>
+                                <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Center"  HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="15" x:Name="ReplyCount" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
+                                        <TextBlock FontSize="35" Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="5,-19,0,0" TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -362,10 +358,10 @@
         <Grid x:Name="ThreadViewSnapped" Visibility="Collapsed" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="115"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <GridView x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+            <GridView Height="115" x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -384,45 +380,57 @@
             </GridView>
             <TextBlock x:Name="pageSnapTitle" Grid.Row="0" Style="{StaticResource HeaderTextBlockStyle}" FontSize="20" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Top" Margin="0,0,0,0"/>
-            <ListView x:Name="ForumThreadListSnapped" HorizontalAlignment="Left" Width="500" ItemClick="ForumThreadList_ItemClick" Grid.Row="2" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+            <ListView x:Name="ForumThreadListSnapped" HorizontalAlignment="Left" ItemClick="ForumThreadList_ItemClick" Grid.Row="2" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="#FFF1F1F1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="80"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Grid.Column="0" Width="60" Height="15">
-                                <Image Source="{Binding ImageIconLocation}"  AutomationProperties.Name="{Binding Title}"/>
-                            </Border>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Height="5" Background="{Binding Converter={StaticResource ThreadHeaderColorConverter}}"/>
+<Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" Grid.Column="0" Width="60" Height="15">
+                                    <Image Source="{Binding ImageIconLocation}"  AutomationProperties.Name="{Binding Title}"/>
+                                </Border>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Pages:"></TextBlock>
+                                        <TextBlock Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Author:" Margin="0,0,0,0" />
+                                        <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
+                                        <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
+                                        <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
 
-                            <StackPanel Width="300" Grid.Column="1">
-                                <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Pages:"></TextBlock>
-                                    <TextBlock x:Name="TotalPages" Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
-                                    <TextBlock Text="Author:" Margin="5,0,0,0" />
-                                    <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
-                                    <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
-                                    <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
-                                    <TextBlock x:Name="Sticky" Margin="5,0,0,0" Text="Sticky" Visibility="{Binding IsSticky, Converter={StaticResource booleanToVisibilityConverter}}"/>
-                                    <TextBlock x:Name="Locked" Margin="5,0,0,0" Text="Locked" Visibility="{Binding IsLocked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                            <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontSize="15" x:Name="ReplyCount" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
-                                    <TextBlock FontSize="35" Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="5,-19,0,0" TextWrapping="NoWrap" />
-                                </StackPanel>
-                            </Border>
+                                <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="15" x:Name="ReplyCount" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
+                                        <TextBlock FontSize="35" Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="5,-19,0,0" TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Border>
 
+                            </Grid>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <Grid Canvas.ZIndex="99">
+        <Grid Grid.Row="0" Canvas.ZIndex="99">
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
         </Grid>
     </Grid>

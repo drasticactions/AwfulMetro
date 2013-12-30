@@ -13,5 +13,7 @@
 
         <x:String x:Key="AppName">AwfulMetro</x:String>
         <tools:AvatarWebViewConverter x:Key="AvatarWebViewConverter" />
+        <tools:ThreadHeaderColorConverter x:Key="ThreadHeaderColorConverter" />
+        <tools:SubforumHeaderColorConverter x:Key="SubforumHeaderColorConverter" />
     </Application.Resources>
 </Application>

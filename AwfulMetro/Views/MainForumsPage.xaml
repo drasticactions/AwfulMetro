@@ -101,8 +101,8 @@
             ItemClick="ItemView_ItemClick">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Grid HorizontalAlignment="Left" Width="400" Height="100">
-                        <Border Background="#FF415B64">
+                    <Grid HorizontalAlignment="Left" Width="445" Height="100">
+                        <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
                             <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                         </Border>
                         <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">

@@ -107,7 +107,7 @@ namespace AwfulMetro.Views
 
         public void BookmarkButton_Click(object sender, RoutedEventArgs e)
         {
-            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
+            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
             this.Frame.Navigate(typeof (ThreadListPage), forum);
         }
 

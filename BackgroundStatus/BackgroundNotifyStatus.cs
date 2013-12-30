@@ -28,9 +28,8 @@ namespace AwfulMetro.BackgroundStatus
         private async Task Update(IBackgroundTaskInstance taskInstance)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty);
+            var forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
             List<ForumThreadEntity> forumThreadEntities = await _threadManager.GetBookmarks(forumCategory);
-
             if (localSettings.Values.ContainsKey("_threadIds"))
             {
                 _threadIds = (List<long>) localSettings.Values["_threadIds"];

@@ -36,20 +36,19 @@ namespace AwfulMetro.Core.Manager
                 {
                     var value = node.Attributes["value"].Value;
                     int id;
-                    if (int.TryParse(value, out id) && id > -1)
+                    if (!int.TryParse(value, out id) || id <= -1) continue;
+                    if (node.NextSibling.InnerText.Contains("--"))
                     {
-                        if (node.NextSibling.InnerText.Contains("--"))
-                        {
-                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
-                            var forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value), string.Empty);
-                            forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
-                        }
-                        else
-                        {
-                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText);
-                            var forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
-                            forumGroupList.Add(forumGroup);
-                        }
+                        string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
+                        bool isSubforum = node.NextSibling.InnerText.Count(c => c == '-') > 2;
+                        var forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value), string.Empty, isSubforum);
+                        forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
+                    }
+                    else
+                    {
+                        string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText);
+                        var forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
+                        forumGroupList.Add(forumGroup);
                     }
                 }
             }
@@ -93,17 +92,17 @@ namespace AwfulMetro.Core.Manager
             var subforumList = new List<ForumEntity>();
             var url = forumCategory.Location;
             var doc = (await _webManager.DownloadHtml(url)).Document;
-            if (doc.DocumentNode.Descendants().Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums")))
-            {
-                var forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"));
-                subforumList.AddRange(from subforumNode in forumNode.Descendants("tr") where subforumNode.Descendants("a").Any() select new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty), string.Empty));
-            }
+            if (
+                !doc.DocumentNode.Descendants()
+                    .Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"))) return subforumList;
+            var forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"));
+            subforumList.AddRange(from subforumNode in forumNode.Descendants("tr") where subforumNode.Descendants("a").Any() select new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty), string.Empty, true));
             return subforumList;
         }
 
         private ForumEntity AddDebugForum()
         {
-            return new ForumEntity("Apps In Developmental States", "forumdisplay.php?forumid=261", "Debug Forum");
+            return new ForumEntity("Apps In Developmental States", "forumdisplay.php?forumid=261", "Debug Forum", false);
         }
     }
 }
