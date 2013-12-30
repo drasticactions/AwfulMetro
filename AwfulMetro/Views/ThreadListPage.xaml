@@ -333,13 +333,17 @@
                                 </Border>
 
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock x:Name="ThreadTitle" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Pages:"></TextBlock>
                                         <TextBlock x:Name="TotalPages" Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
-                                        <TextBlock Text="Author:" Margin="5,0,0,0" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Author:" Margin="0,0,0,0" />
                                         <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
-                                        <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Killed By:" Margin="0,0,0,0"/>
                                         <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
                                     </StackPanel>
                                 </StackPanel>
@@ -404,7 +408,7 @@
                                     <Image Source="{Binding ImageIconLocation}"  AutomationProperties.Name="{Binding Title}"/>
                                 </Border>
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock x:Name="ThreadTitle" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock x:Name="ThreadTitle" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Name}"></TextBlock>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Pages:"></TextBlock>
                                         <TextBlock Margin="5,0,0,0" Text="{Binding TotalPages}"></TextBlock>
@@ -412,9 +416,10 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Author:" Margin="0,0,0,0" />
                                         <TextBlock Text="{Binding Author}" Margin="5,0,0,0"/>
-                                        <TextBlock Text="Killed By:" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Killed By:" Margin="0,0,0,0"/>
                                         <TextBlock Text="{Binding KilledBy}" Margin="5,0,0,0"/>
-
                                     </StackPanel>
                                 </StackPanel>
                                 <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
