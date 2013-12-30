@@ -1,8 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
@@ -181,6 +186,7 @@ namespace AwfulMetro.Views
                 DefaultViewModel["Threads"] = _forumThreadEntities;
                 SubForumList.Visibility = Visibility.Collapsed;
                 SubForumListSnapped.Visibility = Visibility.Collapsed;
+                NotificationButton.Visibility = Visibility.Visible;
             }
             else
             {
@@ -255,6 +261,37 @@ namespace AwfulMetro.Views
         {
                 FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
                 UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+                NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+        }
+
+        private void NotificationButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var threadlist = new List<ForumThreadEntity>();
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["_threadIds"] = SerializeListToXml(threadIdList);
+        }
+
+        public static string SerializeListToXml(List<long> list)
+        {
+            try
+            {
+                var xmlIzer = new XmlSerializer(typeof (List<long>));
+                var writer = new StringWriter();
+                xmlIzer.Serialize(writer, list);
+                System.Diagnostics.Debug.WriteLine(writer.ToString());
+                return writer.ToString();
+            }
+
+            catch (Exception exc)
+            {
+                System.Diagnostics.Debug.WriteLine(exc);
+                return String.Empty;
+            }
         }
     }
 }

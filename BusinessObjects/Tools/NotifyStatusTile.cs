@@ -1,4 +1,5 @@
-﻿using AwfulMetro.Core.Entity;
+﻿using Windows.Data.Xml.Dom;
+using AwfulMetro.Core.Entity;
 using Windows.Networking.Connectivity;
 using Windows.UI.Notifications;
 
@@ -25,6 +26,27 @@ namespace AwfulMetro.Core.Tools
             var tileNotification = new TileNotification(tileXml);
             TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
             
+        }
+
+        public static void CreateToastNotification(ForumThreadEntity forumThread)
+        {
+            XmlDocument notificationXml =
+              ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText01);
+            XmlNodeList toastElements = notificationXml.GetElementsByTagName("text");
+            toastElements[0].AppendChild(notificationXml.CreateTextNode(string.Format("\"{0}\" has {1} unread replies!", forumThread.Name, forumThread.RepliesSinceLastOpened)));
+            XmlNodeList imageElement = notificationXml.GetElementsByTagName("image");
+            string imageName = string.Empty;
+            if (string.IsNullOrEmpty(imageName))
+            {
+                imageName = @"Assets/Logo.scale-100.png";
+            }
+            imageElement[0].Attributes[1].NodeValue = imageName;
+            IXmlNode toastNode = notificationXml.SelectSingleNode("/toast");
+            string test = "{" + string.Format("type:'toast'") + "}";
+            var xmlElement = (XmlElement)toastNode;
+            if (xmlElement != null) xmlElement.SetAttribute("launch", test);
+            var toastNotification = new ToastNotification(notificationXml);
+            ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
         }
     }
 }
