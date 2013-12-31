@@ -29,10 +29,6 @@ namespace AwfulMetro.Core.Entity
 
         public long PostId { get; private set; }
 
-        public bool IsAdmin { get; private set; }
-
-        public bool IsMod { get; private set; }
-
         public bool IsQuoting { get; set; }
 
         /// <summary>

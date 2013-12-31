@@ -34,7 +34,7 @@ namespace AwfulMetro.Tests.Unit
         public void Username_Is_Successfully_Parsed()
         {
             var user = GetParsedEntity(DefaultUserProfileHtml);
-            var expected = "elguignolgrande";
+            const string expected = "elguignolgrande";
             Assert.AreEqual(expected, user.Username.Trim());
         }
 
@@ -42,8 +42,7 @@ namespace AwfulMetro.Tests.Unit
         public void AboutUser_Is_Successfully_Parsed()
         {
             var user = GetParsedEntity(DefaultUserProfileHtml);
-            var expected =
-                @"There have been 18540 posts made by elguignolgrande, an average of 3.86 posts per day, since registering on Sep  2, 2000. elguignolgrande claims to be a male.
+            const string expected = @"There have been 18540 posts made by elguignolgrande, an average of 3.86 posts per day, since registering on Sep  2, 2000. elguignolgrande claims to be a male.
 
 This moron has not provided any additional info.  The lack of a gender-specific pronoun here is in no way intended as sexism.";
             Assert.AreEqual(expected, user.AboutUser.Trim());
