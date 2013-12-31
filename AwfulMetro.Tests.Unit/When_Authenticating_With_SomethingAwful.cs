@@ -25,7 +25,7 @@ namespace AwfulMetro.Tests.Unit
 
             var localStorage = new FakeLocalStorageManager();
             var am = new AuthenticationManager(webManager, localStorage);
-            var expected = true;
+            const bool expected = true;
             var actual = await am.Authenticate("foo", "bar");
             Assert.AreEqual(expected, actual);
         }
@@ -42,7 +42,7 @@ namespace AwfulMetro.Tests.Unit
 
             var localStorage = new FakeLocalStorageManager();
             var am = new AuthenticationManager(webManager, localStorage);
-            var expected = false;
+            const bool expected = false;
             var actual = await am.Authenticate("foo", "bar");
             Assert.AreEqual(expected, actual);
         }
@@ -74,7 +74,7 @@ namespace AwfulMetro.Tests.Unit
         [TestMethod]
         public async Task Cookies_Are_Stored_Successfully()
         {
-            var expectedUri = "http://fake.forums.somethingawful.com/";
+            const string expectedUri = "http://fake.forums.somethingawful.com/";
 
             var cookieContainer = new CookieContainer();
             cookieContainer.Add(new Uri(expectedUri), new Cookie("Foo", "bar"));
@@ -87,8 +87,7 @@ namespace AwfulMetro.Tests.Unit
             var localStorage = new FakeLocalStorageManager();
             var am = new AuthenticationManager(webManager, localStorage);
             
-            
-            var actual = await am.Authenticate("foo", "bar");
+            await am.Authenticate("foo", "bar");
 
             Assert.AreEqual(expectedUri, localStorage.SavedUri.AbsoluteUri);
             Assert.AreEqual(2, localStorage.SavedCookies.Count);
@@ -100,7 +99,7 @@ namespace AwfulMetro.Tests.Unit
         [TestMethod]
         public async Task Cookies_Are_Retrieved_Successfully()
         {
-            var expectedUri = "http://fake.forums.somethingawful.com/";
+            const string expectedUri = "http://fake.forums.somethingawful.com/";
 
             var cookieContainer = new CookieContainer();
             cookieContainer.Add(new Uri(expectedUri), new Cookie("Foo", "bar"));
