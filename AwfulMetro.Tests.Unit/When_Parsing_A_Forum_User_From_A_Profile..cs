@@ -53,7 +53,7 @@ This moron has not provided any additional info.  The lack of a gender-specific 
         public void DateUserJoined_Is_Successfully_Parsed()
         {
             var user = GetParsedEntity(DefaultUserProfileHtml);
-            Assert.AreEqual("Sep  2, 2000", user.DateJoined);
+            Assert.AreEqual(new DateTime(2000, 9, 2), user.DateJoined);
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ This moron has not provided any additional info.  The lack of a gender-specific 
         public void LastPostDate_Is_Successfully_Parsed()
         {
             var user = GetParsedEntity(DefaultUserProfileHtml);
-            Assert.AreEqual("Nov  1, 2013 10:21", user.LastPostDate);
+            Assert.AreEqual(new DateTime(2013, 11, 1, 10, 21, 00), user.LastPostDate);
         }
 
         [TestMethod]
