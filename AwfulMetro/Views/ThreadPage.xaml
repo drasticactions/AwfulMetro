@@ -94,7 +94,7 @@
                 <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
                 <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
                 <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
-                <AppBarButton x:Name="BookmarkButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Bookmark">
+                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_OnClick"  Label="Bookmark">
                 	<AppBarButton.Icon>
                 		<BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="40">
                 			<BitmapIcon.RenderTransform>
@@ -119,10 +119,10 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"></TextBlock>
-                                    <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding User.AvatarLink}"></WebView>
-                                    <TextBlock x:Name="UserAvatarTitle" Width="250" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"></TextBlock>
-                                    <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"></TextBlock>
+                                    <TextBlock x:Name="UserName" FontSize="20" TextWrapping="Wrap" Text="{Binding User.Username}"/>
+                                    <WebView x:Name="AvatarImage" Width="125" Height="130" Visibility="{Binding User.AvatarLink, Converter={StaticResource AvatarWebViewConverter}}" web:WebViewHelper.Html="{Binding User.AvatarLink}"/>
+                                    <TextBlock x:Name="UserAvatarTitle" Width="250" TextWrapping="Wrap" Text="{Binding User.AvatarTitle}"/>
+                                    <TextBlock x:Name="UserRegDate" Text="{Binding User.DateJoined}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
                                     <WebView x:Name="PostRawView" MinHeight="200" Height="{Binding PostHeight}" MaxHeight="500" Width="1000" web:WebViewHelper.Html="{Binding PostHtml}" ></WebView>
@@ -130,7 +130,7 @@
                                         <Button x:Name="UserProfileButton" Click="UserProfileButton_Click" Content="Profile"/>
                                         <Button x:Name="PostHistoryButton" Click="PostHistoryButton_Click" Content="Post History"/>
                                         <Button x:Name="RapSheetButton" Click="RapSheetButton_Click" Content="RapSheet"/>
-                                        <Button x:Name="ReportButton" Content="Report"/>
+                                        <Button x:Name="ReportButton" Visibility="Collapsed" Content="Report"/>
                                         <Button x:Name="QuoteButton" Click="QuoteButton_Click" Content="Quote"/>
                                     </StackPanel>
                                 </StackPanel>

@@ -1,4 +1,5 @@
-﻿using AwfulMetro.Common;
+﻿using System.Threading.Tasks;
+using AwfulMetro.Common;
 using AwfulMetro.Views;
 using AwfulMetro.BackgroundStatus;
 using AwfulMetro.Core.Manager;

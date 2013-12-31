@@ -15,6 +15,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>AwfulMetro_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>E4D83D96AA2A6CC547C6517B76238BF0874DB9E3</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -105,6 +108,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tools\AvatarWebViewConverter.cs" />
+    <Compile Include="Tools\SubforumBodyColorConverter.cs" />
+    <Compile Include="Tools\SubforumFontColorConverter.cs" />
+    <Compile Include="Tools\SubforumHeaderColorConverter.cs" />
+    <Compile Include="Tools\ThreadHeaderColorConverter.cs" />
     <Compile Include="Views\BookmarkSettingsFlyout.xaml.cs">
       <DependentUpon>BookmarkSettingsFlyout.xaml</DependentUpon>
     </Compile>
@@ -163,6 +171,8 @@
     <Content Include="Assets\Wide310x150Logo.scale-140.png" />
     <Content Include="Assets\Wide310x150Logo.scale-180.png" />
     <Content Include="Assets\Wide310x150Logo.scale-80.png" />
+    <None Include="AwfulMetro_TemporaryKey.pfx" />
+    <None Include="Package.StoreAssociation.xml" />
     <Page Include="Views\BookmarkSettingsFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

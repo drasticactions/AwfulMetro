@@ -54,6 +54,30 @@ namespace AwfulMetro.Core.Manager
             return true;
         }
 
+        public async Task<bool> RemoveBookmarks(List<long> threadIdList)
+        {
+            foreach (long threadId in threadIdList)
+            {
+                await this._webManager.PostData(
+                Constants.BOOKMARK, string.Format(
+                    Constants.REMOVE_BOOKMARK, threadId
+                   ));
+            }
+            return true;
+        }
+
+        public async Task<bool> MarkThreadUnread(List<long> threadIdList)
+        {
+            foreach (long threadId in threadIdList)
+            {
+                await this._webManager.PostData(
+                Constants.RESET_BASE, string.Format(
+                    Constants.RESET_SEEN, threadId
+                   ));
+            }
+            return true;
+        }
+
         public async Task<List<ForumThreadEntity>> GetForumThreads(ForumEntity forumCategory, int page)
         {
             // TODO: Remove parsing logic from managers. I don't think they have a place here...
@@ -70,39 +94,6 @@ namespace AwfulMetro.Core.Manager
                 forumThreadList.Add(threadEntity);
             }
             return forumThreadList;
-        }
-
-        public async Task<ForumCollectionEntity> GetForumThreadsAndSubforums(ForumEntity forumCategory)
-        {
-            var forumSubcategoryList = new List<ForumEntity>();
-            var forumThreadList = new List<ForumThreadEntity>();
-            var url = forumCategory.Location;
-            if (forumCategory.CurrentPage > 0)
-            {
-                url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER,forumCategory.CurrentPage);
-            }
-
-            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
-            HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
-
-            forumCategory.TotalPages = Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", string.Empty));
-
-            HtmlNode forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
-
-            foreach (HtmlNode threadNode in forumNode.Descendants("tr").Where(node => node.GetAttributeValue("class", string.Empty).StartsWith("thread")))
-            {
-                var threadEntity = new ForumThreadEntity();
-                threadEntity.Parse(threadNode);
-                forumThreadList.Add(threadEntity);
-            }
-
-            if (doc.DocumentNode.Descendants().Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums")))
-            {
-                forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"));
-                forumSubcategoryList.AddRange(from subforumNode in forumNode.Descendants("tr") where subforumNode.Descendants("a").Any() select new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty), string.Empty));
-            }
-            forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("bclast"));
-            return new ForumCollectionEntity(WebUtility.HtmlDecode(forumNode.InnerText), forumThreadList, forumSubcategoryList);
         }
 
     }

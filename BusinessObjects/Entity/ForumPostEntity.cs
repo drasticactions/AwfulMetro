@@ -56,8 +56,10 @@ namespace AwfulMetro.Core.Entity
             /*
              * Attempts to find the height of the post by counting the new lines and 
              * multiplying by twenty. Maybe a good way to get more posts on the screen?
+             * Eh. Maybe not. (\/_\/)
              */
-            this.PostHeight = PostHtml.Count(p => p == '\n') * 20;
+            //this.PostHeight = PostHtml.Count(p => p == '\n') * 20;
+            this.PostHeight = 400;
         }
 
         /// <summary>
@@ -67,7 +69,7 @@ namespace AwfulMetro.Core.Entity
         /// <returns></returns>
         private static string FixPostHtml(String postHtml)
         {
-            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body></head><body>" + postHtml + "</body></html>";
+            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "</head><body>" + postHtml + "</body></html>";
         }
     }
 }

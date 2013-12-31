@@ -54,7 +54,7 @@ namespace AwfulMetro.Core.Manager
             var uri = new Uri(url);
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Accept = ACCEPT;
-            request.CookieContainer = GetCookiesForUri(uri);
+            request.CookieContainer = await this._localStorageManager.LoadCookie(Constants.COOKIE_FILE);
             request.Method = "POST";
             request.ContentType = POST_CONTENT_TYPE;
             request.UseDefaultCredentials = false;

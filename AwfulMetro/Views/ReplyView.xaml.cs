@@ -22,6 +22,7 @@ namespace AwfulMetro.Views
         private readonly NavigationHelper _navigationHelper;
         private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
         private ForumPostEntity _forumPost;
+        private ForumThreadEntity _forumThread;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
 
 
@@ -67,8 +68,11 @@ namespace AwfulMetro.Views
         /// </param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            _forumPost = (ForumPostEntity) e.NavigationParameter;
+            _forumPost = e.NavigationParameter as ForumPostEntity;
+            if(_forumPost != null)
             ReplyText.Text = string.Format(Constants.QUOTE_EXP, _forumPost.User.Username, _forumPost.PostId, _forumPost.PostFormatted);
+
+            _forumThread = e.NavigationParameter as ForumThreadEntity;
         }
 
         /// <summary>

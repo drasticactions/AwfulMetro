@@ -1,8 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation;
+using Windows.Storage;
+using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -126,10 +132,12 @@ namespace AwfulMetro.Views
             Frame.Navigate(typeof (ThreadListPage), itemId);
         }
 
-        private void AddThreadButton_Click(object sender, RoutedEventArgs e)
+        private async void AddThreadButton_Click(object sender, RoutedEventArgs e)
         {
             ForumEntity itemId = _forumEntity;
-            Frame.Navigate(typeof (CreateThreadView), itemId);
+            // TODO: Finish native new thread function.
+            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.NEW_THREAD, itemId.ForumId)));
+            //Frame.Navigate(typeof (CreateThreadView), itemId);
         }
 
         private void PageUnloaded(object sender, RoutedEventArgs e)
@@ -157,14 +165,7 @@ namespace AwfulMetro.Views
             }
             else
             {
-                if (width <= 620)
-                {
-                    VisualStateManager.GoToState(this, "Snapped", false);
-                }
-                else
-                {
-                    VisualStateManager.GoToState(this, "Portrait", false);
-                }
+                VisualStateManager.GoToState(this, width <= 620 ? "Snapped" : "FullScreen", false);
             }
         }
 
@@ -183,12 +184,14 @@ namespace AwfulMetro.Views
                 BookmarkSettings.Visibility = Visibility.Visible;
                 _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity);
                 DefaultViewModel["Threads"] = _forumThreadEntities;
-
+                SubForumList.Visibility = Visibility.Collapsed;
+                SubForumListSnapped.Visibility = Visibility.Collapsed;
+                NotificationButton.Visibility = Visibility.Visible;
             }
             else
             {
-                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 0);
-                _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 0);
+                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
+                _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 1);
                 foreach (var forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);
@@ -229,7 +232,7 @@ namespace AwfulMetro.Views
 
         private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private async void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
@@ -243,15 +246,52 @@ namespace AwfulMetro.Views
             await _threadManager.AddBookmarks(threadIdList);
         }
 
-        private void UnreadButton_OnClick(object sender, RoutedEventArgs e)
+        private async void UnreadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var threadlist = new List<ForumThreadEntity>();
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            await _threadManager.MarkThreadUnread(threadIdList);
         }
 
         private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
                 FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
                 UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+                NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+        }
+
+        private void NotificationButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var threadlist = new List<ForumThreadEntity>();
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["_threadIds"] = SerializeListToXml(threadIdList);
+        }
+
+        public static string SerializeListToXml(List<long> list)
+        {
+            try
+            {
+                var xmlIzer = new XmlSerializer(typeof (List<long>));
+                var writer = new StringWriter();
+                xmlIzer.Serialize(writer, list);
+                System.Diagnostics.Debug.WriteLine(writer.ToString());
+                return writer.ToString();
+            }
+
+            catch (Exception exc)
+            {
+                System.Diagnostics.Debug.WriteLine(exc);
+                return String.Empty;
+            }
         }
     }
 }

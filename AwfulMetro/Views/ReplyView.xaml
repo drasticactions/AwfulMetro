@@ -61,11 +61,11 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Margin="39,0,0,0" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="700"/>
+                    <ColumnDefinition Width="650"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <TextBox AcceptsReturn="True" HorizontalAlignment="Left"  x:Name="ReplyText" TextChanged="ReplyText_TextChanged" Width="600" Height="400" TextWrapping="Wrap"/>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Width="600" HorizontalAlignment="Left" Orientation="Horizontal">
                         <Button x:Name="PostButton" Content="Post" Click="PostButton_Click"/>
                         <Button x:Name="SimilesButton" Content="Smilies" Click="SimilesButton_Click" />
                         <Button x:Name="BBcodeButton" Content="BBcode" Click="BBcodeButton_Click"/>

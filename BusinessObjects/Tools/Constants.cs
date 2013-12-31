@@ -26,19 +26,21 @@ namespace AwfulMetro.Core.Tools
 
         public const string QUOTE_EXP = "[quote=\"{0}\" post=\"{1}\"]{2}[/quote]";
 
-        public const string RESET_SEEN = "/showthread.php?action=resetseen&threadid={0}";
+        public const string RESET_SEEN = "action=resetseen&threadid={0}&json=1";
+
+        public const string RESET_BASE = BASE_URL + "showthread.php";
 
         public const string BOOKMARK = BASE_URL + "bookmarkthreads.php";
         
         public const string REMOVE_BOOKMARK = "json=1&action=remove&threadid={0}";
 
-        public const string ADD_BOOKMARK = "json=1&action=cat_toggle&threadid={0}";
+        public const string ADD_BOOKMARK = "json=1&action=add&threadid={0}";
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
-        public const string QUOTE_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&postid={0}";
+        public const string REPLY_BASE = BASE_URL + "newreply.php?action=newreply&threadid={0}";
 
-        public const string THREAD_POST_URL = "http://forums.somethingawful.com/newreply.php?action=newreply&threadid={0}";
+        public const string QUOTE_BASE = BASE_URL + "newreply.php?action=newreply&postid={0}";
 
         public const string USER_POST_HISTORY = BASE_URL + "search.php?action=do_search_posthistory&userid={0}";
 

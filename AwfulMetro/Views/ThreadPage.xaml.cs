@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,6 +24,7 @@ namespace AwfulMetro.Views
     {
         private readonly NavigationHelper _navigationHelper;
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private readonly ThreadManager _threadManager = new ThreadManager();
         private ForumThreadEntity _forumThread;
         private List<ForumPostEntity> _threadPosts;
 
@@ -81,9 +83,8 @@ namespace AwfulMetro.Views
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
             DefaultViewModel["Posts"] = _threadPosts;
             if (_forumThread.ScrollToPost > 0)
-
             {
-                //ThreadListSnapped.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
+
                 ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
             }
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -166,49 +167,43 @@ namespace AwfulMetro.Views
             }
         }
 
-        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        private async void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof (ReplyView), _forumThread);
+            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.REPLY_BASE, _forumThread.ThreadId)));
+            //Frame.Navigate(typeof (ReplyView), _forumThread);
         }
 
         private void UserProfileButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            if (button != null)
-            {
-                var forumPost = (ForumPostEntity) button.DataContext;
-                Frame.Navigate(typeof (UserProfileView), forumPost.User);
-            }
+            if (button == null) return;
+            var forumPost = (ForumPostEntity) button.DataContext;
+            Frame.Navigate(typeof (UserProfileView), forumPost.User);
         }
 
         private void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            if (button != null)
-            {
-                var forumPost = (ForumPostEntity) button.DataContext;
-                Frame.Navigate(typeof (RapSheetView), forumPost.User.Id);
-            }
+            if (button == null) return;
+            var forumPost = (ForumPostEntity) button.DataContext;
+            Frame.Navigate(typeof (RapSheetView), forumPost.User.Id);
         }
 
         private void PostHistoryButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            if (button != null)
-            {
-                var forumPost = (ForumPostEntity) button.DataContext;
-                Frame.Navigate(typeof (UserPostHistoryPage), forumPost.User.Id);
-            }
+            if (button == null) return;
+            var forumPost = (ForumPostEntity) button.DataContext;
+            Frame.Navigate(typeof (UserPostHistoryPage), forumPost.User.Id);
         }
 
-        private void QuoteButton_Click(object sender, RoutedEventArgs e)
+        private async void QuoteButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as Button;
-            if (button != null)
-            {
-                var forumPost = (ForumPostEntity) button.DataContext;
-                Frame.Navigate(typeof (ReplyView), forumPost);
-            }
+            if (button == null) return;
+            var forumPost = (ForumPostEntity) button.DataContext;
+            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.QUOTE_BASE, forumPost.PostId)));
+            //Frame.Navigate(typeof (ReplyView), forumPost);
         }
         
         private void PageUnloaded(object sender, RoutedEventArgs e)
@@ -278,5 +273,12 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private async void BookmarkButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var threadIdList = new List<long>();
+            threadIdList.Add(_forumThread.ThreadId);
+            await _threadManager.AddBookmarks(threadIdList);
+        }
     }
 }
