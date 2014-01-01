@@ -11,6 +11,7 @@ using Windows.Storage;
 using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -187,6 +188,7 @@ namespace AwfulMetro.Views
                 SubForumList.Visibility = Visibility.Collapsed;
                 SubForumListSnapped.Visibility = Visibility.Collapsed;
                 NotificationButton.Visibility = Visibility.Visible;
+                RemoveNotificationsButton.Visibility = Visibility.Visible;
             }
             else
             {
@@ -292,6 +294,15 @@ namespace AwfulMetro.Views
                 System.Diagnostics.Debug.WriteLine(exc);
                 return String.Empty;
             }
+        }
+
+        private async void RemoveNotificationsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["_threadIds"] = string.Empty;
+            var msgDlg = new MessageDialog("Thread notifications removed! (ÅEÉ÷ÅE)Ém");
+            msgDlg.DefaultCommandIndex = 1;
+            await msgDlg.ShowAsync();
         }
     }
 }

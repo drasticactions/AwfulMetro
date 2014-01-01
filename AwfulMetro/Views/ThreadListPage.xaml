@@ -291,6 +291,7 @@
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarButton x:Name="NotificationButton" Click="NotificationButton_OnClick" Visibility="Collapsed" IsEnabled="False" Label="Add to Notifications" Icon="SolidStar"/>
+                <AppBarButton x:Name="RemoveNotificationsButton" Label="Remove all notifications." IsEnabled="True" Visibility="Collapsed" Click="RemoveNotificationsButton_OnClick" Icon="UnFavorite" />
             </StackPanel>
             <GridView Width="115" x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <GridView.ItemTemplate>
