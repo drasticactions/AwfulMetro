@@ -38,7 +38,7 @@ namespace AwfulMetro.Tests.Unit
         public void DateJoined_Is_Successfully_parsed()
         {
             var user = GetParsedEntity(DefaultPostHtml);
-            Assert.AreEqual("Sep  9, 2003", user.DateJoined);
+            Assert.AreEqual(new DateTime(2003, 9, 9), user.DateJoined);
         }
 
         [TestMethod]
