@@ -182,7 +182,7 @@ HorizontalScrollMode="Disabled"
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
         </Grid>
         <!-- Back button and page title -->
-        <Grid>
+        <Grid RequestedTheme="Dark" Background="#FF1E72C9">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
