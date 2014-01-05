@@ -182,13 +182,20 @@ HorizontalScrollMode="Disabled"
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
         </Grid>
         <!-- Back button and page title -->
-        <Grid>
+        <Grid RequestedTheme="Dark" Background="#FF1E72C9">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="623*"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="pageTitle" Text="Awful Forums Reader" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="15,0,30,40"/>
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0" Height="40"/>
         </Grid>
+        <Button x:Name="grenadeButton" Margin="39,59,0,0" 
+        	VerticalAlignment="Top" RequestedTheme="Dark" BorderThickness="0" Height="41" Width="41">
+        	<Button.Background>
+        		<ImageBrush ImageSource="ms-appx:///Assets/grenadesm.png"/>
+        	</Button.Background>
+        </Button>
     </Grid>
     <Page.TopAppBar>
         <CommandBar>
