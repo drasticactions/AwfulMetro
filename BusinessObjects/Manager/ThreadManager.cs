@@ -19,14 +19,14 @@ namespace AwfulMetro.Core.Manager
 
         public ThreadManager() : this(new WebManager()) { }
 
-        public async Task<List<ForumThreadEntity>> GetBookmarks(ForumEntity forumCategory)
+        public async Task<List<ForumThreadEntity>> GetBookmarks(ForumEntity forumCategory, int page)
         {
             var forumSubcategoryList = new List<ForumEntity>();
             var forumThreadList = new List<ForumThreadEntity>();
-            String url = forumCategory.Location;
+            String url = Constants.BOOKMARKS_URL;
             if (forumCategory.CurrentPage > 0)
             {
-                url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER, forumCategory.CurrentPage);
+                url = Constants.BOOKMARKS_URL + string.Format(Constants.PAGE_NUMBER, page);
             }
 
             HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
