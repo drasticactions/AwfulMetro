@@ -79,7 +79,7 @@
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark"/>
             <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}"  Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40" Height="61" RequestedTheme="Dark"/>
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0" RequestedTheme="Dark"/>
         </Grid>
         <Grid Grid.Row="0" Canvas.ZIndex="99">
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
@@ -89,7 +89,7 @@
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="100"/>
           </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Background="#FFC5C5C5">
                 <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
                 <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
                 <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>

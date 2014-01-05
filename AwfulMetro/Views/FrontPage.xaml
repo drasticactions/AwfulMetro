@@ -73,7 +73,7 @@
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" RequestedTheme="Dark"/>
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0" RequestedTheme="Dark"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
