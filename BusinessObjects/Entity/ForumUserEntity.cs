@@ -83,6 +83,27 @@ namespace AwfulMetro.Core.Entity
             return user;
         }
 
+        /// <summary>
+        /// Gets avatar information from the user login page.
+        /// Note: This should not be done in this way. It needs to be refactored
+        /// </summary>
+        /// <param name="threadNode">The "thread" class node on the user profile page.</param>
+        /// <param name="user">The user entity, parsed from FromUserProfile</param>
+        public void FromUserProfileAvatarInformation(HtmlNode threadNode)
+        {
+            var avatarTitle = threadNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
+            var avatarImage = threadNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title")).Descendants("img").Any() ? threadNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("title")).Descendants("img").FirstOrDefault() : null;
+
+            if (avatarTitle != null)
+            {
+                this.AvatarTitle = WebUtility.HtmlDecode(avatarTitle.InnerText).WithoutNewLines().Trim();
+            }
+            if (avatarImage != null)
+            {
+                this.AvatarLink = FixPostHtmlImage(avatarImage.OuterHtml);
+            }
+        }
+
         public static ForumUserEntity FromUserProfile(HtmlNode profileNode)
         {
             var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));

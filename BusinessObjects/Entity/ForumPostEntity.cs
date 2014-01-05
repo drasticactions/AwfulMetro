@@ -65,7 +65,7 @@ namespace AwfulMetro.Core.Entity
         /// <returns></returns>
         private static string FixPostHtml(String postHtml)
         {
-            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "</head><body>" + postHtml + "</body></html>";
+            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body>" + postHtml + "</body></html>";
         }
     }
 }

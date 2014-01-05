@@ -109,6 +109,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\AvatarWebViewConverter.cs" />
+    <Compile Include="Tools\RatingVisibilityConverter.cs" />
     <Compile Include="Tools\SubforumBodyColorConverter.cs" />
     <Compile Include="Tools\SubforumFontColorConverter.cs" />
     <Compile Include="Tools\SubforumHeaderColorConverter.cs" />
