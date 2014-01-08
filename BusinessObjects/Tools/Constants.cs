@@ -8,6 +8,8 @@ namespace AwfulMetro.Core.Tools
 
         public const string BASE_URL = "http://forums.somethingawful.com/";
 
+        public const string BOOKMARKS_URL = BASE_URL + "bookmarkthreads.php?perage=40&sortorder=desc&sortfield=";
+
         public const string COOKIE_FILE = "SACookie2.txt";
 
         public const string GOTO_NEW_POST = "&goto=newpost";

@@ -183,8 +183,13 @@ namespace AwfulMetro.Views
             {
                 AddThreadButton.Visibility = Visibility.Collapsed;
                 BookmarkSettings.Visibility = Visibility.Visible;
-                _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity);
-                DefaultViewModel["Threads"] = _forumThreadEntities;
+                _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
+                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
+                foreach (var forumThread in _forumThreadEntities)
+                {
+                    _forumPageScrollingCollection.Add(forumThread);
+                }
+                DefaultViewModel["Threads"] = _forumPageScrollingCollection;
                 SubForumList.Visibility = Visibility.Collapsed;
                 SubForumListSnapped.Visibility = Visibility.Collapsed;
                 NotificationButton.Visibility = Visibility.Visible;

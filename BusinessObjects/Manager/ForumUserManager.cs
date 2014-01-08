@@ -19,8 +19,21 @@ namespace AwfulMetro.Core.Manager
         {
             string url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
             var doc = (await _webManager.DownloadHtml(url)).Document;
-            
-            return string.IsNullOrEmpty(user.Username) ? ForumUserEntity.FromPost(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"))) : ForumUserEntity.FromUserProfile(doc.DocumentNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("info")));
+
+            if (string.IsNullOrEmpty(user.Username))
+            {
+                return
+                    ForumUserEntity.FromPost(
+                        doc.DocumentNode.Descendants("td")
+                            .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread")));
+            }
+            var userEntity = ForumUserEntity.FromUserProfile(
+                doc.DocumentNode.Descendants("td")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("info")));
+            var threadNode = doc.DocumentNode.Descendants("td")
+                .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+            userEntity.FromUserProfileAvatarInformation(threadNode);
+            return userEntity;
         }
     }
 }

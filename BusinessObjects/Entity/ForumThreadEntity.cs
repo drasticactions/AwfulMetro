@@ -25,6 +25,8 @@ namespace AwfulMetro.Core.Entity
 
         public int Rating { get; private set; }
 
+        public string RatingImage { get; private set; }
+
         public string KilledBy { get; private set; }
 
         public bool IsSticky { get; private set; }
@@ -63,15 +65,9 @@ namespace AwfulMetro.Core.Entity
             {
                 this.RepliesSinceLastOpened = Convert.ToInt32(threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("count")).InnerText);
             }
-            if (threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("replies")))
-            {
-                this.ReplyCount = Convert.ToInt32(threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("replies")).InnerText);
-            }
-            else
-            {
-                this.ReplyCount = 1;
-            }
-
+            this.ReplyCount = threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("replies")) ? Convert.ToInt32(threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("replies")).InnerText) : 1;
+            this.ViewCount = threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("views")) ? Convert.ToInt32(threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("views")).InnerText) : 1;
+            this.RatingImage = threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("rating")) && threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("rating")).Descendants("img").Any() ? threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("rating")).Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty) : null;
             // Isn't this user configurable?
             this.TotalPages = (this.ReplyCount / 40) + 1;
             this.Location = Constants.BASE_URL + threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).GetAttributeValue("href",string.Empty) + Constants.PER_PAGE;

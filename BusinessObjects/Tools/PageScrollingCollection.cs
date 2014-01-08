@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Data;
 using AwfulMetro.Core.Annotations;
@@ -37,7 +38,16 @@ namespace AwfulMetro.Core.Tools
         {
             IsLoading = true;
             var threadManager = new ThreadManager();
-            var forumThreadEntities = await threadManager.GetForumThreads(ForumEntity, PageCount);
+            List<ForumThreadEntity> forumThreadEntities;
+            if (ForumEntity.IsBookmarks)
+            {
+                forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, PageCount);
+                
+            }
+            else
+            {
+                forumThreadEntities = await threadManager.GetForumThreads(ForumEntity, PageCount);   
+            }
             foreach (var forumThreadEntity in forumThreadEntities)
             {
                 Add(forumThreadEntity);

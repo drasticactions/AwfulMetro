@@ -15,5 +15,7 @@
         <tools:AvatarWebViewConverter x:Key="AvatarWebViewConverter" />
         <tools:ThreadHeaderColorConverter x:Key="ThreadHeaderColorConverter" />
         <tools:SubforumHeaderColorConverter x:Key="SubforumHeaderColorConverter" />
+        <tools:RatingVisibilityConverter x:Key="RatingVisibilityConverter" />
+        <tools:RepliesSinceLastOpenedColorConverter x:Key="RepliesSinceLastOpenedColorConverter" />
     </Application.Resources>
 </Application>
