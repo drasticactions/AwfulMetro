@@ -354,7 +354,7 @@
                                 </StackPanel>
                                 <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Center"  HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="15" x:Name="ReplyCount" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
+                                        <TextBlock FontSize="15" x:Name="ReplyCount" Foreground="{Binding RepliesSinceLastOpened, Converter={StaticResource RepliesSinceLastOpenedColorConverter}}" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
                                         <TextBlock FontSize="35" Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="5,-19,0,0" TextWrapping="NoWrap" />
                                     </StackPanel>
                                 </Border>
@@ -429,7 +429,7 @@
                                 </StackPanel>
                                 <Border x:Name="ReplySinceLastOpenedCount"  Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}" BorderThickness="2" Height="25" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="15" x:Name="ReplyCount" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
+                                        <TextBlock FontSize="15" x:Name="ReplyCount" Foreground="{Binding RepliesSinceLastOpened, Converter={StaticResource RepliesSinceLastOpenedColorConverter}}" Text="{Binding RepliesSinceLastOpened}"></TextBlock>
                                         <TextBlock FontSize="35" Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="5,-19,0,0" TextWrapping="NoWrap" />
                                     </StackPanel>
                                 </Border>
