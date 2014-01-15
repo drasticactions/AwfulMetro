@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+﻿using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 using System;
@@ -28,6 +29,11 @@ namespace AwfulMetro.Core.Manager
         private const string ACCEPT = "text/html, application/xhtml+xml, */*";
 
         private const string POST_CONTENT_TYPE = "application/x-www-form-urlencoded";
+
+        private const string REPLY_BOUNDARY = "----WebKitFormBoundaryYRBJZZBPUZAdxj3S";
+        private const string EDIT_BOUNDARY = "----WebKitFormBoundaryksMFcMGBHc3jdB0P";
+        private const string REPLY_CONTENT_TYPE = "multipart/form-data; boundary=" + REPLY_BOUNDARY;
+        private const string EDIT_CONTENT_TYPE = "multipart/form-data; boundary=" + EDIT_BOUNDARY;
 
         public static List<Cookie> CookieJar { get; private set; }
 
@@ -67,6 +73,19 @@ namespace AwfulMetro.Core.Manager
             var response = await request.GetResponseAsync();
             return request.CookieContainer;
 
+        }
+
+        public async Task<HttpResponseMessage> PostFormData(string url, MultipartFormDataContent form)
+        {
+            // TODO: This is a temp solution. Every post should use HttpWebRequest or HttpClient, but not both. 
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = await this._localStorageManager.LoadCookie(Constants.COOKIE_FILE),
+                UseDefaultCredentials = false
+            };
+            var httpClient = new HttpClient(handler);
+            var result = await httpClient.PostAsync(url, form);
+            return result;
         }
 
         private static async Task<HttpWebRequest> CreateGetRequest(string url, ILocalStorageManager localStorageManager)

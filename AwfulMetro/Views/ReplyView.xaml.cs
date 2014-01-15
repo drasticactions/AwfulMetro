@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -24,7 +25,8 @@ namespace AwfulMetro.Views
         private ForumPostEntity _forumPost;
         private ForumThreadEntity _forumThread;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
-
+        private ForumReplyEntity _forumReply = new ForumReplyEntity();
+        private readonly ReplyManager _replyManager = new ReplyManager();
 
         public ReplyView()
         {
@@ -34,7 +36,7 @@ namespace AwfulMetro.Views
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
-        private readonly SmileManager smileManager = new SmileManager();
+        private readonly SmileManager _smileManager = new SmileManager();
         /// <summary>
         ///     This can be changed to a strongly typed view model.
         /// </summary>
@@ -66,13 +68,21 @@ namespace AwfulMetro.Views
         ///     a dictionary of state preserved by this page during an earlier
         ///     session. The state will be null the first time a page is visited.
         /// </param>
-        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            loadingProgressBar.Visibility = Visibility.Visible;
             _forumPost = e.NavigationParameter as ForumPostEntity;
-            if(_forumPost != null)
-            ReplyText.Text = string.Format(Constants.QUOTE_EXP, _forumPost.User.Username, _forumPost.PostId, _forumPost.PostFormatted);
-
-            _forumThread = e.NavigationParameter as ForumThreadEntity;
+            if (_forumPost != null)
+            {
+                _forumReply = await _replyManager.GetReplyCookies(_forumPost);
+            }
+            else
+            {
+                _forumThread = e.NavigationParameter as ForumThreadEntity;
+                _forumReply = await _replyManager.GetReplyCookies(_forumThread);
+            }
+            ReplyText.Text = _forumReply.Quote;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -89,8 +99,22 @@ namespace AwfulMetro.Views
         {
         }
 
-        private void PostButton_Click(object sender, RoutedEventArgs e)
+        private async void PostButton_Click(object sender, RoutedEventArgs e)
         {
+            loadingProgressBar.Visibility = Visibility.Visible;
+            _forumReply.MapMessage(ReplyText.Text);
+            var replyManager = new ReplyManager();
+            var result = await replyManager.SendPost(_forumReply);
+            if (result)
+            {
+                Frame.GoBack();
+            }
+            else
+            {
+                loadingProgressBar.Visibility = Visibility.Collapsed;
+                var msgDlg = new Windows.UI.Popups.MessageDialog("Error making reply!");
+                await msgDlg.ShowAsync();
+            }
         }
 
         private void ReplyText_TextChanged(object sender, TextChangedEventArgs e)
@@ -103,7 +127,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_smileCategoryList.Any())
             {
-                _smileCategoryList = await smileManager.GetSmileList();
+                _smileCategoryList = await _smileManager.GetSmileList();
             }
             DefaultViewModel["Groups"] = _smileCategoryList;
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -170,5 +194,27 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private async void PreviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            loadingProgressBar.Visibility = Visibility.Visible;
+            PostPreviewRaw.Visibility = Visibility.Collapsed;
+            PreviewPostGrid.Visibility = Visibility.Visible;
+            _forumReply.MapMessage(ReplyText.Text);
+            var replyManager = new ReplyManager();
+            var result = await replyManager.CreatePreviewPost(_forumReply);
+            if (!string.IsNullOrEmpty(result))
+            {
+                PostPreviewRaw.NavigateToString(result);
+                
+            }
+            else
+            {
+                var msgDlg = new Windows.UI.Popups.MessageDialog("Error making preview!");
+                await msgDlg.ShowAsync();
+            }
+            PostPreviewRaw.Visibility = Visibility.Visible;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
+        }
     }
 }

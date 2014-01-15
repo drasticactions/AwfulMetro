@@ -110,6 +110,7 @@
     <Compile Include="Entity\ForumCollectionEntity.cs" />
     <Compile Include="Entity\ForumPostEntity.cs" />
     <Compile Include="Entity\ForumEntity.cs" />
+    <Compile Include="Entity\ForumReplyEntity.cs" />
     <Compile Include="Entity\ForumSearchEntity.cs" />
     <Compile Include="Entity\ForumThreadEntity.cs" />
     <Compile Include="Entity\ForumUserEntity.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Manager\LocalStorageManager.cs" />
     <Compile Include="Manager\LoginFailedException.cs" />
     <Compile Include="Manager\RapSheetManager.cs" />
+    <Compile Include="Manager\ReplyManager.cs" />
     <Compile Include="Manager\SmileManager.cs" />
     <Compile Include="Manager\TagManager.cs" />
     <Compile Include="Manager\WebManager.cs" />

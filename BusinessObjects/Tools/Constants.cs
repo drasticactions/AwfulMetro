@@ -40,6 +40,8 @@ namespace AwfulMetro.Core.Tools
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
+        public const string NEW_REPLY = BASE_URL + "newreply.php";
+
         public const string REPLY_BASE = BASE_URL + "newreply.php?action=newreply&threadid={0}";
 
         public const string QUOTE_BASE = BASE_URL + "newreply.php?action=newreply&postid={0}";

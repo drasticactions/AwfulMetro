@@ -169,8 +169,8 @@ namespace AwfulMetro.Views
 
         private async void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
-            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.REPLY_BASE, _forumThread.ThreadId)));
-            //Frame.Navigate(typeof (ReplyView), _forumThread);
+            //await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.REPLY_BASE, _forumThread.ThreadId)));
+            Frame.Navigate(typeof (ReplyView), _forumThread);
         }
 
         private void UserProfileButton_Click(object sender, RoutedEventArgs e)
@@ -202,8 +202,8 @@ namespace AwfulMetro.Views
             var button = e.OriginalSource as Button;
             if (button == null) return;
             var forumPost = (ForumPostEntity) button.DataContext;
-            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.QUOTE_BASE, forumPost.PostId)));
-            //Frame.Navigate(typeof (ReplyView), forumPost);
+            //await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.QUOTE_BASE, forumPost.PostId)));
+            Frame.Navigate(typeof (ReplyView), forumPost);
         }
         
         private void PageUnloaded(object sender, RoutedEventArgs e)
