@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,20 @@ namespace AwfulMetro.Core.Manager
 
             var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
 
+            var html = await Windows.Storage.PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
+
+            var doc2 = new HtmlDocument();
+
+            doc2.LoadHtml(html);
+
+            var bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
+
+            var replyNodes = doc.DocumentNode.Descendants("div").ToArray();
+
+            var threadNode = replyNodes.FirstOrDefault(node => node.GetAttributeValue("id", "").Equals("thread"));
+
+            bodyNode.InnerHtml = threadNode.OuterHtml;
+
             var forumReplyEntity = new ForumReplyEntity();
             try
             {
@@ -50,6 +65,7 @@ namespace AwfulMetro.Core.Manager
                 string quote = textNode.InnerText;
                 string threadId = threadIdNode.GetAttributeValue("value", "");
                 forumReplyEntity.MapThreadInformation(formKey, formCookie, quote, threadId);
+                forumReplyEntity.PreviousPostsRaw = WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml);
                 return forumReplyEntity;
             }
             catch (Exception)

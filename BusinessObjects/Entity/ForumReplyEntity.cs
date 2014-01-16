@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Entity
 {
@@ -24,6 +25,8 @@ namespace AwfulMetro.Core.Entity
         public string Quote { get; private set; }
 
         public string ThreadId { get; private set; }
+
+        public string PreviousPostsRaw { get; set; }
 
         public void MapMessage(string message)
         {

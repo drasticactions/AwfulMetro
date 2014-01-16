@@ -55,7 +55,7 @@
             <TextBlock x:Name="pageTitle" Text="Reply" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="-10,5,10,-5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -65,16 +65,19 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
-                    <TextBox AcceptsReturn="True" HorizontalAlignment="Stretch"  x:Name="ReplyText" Height="280" TextChanged="ReplyText_TextChanged" TextWrapping="Wrap"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="PostButton" Content="Post" Click="PostButton_Click"/>
-                        <Button x:Name="PreviewButton" Content="Preview" Click="PreviewButton_Click"/>
-                        <Button x:Name="SimilesButton" Content="Smilies" Click="SimilesButton_Click" />
-                        <Button x:Name="BBcodeButton" Content="BBcode" Click="BBcodeButton_Click"/>
-                        <TextBlock x:Name="PostCount" VerticalAlignment="Center" FontSize="25" Text="0/50000"/>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox AcceptsReturn="True" Grid.Column="0" HorizontalAlignment="Stretch"  x:Name="ReplyText" Height="280" TextWrapping="Wrap"/>
+                    <StackPanel Margin="0,14,0,0" Grid.Column="1">
+                        <Button x:Name="PostButton" HorizontalAlignment="Stretch" Content="Post" Click="PostButton_Click"/>
+                        <Button x:Name="PreviewButton" HorizontalAlignment="Stretch" Content="Preview" Click="PreviewButton_Click"/>
+                        <Button x:Name="SimilesButton" HorizontalAlignment="Stretch" Content="Smilies" Click="SimilesButton_Click" />
+                        <Button x:Name="BBcodeButton" HorizontalAlignment="Stretch" Content="BBcode" Click="BBcodeButton_Click"/>
                     </StackPanel>
-                </StackPanel>
+                </Grid>
                 <Grid x:Name="PreviewPostGrid" Grid.Row="1" Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -85,8 +88,10 @@
                     <WebView Grid.Row="1" x:Name="PostPreviewRaw" tools:WebViewHelper.Html="{Binding PostHtml}"></WebView>
                 </Grid>
             </Grid>
+            <WebView Grid.Column="1" x:Name="PreviousPostsWebView" Margin="15"/>
                 <GridView
             x:Name="ItemGridView"
+                    Visibility="Collapsed"
             ItemClick="itemGridView_ItemClick"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"

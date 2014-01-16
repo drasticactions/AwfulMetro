@@ -102,6 +102,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Assets\thread.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\BBCodeCategoryEntity.cs" />

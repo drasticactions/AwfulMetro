@@ -82,6 +82,7 @@ namespace AwfulMetro.Views
                 _forumReply = await _replyManager.GetReplyCookies(_forumThread);
             }
             ReplyText.Text = _forumReply.Quote;
+            PreviousPostsWebView.NavigateToString(_forumReply.PreviousPostsRaw);
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
@@ -115,11 +116,6 @@ namespace AwfulMetro.Views
                 var msgDlg = new Windows.UI.Popups.MessageDialog("Error making reply!");
                 await msgDlg.ShowAsync();
             }
-        }
-
-        private void ReplyText_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            PostCount.Text = string.Format("{0}/50000", ReplyText.Text.Length);
         }
 
         private async void SimilesButton_Click(object sender, RoutedEventArgs e)
