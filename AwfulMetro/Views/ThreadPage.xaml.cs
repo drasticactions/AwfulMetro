@@ -152,19 +152,15 @@ namespace AwfulMetro.Views
 
         private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CurrentPageSelector != null && CurrentPageSelector.SelectedValue != null)
-            {
-                if (_forumThread.CurrentPage != (int) CurrentPageSelector.SelectedValue)
-                {
-                    loadingProgressBar.Visibility = Visibility.Visible;
-                    _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
-                    BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-                    ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
-                    List<ForumPostEntity> threadPosts = await _postManager.GetThreadPosts(_forumThread);
-                    DefaultViewModel["Posts"] = threadPosts;
-                    loadingProgressBar.Visibility = Visibility.Collapsed;
-                }
-            }
+            if (CurrentPageSelector == null || CurrentPageSelector.SelectedValue == null) return;
+            if (_forumThread.CurrentPage == (int) CurrentPageSelector.SelectedValue) return;
+            loadingProgressBar.Visibility = Visibility.Visible;
+            _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
+            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
+            List<ForumPostEntity> threadPosts = await _postManager.GetThreadPosts(_forumThread);
+            DefaultViewModel["Posts"] = threadPosts;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private async void ReplyButton_Click(object sender, RoutedEventArgs e)

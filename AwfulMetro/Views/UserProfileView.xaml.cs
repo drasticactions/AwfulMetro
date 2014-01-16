@@ -62,7 +62,7 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Assign a collection of bindable groups to this.DefaultViewModel["Groups"]
-            var user = (ForumUserEntity) e.NavigationParameter;
+            var user = e.NavigationParameter as ForumUserEntity;
             long userId;
             if (user == null)
             {

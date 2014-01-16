@@ -19,8 +19,8 @@ namespace AwfulMetro.Core.Manager
         {
             string url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
             var doc = (await _webManager.DownloadHtml(url)).Document;
-
-            if (string.IsNullOrEmpty(user.Username))
+            
+            if (user != null && string.IsNullOrEmpty(user.Username))
             {
                 return
                     ForumUserEntity.FromPost(

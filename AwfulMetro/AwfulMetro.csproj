@@ -170,6 +170,7 @@
     <Content Include="Assets\clearicon.png" />
     <Content Include="Assets\frontpage.png" />
     <Content Include="Assets\grenadesm.png" />
+    <Content Include="Assets\js\threadTemplate.js" />
     <Content Include="Assets\thread.html" />
     <Content Include="Assets\ui-light-new.css" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
@@ -251,6 +252,9 @@
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\winrt45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1-beta1\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

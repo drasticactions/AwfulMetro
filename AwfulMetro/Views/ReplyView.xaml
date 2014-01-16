@@ -70,8 +70,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="80"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox AcceptsReturn="True" Grid.Column="0" HorizontalAlignment="Stretch"  x:Name="ReplyText" Height="280" TextWrapping="Wrap"/>
-                    <StackPanel Margin="0,14,0,0" Grid.Column="1">
+                    <TextBox AcceptsReturn="True" Grid.Column="0" HorizontalAlignment="Stretch" Margin="25,0,25,10"  x:Name="ReplyText" TextWrapping="Wrap"/>
+                    <StackPanel Grid.Column="1">
                         <Button x:Name="PostButton" HorizontalAlignment="Stretch" Content="Post" Click="PostButton_Click"/>
                         <Button x:Name="PreviewButton" HorizontalAlignment="Stretch" Content="Preview" Click="PreviewButton_Click"/>
                         <Button x:Name="SimilesButton" HorizontalAlignment="Stretch" Content="Smilies" Click="SimilesButton_Click" />
@@ -89,7 +89,7 @@
                 </Grid>
             </Grid>
             <WebView Grid.Column="1" x:Name="PreviousPostsWebView" Margin="15"/>
-                <GridView
+            <GridView
             x:Name="ItemGridView"
                     Visibility="Collapsed"
             ItemClick="itemGridView_ItemClick"
@@ -116,24 +116,24 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
                 <GridView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="1,0,0,6">
-                                        <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid Margin="1,0,0,6">
+                                    <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
                                     AutomationProperties.Name="Group Title"
                                     Style="{StaticResource TextBlockButtonStyle}" >
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Category}" Margin="3,-7,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                            </StackPanel>
-                                        </Button>
-                                    </Grid>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </GridView.GroupStyle>
-                </GridView>
-                <!-- Horizontal scrolling grid -->
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Category}" Margin="3,-7,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </GridView.GroupStyle>
+            </GridView>
+            <!-- Horizontal scrolling grid -->
         </Grid>
 
         <Grid Canvas.ZIndex="99">

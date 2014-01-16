@@ -43,19 +43,9 @@ namespace AwfulMetro.Core.Manager
 
             var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
 
-            var html = await Windows.Storage.PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
+            var threadManager = new ThreadManager();
 
-            var doc2 = new HtmlDocument();
-
-            doc2.LoadHtml(html);
-
-            var bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
-
-            var replyNodes = doc.DocumentNode.Descendants("div").ToArray();
-
-            var threadNode = replyNodes.FirstOrDefault(node => node.GetAttributeValue("id", "").Equals("thread"));
-
-            bodyNode.InnerHtml = threadNode.OuterHtml;
+            var htmlThread = await threadManager.GetThreadHtml(doc);
 
             var forumReplyEntity = new ForumReplyEntity();
             try
@@ -65,7 +55,7 @@ namespace AwfulMetro.Core.Manager
                 string quote = textNode.InnerText;
                 string threadId = threadIdNode.GetAttributeValue("value", "");
                 forumReplyEntity.MapThreadInformation(formKey, formCookie, quote, threadId);
-                forumReplyEntity.PreviousPostsRaw = WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml);
+                forumReplyEntity.PreviousPostsRaw = htmlThread;
                 return forumReplyEntity;
             }
             catch (Exception)
@@ -127,6 +117,26 @@ namespace AwfulMetro.Core.Manager
             var response = await this._webManager.PostFormData(Constants.NEW_REPLY, form);
 
             return true;
+        }
+
+        public async Task<string> GetQuoteString(long postId)
+        {
+            string url = string.Format(Constants.QUOTE_BASE, postId);
+            var result = await _webManager.DownloadHtml(url);
+            HtmlDocument doc = result.Document;
+
+            var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+
+            var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+
+            try
+            {
+                return  WebUtility.HtmlDecode(textNode.InnerText);
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException("Could not parse newReply form data.");
+            }
         }
 
         public async Task<ForumReplyEntity> GetReplyCookies(ForumPostEntity forumPost)

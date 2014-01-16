@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Data.Json;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -11,6 +12,7 @@ using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -32,8 +34,48 @@ namespace AwfulMetro.Views
         {
             InitializeComponent();
             _navigationHelper = new NavigationHelper(this);
+            PreviousPostsWebView.ScriptNotify += PreviousPostsWebView_ScriptNotify;
             _navigationHelper.LoadState += navigationHelper_LoadState;
             _navigationHelper.SaveState += navigationHelper_SaveState;
+        }
+
+        private async void PreviousPostsWebView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            string stringJson = e.Value;
+            var command = JsonConvert.DeserializeObject<ThreadCommand>(stringJson);
+            switch (command.Command)
+            {
+                case "profile":
+                    Frame.Navigate(typeof(UserProfileView), command.Id);
+                    break;
+                case "post_history":
+                    Frame.Navigate(typeof(UserPostHistoryPage), command.Id);
+                    break;
+                case "rap_sheet":
+                    Frame.Navigate(typeof(RapSheetView), command.Id);
+                    break;
+                case "quote":
+                    loadingProgressBar.Visibility = Visibility.Visible;
+                    var quoteString = await _replyManager.GetQuoteString(command.Id);
+                    quoteString = string.Concat(Environment.NewLine, quoteString);
+                    string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
+                    if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
+                    loadingProgressBar.Visibility = Visibility.Collapsed;
+                    break;
+                default:
+                     var msgDlg = new MessageDialog("Working on it!")
+                     {
+                         DefaultCommandIndex = 1
+                     };
+                    await msgDlg.ShowAsync();
+                    break;
+            }
+        }
+
+        public class ThreadCommand
+        {
+            public string Command { get; set; }
+            public long Id { get; set; }
         }
 
         private readonly SmileManager _smileManager = new SmileManager();
@@ -162,7 +204,7 @@ namespace AwfulMetro.Views
                 {
                     string text = string.Format("[{0}][/{0}]", bbcode.Code);
                     string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
-                    ReplyText.Text = replyText.Insert(ReplyText.SelectionStart, text);
+                    if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.SelectionStart, text);
                 }
             }
         }
