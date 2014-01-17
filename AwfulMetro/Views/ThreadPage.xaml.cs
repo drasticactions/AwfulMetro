@@ -77,6 +77,9 @@ namespace AwfulMetro.Views
                 case "quote":
                     Frame.Navigate(typeof(ReplyView),  command.Id);
                     break;
+                case "edit":
+                    Frame.Navigate(typeof(EditReplyPage),  command.Id);
+                    break;
                 default:
                     var msgDlg = new MessageDialog("Working on it!")
                     {

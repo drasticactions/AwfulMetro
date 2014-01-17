@@ -26,7 +26,11 @@ namespace AwfulMetro.Core.Entity
 
         public string ThreadId { get; private set; }
 
+        public long PostId { get; private set; }
+
         public string PreviousPostsRaw { get; set; }
+
+        public string Bookmark { get; set; }
 
         public void MapMessage(string message)
         {
@@ -41,6 +45,13 @@ namespace AwfulMetro.Core.Entity
             FormCookie = formCookie;
             ThreadId = threadId;
             Quote = WebUtility.HtmlDecode(quote);
+        }
+
+        public void MapEditPostInformation(string quote, long postId, string bookmark)
+        {
+            Quote = quote;
+            PostId = postId;
+            Bookmark = bookmark;
         }
 
     }

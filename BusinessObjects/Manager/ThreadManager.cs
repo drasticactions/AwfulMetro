@@ -63,6 +63,9 @@ namespace AwfulMetro.Core.Manager
                 var profileLinksNode =
                     post.Descendants("td")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
+                bool isCurrentUserPost =
+                    profileLinksNode.Descendants("img")
+                        .FirstOrDefault(node => node.GetAttributeValue("alt", string.Empty).Equals("Edit")) != null;
                 profileLinksNode.InnerHtml = string.Empty;
                 
                 var profileButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('profile', '{0}');\">Profile</button></li>", userId));
@@ -72,7 +75,10 @@ namespace AwfulMetro.Core.Manager
                 var rapSheetButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('rap_sheet', '{0}');\">Rap Sheet</button></li>", userId));
 
                 var quoteButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('quote', '{0}');\">Quote</button></li>", postId));
-                profileLinksNode.InnerHtml = string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, "</ul>");
+
+                var editButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('edit', '{0}');\">Edit</button></li>", postId));
+
+                profileLinksNode.InnerHtml = isCurrentUserPost ? string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, editButton, "</ul>") : string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, "</ul>");
 
                 var postDateNode = post.Descendants("td")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postdate"));

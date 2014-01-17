@@ -24,7 +24,6 @@ namespace AwfulMetro.Views
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
         private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
-        private ForumPostEntity _forumPost;
         private ForumThreadEntity _forumThread;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
         private ForumReplyEntity _forumReply = new ForumReplyEntity();
@@ -206,20 +205,18 @@ namespace AwfulMetro.Views
                 ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, smile.Title);
             }
 
-            if (item.GetType() == typeof (BBCodeEntity))
+            if (item.GetType() != typeof (BBCodeEntity)) return;
+            var bbcode = (BBCodeEntity) e.ClickedItem;
+            if (!string.IsNullOrEmpty(ReplyText.SelectedText))
             {
-                var bbcode = (BBCodeEntity) e.ClickedItem;
-                if (!string.IsNullOrEmpty(ReplyText.SelectedText))
-                {
-                    string selectedText = "[{0}]" + ReplyText.SelectedText + "[/{0}]";
-                    ReplyText.SelectedText = string.Format(selectedText, bbcode.Code);
-                }
-                else
-                {
-                    string text = string.Format("[{0}][/{0}]", bbcode.Code);
-                    string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
-                    if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.SelectionStart, text);
-                }
+                string selectedText = "[{0}]" + ReplyText.SelectedText + "[/{0}]";
+                ReplyText.SelectedText = string.Format(selectedText, bbcode.Code);
+            }
+            else
+            {
+                string text = string.Format("[{0}][/{0}]", bbcode.Code);
+                string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
+                if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.SelectionStart, text);
             }
         }
 
