@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -95,7 +96,7 @@ namespace AwfulMetro.Core.Manager
             {
                 string quote = WebUtility.HtmlDecode(textNode.InnerText);
                 forumReplyEntity.PreviousPostsRaw = htmlThread;
-                string bookmark = bookmarkNode.GetAttributeValue("value", "");
+                string bookmark = bookmarkNode.OuterHtml.Contains("checked") ? "yes" : "no";
                 forumReplyEntity.MapEditPostInformation(quote, postId, bookmark);
                 return forumReplyEntity;
             }
