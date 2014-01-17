@@ -46,6 +46,7 @@ namespace AwfulMetro.Core.Manager
             if (test.Length > 1 && test[1].Contains("pti"))
             {
                 forumThread.ScrollToPost = Int32.Parse(Regex.Match(responseUri.Split('#')[1], @"\d+").Value) - 1;
+                forumThread.ScrollToPostString = "#" + test[1];
             }
 
             HtmlNode threadNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("pages top"));

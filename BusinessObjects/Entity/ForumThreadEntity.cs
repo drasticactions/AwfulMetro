@@ -45,6 +45,8 @@ namespace AwfulMetro.Core.Entity
 
         public int ScrollToPost { get; set; }
 
+        public string ScrollToPostString { get; set; }
+
         public long ThreadId { get; set; }
 
         /// <summary>

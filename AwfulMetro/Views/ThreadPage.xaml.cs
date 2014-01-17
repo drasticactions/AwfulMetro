@@ -118,7 +118,7 @@ namespace AwfulMetro.Views
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
             if (_forumThread.ScrollToPost > 0)
             {
-                //ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
+                //await ThreadFullView.InvokeScriptAsync("ScrollToDiv", null);
             }
             loadingProgressBar.Visibility = Visibility.Collapsed;
 
