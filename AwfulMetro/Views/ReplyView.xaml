@@ -70,7 +70,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="90"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox AcceptsReturn="True" Grid.Column="0" HorizontalAlignment="Stretch" Margin="25,0,25,10"  x:Name="ReplyText" TextWrapping="Wrap"/>
+                    <TextBox IsSpellCheckEnabled="True" AcceptsReturn="True" Grid.Column="0" HorizontalAlignment="Stretch" Margin="25,0,25,10"  x:Name="ReplyText" TextWrapping="Wrap"/>
                     <StackPanel Grid.Column="1">
                         <Button x:Name="PostButton" HorizontalAlignment="Stretch" Content="Post" Click="PostButton_Click"/>
                         <Button x:Name="SimilesButton" HorizontalAlignment="Stretch" Content="Smilies" Click="SimilesButton_Click" />
