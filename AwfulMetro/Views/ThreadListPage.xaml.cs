@@ -22,6 +22,7 @@ using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using AwfulMetro.Core.Tools;
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -82,13 +83,15 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             // TODO: Assign a bindable collection of items to this.DefaultViewModel["Items"]
 
-            _forumEntity = (ForumEntity) e.NavigationParameter;
+            var jsonObjectString = (string) e.NavigationParameter;
+            var forumInfo = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
+            if (forumInfo == null) return;
+            _forumEntity = forumInfo;
             pageTitle.Text = _forumEntity.Name;
             pageSnapTitle.Text = _forumEntity.Name;
             await GetForumThreads();
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
-
 
         /// <summary>
         ///     Preserves state associated with this page in case the application is suspended or the
@@ -124,13 +127,15 @@ namespace AwfulMetro.Views
         private void ForumThreadList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((ForumThreadEntity) e.ClickedItem);
-            Frame.Navigate(typeof (ThreadPage), itemId);
+            var jsonObjectString = JsonConvert.SerializeObject(itemId);
+            Frame.Navigate(typeof(ThreadPage), jsonObjectString);
         }
 
         private void SubForumList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var itemId = ((ForumEntity) e.ClickedItem);
-            Frame.Navigate(typeof (ThreadListPage), itemId);
+            var forumEntity = ((ForumEntity)e.ClickedItem);
+            var jsonObjectString = JsonConvert.SerializeObject(forumEntity);
+            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
 
         private async void AddThreadButton_Click(object sender, RoutedEventArgs e)

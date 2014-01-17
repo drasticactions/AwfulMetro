@@ -75,7 +75,7 @@ namespace AwfulMetro.Views
                     Frame.Navigate(typeof(RapSheetView), command.Id);
                     break;
                 case "quote":
-                    Frame.Navigate(typeof(ReplyView), command.Id);
+                    Frame.Navigate(typeof(ReplyView),  command.Id);
                     break;
                 default:
                     var msgDlg = new MessageDialog("Working on it!")
@@ -104,7 +104,9 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _forumThread = (ForumThreadEntity) e.NavigationParameter;
+            var jsonObjectString = (string)e.NavigationParameter;
+            _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
+            if (_forumThread == null) return;
             pageTitle.Text = _forumThread.Name;
             var html = await _postManager.GetThreadPostInformation(_forumThread);
             ThreadFullView.NavigateToString(html);
@@ -200,40 +202,8 @@ namespace AwfulMetro.Views
         private async void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
             //await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.REPLY_BASE, _forumThread.ThreadId)));
-            Frame.Navigate(typeof (ReplyView), _forumThread);
-        }
-
-        private void UserProfileButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            Frame.Navigate(typeof (UserProfileView), forumPost.User);
-        }
-
-        private void RapSheetButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            Frame.Navigate(typeof (RapSheetView), forumPost.User.Id);
-        }
-
-        private void PostHistoryButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            Frame.Navigate(typeof (UserPostHistoryPage), forumPost.User.Id);
-        }
-
-        private async void QuoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            //await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.QUOTE_BASE, forumPost.PostId)));
-            Frame.Navigate(typeof (ReplyView), forumPost);
+            var jsonObjectString = JsonConvert.SerializeObject(_forumThread);
+            Frame.Navigate(typeof(ReplyView), jsonObjectString);
         }
         
         private void PageUnloaded(object sender, RoutedEventArgs e)
@@ -306,8 +276,7 @@ namespace AwfulMetro.Views
 
         private async void BookmarkButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var threadIdList = new List<long>();
-            threadIdList.Add(_forumThread.ThreadId);
+            var threadIdList = new List<long> {_forumThread.ThreadId};
             await _threadManager.AddBookmarks(threadIdList);
         }
     }

@@ -56,7 +56,7 @@ namespace AwfulMetro.Views
                     break;
                 case "quote":
                     loadingProgressBar.Visibility = Visibility.Visible;
-                    var quoteString = await _replyManager.GetQuoteString(command.Id);
+                    var quoteString = await _replyManager.GetQuoteString(Convert.ToInt64(command.Id));
                     quoteString = string.Concat(Environment.NewLine, quoteString);
                     string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
                     if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
@@ -75,7 +75,7 @@ namespace AwfulMetro.Views
         public class ThreadCommand
         {
             public string Command { get; set; }
-            public long Id { get; set; }
+            public string Id { get; set; }
         }
 
         private readonly SmileManager _smileManager = new SmileManager();
@@ -113,16 +113,24 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _forumThread = e.NavigationParameter as ForumThreadEntity;
+            var jsonObjectString = (string)e.NavigationParameter;
+            long threadId = 0;
+            try
+            {
+                _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
+            }
+            catch (Exception)
+            {
+                threadId = Convert.ToInt64(jsonObjectString);
+            }
+            
             //_forumPost = e.NavigationParameter as ForumPostEntity;
             if (_forumThread != null)
             {
-                _forumThread = e.NavigationParameter as ForumThreadEntity;
                 _forumReply = await _replyManager.GetReplyCookies(_forumThread);
             }
             else
             {
-                var threadId = (long) e.NavigationParameter;
                 _forumReply = await _replyManager.GetReplyCookies(threadId);
             }
             ReplyText.Text = _forumReply.Quote;

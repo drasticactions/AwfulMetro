@@ -24,7 +24,7 @@ namespace AwfulMetro.Core.Tools
 
         public const string FORUM_LIST_PAGE = "http://forums.somethingawful.com/forumdisplay.php?forumid=48";
 
-        public const string FORUM_PAGE = "forumdisplay.php?forumid={0}";
+        public const string FORUM_PAGE = BASE_URL + "forumdisplay.php?forumid={0}";
 
         public const string QUOTE_EXP = "[quote=\"{0}\" post=\"{1}\"]{2}[/quote]";
 

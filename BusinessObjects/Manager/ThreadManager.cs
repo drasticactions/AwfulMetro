@@ -65,13 +65,13 @@ namespace AwfulMetro.Core.Manager
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
                 profileLinksNode.InnerHtml = string.Empty;
                 
-                var profileButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('profile', {0});\">Profile</button></li>", userId));
+                var profileButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('profile', '{0}');\">Profile</button></li>", userId));
 
-                var postHistoryButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('post_history', {0});\">Post History</button></li>", userId));
+                var postHistoryButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('post_history', '{0}');\">Post History</button></li>", userId));
 
-                var rapSheetButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('rap_sheet', {0});\">Rap Sheet</button></li>", userId));
+                var rapSheetButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('rap_sheet', '{0}');\">Rap Sheet</button></li>", userId));
 
-                var quoteButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('quote', {0});\">Quote</button></li>", postId));
+                var quoteButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('quote', '{0}');\">Quote</button></li>", postId));
                 profileLinksNode.InnerHtml = string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, "</ul>");
 
                // var postLinksNode = post.Descendants("ul")

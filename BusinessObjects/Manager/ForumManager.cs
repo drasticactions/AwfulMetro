@@ -96,7 +96,7 @@ namespace AwfulMetro.Core.Manager
                 !doc.DocumentNode.Descendants()
                     .Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"))) return subforumList;
             var forumNode = doc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"));
-            subforumList.AddRange(from subforumNode in forumNode.Descendants("tr") where subforumNode.Descendants("a").Any() select new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty), string.Empty, true));
+            subforumList.AddRange(from subforumNode in forumNode.Descendants("tr") where subforumNode.Descendants("a").Any() select new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText), Constants.BASE_URL + subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty), string.Empty, true));
             return subforumList;
         }
 

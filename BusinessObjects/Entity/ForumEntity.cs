@@ -16,7 +16,7 @@ namespace AwfulMetro.Core.Entity
         {
             this.Name = name;
             this.IsSubforum = isSubforum;
-            this.Location = Constants.BASE_URL + location;
+            this.Location = location;
             string[] forumId = location.Split('=');
             if(forumId.Length > 1)
             {

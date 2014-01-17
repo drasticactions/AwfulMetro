@@ -12,6 +12,7 @@ using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -91,8 +92,9 @@ namespace AwfulMetro.Views
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var itemId = ((ForumEntity) e.ClickedItem);
-            this.Frame.Navigate(typeof (ThreadListPage), itemId);
+            var forumEntity = ((ForumEntity) e.ClickedItem);
+            var jsonObjectString = JsonConvert.SerializeObject(forumEntity);
+            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
 
         public void RapSheetButton_Click(object sender, RoutedEventArgs e)
@@ -108,7 +110,8 @@ namespace AwfulMetro.Views
         public void BookmarkButton_Click(object sender, RoutedEventArgs e)
         {
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            this.Frame.Navigate(typeof (ThreadListPage), forum);
+            var jsonObjectString = JsonConvert.SerializeObject(forum);
+            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
 
         private void PageUnloaded(object sender, RoutedEventArgs e)

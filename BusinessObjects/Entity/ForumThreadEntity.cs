@@ -11,33 +11,33 @@ namespace AwfulMetro.Core.Entity
     /// </summary>
     public class ForumThreadEntity
     {
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         public string Location { get; set; }
 
-        public string ImageIconLocation { get; private set; }
+        public string ImageIconLocation { get; set; }
 
-        public string Author { get; private set; }
+        public string Author { get; set; }
 
-        public int ReplyCount { get; private set; }
+        public int ReplyCount { get; set; }
 
-        public int ViewCount { get; private set; }
+        public int ViewCount { get; set; }
 
-        public int Rating { get; private set; }
+        public int Rating { get; set; }
 
-        public string RatingImage { get; private set; }
+        public string RatingImage { get; set; }
 
-        public string KilledBy { get; private set; }
+        public string KilledBy { get; set; }
 
-        public bool IsSticky { get; private set; }
+        public bool IsSticky { get; set; }
 
-        public bool IsLocked { get; private set; }
+        public bool IsLocked { get; set; }
 
-        public bool HasBeenViewed { get; private set; }
+        public bool HasBeenViewed { get; set; }
 
-        public bool CanMarkAsUnread { get; private set; }
+        public bool CanMarkAsUnread { get; set; }
 
-        public int RepliesSinceLastOpened { get; private set; }
+        public int RepliesSinceLastOpened { get; set; }
 
         public int TotalPages { get; set; }
 
@@ -45,7 +45,7 @@ namespace AwfulMetro.Core.Entity
 
         public int ScrollToPost { get; set; }
 
-        public long ThreadId { get; private set; }
+        public long ThreadId { get; set; }
 
         /// <summary>
         /// Parses a thread HTML node to extract the information from it.
