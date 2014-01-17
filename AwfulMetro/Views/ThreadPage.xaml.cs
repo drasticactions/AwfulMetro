@@ -4,6 +4,7 @@ using System.Linq;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -14,6 +15,7 @@ using AwfulMetro.Core.Tools;
 using Windows.UI.ViewManagement;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -32,6 +34,8 @@ namespace AwfulMetro.Views
         {
             InitializeComponent();
             _navigationHelper = new NavigationHelper(this);
+            ThreadFullView.ScriptNotify += WebView_ScriptNotify;
+            ThreadSnapView.ScriptNotify += WebView_ScriptNotify;
             _navigationHelper.LoadState += navigationHelper_LoadState;
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
@@ -55,6 +59,34 @@ namespace AwfulMetro.Views
             get { return _navigationHelper; }
         }
 
+        private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            string stringJson = e.Value;
+            var command = JsonConvert.DeserializeObject<ReplyView.ThreadCommand>(stringJson);
+            switch (command.Command)
+            {
+                case "profile":
+                    Frame.Navigate(typeof(UserProfileView), command.Id);
+                    break;
+                case "post_history":
+                    Frame.Navigate(typeof(UserPostHistoryPage), command.Id);
+                    break;
+                case "rap_sheet":
+                    Frame.Navigate(typeof(RapSheetView), command.Id);
+                    break;
+                case "quote":
+                    Frame.Navigate(typeof(ReplyView), command.Id);
+                    break;
+                default:
+                    var msgDlg = new MessageDialog("Working on it!")
+                    {
+                        DefaultCommandIndex = 1
+                    };
+                    await msgDlg.ShowAsync();
+                    break;
+            }
+        }
+
 
         /// <summary>
         ///     Populates the page with content passed during navigation. Any saved state is also
@@ -74,18 +106,17 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             _forumThread = (ForumThreadEntity) e.NavigationParameter;
             pageTitle.Text = _forumThread.Name;
-
-            _threadPosts = await _postManager.GetThreadPosts(_forumThread);
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = _forumThread.CurrentPage;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
-            DefaultViewModel["Posts"] = _threadPosts;
             if (_forumThread.ScrollToPost > 0)
             {
-
-                ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
+                //ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
             }
             loadingProgressBar.Visibility = Visibility.Collapsed;
 
@@ -126,8 +157,9 @@ namespace AwfulMetro.Views
                 CurrentPageSelector.SelectedIndex--;
                 BackButton.IsEnabled = _forumThread.CurrentPage > 1;
                 ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-                List<ForumPostEntity> threadPosts = await _postManager.GetThreadPosts(_forumThread);
-                DefaultViewModel["Posts"] = threadPosts;
+                var html = await _postManager.GetThreadPostInformation(_forumThread);
+                ThreadFullView.NavigateToString(html);
+                ThreadSnapView.NavigateToString(html);
                 loadingProgressBar.Visibility = Visibility.Collapsed;
             }
         }
@@ -145,8 +177,9 @@ namespace AwfulMetro.Views
             CurrentPageSelector.SelectedIndex++;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-            _threadPosts = await _postManager.GetThreadPosts(_forumThread);
-            DefaultViewModel["Posts"] = _threadPosts;
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
@@ -158,8 +191,9 @@ namespace AwfulMetro.Views
             _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
-            List<ForumPostEntity> threadPosts = await _postManager.GetThreadPosts(_forumThread);
-            DefaultViewModel["Posts"] = threadPosts;
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
@@ -238,7 +272,7 @@ namespace AwfulMetro.Views
         private void GoToLastPostButton_Click(object sender, RoutedEventArgs e)
         {
             //ThreadListSnapped.ScrollIntoView(_threadPosts.Last());
-            ThreadListFullScreen.ScrollIntoView(_threadPosts.Last());
+           // ThreadListFullScreen.ScrollIntoView(_threadPosts.Last());
         }
 
         #region NavigationHelper registration

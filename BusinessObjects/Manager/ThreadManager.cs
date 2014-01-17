@@ -21,6 +21,15 @@ namespace AwfulMetro.Core.Manager
 
         public ThreadManager() : this(new WebManager()) { }
 
+        public async Task<string> GetThread(ForumThreadEntity forumThread)
+        {
+
+            string url = string.Format(Constants.REPLY_BASE, forumThread.ThreadId);
+            var result = await _webManager.DownloadHtml(url);
+            HtmlDocument doc = result.Document;
+            return await GetThreadHtml(doc);
+        }
+
         public async Task<string> GetThreadHtml(HtmlDocument doc)
         {
             var html = await Windows.Storage.PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
@@ -49,9 +58,11 @@ namespace AwfulMetro.Core.Manager
 
                 var postId = ParseInt(post.GetAttributeValue("id", string.Empty));
 
+                
+
                 var profileLinksNode =
-                    post.Descendants("ul")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("profilelinks"));
+                    post.Descendants("td")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
                 profileLinksNode.InnerHtml = string.Empty;
                 
                 var profileButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('profile', {0});\">Profile</button></li>", userId));
@@ -60,13 +71,13 @@ namespace AwfulMetro.Core.Manager
 
                 var rapSheetButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('rap_sheet', {0});\">Rap Sheet</button></li>", userId));
 
-                var quoteButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('quote', {0});\">Quote Button</button></li>", postId));
-                profileLinksNode.InnerHtml = string.Concat(profileButton, postHistoryButton, rapSheetButton, quoteButton);
+                var quoteButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('quote', {0});\">Quote</button></li>", postId));
+                profileLinksNode.InnerHtml = string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, "</ul>");
 
-                var postLinksNode = post.Descendants("ul")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbuttons"));
+               // var postLinksNode = post.Descendants("ul")
+                      //  .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbuttons"));
 
-                postLinksNode.InnerHtml = string.Empty;
+             //   postLinksNode.InnerHtml = string.Empty;
 
                 var postDateNode = post.Descendants("td")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postdate"));
@@ -76,7 +87,7 @@ namespace AwfulMetro.Core.Manager
 
                 var usersPostsInThreadButton = WebUtility.HtmlDecode(string.Format("<button style=\"min-width:20px;display: inline-block;\" onclick=\"window.ForumCommand('users_posts_in_thread', '{0},{1}');\">?</button>", userId, threadId));
 
-                postDateNode.InnerHtml = string.Concat("<div style=\"display: inline-block;\">", toPostButton, usersPostsInThreadButton, "</div>", postDate);
+               // postDateNode.InnerHtml = string.Concat("<div style=\"display: inline-block;\">", toPostButton, usersPostsInThreadButton, "</div>", postDate);
             }
 
             bodyNode.InnerHtml = threadNode.OuterHtml;

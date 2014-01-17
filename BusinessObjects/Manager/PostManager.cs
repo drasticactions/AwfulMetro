@@ -19,6 +19,49 @@ namespace AwfulMetro.Core.Manager
 
         public PostManager() : this(new WebManager()) { }
 
+        public async Task<string> GetThreadPostInformation(ForumThreadEntity forumThread)
+        {
+            string url = forumThread.Location;
+
+            if (forumThread.CurrentPage > 0)
+            {
+                url = forumThread.Location + string.Format(Constants.PAGE_NUMBER, forumThread.CurrentPage);
+            }
+            else if (forumThread.HasBeenViewed)
+            {
+                url = forumThread.Location + Constants.GOTO_NEW_POST;
+            }
+
+
+          
+            var result = await _webManager.DownloadHtml(url);
+            HtmlDocument doc = result.Document;
+            string responseUri = result.AbsoluteUri;
+
+            /* TODO: The following checks the thread URL for "pti" (which indicated which post to scroll to)
+           * Having it in the post manager though, is wrong. This needs to be refactored and a better method of 
+           * getting this needs to be put in.
+           */
+            string[] test = responseUri.Split('#');
+            if (test.Length > 1 && test[1].Contains("pti"))
+            {
+                forumThread.ScrollToPost = Int32.Parse(Regex.Match(responseUri.Split('#')[1], @"\d+").Value) - 1;
+            }
+
+            HtmlNode threadNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("pages top"));
+            threadNode = threadNode.Descendants("option").FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
+            if (forumThread.CurrentPage <= 0)
+            {
+                forumThread.CurrentPage = GetPageNumber(threadNode);
+            }
+
+            HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
+            forumThread.TotalPages = forumThread.CurrentPage <= 1 ? 1 : Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", string.Empty));
+
+            var threadManager = new ThreadManager();
+            return await threadManager.GetThreadHtml(doc);
+        }
+
         public async Task<List<ForumPostEntity>> GetThreadPosts(ForumThreadEntity forumThread)
         {
             string url = forumThread.Location;

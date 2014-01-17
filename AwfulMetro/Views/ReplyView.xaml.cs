@@ -113,15 +113,17 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _forumPost = e.NavigationParameter as ForumPostEntity;
-            if (_forumPost != null)
-            {
-                _forumReply = await _replyManager.GetReplyCookies(_forumPost);
-            }
-            else
+            _forumThread = e.NavigationParameter as ForumThreadEntity;
+            //_forumPost = e.NavigationParameter as ForumPostEntity;
+            if (_forumThread != null)
             {
                 _forumThread = e.NavigationParameter as ForumThreadEntity;
                 _forumReply = await _replyManager.GetReplyCookies(_forumThread);
+            }
+            else
+            {
+                var threadId = (long) e.NavigationParameter;
+                _forumReply = await _replyManager.GetReplyCookies(threadId);
             }
             ReplyText.Text = _forumReply.Quote;
             PreviousPostsWebView.NavigateToString(_forumReply.PreviousPostsRaw);
