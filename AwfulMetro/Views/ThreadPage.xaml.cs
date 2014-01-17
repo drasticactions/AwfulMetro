@@ -224,8 +224,9 @@ namespace AwfulMetro.Views
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _threadPosts = await _postManager.GetThreadPosts(_forumThread);
-            DefaultViewModel["Posts"] = _threadPosts;
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
