@@ -102,7 +102,7 @@ namespace AwfulMetro.Core.Manager
 
         private ForumEntity AddDebugForum()
         {
-            return new ForumEntity("Apps In Developmental States", "forumdisplay.php?forumid=261", "Debug Forum", false);
+            return new ForumEntity("Apps In Developmental States", Constants.BASE_URL + "forumdisplay.php?forumid=261", "Debug Forum", false);
         }
     }
 }

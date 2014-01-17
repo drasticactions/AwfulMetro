@@ -60,7 +60,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Margin="0,0,0,0" HorizontalAlignment="Stretch">
+            <Grid Grid.Column="0" Margin="10,0,0,0" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -68,24 +68,25 @@
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="90"/>
                     </Grid.ColumnDefinitions>
                     <TextBox AcceptsReturn="True" Grid.Column="0" HorizontalAlignment="Stretch" Margin="25,0,25,10"  x:Name="ReplyText" TextWrapping="Wrap"/>
                     <StackPanel Grid.Column="1">
                         <Button x:Name="PostButton" HorizontalAlignment="Stretch" Content="Post" Click="PostButton_Click"/>
-                        <Button x:Name="PreviewButton" HorizontalAlignment="Stretch" Content="Preview" Click="PreviewButton_Click"/>
                         <Button x:Name="SimilesButton" HorizontalAlignment="Stretch" Content="Smilies" Click="SimilesButton_Click" />
                         <Button x:Name="BBcodeButton" HorizontalAlignment="Stretch" Content="BBcode" Click="BBcodeButton_Click"/>
+                        <Button x:Name="PreviewButton" HorizontalAlignment="Stretch" Content="Preview" Click="PreviewButton_Click"/>
+                        <Button x:Name="LastPostsButton" HorizontalAlignment="Stretch" Content="Last Post" Click="LastPostsButton_OnClick"/>
                     </StackPanel>
                 </Grid>
-                <Grid x:Name="PreviewPostGrid" Grid.Row="1" Visibility="Collapsed">
+                <Grid x:Name="PreviewPostGrid" Margin="25,0,25,10" Grid.Row="1" Visibility="Collapsed" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" FontSize="30" Foreground="Black" VerticalAlignment="Center" Text="Preview" />
                     <ProgressRing Grid.Row="1" Height="200" Width="200" VerticalAlignment="Center" HorizontalAlignment="Center" IsActive="True"/>
-                    <WebView Grid.Row="1" x:Name="PostPreviewRaw" tools:WebViewHelper.Html="{Binding PostHtml}"></WebView>
+                    <WebView Grid.Row="1" Margin="0,0,0,5" x:Name="PostPreviewRaw" tools:WebViewHelper.Html="{Binding PostHtml}"></WebView>
                 </Grid>
             </Grid>
             <WebView Grid.Column="1" x:Name="PreviousPostsWebView" Margin="15"/>

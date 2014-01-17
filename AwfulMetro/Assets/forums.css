@@ -2,6 +2,7 @@
 
 .bbc-block h4 {
 	border-top: none;
+    margin-left: 15px;
 }
 
 .altcolor1 .bbc-block {
@@ -24,6 +25,8 @@
 .bbc-block blockquote {
 	margin-top: 8px;
 	margin-bottom: 18px;
+    margin-right: 15px;
+    margin-left: 15px;
 	color: #444;
 }
 

@@ -173,6 +173,8 @@ namespace AwfulMetro.Views
         private async void SimilesButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
+            ItemGridView.Visibility = Visibility.Visible;
+            PreviousPostsWebView.Visibility = Visibility.Collapsed;
             if (!_smileCategoryList.Any())
             {
                 _smileCategoryList = await _smileManager.GetSmileList();
@@ -184,6 +186,8 @@ namespace AwfulMetro.Views
         private void BBcodeButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
+            ItemGridView.Visibility = Visibility.Visible;
+            PreviousPostsWebView.Visibility = Visibility.Collapsed;
             if (!_bbCodeList.Any())
             {
                 _bbCodeList = BBCodeManager.BBCodes;
@@ -245,7 +249,6 @@ namespace AwfulMetro.Views
 
         private async void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
             PostPreviewRaw.Visibility = Visibility.Collapsed;
             PreviewPostGrid.Visibility = Visibility.Visible;
             _forumReply.MapMessage(ReplyText.Text);
@@ -254,15 +257,20 @@ namespace AwfulMetro.Views
             if (!string.IsNullOrEmpty(result))
             {
                 PostPreviewRaw.NavigateToString(result);
-                
+                PostPreviewRaw.Visibility = Visibility.Visible;
             }
             else
             {
-                var msgDlg = new Windows.UI.Popups.MessageDialog("Error making preview!");
+                var msgDlg = new Windows.UI.Popups.MessageDialog("No text?! What the fuck good is showing you a preview then! Type some shit in and try again!");
                 await msgDlg.ShowAsync();
+                PreviewPostGrid.Visibility = Visibility.Collapsed;
             }
-            PostPreviewRaw.Visibility = Visibility.Visible;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+        }
+
+        private void LastPostsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ItemGridView.Visibility = Visibility.Collapsed;
+            PreviousPostsWebView.Visibility = Visibility.Visible;
         }
     }
 }

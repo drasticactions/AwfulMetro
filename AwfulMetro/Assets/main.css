@@ -243,6 +243,10 @@ a:active {
     background: #f1f1f1;
 }
 
+div.threadbar,#subforums,#subforums td,#forum,#forum th,#forum td,#filter,div.forumbar,#thread table.post,#thread td,#forums,#forums th,#forums td,#pm,#pm th,#pm td,#info,#info th,#info td {
+    border: 1px solid #c1c1c1;
+}
+
 #filter {
     clear: right;
     margin: .5em 0;

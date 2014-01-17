@@ -58,7 +58,7 @@ namespace AwfulMetro.Core.Manager
 
                 var postId = ParseInt(post.GetAttributeValue("id", string.Empty));
 
-                
+                //TODO: Create HTML Render engine to handle this, rather than hard coding. That way it can be used for the front page or other web views.
 
                 var profileLinksNode =
                     post.Descendants("td")
@@ -74,11 +74,6 @@ namespace AwfulMetro.Core.Manager
                 var quoteButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('quote', '{0}');\">Quote</button></li>", postId));
                 profileLinksNode.InnerHtml = string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, "</ul>");
 
-               // var postLinksNode = post.Descendants("ul")
-                      //  .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbuttons"));
-
-             //   postLinksNode.InnerHtml = string.Empty;
-
                 var postDateNode = post.Descendants("td")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postdate"));
                 string postDate = postDateNode.InnerText;
@@ -87,7 +82,8 @@ namespace AwfulMetro.Core.Manager
 
                 var usersPostsInThreadButton = WebUtility.HtmlDecode(string.Format("<button style=\"min-width:20px;display: inline-block;\" onclick=\"window.ForumCommand('users_posts_in_thread', '{0},{1}');\">?</button>", userId, threadId));
 
-               // postDateNode.InnerHtml = string.Concat("<div style=\"display: inline-block;\">", toPostButton, usersPostsInThreadButton, "</div>", postDate);
+                //postDateNode.InnerHtml = string.Concat("<div style=\"display: inline-block;\">", toPostButton, usersPostsInThreadButton, "</div>", postDate);
+                postDateNode.InnerHtml = postDate;
             }
 
             bodyNode.InnerHtml = threadNode.OuterHtml;

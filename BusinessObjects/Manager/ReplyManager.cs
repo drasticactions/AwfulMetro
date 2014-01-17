@@ -129,7 +129,7 @@ namespace AwfulMetro.Core.Manager
                 var replyNodes = doc.DocumentNode.Descendants("div").ToArray();
 
                 var previewNode = replyNodes.FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("inner postbody"));
-                return FixPostHtml(previewNode.OuterHtml);
+                return previewNode == null ? string.Empty : FixPostHtml(previewNode.OuterHtml);
             }
         }
 
