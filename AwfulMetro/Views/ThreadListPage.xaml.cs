@@ -80,8 +80,8 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
             // TODO: Assign a bindable collection of items to this.DefaultViewModel["Items"]
+            loadingProgressBar.Visibility = Visibility.Visible;
 
             var jsonObjectString = (string) e.NavigationParameter;
             var forumInfo = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
@@ -184,6 +184,7 @@ namespace AwfulMetro.Views
 
         private async Task GetForumThreads()
         {
+            RefreshBarButton.IsEnabled = false;
             if (_forumEntity.IsBookmarks)
             {
                 AddThreadButton.Visibility = Visibility.Collapsed;
@@ -212,7 +213,7 @@ namespace AwfulMetro.Views
                 DefaultViewModel["Threads"] = _forumPageScrollingCollection;
                 DefaultViewModel["Subforums"] = _subForumEntities;
             }
-            
+            RefreshBarButton.IsEnabled = true;
         }
 
         #region NavigationHelper registration
@@ -313,6 +314,16 @@ namespace AwfulMetro.Views
             var msgDlg = new MessageDialog("Thread notifications removed! (ÅEÉ÷ÅE)Ém");
             msgDlg.DefaultCommandIndex = 1;
             await msgDlg.ShowAsync();
+        }
+
+        private async void RefreshBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            loadingProgressBar.Visibility = Visibility.Visible;
+
+            await GetForumThreads();
+
+            loadingProgressBar.Visibility = Visibility.Collapsed;
+
         }
     }
 }

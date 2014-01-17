@@ -290,6 +290,7 @@
                         </BitmapIcon>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarButton x:Name="RefreshBarButton" IsEnabled="False"  Click="RefreshBarButton_OnClick" Label="Refresh" Icon="Refresh"/>
                 <AppBarButton x:Name="NotificationButton" Click="NotificationButton_OnClick" Visibility="Collapsed" IsEnabled="False" Label="Add to Notifications" Icon="SolidStar"/>
                 <AppBarButton x:Name="RemoveNotificationsButton" Label="Remove all notifications." IsEnabled="True" Visibility="Collapsed" Click="RemoveNotificationsButton_OnClick" Icon="UnFavorite" />
             </StackPanel>
