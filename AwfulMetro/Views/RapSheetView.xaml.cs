@@ -65,7 +65,8 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = false;
             if (e.NavigationParameter != null)
             {
-                var userId = (long) e.NavigationParameter;
+                var userId = Convert.ToInt64(e.NavigationParameter);
+                
                 DefaultViewModel["RapSheet"] =
                     await
                         this._rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));

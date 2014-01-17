@@ -64,14 +64,7 @@ namespace AwfulMetro.Views
             // TODO: Assign a collection of bindable groups to this.DefaultViewModel["Groups"]
             var user = e.NavigationParameter as ForumUserEntity;
             long userId;
-            if (user == null)
-            {
-                userId = (long) e.NavigationParameter;
-            }
-            else
-            {
-                userId = user.Id;
-            }
+            userId = user == null ? Convert.ToInt64(e.NavigationParameter) : user.Id;
             var userProfile = await this._forumUserManager.GetUserFromProfilePage(user, userId);
             DefaultViewModel["UserEntity"] = userProfile;
             DefaultViewModel["RapSheet"] =
