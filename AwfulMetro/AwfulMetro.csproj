@@ -17,7 +17,7 @@
     <PackageCertificateKeyFile>AwfulMetro_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>E4D83D96AA2A6CC547C6517B76238BF0874DB9E3</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>8D71FE9DE387228B79F5F5834EED555F0247BB43</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -178,6 +178,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-180.png" />
     <Content Include="Assets\Wide310x150Logo.scale-80.png" />
     <None Include="AwfulMetro_TemporaryKey.pfx" />
+    <None Include="AwfulMetro_TemporaryKey.pfx.snk" />
     <None Include="Package.StoreAssociation.xml" />
     <Page Include="Views\BookmarkSettingsFlyout.xaml">
       <SubType>Designer</SubType>
@@ -269,6 +270,12 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AwfulMetro_TemporaryKey.pfx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
