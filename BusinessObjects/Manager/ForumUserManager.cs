@@ -27,11 +27,14 @@ namespace AwfulMetro.Core.Manager
                         doc.DocumentNode.Descendants("td")
                             .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread")));
             }
-            var userEntity = ForumUserEntity.FromUserProfile(
-                doc.DocumentNode.Descendants("td")
-                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("info")));
+
+            var profileNode = doc.DocumentNode.Descendants("td")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("info"));
+
             var threadNode = doc.DocumentNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+            var userEntity = ForumUserEntity.FromUserProfile(profileNode, threadNode);
+            
             userEntity.FromUserProfileAvatarInformation(threadNode);
             return userEntity;
         }
