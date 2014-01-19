@@ -61,16 +61,14 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: Assign a collection of bindable groups to this.DefaultViewModel["Groups"]
-            var user = e.NavigationParameter as ForumUserEntity;
             long userId;
-            userId = user == null ? Convert.ToInt64(e.NavigationParameter) : user.Id;
-            var userProfile = await this._forumUserManager.GetUserFromProfilePage(user, userId);
+            userId = Convert.ToInt64(e.NavigationParameter);
+            var userProfile = await _forumUserManager.GetUserFromProfilePage(userId);
             DefaultViewModel["UserEntity"] = userProfile;
             DefaultViewModel["RapSheet"] =
-                await this._rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+                await _rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
             DefaultViewModel["UserSearch"] =
-                await this._forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+                await _forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
 
         #region NavigationHelper registration

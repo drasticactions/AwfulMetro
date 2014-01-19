@@ -15,18 +15,13 @@ namespace AwfulMetro.Core.Manager
 
         public ForumUserManager() : this(new WebManager()) { }
 
-        public async Task<ForumUserEntity> GetUserFromProfilePage(ForumUserEntity user, long userId)
+        public async Task<ForumUserEntity> GetUserFromProfilePage(long userId)
         {
             string url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
             var doc = (await _webManager.DownloadHtml(url)).Document;
             
-            if (user != null && string.IsNullOrEmpty(user.Username))
-            {
-                return
-                    ForumUserEntity.FromPost(
-                        doc.DocumentNode.Descendants("td")
-                            .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread")));
-            }
+            /*Get the user profile HTML from the user profile page,
+             once we get it, get the nodes for each section of the page and parse them.*/
 
             var profileNode = doc.DocumentNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("info"));
@@ -36,6 +31,7 @@ namespace AwfulMetro.Core.Manager
             var userEntity = ForumUserEntity.FromUserProfile(profileNode, threadNode);
             
             userEntity.FromUserProfileAvatarInformation(threadNode);
+
             return userEntity;
         }
     }

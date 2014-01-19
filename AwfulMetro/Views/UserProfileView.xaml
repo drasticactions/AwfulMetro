@@ -31,7 +31,7 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
 
-        <Hub>
+        <Hub RequestedTheme="Dark">
             <Hub.Header>
                 <!-- Back button and page title -->
                 <Grid>
@@ -52,7 +52,7 @@
 
             <HubSection Width="500" Margin="0,0,0,0">
                 <HubSection.Background>
-                    <ImageBrush Stretch="UniformToFill" />
+                    <SolidColorBrush Color="#51A5FC"/>
                 </HubSection.Background>
                 <DataTemplate>
                     <ScrollViewer>
@@ -81,7 +81,10 @@
                     </ScrollViewer>
                 </DataTemplate>
             </HubSection>
-            <HubSection Margin="0,0,80,0" Width="750" Header="Post History">
+            <HubSection Width="750" Header="Post History">
+                <HubSection.Background>
+                    <SolidColorBrush Color="#6BBFFF"/>
+                </HubSection.Background>
                 <DataTemplate>
                     <ListView x:Name="PostHistoryView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource postHistorySource}}" SelectionMode="None" IsItemClickEnabled="True">
                         <ListView.ItemTemplate>
@@ -102,6 +105,9 @@
                 </DataTemplate>
             </HubSection>
             <HubSection Width="700" Header="Rap Sheet">
+                <HubSection.Background>
+                    <SolidColorBrush Color="#84D8FF"/>
+                </HubSection.Background>
                 <DataTemplate>
                     <ListView x:Name="RapSheetListView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                         <ListView.ItemTemplate>

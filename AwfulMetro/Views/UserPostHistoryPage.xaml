@@ -50,7 +50,7 @@
             <TextBlock x:Name="pageTitle" Text="Post History" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
+        <StackPanel RequestedTheme="Dark" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
             <AppBarButton x:Name="BackButton"  IsEnabled="False"  Label="Back Page" Icon="Back"/>
             <AppBarButton x:Name="ForwardButton" IsEnabled="False"  Label="Forward Page" Icon="Forward"/>
         </StackPanel>
