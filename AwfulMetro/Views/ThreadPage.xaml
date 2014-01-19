@@ -19,14 +19,6 @@
         Source="{Binding Posts}"/>
     </Page.Resources>
 
-    <Page.BottomAppBar>
-        <CommandBar>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click" Label="Go To Last Post On Page" Icon="Download"/>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-    </Page.BottomAppBar>
-
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
@@ -94,22 +86,14 @@
                 <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
                 <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
                 <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
-                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_OnClick"  Label="Bookmark">
-                	<AppBarButton.Icon>
-                		<BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="40">
-                			<BitmapIcon.RenderTransform>
-                				<CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
-                			</BitmapIcon.RenderTransform>
-                		</BitmapIcon>
-                	</AppBarButton.Icon>
-                </AppBarButton>
+                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click" Label="Go To Last Post On Page" Icon="Download"/>
                 <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
                 	<ItemsPanelTemplate>
                 		<CarouselPanel/>
                 	</ItemsPanelTemplate>
                 </ComboBox>
             </StackPanel>
-            <WebView Grid.Column="0" x:Name="ThreadFullView"/>
+            <WebView DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" Grid.Column="0" x:Name="ThreadFullView"/>
         </Grid>
         <Grid Grid.Row="1" Visibility="Collapsed" x:Name="ThreadListSnapped">
             <Grid.RowDefinitions>
@@ -127,7 +111,7 @@
                     </ItemsPanelTemplate>
                 </ComboBox>
             </StackPanel>
-            <WebView Grid.Row="1" x:Name="ThreadSnapView"/>
+            <WebView Grid.Row="1" DOMContentLoaded="ThreadSnapView_OnDOMContentLoaded" x:Name="ThreadSnapView"/>
         </Grid>
         
     </Grid>

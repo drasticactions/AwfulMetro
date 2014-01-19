@@ -65,6 +65,7 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<List<ForumPostEntity>> GetThreadPosts(ForumThreadEntity forumThread)
         {
+            //TODO: No longer being used, needs to be removed.
             string url = forumThread.Location;
 
             if (forumThread.CurrentPage > 0)
