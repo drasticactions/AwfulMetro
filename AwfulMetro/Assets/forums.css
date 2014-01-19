@@ -8,13 +8,11 @@
 .altcolor1 .bbc-block {
 	border: 1px solid #ADADAD;
 	background: #fafafa none repeat-x;
-	box-shadow: 2px 2px 9px #CFCFCF;
 }
 
 .altcolor2 .bbc-block {
 	border: 1px solid #A3A3A3;
 	background: #f4f4f4 none repeat-x;
-	box-shadow: 2px 2px 9px #b6b6b6;
 }
 
 #thread table.post td {
