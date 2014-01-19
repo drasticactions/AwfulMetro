@@ -139,14 +139,7 @@ namespace AwfulMetro.Views
             }
             else
             {
-                if (width <= 620)
-                {
-                    VisualStateManager.GoToState(this, "Snapped", false);
-                }
-                else
-                {
-                    VisualStateManager.GoToState(this, "Portrait", false);
-                }
+                VisualStateManager.GoToState(this, width <= 620 ? "Snapped" : "Portrait", false);
             }
         }
 

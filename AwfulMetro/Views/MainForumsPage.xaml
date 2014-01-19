@@ -55,6 +55,13 @@
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="stackPanel">
+                        	<DiscreteObjectKeyFrame KeyTime="0">
+                        		<DiscreteObjectKeyFrame.Value>
+                        			<Visibility>Collapsed</Visibility>
+                        		</DiscreteObjectKeyFrame.Value>
+                        	</DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
     			</VisualState>
     			<VisualState x:Name="FullScreen">
@@ -86,12 +93,17 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <GridView
+<Grid Grid.Row="1">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="0"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="100"/>
+    </Grid.ColumnDefinitions>
+            <GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
-            Grid.Row="1"
+            Grid.Column="1"
             Visibility="Visible"
             Padding="0,0,40,46"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
@@ -99,25 +111,51 @@
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
             ItemClick="ItemView_ItemClick">
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Left" Width="445" Height="100">
-                        <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
-                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                        </Border>
-                        <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
-                            <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
-                            <TextBlock Text="{Binding Description}" Foreground="Black" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid GroupPadding="0,0,70,0"/>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-        </GridView>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left" Width="445" Height="100">
+                            <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
+                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                                <TextBlock Text="{Binding Description}" Foreground="Black" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid GroupPadding="0,0,70,0"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+            <StackPanel x:Name="stackPanel" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2" Margin="0,0,-5,0">
+                <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet"/>
+                <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page" RenderTransformOrigin="0.5,0.5">
+                    <AppBarButton.RenderTransform>
+                        <CompositeTransform ScaleX="0.95"/>
+                    </AppBarButton.RenderTransform>
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/frontpage.png" RenderTransformOrigin="0.5,0.5">
+                            <BitmapIcon.RenderTransform>
+                                <CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
+                            </BitmapIcon.RenderTransform>
+                        </BitmapIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_Click"  Label="Bookmarks">
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon3.png" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" HorizontalAlignment="Right">
+                            <BitmapIcon.RenderTransform>
+                                <CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
+                            </BitmapIcon.RenderTransform>
+                        </BitmapIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </StackPanel>
+        </Grid>
+        
 
         <ScrollViewer
 x:Name="itemGridScrollViewer"
@@ -197,32 +235,4 @@ HorizontalScrollMode="Disabled"
         	</Button.Background>
         </Button>
     </Grid>
-    <Page.TopAppBar>
-        <CommandBar>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet"/>
-                <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page" RenderTransformOrigin="0.5,0.5">
-                	<AppBarButton.RenderTransform>
-                		<CompositeTransform ScaleX="0.95"/>
-                	</AppBarButton.RenderTransform>
-                	<AppBarButton.Icon>
-                		<BitmapIcon UriSource="ms-appx:///Assets/frontpage.png" RenderTransformOrigin="0.5,0.5">
-                			<BitmapIcon.RenderTransform>
-                				<CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
-                			</BitmapIcon.RenderTransform>
-                		</BitmapIcon>
-                	</AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_Click"  Label="Bookmarks">
-                	<AppBarButton.Icon>
-                		<BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon3.png" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" HorizontalAlignment="Right">
-                			<BitmapIcon.RenderTransform>
-                				<CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
-                			</BitmapIcon.RenderTransform>
-                		</BitmapIcon>
-                	</AppBarButton.Icon>
-                </AppBarButton>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-    </Page.TopAppBar>
 </Page>
