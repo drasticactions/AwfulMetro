@@ -128,6 +128,9 @@
     <Compile Include="Views\FrontPage.xaml.cs">
       <DependentUpon>FrontPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\FrontPageArticle.xaml.cs">
+      <DependentUpon>FrontPageArticle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainForumsPage.xaml.cs">
       <DependentUpon>MainForumsPage.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,8 @@
     <Content Include="Assets\frontpage.png" />
     <Content Include="Assets\grenadesm.png" />
     <Content Include="Assets\js\threadTemplate.js" />
+    <Content Include="Assets\mainsite.css" />
+    <Content Include="Assets\MainSite.html" />
     <Content Include="Assets\thread.html" />
     <Content Include="Assets\ui-light-new.css" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
@@ -221,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FrontPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FrontPageArticle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
