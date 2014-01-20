@@ -115,6 +115,7 @@
     <Compile Include="Entity\FrontPageArticleEntity.cs" />
     <Compile Include="Entity\FrontPageWebArticleEntity.cs" />
     <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
+    <Compile Include="Entity\PrivateMessageEntity.cs" />
     <Compile Include="Entity\SmileCategoryEntity.cs" />
     <Compile Include="Entity\SmileEntity.cs" />
     <Compile Include="Entity\TagCategoryEntity.cs" />

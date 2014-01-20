@@ -143,6 +143,12 @@
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PrivateMessageListView.xaml.cs">
+      <DependentUpon>PrivateMessageListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrivateMessageView.xaml.cs">
+      <DependentUpon>PrivateMessageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RapSheetView.xaml.cs">
       <DependentUpon>RapSheetView.xaml</DependentUpon>
     </Compile>
@@ -238,6 +244,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrivateMessageListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrivateMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -265,7 +265,7 @@
             <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0"/>
         </Grid>
-        <Grid x:Name="ThreadViewFullScreen" Grid.Row="1" Margin="-5,0,5,0">
+        <Grid RequestedTheme="Light" x:Name="ThreadViewFullScreen" Grid.Row="1" Margin="-5,0,5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -365,7 +365,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <Grid x:Name="ThreadViewSnapped" Visibility="Collapsed" Grid.Row="1">
+        <Grid RequestedTheme="Light" x:Name="ThreadViewSnapped" Visibility="Collapsed" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="Auto"/>
