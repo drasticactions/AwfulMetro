@@ -120,6 +120,7 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
+            ReplyButtonSnap.IsEnabled = !_forumThread.IsLocked;
             loadingProgressBar.Visibility = Visibility.Collapsed;
 
             // TODO: Remove duplicate buttons and find a better way to handle navigation
@@ -280,18 +281,35 @@ namespace AwfulMetro.Views
 
         private async void ThreadFullView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
-            if (_forumThread.ScrollToPost > 0)
+            try
             {
-                await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                if (_forumThread.ScrollToPost > 0)
+                {
+
+                    await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                }
             }
+            catch (Exception)
+            {
+                return;
+            }
+            
         }
 
         private async void ThreadSnapView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
         {
-            if (_forumThread.ScrollToPost > 0)
+            try
             {
-                await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] {_forumThread.ScrollToPostString});
+                if (_forumThread.ScrollToPost > 0)
+                {
+                    await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                }
             }
+            catch (Exception)
+            {
+                return;
+            }
+            
         }
     }
 }

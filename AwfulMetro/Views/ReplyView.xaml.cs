@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Data.Json;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
@@ -258,7 +262,7 @@ namespace AwfulMetro.Views
             }
             else
             {
-                var msgDlg = new Windows.UI.Popups.MessageDialog("No text?! What the fuck good is showing you a preview then! Type some shit in and try again!");
+                var msgDlg = new MessageDialog("No text?! What the fuck good is showing you a preview then! Type some shit in and try again!");
                 await msgDlg.ShowAsync();
                 PreviewPostGrid.Visibility = Visibility.Collapsed;
             }
@@ -268,6 +272,36 @@ namespace AwfulMetro.Views
         {
             ItemGridView.Visibility = Visibility.Collapsed;
             PreviousPostsWebView.Visibility = Visibility.Visible;
+        }
+
+        private async void ImageUploadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            loadingProgressBar.Visibility = Visibility.Visible;
+            var openPicker = new FileOpenPicker
+            {
+                ViewMode = PickerViewMode.Thumbnail,
+                SuggestedStartLocation = PickerLocationId.PicturesLibrary
+            };
+            openPicker.FileTypeFilter.Add(".jpg");
+            openPicker.FileTypeFilter.Add(".jpeg");
+            openPicker.FileTypeFilter.Add(".png");
+            openPicker.FileTypeFilter.Add(".gif");
+            var file = await openPicker.PickSingleFileAsync();
+            if (file == null) return;
+            IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
+            var result = await UploadManager.UploadImgur(stream);
+            if (result == null)
+            {
+                var msgDlg = new MessageDialog("Something went wrong with the upload. :-(.");
+                msgDlg.ShowAsync();
+                return;
+            }
+
+            // We have got an image up on Imgur! Time to get it into the reply box!
+
+            string imgLink = string.Format("[TIMG]{0}[/TIMG]", result.data.link);
+            ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, imgLink);
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
     }
 }

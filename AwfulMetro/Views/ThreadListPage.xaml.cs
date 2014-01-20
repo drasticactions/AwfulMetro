@@ -88,7 +88,6 @@ namespace AwfulMetro.Views
             if (forumInfo == null) return;
             _forumEntity = forumInfo;
             pageTitle.Text = _forumEntity.Name;
-            pageSnapTitle.Text = _forumEntity.Name;
             await GetForumThreads();
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }

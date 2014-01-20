@@ -114,34 +114,7 @@ namespace AwfulMetro.Views
             this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
 
-        private void PageUnloaded(object sender, RoutedEventArgs e)
-        {
-            Window.Current.SizeChanged -= this.Window_SizeChanged;
-        }
-
-        private void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            Window.Current.SizeChanged += this.Window_SizeChanged;
-        }
-
-        private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
-        {
-            this.ChangeViewTemplate(e.Size.Width);
-        }
-
-        private void ChangeViewTemplate(double width)
-        {
-            ApplicationView currentView = ApplicationView.GetForCurrentView();
-
-            if (currentView.Orientation == ApplicationViewOrientation.Landscape)
-            {
-                VisualStateManager.GoToState(this, "FullScreen", false);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, width <= 620 ? "Snapped" : "Portrait", false);
-            }
-        }
+      
 
         #region NavigationHelper registration
 
@@ -158,12 +131,6 @@ namespace AwfulMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.NavigationHelper.OnNavigatedTo(e);
-
-            Rect bounds = Window.Current.Bounds;
-            this.ChangeViewTemplate(bounds.Width);
-
-            this.Loaded += this.PageLoaded;
-            this.Unloaded += this.PageUnloaded;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

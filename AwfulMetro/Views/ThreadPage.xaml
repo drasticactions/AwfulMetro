@@ -100,8 +100,8 @@
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <AppBarButton x:Name="ReplyButtonSnap" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
+            <StackPanel Background="#FFC5C5C5" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <AppBarButton x:Name="ReplyButtonSnap" Label="Reply" IsEnabled="False" Icon="Upload" Click="ReplyButton_Click"/>
                 <AppBarButton x:Name="BackButtonSnap" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
                 <AppBarButton x:Name="ForwardButtonSnap" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
                 <AppBarButton x:Name="RefreshButtonSnap" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>

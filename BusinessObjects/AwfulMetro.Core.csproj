@@ -114,6 +114,7 @@
     <Compile Include="Entity\ForumUserRapSheetEntity.cs" />
     <Compile Include="Entity\FrontPageArticleEntity.cs" />
     <Compile Include="Entity\FrontPageWebArticleEntity.cs" />
+    <Compile Include="Entity\ImgurEntity.cs" />
     <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
     <Compile Include="Entity\PrivateMessageEntity.cs" />
     <Compile Include="Entity\SmileCategoryEntity.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Manager\ReplyManager.cs" />
     <Compile Include="Manager\SmileManager.cs" />
     <Compile Include="Manager\TagManager.cs" />
+    <Compile Include="Manager\UploadManager.cs" />
     <Compile Include="Manager\WebManager.cs" />
     <Compile Include="Manager\PostManager.cs" />
     <Compile Include="Manager\ThreadManager.cs" />
@@ -151,6 +153,10 @@
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\winrt45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1-beta1\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
