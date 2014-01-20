@@ -187,6 +187,7 @@ namespace AwfulMetro.Views
             if (_forumEntity.IsBookmarks)
             {
                 AddThreadButton.Visibility = Visibility.Collapsed;
+                FavoriteButton.Visibility = Visibility.Collapsed;
                 BookmarkSettings.Visibility = Visibility.Visible;
                 _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
                 _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
