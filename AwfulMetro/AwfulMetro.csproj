@@ -17,7 +17,7 @@
     <PackageCertificateKeyFile>AwfulMetro_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>E4D83D96AA2A6CC547C6517B76238BF0874DB9E3</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>8D71FE9DE387228B79F5F5834EED555F0247BB43</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -122,8 +122,14 @@
     <Compile Include="Common\NotifierBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
+    <Compile Include="Views\EditReplyPage.xaml.cs">
+      <DependentUpon>EditReplyPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FrontPage.xaml.cs">
       <DependentUpon>FrontPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FrontPageArticle.xaml.cs">
+      <DependentUpon>FrontPageArticle.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainForumsPage.xaml.cs">
       <DependentUpon>MainForumsPage.xaml</DependentUpon>
@@ -136,6 +142,12 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrivateMessageListView.xaml.cs">
+      <DependentUpon>PrivateMessageListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrivateMessageView.xaml.cs">
+      <DependentUpon>PrivateMessageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RapSheetView.xaml.cs">
       <DependentUpon>RapSheetView.xaml</DependentUpon>
@@ -170,11 +182,17 @@
     <Content Include="Assets\clearicon.png" />
     <Content Include="Assets\frontpage.png" />
     <Content Include="Assets\grenadesm.png" />
+    <Content Include="Assets\js\threadTemplate.js" />
+    <Content Include="Assets\mainsite.css" />
+    <Content Include="Assets\MainSite.html" />
+    <Content Include="Assets\thread.html" />
+    <Content Include="Assets\ui-light-new.css" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-140.png" />
     <Content Include="Assets\Wide310x150Logo.scale-180.png" />
     <Content Include="Assets\Wide310x150Logo.scale-80.png" />
     <None Include="AwfulMetro_TemporaryKey.pfx" />
+    <None Include="AwfulMetro_TemporaryKey.pfx.snk" />
     <None Include="Package.StoreAssociation.xml" />
     <Page Include="Views\BookmarkSettingsFlyout.xaml">
       <SubType>Designer</SubType>
@@ -209,7 +227,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\EditReplyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FrontPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FrontPageArticle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +244,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrivateMessageListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrivateMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -250,6 +284,9 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\winrt45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1-beta1\lib\netcore45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BackgroundStatus\AwfulMetro.BackgroundStatus.csproj">
@@ -263,6 +300,12 @@
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>AwfulMetro_TemporaryKey.pfx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

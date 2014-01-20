@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -14,6 +16,7 @@ using AwfulMetro.Core.Tools;
 using Windows.UI.ViewManagement;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -32,6 +35,8 @@ namespace AwfulMetro.Views
         {
             InitializeComponent();
             _navigationHelper = new NavigationHelper(this);
+            ThreadFullView.ScriptNotify += WebView_ScriptNotify;
+            ThreadSnapView.ScriptNotify += WebView_ScriptNotify;
             _navigationHelper.LoadState += navigationHelper_LoadState;
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
@@ -55,6 +60,37 @@ namespace AwfulMetro.Views
             get { return _navigationHelper; }
         }
 
+        private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            string stringJson = e.Value;
+            var command = JsonConvert.DeserializeObject<ReplyView.ThreadCommand>(stringJson);
+            switch (command.Command)
+            {
+                case "profile":
+                    Frame.Navigate(typeof(UserProfileView), command.Id);
+                    break;
+                case "post_history":
+                    Frame.Navigate(typeof(UserPostHistoryPage), command.Id);
+                    break;
+                case "rap_sheet":
+                    Frame.Navigate(typeof(RapSheetView), command.Id);
+                    break;
+                case "quote":
+                    Frame.Navigate(typeof(ReplyView),  command.Id);
+                    break;
+                case "edit":
+                    Frame.Navigate(typeof(EditReplyPage),  command.Id);
+                    break;
+                default:
+                    var msgDlg = new MessageDialog("Working on it!")
+                    {
+                        DefaultCommandIndex = 1
+                    };
+                    await msgDlg.ShowAsync();
+                    break;
+            }
+        }
+
 
         /// <summary>
         ///     Populates the page with content passed during navigation. Any saved state is also
@@ -72,21 +108,19 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _forumThread = (ForumThreadEntity) e.NavigationParameter;
+            var jsonObjectString = (string)e.NavigationParameter;
+            _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
+            if (_forumThread == null) return;
             pageTitle.Text = _forumThread.Name;
-
-            _threadPosts = await _postManager.GetThreadPosts(_forumThread);
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = _forumThread.CurrentPage;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
-            DefaultViewModel["Posts"] = _threadPosts;
-            if (_forumThread.ScrollToPost > 0)
-            {
-
-                ThreadListFullScreen.ScrollIntoView(_threadPosts[_forumThread.ScrollToPost]);
-            }
+            ReplyButtonSnap.IsEnabled = !_forumThread.IsLocked;
             loadingProgressBar.Visibility = Visibility.Collapsed;
 
             // TODO: Remove duplicate buttons and find a better way to handle navigation
@@ -113,23 +147,24 @@ namespace AwfulMetro.Views
 
         private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_forumThread.CurrentPage > 1)
-            {
-                loadingProgressBar.Visibility = Visibility.Visible;
-                _forumThread.CurrentPage--;
+            if (_forumThread.CurrentPage <= 1) return;
+            loadingProgressBar.Visibility = Visibility.Visible;
+            _forumThread.CurrentPage--;
 
-                // TODO: Remove duplicate buttons and find a better way to handle navigation
-                CurrentPageSelectorSnap.SelectedIndex--;
-                BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
-                ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
+            // TODO: Remove duplicate buttons and find a better way to handle navigation
+            CurrentPageSelectorSnap.SelectedIndex--;
+            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
 
-                CurrentPageSelector.SelectedIndex--;
-                BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-                ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-                List<ForumPostEntity> threadPosts = await _postManager.GetThreadPosts(_forumThread);
-                DefaultViewModel["Posts"] = threadPosts;
-                loadingProgressBar.Visibility = Visibility.Collapsed;
-            }
+            CurrentPageSelector.SelectedIndex--;
+            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
+            _forumThread.ScrollToPost = 1;
+            _forumThread.ScrollToPostString = "#pti1";
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
@@ -145,65 +180,32 @@ namespace AwfulMetro.Views
             CurrentPageSelector.SelectedIndex++;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-            _threadPosts = await _postManager.GetThreadPosts(_forumThread);
-            DefaultViewModel["Posts"] = _threadPosts;
+            _forumThread.ScrollToPost = 1;
+            _forumThread.ScrollToPostString = "#pti1";
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CurrentPageSelector != null && CurrentPageSelector.SelectedValue != null)
-            {
-                if (_forumThread.CurrentPage != (int) CurrentPageSelector.SelectedValue)
-                {
-                    loadingProgressBar.Visibility = Visibility.Visible;
-                    _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
-                    BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-                    ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
-                    List<ForumPostEntity> threadPosts = await _postManager.GetThreadPosts(_forumThread);
-                    DefaultViewModel["Posts"] = threadPosts;
-                    loadingProgressBar.Visibility = Visibility.Collapsed;
-                }
-            }
+            if (CurrentPageSelector == null || CurrentPageSelector.SelectedValue == null) return;
+            if (_forumThread.CurrentPage == (int) CurrentPageSelector.SelectedValue) return;
+            loadingProgressBar.Visibility = Visibility.Visible;
+            _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
+            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
+            ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
-        private async void ReplyButton_Click(object sender, RoutedEventArgs e)
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {
-            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.REPLY_BASE, _forumThread.ThreadId)));
-            //Frame.Navigate(typeof (ReplyView), _forumThread);
-        }
-
-        private void UserProfileButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            Frame.Navigate(typeof (UserProfileView), forumPost.User);
-        }
-
-        private void RapSheetButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            Frame.Navigate(typeof (RapSheetView), forumPost.User.Id);
-        }
-
-        private void PostHistoryButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            Frame.Navigate(typeof (UserPostHistoryPage), forumPost.User.Id);
-        }
-
-        private async void QuoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = e.OriginalSource as Button;
-            if (button == null) return;
-            var forumPost = (ForumPostEntity) button.DataContext;
-            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.QUOTE_BASE, forumPost.PostId)));
-            //Frame.Navigate(typeof (ReplyView), forumPost);
+            var jsonObjectString = JsonConvert.SerializeObject(_forumThread);
+            Frame.Navigate(typeof(ReplyView), jsonObjectString);
         }
         
         private void PageUnloaded(object sender, RoutedEventArgs e)
@@ -224,8 +226,9 @@ namespace AwfulMetro.Views
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _threadPosts = await _postManager.GetThreadPosts(_forumThread);
-            DefaultViewModel["Posts"] = _threadPosts;
+            var html = await _postManager.GetThreadPostInformation(_forumThread);
+            ThreadFullView.NavigateToString(html);
+            ThreadSnapView.NavigateToString(html);
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
@@ -239,10 +242,10 @@ namespace AwfulMetro.Views
                 currentView.Orientation == ApplicationViewOrientation.Landscape ? "FullScreen" : "Snapped", false);
         }
 
-        private void GoToLastPostButton_Click(object sender, RoutedEventArgs e)
+        private async void GoToLastPostButton_Click(object sender, RoutedEventArgs e)
         {
-            //ThreadListSnapped.ScrollIntoView(_threadPosts.Last());
-            ThreadListFullScreen.ScrollIntoView(_threadPosts.Last());
+            await ThreadFullView.InvokeScriptAsync("ScrollToBottom", null);
+            await ThreadSnapView.InvokeScriptAsync("ScrollToBottom", null);
         }
 
         #region NavigationHelper registration
@@ -276,9 +279,41 @@ namespace AwfulMetro.Views
 
         private async void BookmarkButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var threadIdList = new List<long>();
-            threadIdList.Add(_forumThread.ThreadId);
+            var threadIdList = new List<long> {_forumThread.ThreadId};
             await _threadManager.AddBookmarks(threadIdList);
+        }
+
+        private async void ThreadFullView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            try
+            {
+                if (_forumThread.ScrollToPost > 0)
+                {
+
+                    await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            
+        }
+
+        private async void ThreadSnapView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            try
+            {
+                if (_forumThread.ScrollToPost > 0)
+                {
+                    await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            
         }
     }
 }

@@ -104,7 +104,7 @@ namespace AwfulMetro.Core.Entity
             }
         }
 
-        public static ForumUserEntity FromUserProfile(HtmlNode profileNode)
+        public static ForumUserEntity FromUserProfile(HtmlNode profileNode, HtmlNode authorNode)
         {
             var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));
             var additionalProfileAttributes = ParseAdditionalProfileAttributes(additionalNode);
@@ -112,9 +112,9 @@ namespace AwfulMetro.Core.Entity
             var user = new ForumUserEntity
             {
                 Username =
-                    profileNode.Descendants("h3")
-                        .FirstOrDefault(node => node.InnerText.ToLower().Contains("about"))
-                        .InnerText.Split()[1],
+                    authorNode.Descendants("dt")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author"))
+                        .InnerText,
                 AboutUser = string.Empty,
                 DateJoined = DateTime.Parse(additionalProfileAttributes["Member Since"]),
                 PostCount = int.Parse(additionalProfileAttributes["Post Count"]),

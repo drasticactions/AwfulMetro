@@ -1,3 +1,4 @@
+using Windows.UI.Xaml;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
@@ -60,7 +61,8 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
 
-            var userId = (long) e.NavigationParameter;
+            var userId = Convert.ToInt64(e.NavigationParameter);
+            
             DefaultViewModel["UserHistory"] =
                 await this._forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
         }
@@ -102,5 +104,15 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

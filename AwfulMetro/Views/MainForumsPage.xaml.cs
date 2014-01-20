@@ -12,6 +12,7 @@ using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 
 // The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -91,8 +92,9 @@ namespace AwfulMetro.Views
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var itemId = ((ForumEntity) e.ClickedItem);
-            this.Frame.Navigate(typeof (ThreadListPage), itemId);
+            var forumEntity = ((ForumEntity) e.ClickedItem);
+            var jsonObjectString = JsonConvert.SerializeObject(forumEntity);
+            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
 
         public void RapSheetButton_Click(object sender, RoutedEventArgs e)
@@ -108,44 +110,11 @@ namespace AwfulMetro.Views
         public void BookmarkButton_Click(object sender, RoutedEventArgs e)
         {
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            this.Frame.Navigate(typeof (ThreadListPage), forum);
+            var jsonObjectString = JsonConvert.SerializeObject(forum);
+            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
 
-        private void PageUnloaded(object sender, RoutedEventArgs e)
-        {
-            Window.Current.SizeChanged -= this.Window_SizeChanged;
-        }
-
-        private void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            Window.Current.SizeChanged += this.Window_SizeChanged;
-        }
-
-        private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
-        {
-            this.ChangeViewTemplate(e.Size.Width);
-        }
-
-        private void ChangeViewTemplate(double width)
-        {
-            ApplicationView currentView = ApplicationView.GetForCurrentView();
-
-            if (currentView.Orientation == ApplicationViewOrientation.Landscape)
-            {
-                VisualStateManager.GoToState(this, "FullScreen", false);
-            }
-            else
-            {
-                if (width <= 620)
-                {
-                    VisualStateManager.GoToState(this, "Snapped", false);
-                }
-                else
-                {
-                    VisualStateManager.GoToState(this, "Portrait", false);
-                }
-            }
-        }
+      
 
         #region NavigationHelper registration
 
@@ -162,12 +131,6 @@ namespace AwfulMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.NavigationHelper.OnNavigatedTo(e);
-
-            Rect bounds = Window.Current.Bounds;
-            this.ChangeViewTemplate(bounds.Width);
-
-            this.Loaded += this.PageLoaded;
-            this.Unloaded += this.PageUnloaded;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

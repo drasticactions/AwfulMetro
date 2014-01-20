@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AwfulMetro.Core.Entity;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -108,7 +109,15 @@ This moron has not provided any additional info.  The lack of a gender-specific 
         {
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
-            return ForumUserEntity.FromUserProfile(doc.DocumentNode);
+
+            //TODO: Fix test to reflect removed user parsing logic.
+            var profileNode = doc.DocumentNode.Descendants("td")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("info"));
+
+            var threadNode = doc.DocumentNode.Descendants("td")
+                .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+
+            return ForumUserEntity.FromUserProfile(profileNode, threadNode);
         }
     }
 }

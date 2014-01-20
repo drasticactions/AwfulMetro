@@ -1,4 +1,6 @@
-﻿using AwfulMetro.Core.Entity;
+﻿using System;
+using System.Net;
+using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 using System.Collections.Generic;
@@ -71,6 +73,27 @@ namespace AwfulMetro.Core.Manager
                 frontPageFeatureList.Add(article);
             }
             return frontPageFeatureList;
+        }
+
+        public async Task<FrontPageWebArticleEntity> GetFrontPageArticle(string url)
+        {
+            var articleDoc = (await _webManager.DownloadHtml(url)).Document;
+            var articleNode = articleDoc.DocumentNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("cavity left"));
+            var articleBodyNode = articleNode.Descendants().FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("organ article"));
+
+            var html = await Windows.Storage.PathIO.ReadTextAsync("ms-appx:///Assets/MainSite.html");
+
+            var doc2 = new HtmlDocument();
+
+            doc2.LoadHtml(html);
+
+            var bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
+
+            bodyNode.InnerHtml = articleBodyNode.OuterHtml;
+
+            var frontPageArticleEntity = new FrontPageWebArticleEntity();
+            frontPageArticleEntity.MapTo(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml), 1);
+            return frontPageArticleEntity;
         }
 
         public async Task<HtmlDocument> GetFrontPage()

@@ -24,7 +24,7 @@ namespace AwfulMetro.Core.Tools
 
         public const string FORUM_LIST_PAGE = "http://forums.somethingawful.com/forumdisplay.php?forumid=48";
 
-        public const string FORUM_PAGE = "forumdisplay.php?forumid={0}";
+        public const string FORUM_PAGE = BASE_URL + "forumdisplay.php?forumid={0}";
 
         public const string QUOTE_EXP = "[quote=\"{0}\" post=\"{1}\"]{2}[/quote]";
 
@@ -40,9 +40,15 @@ namespace AwfulMetro.Core.Tools
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
+        public const string NEW_REPLY = BASE_URL + "newreply.php";
+
+        public const string EDIT_POST = BASE_URL + "editpost.php";
+
         public const string REPLY_BASE = BASE_URL + "newreply.php?action=newreply&threadid={0}";
 
         public const string QUOTE_BASE = BASE_URL + "newreply.php?action=newreply&postid={0}";
+
+        public const string EDIT_BASE = BASE_URL + "editpost.php?action=editpost&postid={0}";
 
         public const string USER_POST_HISTORY = BASE_URL + "search.php?action=do_search_posthistory&userid={0}";
 

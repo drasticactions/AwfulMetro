@@ -2,18 +2,17 @@
 
 .bbc-block h4 {
 	border-top: none;
+    margin-left: 15px;
 }
 
 .altcolor1 .bbc-block {
 	border: 1px solid #ADADAD;
 	background: #fafafa none repeat-x;
-	box-shadow: 2px 2px 9px #CFCFCF;
 }
 
 .altcolor2 .bbc-block {
 	border: 1px solid #A3A3A3;
 	background: #f4f4f4 none repeat-x;
-	box-shadow: 2px 2px 9px #b6b6b6;
 }
 
 #thread table.post td {
@@ -24,6 +23,8 @@
 .bbc-block blockquote {
 	margin-top: 8px;
 	margin-bottom: 18px;
+    margin-right: 15px;
+    margin-left: 15px;
 	color: #444;
 }
 
@@ -886,7 +887,7 @@ td.star div {
 }
 
 tr.spin td.star div {
-	background-image: url('http://fi.somethingawful.com/style/bookmarks/spin3.gif') ! important;
+	background-image: url('http://fi.somethingawful.com/style/bookmarks/spin3.gif') !important;
 }
 
 tr.category0 td.star div, td.star.bm0 div {
@@ -2073,7 +2074,7 @@ div.pages .curpage {	margin: 4px 6px; }
 
 /** ---------------------- OVERWRITE SHIT --------------------------- **/
 
-td.postdate a, td.postlinks ul.profilelinks li a, .dictnav  a, #main_full td a, .searchresults #main_full tr .smalltext a, .newthread #content table.standard tr.altcolor2 td:last-child a, .newreply #main_full div.postinfo div.save-state a, .newreply #main_full tr.altcolor2 td:last-child a, .newthread #content table.standard tr:first-child a, .newreply #content table.standard tr:first-child a, .threads_editthread table#main_wide.standard td.user_loggedin a{
+td.postdate ul.otherlinks li button a, td.postlinks ul.profilelinks li button a, .dictnav  a, #main_full td a, .searchresults #main_full tr .smalltext a, .newthread #content table.standard tr.altcolor2 td:last-child a, .newreply #main_full div.postinfo div.save-state a, .newreply #main_full tr.altcolor2 td:last-child a, .newthread #content table.standard tr:first-child a, .newreply #content table.standard tr:first-child a, .threads_editthread table#main_wide.standard td.user_loggedin a{
 	/** Generic rounded button template **/
 	/** , .newreply #content table.standard tr.altcolor2 td:last-child a, .newreply #content table.standard tr:nth-child(2) a **/
 	border: 1px solid #949494;

@@ -12,6 +12,7 @@ using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -100,7 +101,8 @@ namespace AwfulMetro.Views
             {
                 string title = string.IsNullOrEmpty(threadEntity.Title) ? string.Empty : threadEntity.Title;
                 thread.ParseFromPopularThread(threadEntity.Title, threadEntity.Id);
-                Frame.Navigate(typeof (ThreadPage), thread);
+                var jsonObjectString = JsonConvert.SerializeObject(thread);
+                Frame.Navigate(typeof(ThreadPage), jsonObjectString);
             }
         }
 

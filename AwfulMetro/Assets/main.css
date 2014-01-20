@@ -155,7 +155,7 @@ form {
 }
 
 body {
-    font: 13px Verdana,Arial,sans-serif;
+    font: 13px;
 }
 
 div.breadcrumbs,#subforums td.title dt,#forum td.lastpost a.author,div.threadbar form.threadsearch label,#thread dl.userinfo dt,#forums td.title a.forum {
@@ -168,7 +168,7 @@ div.breadcrumbs h1,input,#forum td.title a {
 
 #mods,div.pages,#copyright,#forum th,#forum td.lastpost,#forum span.pages,#thread div.postbar,td.postdate,td.postlinks,#thread dl.userinfo dd,#thread tr.postbar td,div.threadrate,div.subscribe {
     color: #000;
-    font: normal normal normal 10px Verdana,Arial,sans-serif;
+    font: normal normal normal 10px;
 }
 
 .navigation,#nav_purchase,#thread p.editedby,#forum td.title a.pagenumber,#forum td.title,#forums th,#forums div.subforums,#forums td.moderators,#pm,#info {
@@ -180,12 +180,12 @@ div.threadbar form.threadsearch label,div.threadrate,div.threadbar a {
 }
 
 div.threadbar form.threadsearch label,div.threadbar form.threadsearch input,#searchboxes,#forum td.icon,#forum td.rating {
-    font: normal normal normal 10px Verdana,Arial,sans-serif;
+    font: normal normal normal 10px;
 }
 
 #thread td.postbody,#thread dl.userinfo,#forum td.replies,#forum td.views,#forum td.author,#subforums {
     color: #000;
-    font: normal normal normal 13px Verdana,Arial,sans-serif;
+    font: normal normal normal 13px;
 }
 
 #copyright {
@@ -241,10 +241,6 @@ a:active {
 
 #thread li.post.even,#subforums,#subforums td,#forums td.title,#pm td,#filter,#info td.posts,#info td.banned,#thread.pm td {
     background: #f1f1f1;
-}
-
-div.threadbar,#subforums,#subforums td,#forum,#forum th,#forum td,#filter,div.forumbar,#thread table.post,#thread td,#forums,#forums th,#forums td,#pm,#pm th,#pm td,#info,#info th,#info td {
-    border: 1px solid #c1c1c1;
 }
 
 #filter {
@@ -470,11 +466,20 @@ div.forumbar {
     float: left;
     list-style: none;
     margin: 0;
+    padding: 7px;
+}
+
+#thread ul.otherlinks {
+    display: inline;
+    float: left;
+    list-style: none;
+    margin: 0;
     padding: 7px 3px 0;
 }
 
 #thread ul.profilelinks li {
     display: inline;
+    margin-right: 10px;
 }
 
 #thread dl.userinfo dt {

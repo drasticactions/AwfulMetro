@@ -19,9 +19,6 @@
         <CollectionViewSource
         x:Name="postHistorySource"
         Source="{Binding UserSearch}"/>
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
-
     </Page.Resources>
 
     <!--
@@ -34,7 +31,7 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
 
-        <Hub>
+        <Hub RequestedTheme="Dark">
             <Hub.Header>
                 <!-- Back button and page title -->
                 <Grid>
@@ -55,37 +52,50 @@
 
             <HubSection Width="500" Margin="0,0,0,0">
                 <HubSection.Background>
-                    <ImageBrush Stretch="UniformToFill" />
+                    <SolidColorBrush Color="#51A5FC"/>
                 </HubSection.Background>
                 <DataTemplate>
-                    <StackPanel HorizontalAlignment="Left">
-                        <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding UserEntity.AvatarLink}" HorizontalAlignment="Left"></WebView>
-                        <TextBlock x:Name="UserAvatarTitle" TextWrapping="Wrap" Text="{Binding UserEntity.AvatarTitle}" Margin="0,0,0,60" FontSize="20"/>
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Margin="0,10,0,0" TextWrapping="Wrap" 
+                    <ScrollViewer>
+                        <StackPanel HorizontalAlignment="Left">
+                            <WebView x:Name="AvatarImage" Width="125" Height="130" web:WebViewHelper.Html="{Binding UserEntity.AvatarLink}" HorizontalAlignment="Left"></WebView>
+                            <TextBlock x:Name="UserAvatarTitle" TextWrapping="Wrap" Text="{Binding UserEntity.AvatarTitle}" Margin="0,0,0,60" FontSize="20"/>
+                            <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Margin="0,10,0,0" TextWrapping="Wrap" 
                                    Text="{Binding UserEntity.AboutUser}"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Member Since: " FontSize="25"/>
-                            <TextBlock FontSize="25" Text="{Binding UserEntity.DateJoined}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Member Since: " FontSize="25"/>
+                                <TextBlock FontSize="25" Text="{Binding UserEntity.DateJoined}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="25" Text="Post Count: "/>
+                                <TextBlock FontSize="25" Text="{Binding UserEntity.PostCount}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="25" Text="Post Rate: "/>
+                                <TextBlock FontSize="25" Text="{Binding UserEntity.PostRate}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="25" Text="Last Post: "/>
+                                <TextBlock FontSize="25" Text="{Binding UserEntity.LastPostDate}"/>
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="25" Text="Post Count: "/>
-                            <TextBlock FontSize="25" Text="{Binding UserEntity.PostCount}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="25" Text="Post Rate: "/>
-                            <TextBlock FontSize="25" Text="{Binding UserEntity.PostRate}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="25" Text="Last Post: "/>
-                            <TextBlock FontSize="25" Text="{Binding UserEntity.LastPostDate}"/>
-                        </StackPanel>
-                    </StackPanel>
+                    </ScrollViewer>
                 </DataTemplate>
             </HubSection>
-            <HubSection Margin="0,0,80,0" Width="750" Header="Post History">
+            <HubSection Width="750" Header="Post History">
+                <HubSection.Background>
+                    <SolidColorBrush Color="#6BBFFF"/>
+                </HubSection.Background>
                 <DataTemplate>
-                    <ListView x:Name="PostHistoryView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource postHistorySource}}" SelectionMode="None" IsItemClickEnabled="True">
-                        <ListView.ItemTemplate>
+                    <ItemsControl x:Name="PostHistoryView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource postHistorySource}}">
+                        <ItemsControl.Template>
+                            <ControlTemplate>
+                                <ScrollViewer Padding="{TemplateBinding Padding}">
+                                    <ItemsPresenter>
+                                    </ItemsPresenter>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="3" BorderBrush="Gainsboro" >
                                     <Grid>
@@ -98,14 +108,25 @@
                                     </Grid>
                                 </Border>
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </DataTemplate>
             </HubSection>
             <HubSection Width="700" Header="Rap Sheet">
+                <HubSection.Background>
+                    <SolidColorBrush Color="#84D8FF"/>
+                </HubSection.Background>
                 <DataTemplate>
-                    <ListView x:Name="RapSheetListView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
-                        <ListView.ItemTemplate>
+                    <ItemsControl x:Name="RapSheetListView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}">
+                        <ItemsControl.Template>
+                            <ControlTemplate>
+                                <ScrollViewer Padding="{TemplateBinding Padding}">
+                                    <ItemsPresenter>
+                                    </ItemsPresenter>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="3" BorderBrush="Gainsboro" >
                                     <Grid>
@@ -116,12 +137,12 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding Type}" Grid.Column="0"/>
                                         <TextBlock Text="{Binding Date}" Grid.Column="1"/>
-                                        <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap" Grid.Column="3"/>
+                                        <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap" Grid.Column="2"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </DataTemplate>
             </HubSection>
             

@@ -1,4 +1,6 @@
-﻿using AwfulMetro.Core.Entity;
+﻿using System.Text.RegularExpressions;
+using Windows.UI.Xaml.Controls;
+using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 using System;
@@ -18,6 +20,94 @@ namespace AwfulMetro.Core.Manager
         }
 
         public ThreadManager() : this(new WebManager()) { }
+
+        public async Task<string> GetThread(ForumThreadEntity forumThread)
+        {
+
+            string url = string.Format(Constants.REPLY_BASE, forumThread.ThreadId);
+            var result = await _webManager.DownloadHtml(url);
+            HtmlDocument doc = result.Document;
+            return await GetThreadHtml(doc);
+        }
+
+        public async Task<string> GetThreadHtml(HtmlDocument doc)
+        {
+            var html = await Windows.Storage.PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
+
+            var doc2 = new HtmlDocument();
+
+            doc2.LoadHtml(html);
+
+            var bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
+
+            var replyNodes = doc.DocumentNode.Descendants("div").ToArray();
+
+            var threadNode = replyNodes.FirstOrDefault(node => node.GetAttributeValue("id", "").Equals("thread"));
+
+            var threadId = ParseInt(threadNode.GetAttributeValue("class", string.Empty));
+
+            var postNodes =
+                threadNode.Descendants("table")
+                    .Where(node => node.GetAttributeValue("class", string.Empty).Equals("post "));
+
+            foreach (var post in postNodes)
+            {
+                var userInfoNode = post.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"));
+
+                var userId = ParseInt(userInfoNode.GetAttributeValue("class", string.Empty));
+
+                var postId = ParseInt(post.GetAttributeValue("id", string.Empty));
+
+                //TODO: Create HTML Render engine to handle this, rather than hard coding. That way it can be used for the front page or other web views.
+
+                var profileLinksNode =
+                    post.Descendants("td")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
+                bool isCurrentUserPost =
+                    profileLinksNode.Descendants("img")
+                        .FirstOrDefault(node => node.GetAttributeValue("alt", string.Empty).Equals("Edit")) != null;
+                profileLinksNode.InnerHtml = string.Empty;
+                
+                var profileButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('profile', '{0}');\">Profile</button></li>", userId));
+
+                var postHistoryButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('post_history', '{0}');\">Post History</button></li>", userId));
+
+                var rapSheetButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('rap_sheet', '{0}');\">Rap Sheet</button></li>", userId));
+
+                var quoteButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('quote', '{0}');\">Quote</button></li>", postId));
+
+                var editButton = WebUtility.HtmlDecode(string.Format("<li><button onclick=\"window.ForumCommand('edit', '{0}');\">Edit</button></li>", postId));
+
+                profileLinksNode.InnerHtml = isCurrentUserPost ? string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, editButton, "</ul>") : string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, quoteButton, "</ul>");
+
+                var postDateNode = post.Descendants("td")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postdate"));
+                string postDate = postDateNode.InnerText;
+
+                var toPostButton = WebUtility.HtmlDecode(string.Format("<button style=\"min-width:20px;display: inline-block;\" onclick=\"window.TopPost(#{0});\">#</button>", postId));
+
+                var usersPostsInThreadButton = WebUtility.HtmlDecode(string.Format("<button style=\"min-width:20px;display: inline-block;\" onclick=\"window.ForumCommand('users_posts_in_thread', '{0},{1}');\">?</button>", userId, threadId));
+
+                //postDateNode.InnerHtml = string.Concat("<div style=\"display: inline-block;\">", toPostButton, usersPostsInThreadButton, "</div>", postDate);
+                postDateNode.InnerHtml = postDate;
+            }
+
+            bodyNode.InnerHtml = threadNode.OuterHtml;
+
+            return WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml);
+        }
+
+        private int ParseInt(string postClass)
+        {
+            string re1 = ".*?";	// Non-greedy match on filler
+            string re2 = "(\\d+)";	// Integer Number 1
+
+            Regex r = new Regex(re1 + re2, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Match m = r.Match(postClass);
+            if (!m.Success) return 0;
+            String int1 = m.Groups[1].ToString();
+            return Convert.ToInt32(int1);
+        }
 
         public async Task<List<ForumThreadEntity>> GetBookmarks(ForumEntity forumCategory, int page)
         {

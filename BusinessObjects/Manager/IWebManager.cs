@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AwfulMetro.Core.Manager
@@ -8,5 +9,6 @@ namespace AwfulMetro.Core.Manager
         bool IsNetworkAvailable { get; }
         Task<WebManager.Result> DownloadHtml(string uri);
         Task<CookieContainer> PostData(string uri, string data);
+        Task<HttpResponseMessage> PostFormData(string uri, MultipartFormDataContent form);
     }
 }
