@@ -86,8 +86,16 @@
                     <SolidColorBrush Color="#6BBFFF"/>
                 </HubSection.Background>
                 <DataTemplate>
-                    <ListView x:Name="PostHistoryView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource postHistorySource}}" SelectionMode="None" IsItemClickEnabled="True">
-                        <ListView.ItemTemplate>
+                    <ItemsControl x:Name="PostHistoryView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource postHistorySource}}">
+                        <ItemsControl.Template>
+                            <ControlTemplate>
+                                <ScrollViewer Padding="{TemplateBinding Padding}">
+                                    <ItemsPresenter>
+                                    </ItemsPresenter>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="3" BorderBrush="Gainsboro" >
                                     <Grid>
@@ -100,8 +108,8 @@
                                     </Grid>
                                 </Border>
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </DataTemplate>
             </HubSection>
             <HubSection Width="700" Header="Rap Sheet">
@@ -109,8 +117,16 @@
                     <SolidColorBrush Color="#84D8FF"/>
                 </HubSection.Background>
                 <DataTemplate>
-                    <ListView x:Name="RapSheetListView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
-                        <ListView.ItemTemplate>
+                    <ItemsControl x:Name="RapSheetListView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}">
+                        <ItemsControl.Template>
+                            <ControlTemplate>
+                                <ScrollViewer Padding="{TemplateBinding Padding}">
+                                    <ItemsPresenter>
+                                    </ItemsPresenter>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="3" BorderBrush="Gainsboro" >
                                     <Grid>
@@ -121,12 +137,12 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding Type}" Grid.Column="0"/>
                                         <TextBlock Text="{Binding Date}" Grid.Column="1"/>
-                                        <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap" Grid.Column="3"/>
+                                        <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap" Grid.Column="2"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </DataTemplate>
             </HubSection>
             

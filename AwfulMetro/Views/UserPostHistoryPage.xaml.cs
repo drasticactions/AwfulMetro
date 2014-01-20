@@ -1,3 +1,4 @@
+using Windows.UI.Xaml;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
@@ -103,5 +104,15 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

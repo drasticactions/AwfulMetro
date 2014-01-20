@@ -39,7 +39,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="310"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
@@ -50,35 +49,42 @@
             <TextBlock x:Name="pageTitle" Text="Post History" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
-        <StackPanel RequestedTheme="Dark" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center"  Orientation="Horizontal">
-            <AppBarButton x:Name="BackButton"  IsEnabled="False"  Label="Back Page" Icon="Back"/>
-            <AppBarButton x:Name="ForwardButton" IsEnabled="False"  Label="Forward Page" Icon="Forward"/>
-        </StackPanel>
-        <ListView x:Name="PostHistorytListView"  Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="3" BorderBrush="Gainsboro" >
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="250"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="400"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="150"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Date}" Grid.Column="0"/>
-                            <TextBlock Text="{Binding ThreadTitle}" TextWrapping="Wrap" Grid.Column="1"/>
-                            <TextBlock Text="{Binding Author}" Grid.Column="2"/>
-                            <TextBlock Text="{Binding PostContent}" TextWrapping="Wrap" Grid.Column="3"/>
-                            <TextBlock Text="{Binding ForumTitle}" Grid.Column="4"/>
-                            <TextBlock Text="{Binding ReplyCount}" Grid.Column="5"/>
-                            <TextBlock Text="{Binding ThreadViewCount}" Grid.Column="6"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="1" Margin="0,0,-5,0">
+                <AppBarButton x:Name="BackButton" Click="BackButton_Click"  Label="Back Page" Icon="Back"/>
+                <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
+            </StackPanel>
+            <ListView x:Name="PostHistorytListView"  Grid.Column="0"  ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="3" BorderBrush="Gainsboro" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="150"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Date}" Grid.Column="0"/>
+                                <TextBlock Text="{Binding ThreadTitle}" TextWrapping="Wrap" Grid.Column="1"/>
+                                <TextBlock Text="{Binding Author}" Grid.Column="2"/>
+                                <TextBlock Text="{Binding PostContent}" TextWrapping="Wrap" Grid.Column="3"/>
+                                <TextBlock Text="{Binding ForumTitle}" Grid.Column="4"/>
+                                <TextBlock Text="{Binding ReplyCount}" Grid.Column="5"/>
+                                <TextBlock Text="{Binding ThreadViewCount}" Grid.Column="6"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        
     </Grid>
 </Page>
