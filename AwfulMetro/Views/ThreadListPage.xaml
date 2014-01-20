@@ -184,14 +184,6 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Page.TopAppBar>
-        <CommandBar>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="AddThreadButton" Click="AddThreadButton_Click" Icon="Add" Label="New Thread"/>
-                <AppBarButton x:Name="BookmarkSettings" Visibility="Collapsed" Click="BookmarkSettings_Click" Icon="Setting" Label="Bookmark Settings"/>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-    </Page.TopAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
@@ -265,6 +257,7 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2" Margin="0,0,-5,0">
+                <AppBarButton x:Name="AddThreadButton" Click="AddThreadButton_Click" Icon="Add" Label="New Thread"/>
                 <AppBarButton x:Name="FavoriteButton" IsEnabled="False" Click="FavoriteButton_OnClick" Label="Bookmark">
                     <AppBarButton.Icon>
                         <BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon.png" RenderTransformOrigin="0.5,0.5">
@@ -286,6 +279,7 @@
                 <AppBarButton x:Name="RefreshBarButton" IsEnabled="False"  Click="RefreshBarButton_OnClick" Label="Refresh" Icon="Refresh"/>
                 <AppBarButton x:Name="NotificationButton" Click="NotificationButton_OnClick" Visibility="Collapsed" IsEnabled="False" Label="Add to Notifications" Icon="SolidStar"/>
                 <AppBarButton x:Name="RemoveNotificationsButton" Label="Remove all notifications." IsEnabled="True" Visibility="Collapsed" Click="RemoveNotificationsButton_OnClick" Icon="UnFavorite" />
+                <AppBarButton x:Name="BookmarkSettings" Visibility="Collapsed" Click="BookmarkSettings_Click" Icon="Setting" Label="Bookmark Settings"/>
             </StackPanel>
             <GridView Width="115" x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <GridView.ItemTemplate>

@@ -136,6 +136,13 @@ namespace AwfulMetro.Views
             {
                 _forumReply = await _replyManager.GetReplyCookies(threadId);
             }
+            if (_forumReply == null)
+            {
+                var msgDlg = new MessageDialog("Can't reply in this thread!");
+                await msgDlg.ShowAsync();
+                Frame.GoBack();
+                return;
+            }
             ReplyText.Text = _forumReply.Quote;
             PreviousPostsWebView.NavigateToString(_forumReply.PreviousPostsRaw);
             loadingProgressBar.Visibility = Visibility.Collapsed;

@@ -49,6 +49,12 @@ namespace AwfulMetro.Core.Manager
                 forumThread.ScrollToPostString = "#" + test[1];
             }
 
+            forumThread.IsLocked =
+                doc.DocumentNode.Descendants("img")
+                    .FirstOrDefault(
+                        node => node.GetAttributeValue("src", string.Empty).Contains("forum-reply.gif")) ==
+                null;
+
             HtmlNode threadNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("pages top"));
             threadNode = threadNode.Descendants("option").FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
             if (forumThread.CurrentPage <= 0)

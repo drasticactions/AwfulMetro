@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
@@ -20,37 +22,21 @@ namespace AwfulMetro.Core.Manager
                 {
                     imageData[i] = (byte) fileStream.AsStreamForRead().ReadByte();
                 }
-
+                var theAuthClient = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgur.com/3/image");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Client-ID", "e5c018ac1f4c157");
+                var form = new MultipartFormDataContent();
+                var t = new StreamContent(fileStream.AsStream());
                 const int maxUriLength = 32766;
                 //TODO: See if this is the correct way to use imgur's v3 api. I can't see why
-                // we would still need to convert images to base64 and put them on the query string.
+                // we would still need to convert images to base64.
                 string base64Img = Convert.ToBase64String(imageData);
-                var sb = new StringBuilder();
-
-                for (int i = 0; i < base64Img.Length; i += maxUriLength)
-                {
-                    sb.Append(Uri.EscapeDataString(base64Img.Substring(i, Math.Min(maxUriLength, base64Img.Length - i))));
-                }
-
-                string uploadRequestString = "title=" + "Awful_Image" +
-                                             "&caption=" + "Awful_Image" + "&image=" + sb;
-
-                var webRequest = (HttpWebRequest) WebRequest.Create("https://api.imgur.com/3/image");
-                webRequest.Method = "POST";
-                webRequest.ContentType = "application/x-www-form-urlencoded";
-                webRequest.ContinueTimeout = 10000;
-                
-                // We could hide the API key, but considering what this app is, I don't think it matters.s
-                webRequest.Headers["Authorization"] = "Client-ID " + "e5c018ac1f4c157";
-                Stream stream = await webRequest.GetRequestStreamAsync();
-                var streamWriter = new StreamWriter(stream);
-                streamWriter.Write(uploadRequestString);
-
-                WebResponse response = await webRequest.GetResponseAsync();
-                Stream responseStream = response.GetResponseStream();
-                var responseReader = new StreamReader(responseStream);
-
-                string responseString = await responseReader.ReadToEndAsync();
+                t.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                form.Add(new StringContent(base64Img), @"image");
+                form.Add(new StringContent("file"), "type");
+                request.Content = form;
+                HttpResponseMessage response = await theAuthClient.SendAsync(request);
+                var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null) return null;
                 var imgurEntity = JsonConvert.DeserializeObject<ImgurEntity>(responseString);
                 return imgurEntity;

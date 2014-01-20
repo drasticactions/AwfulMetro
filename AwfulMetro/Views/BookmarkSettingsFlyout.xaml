@@ -21,25 +21,12 @@
 
             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">
                 <TextBlock.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    If enabled, the bookmarks page will be scanned every 15 minutes for new
+                    posts, and update the Awful Forum Reader's live tile with the post count.
                 </TextBlock.Text>
             </TextBlock>
 
             <ToggleSwitch x:Name="BookmarkLiveTiles" Toggled="BookmarkLiveTiles_Toggled"  />
-        </StackPanel>
-
-        <StackPanel>
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Select Bookmarked Threads To Track" />
-
-            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">
-                <TextBlock.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </TextBlock.Text>
-            </TextBlock>
-            
-            <Button x:Name="BookmarkSelectionMode" Click="BookmarkSelectionMode_Click" Content="Select"/>
         </StackPanel>
     </StackPanel>
 </SettingsFlyout>

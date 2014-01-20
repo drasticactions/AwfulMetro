@@ -159,6 +159,8 @@ namespace AwfulMetro.Views
             CurrentPageSelector.SelectedIndex--;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
+            _forumThread.ScrollToPost = 1;
+            _forumThread.ScrollToPostString = "#pti1";
             var html = await _postManager.GetThreadPostInformation(_forumThread);
             ThreadFullView.NavigateToString(html);
             ThreadSnapView.NavigateToString(html);
@@ -178,6 +180,8 @@ namespace AwfulMetro.Views
             CurrentPageSelector.SelectedIndex++;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
+            _forumThread.ScrollToPost = 1;
+            _forumThread.ScrollToPostString = "#pti1";
             var html = await _postManager.GetThreadPostInformation(_forumThread);
             ThreadFullView.NavigateToString(html);
             ThreadSnapView.NavigateToString(html);

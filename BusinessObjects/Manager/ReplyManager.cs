@@ -28,120 +28,142 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<ForumReplyEntity> GetReplyCookies(ForumThreadEntity forumThread)
         {
-            string url = string.Format(Constants.REPLY_BASE, forumThread.ThreadId);
-            var result = await _webManager.DownloadHtml(url);
-            HtmlDocument doc = result.Document;
-
-            var formNodes = doc.DocumentNode.Descendants("input").ToArray();
-
-            var formKeyNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
-
-            var formCookieNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
-
-            var bookmarkNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
-
-            var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
-
-            var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
-
-            var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
-
-            var threadManager = new ThreadManager();
-
-            var htmlThread = await threadManager.GetThreadHtml(doc);
-
-            var forumReplyEntity = new ForumReplyEntity();
             try
             {
-                string formKey = formKeyNode.GetAttributeValue("value", "");
-                string formCookie = formCookieNode.GetAttributeValue("value", "");
-                string quote = WebUtility.HtmlDecode(textNode.InnerText);
-                string threadId = threadIdNode.GetAttributeValue("value", "");
-                //string bookmark = bookmarkNode.GetAttributeValue("value", "");
-                forumReplyEntity.MapThreadInformation(formKey, formCookie, quote, threadId);
-                forumReplyEntity.PreviousPostsRaw = htmlThread;
-                return forumReplyEntity;
+                string url = string.Format(Constants.REPLY_BASE, forumThread.ThreadId);
+                var result = await _webManager.DownloadHtml(url);
+                HtmlDocument doc = result.Document;
+
+                var formNodes = doc.DocumentNode.Descendants("input").ToArray();
+
+                var formKeyNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
+
+                var formCookieNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
+
+                var bookmarkNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
+
+                var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+
+                var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+
+                var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
+
+                var threadManager = new ThreadManager();
+
+                var htmlThread = await threadManager.GetThreadHtml(doc);
+
+                var forumReplyEntity = new ForumReplyEntity();
+                try
+                {
+                    string formKey = formKeyNode.GetAttributeValue("value", "");
+                    string formCookie = formCookieNode.GetAttributeValue("value", "");
+                    string quote = WebUtility.HtmlDecode(textNode.InnerText);
+                    string threadId = threadIdNode.GetAttributeValue("value", "");
+                    forumReplyEntity.MapThreadInformation(formKey, formCookie, quote, threadId);
+                    forumReplyEntity.PreviousPostsRaw = htmlThread;
+                    return forumReplyEntity;
+                }
+                catch (Exception)
+                {
+                    throw new InvalidOperationException("Could not parse newReply form data.");
+                }
             }
             catch (Exception)
             {
-                throw new InvalidOperationException("Could not parse newReply form data.");
+
+                return null;
             }
+            
         }
 
         public async Task<ForumReplyEntity> GetReplyCookiesForEdit(long postId)
         {
-            string url = string.Format(Constants.EDIT_BASE, postId);
-            var result = await _webManager.DownloadHtml(url);
-            HtmlDocument doc = result.Document;
-
-            var formNodes = doc.DocumentNode.Descendants("input").ToArray();
-
-            var bookmarkNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
-
-            var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
-
-            var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
-
-            var threadManager = new ThreadManager();
-
-            //Get previous posts from quote page.
-            string url2 = string.Format(Constants.QUOTE_BASE, postId);
-            var result2 = await _webManager.DownloadHtml(url2);
-            HtmlDocument doc2 = result2.Document;
-
-            var htmlThread = await threadManager.GetThreadHtml(doc2);
-
-            var forumReplyEntity = new ForumReplyEntity();
             try
             {
-                string quote = WebUtility.HtmlDecode(textNode.InnerText);
-                forumReplyEntity.PreviousPostsRaw = htmlThread;
-                string bookmark = bookmarkNode.OuterHtml.Contains("checked") ? "yes" : "no";
-                forumReplyEntity.MapEditPostInformation(quote, postId, bookmark);
-                return forumReplyEntity;
+                string url = string.Format(Constants.EDIT_BASE, postId);
+                var result = await _webManager.DownloadHtml(url);
+                HtmlDocument doc = result.Document;
+
+                var formNodes = doc.DocumentNode.Descendants("input").ToArray();
+
+                var bookmarkNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
+
+                var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+
+                var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+
+                var threadManager = new ThreadManager();
+
+                //Get previous posts from quote page.
+                string url2 = string.Format(Constants.QUOTE_BASE, postId);
+                var result2 = await _webManager.DownloadHtml(url2);
+                HtmlDocument doc2 = result2.Document;
+
+                var htmlThread = await threadManager.GetThreadHtml(doc2);
+
+                var forumReplyEntity = new ForumReplyEntity();
+                try
+                {
+                    string quote = WebUtility.HtmlDecode(textNode.InnerText);
+                    forumReplyEntity.PreviousPostsRaw = htmlThread;
+                    string bookmark = bookmarkNode.OuterHtml.Contains("checked") ? "yes" : "no";
+                    forumReplyEntity.MapEditPostInformation(quote, postId, bookmark);
+                    return forumReplyEntity;
+                }
+                catch (Exception)
+                {
+                    throw new InvalidOperationException("Could not parse newReply form data.");
+                }
             }
             catch (Exception)
             {
-                throw new InvalidOperationException("Could not parse newReply form data.");
+                return null;
             }
         }
 
         public async Task<ForumReplyEntity> GetReplyCookies(long postId)
         {
-            string url = string.Format(Constants.QUOTE_BASE, postId);
-            var result = await _webManager.DownloadHtml(url);
-            HtmlDocument doc = result.Document;
-
-            var formNodes = doc.DocumentNode.Descendants("input").ToArray();
-
-            var formKeyNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
-
-            var formCookieNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
-
-            var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
-
-            var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
-
-            var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
-
-            var threadManager = new ThreadManager();
-
-            var htmlThread = await threadManager.GetThreadHtml(doc);
-
-            var forumReplyEntity = new ForumReplyEntity();
             try
             {
-                string formKey = formKeyNode.GetAttributeValue("value", "");
-                string formCookie = formCookieNode.GetAttributeValue("value", "");
-                string quote = WebUtility.HtmlDecode(textNode.InnerText);
-                string threadId = threadIdNode.GetAttributeValue("value", "");
-                forumReplyEntity.PreviousPostsRaw = htmlThread;
-                forumReplyEntity.MapThreadInformation(formKey, formCookie, quote, threadId);
-                return forumReplyEntity;
+                string url = string.Format(Constants.QUOTE_BASE, postId);
+                var result = await _webManager.DownloadHtml(url);
+                HtmlDocument doc = result.Document;
+
+                var formNodes = doc.DocumentNode.Descendants("input").ToArray();
+
+                var formKeyNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
+
+                var formCookieNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
+
+                var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+
+                var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+
+                var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
+
+                var threadManager = new ThreadManager();
+
+                var htmlThread = await threadManager.GetThreadHtml(doc);
+
+                var forumReplyEntity = new ForumReplyEntity();
+                try
+                {
+                    string formKey = formKeyNode.GetAttributeValue("value", "");
+                    string formCookie = formCookieNode.GetAttributeValue("value", "");
+                    string quote = WebUtility.HtmlDecode(textNode.InnerText);
+                    string threadId = threadIdNode.GetAttributeValue("value", "");
+                    forumReplyEntity.PreviousPostsRaw = htmlThread;
+                    forumReplyEntity.MapThreadInformation(formKey, formCookie, quote, threadId);
+                    return forumReplyEntity;
+                }
+                catch (Exception)
+                {
+                    throw new InvalidOperationException("Could not parse newReply form data.");
+                }
             }
             catch (Exception)
             {
-                throw new InvalidOperationException("Could not parse newReply form data.");
+                return null;
             }
         }
 

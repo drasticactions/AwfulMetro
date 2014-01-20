@@ -78,6 +78,7 @@
                         <Button x:Name="BBcodeButton" HorizontalAlignment="Stretch" Content="BBcode" Click="BBcodeButton_Click"/>
                         <Button x:Name="PreviewButton" HorizontalAlignment="Stretch" Content="Preview" Click="PreviewButton_Click"/>
                         <Button x:Name="LastPostsButton" HorizontalAlignment="Stretch" Content="Last Post" Click="LastPostsButton_OnClick"/>
+                        <Button x:Name="ImageUploadButton" HorizontalAlignment="Stretch" Content="Imgur" Click="ImageUploadButton_OnClick"/>
                     </StackPanel>
                 </Grid>
                 <Grid x:Name="PreviewPostGrid" Margin="25,0,25,10" Grid.Row="1" Visibility="Collapsed" >
