@@ -145,6 +145,25 @@ namespace AwfulMetro.Core.Manager
             }
         }
 
+        public static string HtmlEncode(string text)
+        {
+            //TODO: Taken directly off of the internet to fix Unicode support. Need to enhance.
+            char[] chars = WebUtility.HtmlEncode(text).ToCharArray();
+            var result = new StringBuilder(text.Length + (int)(text.Length * 0.1));
+
+            foreach (char c in chars)
+            {
+                int value = Convert.ToInt32(c);
+                if (value > 127)
+                    result.AppendFormat("&#{0};", value);
+                else
+                    result.Append(c);
+            }
+
+            result.Replace("&quot;", "\"");
+            return result.ToString();
+        }
+
 
         public async Task<string> CreatePreviewEditPost(ForumReplyEntity forumReplyEntity)
         {
@@ -154,7 +173,7 @@ namespace AwfulMetro.Core.Manager
             {
                 {new StringContent("updatepost"), "action"},
                 {new StringContent(forumReplyEntity.PostId.ToString()), "postid"},
-                {new StringContent(forumReplyEntity.Message), "message"},
+                {new StringContent(HtmlEncode(forumReplyEntity.Message)), "message"},
                 {new StringContent(forumReplyEntity.ParseUrl.ToString()), "parseurl"},
                 {new StringContent("2097152"), "MAX_FILE_SIZE"},
                 {new StringContent("Preview Post"), "preview"}
@@ -183,7 +202,7 @@ namespace AwfulMetro.Core.Manager
                 {new StringContent(forumReplyEntity.ThreadId), "threadid"},
                 {new StringContent(forumReplyEntity.FormKey), "formkey"},
                 {new StringContent(forumReplyEntity.FormCookie), "form_cookie"},
-                {new StringContent(forumReplyEntity.Message), "message"},
+                {new StringContent(HtmlEncode(forumReplyEntity.Message)), "message"},
                 {new StringContent(forumReplyEntity.ParseUrl.ToString()), "parseurl"},
                 {new StringContent("2097152"), "MAX_FILE_SIZE"},
                 {new StringContent("Submit Reply"), "submit"},
@@ -218,7 +237,7 @@ namespace AwfulMetro.Core.Manager
                 {new StringContent(forumReplyEntity.ThreadId), "threadid"},
                 {new StringContent(forumReplyEntity.FormKey), "formkey"},
                 {new StringContent(forumReplyEntity.FormCookie), "form_cookie"},
-                {new StringContent(forumReplyEntity.Message), "message"},
+                {new StringContent(HtmlEncode(forumReplyEntity.Message)), "message"},
                 {new StringContent(forumReplyEntity.ParseUrl.ToString()), "parseurl"},
                 {new StringContent("2097152"), "MAX_FILE_SIZE"},
                 {new StringContent("Submit Reply"), "submit"}
@@ -236,7 +255,7 @@ namespace AwfulMetro.Core.Manager
             {
                 {new StringContent("updatepost"), "action"},
                 {new StringContent(forumReplyEntity.PostId.ToString()), "postid"},
-                {new StringContent(forumReplyEntity.Message), "message"},
+                {new StringContent(HtmlEncode(forumReplyEntity.Message)), "message"},
                 {new StringContent(forumReplyEntity.ParseUrl.ToString()), "parseurl"},
                  {new StringContent(forumReplyEntity.Bookmark), "bookmark"},
                 {new StringContent("2097152"), "MAX_FILE_SIZE"},
