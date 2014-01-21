@@ -71,7 +71,7 @@ namespace AwfulMetro.Core.Entity
             this.ViewCount = threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("views")) ? Convert.ToInt32(threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("views")).InnerText) : 1;
             this.RatingImage = threadNode.Descendants("td").Any(node => node.GetAttributeValue("class", string.Empty).Contains("rating")) && threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("rating")).Descendants("img").Any() ? threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("rating")).Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty) : null;
             // Isn't this user configurable?
-            this.TotalPages = (this.ReplyCount / 40) + 1;
+            //this.TotalPages = (this.ReplyCount / 40) + 1;
             this.Location = Constants.BASE_URL + threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).GetAttributeValue("href",string.Empty) + Constants.PER_PAGE;
             this.ThreadId = Convert.ToInt64(threadNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")).GetAttributeValue("href",string.Empty).Split('=')[1]);
             HtmlNode first = threadNode.Descendants("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon"));

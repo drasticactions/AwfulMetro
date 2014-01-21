@@ -250,6 +250,8 @@ namespace AwfulMetro.Views
 
         private async void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
         {
+            UnreadButton.IsEnabled = false;
+            RefreshBarButton.IsEnabled = false;
             var threadlist = new List<ForumThreadEntity>();
             if (ForumThreadList.SelectedItems.Any())
             {
@@ -274,18 +276,50 @@ namespace AwfulMetro.Views
                 };
                 await msgDlg.ShowAsync();
             }
-
+            UnreadButton.IsEnabled = true;
+            RefreshBarButton.IsEnabled = true;
         }
 
         private async void UnreadButton_OnClick(object sender, RoutedEventArgs e)
         {
             var threadlist = new List<ForumThreadEntity>();
+            UnreadButton.IsEnabled = false;
+            RefreshBarButton.IsEnabled = false;
             if (ForumThreadList.SelectedItems.Any())
             {
                 threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
             }
             List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
             await _threadManager.MarkThreadUnread(threadIdList);
+
+            //Refresh forum threads.
+
+            loadingProgressBar.Visibility = Visibility.Visible;
+
+            await GetForumThreads();
+
+            loadingProgressBar.Visibility = Visibility.Collapsed;
+
+            if (threadIdList.Count == 1)
+            {
+                var msgDlg = new MessageDialog(string.Format("'{0}' is now \"Unread\"! Now go outside and do something productive!{1}{2}", threadlist.First().Name, System.Environment.NewLine, Constants.ASCII_1))
+                {
+                    DefaultCommandIndex = 1
+                };
+                await msgDlg.ShowAsync();
+            }
+            else
+            {
+                var message = string.Format("{0} are now \"Unread\"! My life now is now complete!!", threadIdList.Count);
+                var msgDlg = new MessageDialog(message)
+                {
+                    DefaultCommandIndex = 1
+                };
+                await msgDlg.ShowAsync();
+            }
+            UnreadButton.IsEnabled = true;
+            RefreshBarButton.IsEnabled = true;
+
         }
 
         private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

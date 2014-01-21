@@ -56,8 +56,10 @@ namespace AwfulMetro.Core.Manager
                 forumThread.CurrentPage = GetPageNumber(threadNode);
             }
 
-            HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
-            forumThread.TotalPages = forumThread.CurrentPage <= 1 ? 1 : Convert.ToInt32(pageNode.Descendants("option").LastOrDefault().GetAttributeValue("value", string.Empty));
+            var pageNodes = doc.DocumentNode.Descendants("div").ToArray();
+            var pageNode = pageNodes.FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("pages top"));
+            pageNode = pageNode.Descendants("option").LastOrDefault();
+            forumThread.TotalPages = pageNode == null ? 1 : Convert.ToInt32(pageNode.GetAttributeValue("value", string.Empty));
 
             var threadManager = new ThreadManager();
             return await threadManager.GetThreadHtml(doc);

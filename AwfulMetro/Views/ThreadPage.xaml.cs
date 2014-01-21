@@ -148,44 +148,17 @@ namespace AwfulMetro.Views
         private async void BackButton_Click(object sender, RoutedEventArgs e)
         {
             if (_forumThread.CurrentPage <= 1) return;
-            loadingProgressBar.Visibility = Visibility.Visible;
-            _forumThread.CurrentPage--;
-
             // TODO: Remove duplicate buttons and find a better way to handle navigation
-            CurrentPageSelectorSnap.SelectedIndex--;
-            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-
             CurrentPageSelector.SelectedIndex--;
-            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-            _forumThread.ScrollToPost = 1;
-            _forumThread.ScrollToPostString = "#pti1";
-            var html = await _postManager.GetThreadPostInformation(_forumThread);
-            ThreadFullView.NavigateToString(html);
-            ThreadSnapView.NavigateToString(html);
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            CurrentPageSelectorSnap.SelectedIndex--;
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            _forumThread.CurrentPage++;
-
             // TODO: Remove duplicate buttons and find a better way to handle navigation
-            CurrentPageSelectorSnap.SelectedIndex++;
-            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-
+            if (_forumThread.CurrentPage == _forumThread.TotalPages) return;
             CurrentPageSelector.SelectedIndex++;
-            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-            _forumThread.ScrollToPost = 1;
-            _forumThread.ScrollToPostString = "#pti1";
-            var html = await _postManager.GetThreadPostInformation(_forumThread);
-            ThreadFullView.NavigateToString(html);
-            ThreadSnapView.NavigateToString(html);
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            CurrentPageSelectorSnap.SelectedIndex++;
         }
 
         private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -196,6 +169,8 @@ namespace AwfulMetro.Views
             _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
+            _forumThread.ScrollToPost = 1;
+            _forumThread.ScrollToPostString = "#pti1";
             var html = await _postManager.GetThreadPostInformation(_forumThread);
             ThreadFullView.NavigateToString(html);
             ThreadSnapView.NavigateToString(html);
