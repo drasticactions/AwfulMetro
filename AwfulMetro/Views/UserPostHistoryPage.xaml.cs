@@ -62,9 +62,12 @@ namespace AwfulMetro.Views
         {
 
             var userId = Convert.ToInt64(e.NavigationParameter);
-            
+            var postHistory = await this._forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
             DefaultViewModel["UserHistory"] =
-                await this._forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+                postHistory;
+            // TODO: Actually do forward/backward paging on user post history.
+            ForwardButton.IsEnabled = false;
+            BackButton.IsEnabled = false;
         }
 
         /// <summary>
