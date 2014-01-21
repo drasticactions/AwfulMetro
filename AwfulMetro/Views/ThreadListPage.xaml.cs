@@ -257,6 +257,24 @@ namespace AwfulMetro.Views
             }
             List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
             await _threadManager.AddBookmarks(threadIdList);
+            if (threadIdList.Count == 1)
+            {
+                var msgDlg = new MessageDialog(string.Format("'{0}' has been bookmarked! Good for you!{1}{2}", threadlist.First().Name, System.Environment.NewLine, Constants.ASCII_1))
+                {
+                    DefaultCommandIndex = 1
+                };
+                await msgDlg.ShowAsync();
+            }
+            else
+            {
+                var message = string.Format("{0} Bookmarks created!", threadIdList.Count);
+                var msgDlg = new MessageDialog(message)
+                {
+                    DefaultCommandIndex = 1
+                };
+                await msgDlg.ShowAsync();
+            }
+
         }
 
         private async void UnreadButton_OnClick(object sender, RoutedEventArgs e)

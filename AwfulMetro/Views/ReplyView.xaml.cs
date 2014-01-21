@@ -258,7 +258,7 @@ namespace AwfulMetro.Views
         private async void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
             PostPreviewRaw.Visibility = Visibility.Collapsed;
-            PreviewPostGrid.Visibility = Visibility.Visible;
+            //PreviewPostGrid.Visibility = Visibility.Visible;
             _forumReply.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
             var result = await replyManager.CreatePreviewPost(_forumReply);
@@ -269,9 +269,11 @@ namespace AwfulMetro.Views
             }
             else
             {
-                var msgDlg = new MessageDialog("No text?! What the fuck good is showing you a preview then! Type some shit in and try again!");
-                await msgDlg.ShowAsync();
+                loadingProgressBar.Visibility = Visibility.Collapsed;
                 PreviewPostGrid.Visibility = Visibility.Collapsed;
+                string messageText = string.Format("No text?! What good is showing you a preview then! Type something in and try again!{0}{1}", System.Environment.NewLine, Constants.ASCII_2);
+                var msgDlg = new MessageDialog(messageText);
+                await msgDlg.ShowAsync();
             }
         }
 
@@ -301,6 +303,7 @@ namespace AwfulMetro.Views
             {
                 var msgDlg = new MessageDialog("Something went wrong with the upload. :-(.");
                 msgDlg.ShowAsync();
+                loadingProgressBar.Visibility = Visibility.Collapsed;
                 return;
             }
 

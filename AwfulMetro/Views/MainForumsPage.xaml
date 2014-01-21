@@ -118,12 +118,9 @@
                 <ColumnDefinition Width="60*"/>
                 <ColumnDefinition Width="623*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="grenadeButton" Grid.Column="0"
-        	VerticalAlignment="Center" HorizontalAlignment="Center" RequestedTheme="Dark" BorderThickness="0" Height="41" Width="41">
-                <Button.Background>
-                    <ImageBrush ImageSource="ms-appx:///Assets/grenadesm.png"/>
-                </Button.Background>
-            </Button>
+            <Image Source="ms-appx:///Assets/grenadesm.png" Grid.Column="0"
+        	VerticalAlignment="Center" HorizontalAlignment="Center" RequestedTheme="Dark" Height="41" Width="41">
+            </Image>
             <TextBlock x:Name="pageTitle" Text="Awful Forums Reader" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,0,0" Height="40"/>
         </Grid>

@@ -1,4 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Windows.System;
+using Windows.UI.ApplicationSettings;
+using Windows.UI.Popups;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Views;
@@ -62,7 +65,7 @@ namespace AwfulMetro
 #endif
 
             Frame rootFrame = Window.Current.Content as Frame;
-
+            SettingsPane.GetForCurrentView().CommandsRequested += SettingCharmManager_CommandsRequested;
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
@@ -118,6 +121,18 @@ namespace AwfulMetro
             }
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        private void SettingCharmManager_CommandsRequested(SettingsPane sender,
+           SettingsPaneCommandsRequestedEventArgs args)
+        {
+            args.Request.ApplicationCommands.Add(new SettingsCommand("privacypolicy", "Privacy Policy", OpenPrivacyPolicy));
+        }
+
+        private async void OpenPrivacyPolicy(IUICommand command)
+        {
+            var uri = new Uri("https://sites.google.com/site/awfulforumsreader/");
+            await Launcher.LaunchUriAsync(uri);
         }
 
         /// <summary>

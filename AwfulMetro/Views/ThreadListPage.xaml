@@ -281,7 +281,7 @@
                 <AppBarButton x:Name="RemoveNotificationsButton" Label="Remove all notifications." IsEnabled="True" Visibility="Collapsed" Click="RemoveNotificationsButton_OnClick" Icon="UnFavorite" />
                 <AppBarButton x:Name="BookmarkSettings" Visibility="Collapsed" Click="BookmarkSettings_Click" Icon="Setting" Label="Bookmark Settings"/>
             </StackPanel>
-            <GridView Width="115" x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+            <GridView x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -358,7 +358,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <GridView Height="115" x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
+            <GridView x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1" ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" IsItemClickEnabled="True">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

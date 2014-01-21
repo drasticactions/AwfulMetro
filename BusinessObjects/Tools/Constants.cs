@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel.Contacts;
+﻿using System;
+using Windows.ApplicationModel.Contacts;
 
 namespace AwfulMetro.Core.Tools
 {
@@ -71,5 +72,24 @@ namespace AwfulMetro.Core.Tools
         public const string COOKIE_DOMAIN_URL = "http://fake.forums.somethingawful.com";
 
         public const string LOGIN_URL = "http://forums.somethingawful.com/account.php?";
+
+        public const string ASCII_2 = @"☆ *　. 　☆ 
+　　☆　. ∧＿∧　∩　* ☆ 
+ｷﾀ━━━( ・∀・)/ . ━━━君はバカだな！！ 
+　　　. ⊂　　 ノ* ☆ 
+　　☆ * (つ ノ .☆ 
+　　　　 (ノ";
+
+        public const string ASCII_1 = @"Δ~~~~Δ 
+ξ ･ェ･ ξ 
+ξ　~　ξ 
+ξ　　 ξ 
+ξ　　　“~～~～〇 
+ξ　　　　　　 ξ 
+ξ　ξ　ξ~～~ξ　ξ 
+　ξ_ξξ_ξ　ξ_ξξ_ξ 
+　　ヽ(´･ω･)ﾉ 
+　　　 |　 / 
+　　　 UU";
     }
 }
