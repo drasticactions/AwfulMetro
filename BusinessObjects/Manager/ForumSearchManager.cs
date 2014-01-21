@@ -22,22 +22,30 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<List<ForumSearchEntity>> GetSearchResults(String url)
         {
-            var searchResults = new List<ForumSearchEntity>();
+            try
+            {
+                var searchResults = new List<ForumSearchEntity>();
 
-            //inject this
-            var doc = (await _webManager.DownloadHtml(url)).Document;
+                //inject this
+                var doc = (await _webManager.DownloadHtml(url)).Document;
 
-            HtmlNode searchNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("inner"));
-            url = Constants.BASE_URL + "search.php" + searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty);
+                HtmlNode searchNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("inner"));
+                url = Constants.BASE_URL + "search.php" + searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty);
 
-            doc = (await _webManager.DownloadHtml(url)).Document;
-            //Test persisting Html from search page.
-            //HtmlDocument doc = new HtmlDocument();
-            //string html = await LoadSearchPage("search.txt");
-            //doc.LoadHtml(html);
-            searchResults = ParseSearchRows(doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("main_full")));
-            //ForumSearchManager.SaveSearchPage("search.txt", doc.DocumentNode.OuterHtml.ToString());
-            return searchResults;
+                doc = (await _webManager.DownloadHtml(url)).Document;
+                //Test persisting Html from search page.
+                //HtmlDocument doc = new HtmlDocument();
+                //string html = await LoadSearchPage("search.txt");
+                //doc.LoadHtml(html);
+                searchResults = ParseSearchRows(doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("main_full")));
+                //ForumSearchManager.SaveSearchPage("search.txt", doc.DocumentNode.OuterHtml.ToString());
+                return searchResults;
+            }
+            catch (Exception)
+            {
+                // Person does not have platinum.
+                return null;
+            } 
         }
 
         private List<ForumSearchEntity> ParseSearchRows(HtmlNode searchNode)
