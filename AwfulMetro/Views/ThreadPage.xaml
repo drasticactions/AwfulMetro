@@ -105,7 +105,7 @@
                 <AppBarButton x:Name="BackButtonSnap" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
                 <AppBarButton x:Name="ForwardButtonSnap" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
                 <AppBarButton x:Name="RefreshButtonSnap" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
-                <ComboBox x:Name="CurrentPageSelectorSnap" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
+                <ComboBox x:Name="CurrentPageSelectorSnap" SelectionChanged="CurrentPageSelectorSnap_SelectionChanged" Width="79" Height="30">
                     <ItemsPanelTemplate>
                         <CarouselPanel/>
                     </ItemsPanelTemplate>

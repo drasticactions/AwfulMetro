@@ -258,7 +258,7 @@ namespace AwfulMetro.Views
         private async void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
             PostPreviewRaw.Visibility = Visibility.Collapsed;
-            //PreviewPostGrid.Visibility = Visibility.Visible;
+           
             _forumReply.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
             var result = await replyManager.CreatePreviewPost(_forumReply);
@@ -266,6 +266,7 @@ namespace AwfulMetro.Views
             {
                 PostPreviewRaw.NavigateToString(result);
                 PostPreviewRaw.Visibility = Visibility.Visible;
+                PreviewPostGrid.Visibility = Visibility.Visible;
             }
             else
             {
