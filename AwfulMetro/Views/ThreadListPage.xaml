@@ -11,8 +11,6 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
         <CollectionViewSource
             x:Name="itemsViewSource"
             Source="{Binding Threads}" />
@@ -478,6 +476,8 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
+        
+        
         <Grid RequestedTheme="Light" x:Name="ThreadViewSnapped" Visibility="Collapsed" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
@@ -486,11 +486,11 @@
             </Grid.RowDefinitions>
             <GridView x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1"
                       ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None"
-                      IsItemClickEnabled="True">
+                      IsItemClickEnabled="True" Height="100">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <Grid HorizontalAlignment="Left" Width="100" Height="100">
+                            <Grid HorizontalAlignment="Center" Width="100" Height="100">
                                 <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
                                     <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
                                            AutomationProperties.Name="{Binding Title}" />
