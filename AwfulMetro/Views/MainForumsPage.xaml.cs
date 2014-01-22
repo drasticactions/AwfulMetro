@@ -1,6 +1,9 @@
 ﻿// The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 using System;
 using System.Collections.Generic;
+using System.ServiceModel.Channels;
+using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -134,5 +137,49 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private async void LogoutButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var message = string.Format("Are you sure you want to logout?{0}I mean, I could care less. It's up to you...{0}{1}", Environment.NewLine, Constants.ASCII_4);
+            var msgBox =
+                new MessageDialog(message,
+                    "Make all your wildest dreams come true...");
+            var okButton = new UICommand("WHY ARE YOU ASKING YES YES YES!") {Invoked = OkButtonClick};
+            var cancelButton = new UICommand("No, I like pain and misery.") { Invoked = cancelButtonClick };
+            msgBox.Commands.Add(okButton);
+            msgBox.Commands.Add(cancelButton);
+            msgBox.ShowAsync();
+
+        }
+
+        private async void OkButtonClick(IUICommand command)
+        {
+            var authenticationManager = new AuthenticationManager();
+            var result = await authenticationManager.Logout();
+            var localSettings = ApplicationData.Current.LocalSettings;
+
+            if (localSettings.Values.ContainsKey(Constants.BOOKMARK_BACKGROUND))
+            {
+                BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
+                localSettings.Values[Constants.BOOKMARK_BACKGROUND] = false;
+            }
+
+            if (result)
+            {
+                Frame.Navigate(typeof(LoginPage));
+            }
+            else
+            {
+                var msgBox =
+                new MessageDialog("Could not log you out! You're stuck here forever! HA HA HA!",
+                    "Logout error");
+                msgBox.ShowAsync();
+            }
+        }
+
+        private void cancelButtonClick(IUICommand command)
+        {
+            return;
+        }
     }
 }

@@ -307,7 +307,7 @@ namespace AwfulMetro.Views
             NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
         }
 
-        private void NotificationButton_OnClick(object sender, RoutedEventArgs e)
+        private async void NotificationButton_OnClick(object sender, RoutedEventArgs e)
         {
             var threadlist = new List<ForumThreadEntity>();
             if (ForumThreadList.SelectedItems.Any())
@@ -317,6 +317,12 @@ namespace AwfulMetro.Views
             List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values["_threadIds"] = SerializeListToXml(threadIdList);
+            var msgDlg = new MessageDialog(string.Format("{0} thread notifications added!", threadIdList.Count))
+            {
+                DefaultCommandIndex = 1
+            };
+            await msgDlg.ShowAsync();
+
         }
 
         public static string SerializeListToXml(List<long> list)
@@ -341,7 +347,7 @@ namespace AwfulMetro.Views
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             localSettings.Values["_threadIds"] = string.Empty;
-            var msgDlg = new MessageDialog("Thread notifications removed! (ÅEÉ÷ÅE)Ém");
+            var msgDlg = new MessageDialog("Thread notifications removed!");
             msgDlg.DefaultCommandIndex = 1;
             await msgDlg.ShowAsync();
         }

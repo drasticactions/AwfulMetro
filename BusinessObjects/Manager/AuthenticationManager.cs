@@ -22,6 +22,11 @@ namespace AwfulMetro.Core.Manager
 
         public string Status { get; set; }
 
+        public async Task<bool> Logout()
+        {
+            return await _localStorageManager.RemoveCookies(Constants.COOKIE_FILE);
+        }
+
         public async Task<bool> Authenticate(string username, string password,
             int timeout = Constants.DEFAULT_TIMEOUT_IN_MILLISECONDS)
         {

@@ -62,6 +62,9 @@
                 <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back" />
                 <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click" Label="Forward Page" Icon="Forward" />
             </StackPanel>
+            <Viewbox Grid.Column="0">
+                <TextBlock x:Name="NoRapSheetTextBlock" Visibility="Collapsed" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" FontSize="20" TextWrapping="WrapWholeWords"/>
+            </Viewbox>
             <ItemsControl x:Name="RapSheetListView" Grid.Column="0"
                           ItemsSource="{Binding Source={StaticResource itemsViewSource}}">
                 <ItemsControl.Template>

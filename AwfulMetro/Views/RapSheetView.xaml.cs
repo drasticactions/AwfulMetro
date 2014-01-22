@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
+using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 
@@ -63,20 +65,35 @@ namespace AwfulMetro.Views
         {
             ForwardButton.IsEnabled = true;
             BackButton.IsEnabled = false;
+            var rapSheet = new List<ForumUserRapSheetEntity>();
             if (e.NavigationParameter != null)
             {
                 long userId = Convert.ToInt64(e.NavigationParameter);
-
-                DefaultViewModel["RapSheet"] =
+                ForwardButton.IsEnabled = false;
+                rapSheet =
                     await
                         _rapSheetManager.GetRapSheet(Constants.BASE_URL +
                                                      string.Format(Constants.USER_RAP_SHEET, userId));
+                NoRapSheetTextBlock.Text =
+                    string.Format(
+                        "This user has not done anything stupid yet.{0}Sorry to disappoint you, so look at this instead.{0}{1}", System.Environment.NewLine,
+                        Constants.ASCII_3);
             }
             else
             {
+                
                 DefaultViewModel["RapSheet"] =
                     await _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
+                NoRapSheetTextBlock.Text =
+    string.Format(
+        "Everyone is perfect and has no flaws.{0}Sorry to disappoint you, so look at this instead.{0}{1}", System.Environment.NewLine,
+                        Constants.ASCII_3);
             }
+            DefaultViewModel["RapSheet"] = rapSheet;
+            if (rapSheet != null && rapSheet.Count > 0) return;
+            ForwardButton.IsEnabled = false;
+            RapSheetListView.Visibility = Visibility.Collapsed;
+            NoRapSheetTextBlock.Visibility = Visibility.Visible;
         }
 
         /// <summary>
