@@ -1,7 +1,4 @@
-﻿using System;
-using Windows.ApplicationModel.Contacts;
-
-namespace AwfulMetro.Core.Tools
+﻿namespace AwfulMetro.Core.Tools
 {
     public class Constants
     {
@@ -34,7 +31,7 @@ namespace AwfulMetro.Core.Tools
         public const string RESET_BASE = BASE_URL + "showthread.php";
 
         public const string BOOKMARK = BASE_URL + "bookmarkthreads.php";
-        
+
         public const string REMOVE_BOOKMARK = "json=1&action=remove&threadid={0}";
 
         public const string ADD_BOOKMARK = "json=1&action=add&threadid={0}";
@@ -65,7 +62,8 @@ namespace AwfulMetro.Core.Tools
 
         public const string HTML_FILE = "{0}.html";
 
-        public const string HTML_HEADER = "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/bbcode.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/forums.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/main.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"><meta name=\"MSSmartTagsPreventParsing\" content=\"TRUE\"><meta http-equiv=\"X-UA-Compatible\" content=\"chrome=1\"><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/jquery.min.js\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/jquery-ui.css\"><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/jquery-ui.min.js\"></script><script type=\"text/javascript\">disable_thread_coloring = true;</script><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/forums.combined.js\"></script><style type=\"text/css\"></style></head>";
+        public const string HTML_HEADER =
+            "<head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/bbcode.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/forums.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/main.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"><meta name=\"MSSmartTagsPreventParsing\" content=\"TRUE\"><meta http-equiv=\"X-UA-Compatible\" content=\"chrome=1\"><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/jquery.min.js\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/jquery-ui.css\"><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/jquery-ui.min.js\"></script><script type=\"text/javascript\">disable_thread_coloring = true;</script><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/forums.combined.js\"></script><style type=\"text/css\"></style></head>";
 
         public const int DEFAULT_TIMEOUT_IN_MILLISECONDS = 60000;
 

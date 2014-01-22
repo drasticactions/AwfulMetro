@@ -18,7 +18,8 @@ namespace AwfulMetro.Core.Manager
         public async Task SaveCookie(string filename, CookieContainer rcookie, Uri uri)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            StorageFile sampleFile =
+                await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
             using (StorageStreamTransaction transaction = await sampleFile.OpenTransactedWriteAsync())
             {

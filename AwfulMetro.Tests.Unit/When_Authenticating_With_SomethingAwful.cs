@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using AwfulMetro.Tests.Unit.Mocks;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Tests.Unit.Mocks;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace AwfulMetro.Tests.Unit
@@ -19,14 +19,14 @@ namespace AwfulMetro.Tests.Unit
             cookieContainer.Add(new Uri("http://foo.com"), new Cookie("Foo", "bar"));
             cookieContainer.Add(new Uri("http://foo.com"), new Cookie("Bar", "Foo"));
             var webManager = new FakeWebManager
-                             {
-                                 CookiesToReturn = cookieContainer,
-                             };
+            {
+                CookiesToReturn = cookieContainer,
+            };
 
             var localStorage = new FakeLocalStorageManager();
             var am = new AuthenticationManager(webManager, localStorage);
             const bool expected = true;
-            var actual = await am.Authenticate("foo", "bar");
+            bool actual = await am.Authenticate("foo", "bar");
             Assert.AreEqual(expected, actual);
         }
 
@@ -43,7 +43,7 @@ namespace AwfulMetro.Tests.Unit
             var localStorage = new FakeLocalStorageManager();
             var am = new AuthenticationManager(webManager, localStorage);
             const bool expected = false;
-            var actual = await am.Authenticate("foo", "bar");
+            bool actual = await am.Authenticate("foo", "bar");
             Assert.AreEqual(expected, actual);
         }
 
@@ -86,14 +86,14 @@ namespace AwfulMetro.Tests.Unit
 
             var localStorage = new FakeLocalStorageManager();
             var am = new AuthenticationManager(webManager, localStorage);
-            
+
             await am.Authenticate("foo", "bar");
 
             Assert.AreEqual(expectedUri, localStorage.SavedUri.AbsoluteUri);
             Assert.AreEqual(2, localStorage.SavedCookies.Count);
-            var storedCookies = localStorage.SavedCookies.GetCookies(new Uri(expectedUri));
+            CookieCollection storedCookies = localStorage.SavedCookies.GetCookies(new Uri(expectedUri));
             Assert.IsNotNull(storedCookies["Foo"]);
-            Assert.IsNotNull(storedCookies["Bar"]);    
+            Assert.IsNotNull(storedCookies["Bar"]);
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace AwfulMetro.Tests.Unit
             await am.Authenticate("foo", "bar");
             localStorage.CookiesToReturn = localStorage.SavedCookies;
 
-            var cookies = await localStorage.LoadCookie(Constants.COOKIE_FILE);
+            CookieContainer cookies = await localStorage.LoadCookie(Constants.COOKIE_FILE);
 
             Assert.AreEqual(2, cookies.Count);
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using AwfulMetro.Annotations;
 
 namespace AwfulMetro.Common
@@ -27,6 +26,5 @@ namespace AwfulMetro.Common
                 handler(this, args);
             }
         }
-
     }
 }

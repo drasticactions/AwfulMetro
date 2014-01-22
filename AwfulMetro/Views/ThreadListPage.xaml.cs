@@ -1,11 +1,11 @@
+// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Serialization;
-using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.System;
@@ -20,7 +20,6 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using AwfulMetro.Core.Tools;
 using Newtonsoft.Json;
 
@@ -32,13 +31,14 @@ namespace AwfulMetro.Views
     public sealed partial class ThreadListPage
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private readonly ForumManager _forumManager = new ForumManager();
         private readonly NavigationHelper _navigationHelper;
         private readonly ThreadManager _threadManager = new ThreadManager();
-        private readonly ForumManager _forumManager = new ForumManager();
         private ForumEntity _forumEntity;
         private PageScrollingCollection _forumPageScrollingCollection;
         private List<ForumThreadEntity> _forumThreadEntities;
-        private List<ForumEntity> _subForumEntities; 
+        private List<ForumEntity> _subForumEntities;
+
         public ThreadListPage()
         {
             InitializeComponent();
@@ -126,15 +126,15 @@ namespace AwfulMetro.Views
         private void ForumThreadList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((ForumThreadEntity) e.ClickedItem);
-            var jsonObjectString = JsonConvert.SerializeObject(itemId);
-            Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+            string jsonObjectString = JsonConvert.SerializeObject(itemId);
+            Frame.Navigate(typeof (ThreadPage), jsonObjectString);
         }
 
         private void SubForumList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var forumEntity = ((ForumEntity)e.ClickedItem);
-            var jsonObjectString = JsonConvert.SerializeObject(forumEntity);
-            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
+            var forumEntity = ((ForumEntity) e.ClickedItem);
+            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
+            Frame.Navigate(typeof (ThreadListPage), jsonObjectString);
         }
 
         private async void AddThreadButton_Click(object sender, RoutedEventArgs e)
@@ -191,7 +191,7 @@ namespace AwfulMetro.Views
                 BookmarkSettings.Visibility = Visibility.Visible;
                 _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
                 _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
-                foreach (var forumThread in _forumThreadEntities)
+                foreach (ForumThreadEntity forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);
                 }
@@ -205,7 +205,7 @@ namespace AwfulMetro.Views
             {
                 _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
                 _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 1);
-                foreach (var forumThread in _forumThreadEntities)
+                foreach (ForumThreadEntity forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);
                 }
@@ -215,33 +215,6 @@ namespace AwfulMetro.Views
             }
             RefreshBarButton.IsEnabled = true;
         }
-
-        #region NavigationHelper registration
-
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// 
-        /// Page specific logic should be placed in event handlers for the
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            _navigationHelper.OnNavigatedTo(e);
-            SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
-            Rect bounds = Window.Current.Bounds;
-            ChangeViewTemplate(bounds.Width);
-
-            Loaded += PageLoaded;
-            Unloaded += PageUnloaded;
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            SettingsPane.GetForCurrentView().CommandsRequested -= OnCommandsRequested;
-            _navigationHelper.OnNavigatedFrom(e);
-        }
-
-        #endregion
 
         private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
         {
@@ -261,15 +234,17 @@ namespace AwfulMetro.Views
             await _threadManager.AddBookmarks(threadIdList);
             if (threadIdList.Count == 1)
             {
-                var msgDlg = new MessageDialog(string.Format("'{0}' has been bookmarked! Good for you!{1}{2}", threadlist.First().Name, System.Environment.NewLine, Constants.ASCII_1))
-                {
-                    DefaultCommandIndex = 1
-                };
+                var msgDlg =
+                    new MessageDialog(string.Format("'{0}' has been bookmarked! Good for you!{1}{2}",
+                        threadlist.First().Name, Environment.NewLine, Constants.ASCII_1))
+                    {
+                        DefaultCommandIndex = 1
+                    };
                 await msgDlg.ShowAsync();
             }
             else
             {
-                var message = string.Format("{0} Bookmarks created!", threadIdList.Count);
+                string message = string.Format("{0} Bookmarks created!", threadIdList.Count);
                 var msgDlg = new MessageDialog(message)
                 {
                     DefaultCommandIndex = 1
@@ -302,15 +277,19 @@ namespace AwfulMetro.Views
 
             if (threadIdList.Count == 1)
             {
-                var msgDlg = new MessageDialog(string.Format("'{0}' is now \"Unread\"! Now go outside and do something productive!{1}{2}", threadlist.First().Name, System.Environment.NewLine, Constants.ASCII_1))
-                {
-                    DefaultCommandIndex = 1
-                };
+                var msgDlg =
+                    new MessageDialog(
+                        string.Format("'{0}' is now \"Unread\"! Now go outside and do something productive!{1}{2}",
+                            threadlist.First().Name, Environment.NewLine, Constants.ASCII_1))
+                    {
+                        DefaultCommandIndex = 1
+                    };
                 await msgDlg.ShowAsync();
             }
             else
             {
-                var message = string.Format("{0} are now \"Unread\"! My life now is now complete!!", threadIdList.Count);
+                string message = string.Format("{0} are now \"Unread\"! My life now is now complete!!",
+                    threadIdList.Count);
                 var msgDlg = new MessageDialog(message)
                 {
                     DefaultCommandIndex = 1
@@ -319,14 +298,13 @@ namespace AwfulMetro.Views
             }
             UnreadButton.IsEnabled = true;
             RefreshBarButton.IsEnabled = true;
-
         }
 
         private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
-                UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
-                NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+            FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+            UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+            NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
         }
 
         private void NotificationButton_OnClick(object sender, RoutedEventArgs e)
@@ -348,13 +326,13 @@ namespace AwfulMetro.Views
                 var xmlIzer = new XmlSerializer(typeof (List<long>));
                 var writer = new StringWriter();
                 xmlIzer.Serialize(writer, list);
-                System.Diagnostics.Debug.WriteLine(writer.ToString());
+                Debug.WriteLine(writer.ToString());
                 return writer.ToString();
             }
 
             catch (Exception exc)
             {
-                System.Diagnostics.Debug.WriteLine(exc);
+                Debug.WriteLine(exc);
                 return String.Empty;
             }
         }
@@ -375,7 +353,33 @@ namespace AwfulMetro.Views
             await GetForumThreads();
 
             loadingProgressBar.Visibility = Visibility.Collapsed;
-
         }
+
+        #region NavigationHelper registration
+
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// 
+        /// Page specific logic should be placed in event handlers for the
+        /// The navigation parameter is available in the LoadState method 
+        /// in addition to page state preserved during an earlier session.
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _navigationHelper.OnNavigatedTo(e);
+            SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
+            Rect bounds = Window.Current.Bounds;
+            ChangeViewTemplate(bounds.Width);
+
+            Loaded += PageLoaded;
+            Unloaded += PageUnloaded;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            SettingsPane.GetForCurrentView().CommandsRequested -= OnCommandsRequested;
+            _navigationHelper.OnNavigatedFrom(e);
+        }
+
+        #endregion
     }
 }

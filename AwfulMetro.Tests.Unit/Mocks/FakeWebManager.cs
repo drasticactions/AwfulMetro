@@ -7,29 +7,30 @@ namespace AwfulMetro.Tests.Unit.Mocks
 {
     public class FakeWebManager : IWebManager
     {
+        public FakeWebManager()
+        {
+            IsNetworkAvailable = true;
+        }
+
         public CookieContainer CookiesToReturn { get; set; }
 
         public HttpResponseMessage PostResponseMessage { get; set; }
         public WebManager.Result ResultToReturn { get; set; }
         public bool IsNetworkAvailable { get; set; }
+
         public Task<WebManager.Result> DownloadHtml(string uri)
         {
-            return Task.FromResult(this.ResultToReturn);
+            return Task.FromResult(ResultToReturn);
         }
 
         public Task<CookieContainer> PostData(string uri, string data)
         {
-            return Task.FromResult(this.CookiesToReturn);
+            return Task.FromResult(CookiesToReturn);
         }
 
         public Task<HttpResponseMessage> PostFormData(string uri, MultipartFormDataContent form)
         {
-            return Task.FromResult(this.PostResponseMessage);
-        }
-
-        public FakeWebManager()
-        {
-            this.IsNetworkAvailable = true;
+            return Task.FromResult(PostResponseMessage);
         }
     }
 }

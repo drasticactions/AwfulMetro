@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -16,14 +13,15 @@ namespace AwfulMetro.Core.Manager
 {
     public class ReplyManager
     {
-
         private readonly IWebManager _webManager;
 
-        public ReplyManager() : this(new WebManager()) { }
+        public ReplyManager() : this(new WebManager())
+        {
+        }
 
         public ReplyManager(IWebManager webManager)
         {
-            this._webManager = webManager;
+            _webManager = webManager;
         }
 
         public async Task<ForumReplyEntity> GetReplyCookies(ForumThreadEntity forumThread)
@@ -31,26 +29,31 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 string url = string.Format(Constants.REPLY_BASE, forumThread.ThreadId);
-                var result = await _webManager.DownloadHtml(url);
+                WebManager.Result result = await _webManager.DownloadHtml(url);
                 HtmlDocument doc = result.Document;
 
-                var formNodes = doc.DocumentNode.Descendants("input").ToArray();
+                HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();
 
-                var formKeyNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
+                HtmlNode formKeyNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
 
-                var formCookieNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
+                HtmlNode formCookieNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
 
-                var bookmarkNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
+                HtmlNode bookmarkNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
 
-                var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+                HtmlNode[] textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
 
-                var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+                HtmlNode textNode =
+                    textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
 
-                var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
+                HtmlNode threadIdNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
 
                 var threadManager = new ThreadManager();
 
-                var htmlThread = await threadManager.GetThreadHtml(doc);
+                string htmlThread = await threadManager.GetThreadHtml(doc);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try
@@ -70,10 +73,8 @@ namespace AwfulMetro.Core.Manager
             }
             catch (Exception)
             {
-
                 return null;
             }
-            
         }
 
         public async Task<ForumReplyEntity> GetReplyCookiesForEdit(long postId)
@@ -81,25 +82,27 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 string url = string.Format(Constants.EDIT_BASE, postId);
-                var result = await _webManager.DownloadHtml(url);
+                WebManager.Result result = await _webManager.DownloadHtml(url);
                 HtmlDocument doc = result.Document;
 
-                var formNodes = doc.DocumentNode.Descendants("input").ToArray();
+                HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();
 
-                var bookmarkNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
+                HtmlNode bookmarkNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("bookmark"));
 
-                var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+                HtmlNode[] textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
 
-                var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+                HtmlNode textNode =
+                    textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
 
                 var threadManager = new ThreadManager();
 
                 //Get previous posts from quote page.
                 string url2 = string.Format(Constants.QUOTE_BASE, postId);
-                var result2 = await _webManager.DownloadHtml(url2);
+                WebManager.Result result2 = await _webManager.DownloadHtml(url2);
                 HtmlDocument doc2 = result2.Document;
 
-                var htmlThread = await threadManager.GetThreadHtml(doc2);
+                string htmlThread = await threadManager.GetThreadHtml(doc2);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try
@@ -126,24 +129,28 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 string url = string.Format(Constants.QUOTE_BASE, postId);
-                var result = await _webManager.DownloadHtml(url);
+                WebManager.Result result = await _webManager.DownloadHtml(url);
                 HtmlDocument doc = result.Document;
 
-                var formNodes = doc.DocumentNode.Descendants("input").ToArray();
+                HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();
 
-                var formKeyNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
+                HtmlNode formKeyNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
 
-                var formCookieNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
+                HtmlNode formCookieNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
 
-                var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+                HtmlNode[] textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
 
-                var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+                HtmlNode textNode =
+                    textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
 
-                var threadIdNode = formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
+                HtmlNode threadIdNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
 
                 var threadManager = new ThreadManager();
 
-                var htmlThread = await threadManager.GetThreadHtml(doc);
+                string htmlThread = await threadManager.GetThreadHtml(doc);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try
@@ -170,8 +177,8 @@ namespace AwfulMetro.Core.Manager
         public static string HtmlEncode(string text)
         {
             //TODO: Taken directly off of the internet to fix Unicode support. Need to enhance.
-            char[] chars = WebUtility.HtmlEncode(text).ToCharArray();
-            var result = new StringBuilder(text.Length + (int)(text.Length * 0.1));
+            char[] chars = text.ToCharArray();
+            var result = new StringBuilder(text.Length + (int) (text.Length*0.1));
 
             foreach (char c in chars)
             {
@@ -200,23 +207,24 @@ namespace AwfulMetro.Core.Manager
                 {new StringContent("2097152"), "MAX_FILE_SIZE"},
                 {new StringContent("Preview Post"), "preview"}
             };
-            var response = await this._webManager.PostFormData(Constants.EDIT_POST, form);
-            var stream = await response.Content.ReadAsStreamAsync();
+            HttpResponseMessage response = await _webManager.PostFormData(Constants.EDIT_POST, form);
+            Stream stream = await response.Content.ReadAsStreamAsync();
             using (var reader = new StreamReader(stream))
             {
                 string html = reader.ReadToEnd();
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
-                var replyNodes = doc.DocumentNode.Descendants("div").ToArray();
+                HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").ToArray();
 
-                var previewNode = replyNodes.FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("inner postbody"));
+                HtmlNode previewNode =
+                    replyNodes.FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("inner postbody"));
                 return previewNode == null ? string.Empty : FixPostHtml(previewNode.OuterHtml);
             }
         }
 
         public async Task<string> CreatePreviewPost(ForumReplyEntity forumReplyEntity)
         {
-            if(forumReplyEntity == null)
+            if (forumReplyEntity == null)
                 return string.Empty;
             var form = new MultipartFormDataContent
             {
@@ -230,16 +238,17 @@ namespace AwfulMetro.Core.Manager
                 {new StringContent("Submit Reply"), "submit"},
                 {new StringContent("Preview Reply"), "preview"}
             };
-            var response = await this._webManager.PostFormData(Constants.NEW_REPLY, form);
-            var stream = await response.Content.ReadAsStreamAsync();
+            HttpResponseMessage response = await _webManager.PostFormData(Constants.NEW_REPLY, form);
+            Stream stream = await response.Content.ReadAsStreamAsync();
             using (var reader = new StreamReader(stream))
             {
                 string html = reader.ReadToEnd();
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
-                var replyNodes = doc.DocumentNode.Descendants("div").ToArray();
+                HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").ToArray();
 
-                var previewNode = replyNodes.FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("inner postbody"));
+                HtmlNode previewNode =
+                    replyNodes.FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("inner postbody"));
                 return previewNode == null ? string.Empty : FixPostHtml(previewNode.OuterHtml);
             }
         }
@@ -264,7 +273,7 @@ namespace AwfulMetro.Core.Manager
                 {new StringContent("2097152"), "MAX_FILE_SIZE"},
                 {new StringContent("Submit Reply"), "submit"}
             };
-            var response = await this._webManager.PostFormData(Constants.NEW_REPLY, form);
+            HttpResponseMessage response = await _webManager.PostFormData(Constants.NEW_REPLY, form);
 
             return true;
         }
@@ -279,11 +288,11 @@ namespace AwfulMetro.Core.Manager
                 {new StringContent(forumReplyEntity.PostId.ToString()), "postid"},
                 {new StringContent(HtmlEncode(forumReplyEntity.Message)), "message"},
                 {new StringContent(forumReplyEntity.ParseUrl.ToString()), "parseurl"},
-                 {new StringContent(forumReplyEntity.Bookmark), "bookmark"},
+                {new StringContent(forumReplyEntity.Bookmark), "bookmark"},
                 {new StringContent("2097152"), "MAX_FILE_SIZE"},
                 {new StringContent("Save Changes"), "submit"}
             };
-            var response = await this._webManager.PostFormData(Constants.EDIT_POST, form);
+            HttpResponseMessage response = await _webManager.PostFormData(Constants.EDIT_POST, form);
 
             return true;
         }
@@ -291,23 +300,22 @@ namespace AwfulMetro.Core.Manager
         public async Task<string> GetQuoteString(long postId)
         {
             string url = string.Format(Constants.QUOTE_BASE, postId);
-            var result = await _webManager.DownloadHtml(url);
+            WebManager.Result result = await _webManager.DownloadHtml(url);
             HtmlDocument doc = result.Document;
 
-            var textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
+            HtmlNode[] textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();
 
-            var textNode = textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
+            HtmlNode textNode =
+                textAreaNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("message"));
 
             try
             {
-                return  WebUtility.HtmlDecode(textNode.InnerText);
+                return WebUtility.HtmlDecode(textNode.InnerText);
             }
             catch (Exception)
             {
                 throw new InvalidOperationException("Could not parse newReply form data.");
             }
         }
-
-        
     }
 }

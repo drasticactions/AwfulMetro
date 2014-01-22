@@ -1,8 +1,6 @@
-﻿using System;
+﻿// The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
+using System;
 using System.Collections.Generic;
-using Windows.Foundation;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -10,8 +8,6 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
-
-// The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -22,12 +18,13 @@ namespace AwfulMetro.Views
     public sealed partial class MainForumsPage : Page
     {
         private readonly ForumManager _forumManager = new ForumManager();
+
         public MainForumsPage()
         {
-            this.DefaultViewModel = new ObservableDictionary();
-            this.InitializeComponent();
-            this.NavigationHelper = new NavigationHelper(this);
-            this.NavigationHelper.LoadState += this.navigationHelper_LoadState;
+            DefaultViewModel = new ObservableDictionary();
+            InitializeComponent();
+            NavigationHelper = new NavigationHelper(this);
+            NavigationHelper.LoadState += navigationHelper_LoadState;
         }
 
 
@@ -57,11 +54,11 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            this.loadingProgressBar.Visibility = Visibility.Visible;
-            List<ForumCategoryEntity> forumGroupList = await this._forumManager.GetForumCategoryMainPage();
-            this.DefaultViewModel["Groups"] = forumGroupList;
-            this.DefaultViewModel["ForumCategory"] = forumGroupList;
-            this.loadingProgressBar.Visibility = Visibility.Collapsed;
+            loadingProgressBar.Visibility = Visibility.Visible;
+            List<ForumCategoryEntity> forumGroupList = await _forumManager.GetForumCategoryMainPage();
+            DefaultViewModel["Groups"] = forumGroupList;
+            DefaultViewModel["ForumCategory"] = forumGroupList;
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -93,28 +90,26 @@ namespace AwfulMetro.Views
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
             var forumEntity = ((ForumEntity) e.ClickedItem);
-            var jsonObjectString = JsonConvert.SerializeObject(forumEntity);
-            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
+            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
+            Frame.Navigate(typeof (ThreadListPage), jsonObjectString);
         }
 
         public void RapSheetButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof (RapSheetView));
+            Frame.Navigate(typeof (RapSheetView));
         }
 
         public void FrontPageButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof (FrontPage));
+            Frame.Navigate(typeof (FrontPage));
         }
 
         public void BookmarkButton_Click(object sender, RoutedEventArgs e)
         {
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            var jsonObjectString = JsonConvert.SerializeObject(forum);
-            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
+            string jsonObjectString = JsonConvert.SerializeObject(forum);
+            Frame.Navigate(typeof (ThreadListPage), jsonObjectString);
         }
-
-      
 
         #region NavigationHelper registration
 
@@ -130,12 +125,12 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.NavigationHelper.OnNavigatedTo(e);
+            NavigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            this.NavigationHelper.OnNavigatedFrom(e);
+            NavigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion

@@ -8,17 +8,25 @@ using Windows.UI.Xaml.Controls;
 namespace AwfulMetro.Core.Tools
 {
     /// <summary>
-    /// Used to bind Webviews to lists.
+    ///     Used to bind Webviews to lists.
     /// </summary>
     public static class WebViewHelper
     {
-
         public static readonly DependencyProperty HtmlProperty = DependencyProperty.RegisterAttached(
-            "Html", typeof(string), typeof(WebViewHelper), new PropertyMetadata(null, OnHtmlChanged));
+            "Html", typeof (string), typeof (WebViewHelper), new PropertyMetadata(null, OnHtmlChanged));
+
+        public static readonly DependencyProperty HtmlUriProperty = DependencyProperty.RegisterAttached("HtmlUri",
+            typeof (Uri),
+            typeof (
+                WebViewHelper
+                ),
+            new PropertyMetadata
+                (null,
+                    OnHtmlUriChanged));
 
         public static string GetHtml(DependencyObject dependencyObject)
         {
-            return (string)dependencyObject.GetValue(HtmlProperty);
+            return (string) dependencyObject.GetValue(HtmlProperty);
         }
 
         public static void SetHtml(DependencyObject dependencyObject, string value)
@@ -28,7 +36,6 @@ namespace AwfulMetro.Core.Tools
 
         private static void OnHtmlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
             var browser = d as WebView;
             if (browser == null)
                 return;
@@ -38,17 +45,8 @@ namespace AwfulMetro.Core.Tools
                 html = e.NewValue.ToString();
             }
             browser.NavigateToString(html);
-
         }
 
-        public static readonly DependencyProperty HtmlUriProperty = DependencyProperty.RegisterAttached("HtmlUri",
-                                                                                                        typeof(Uri),
-                                                                                                        typeof(
-                                                                                                            WebViewHelper
-                                                                                                            ),
-                                                                                                        new PropertyMetadata
-                                                                                                            (null,
-                                                                                                             OnHtmlUriChanged));
         public static void SetHtmlUri(DependencyObject dependencyObject, Uri value)
         {
             dependencyObject.SetValue(HtmlUriProperty, value);
@@ -56,7 +54,7 @@ namespace AwfulMetro.Core.Tools
 
         public static Uri GetHtmlUri(DependencyObject dependencyObject)
         {
-            return (Uri)dependencyObject.GetValue(HtmlUriProperty);
+            return (Uri) dependencyObject.GetValue(HtmlUriProperty);
         }
 
         private static void OnHtmlUriChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -65,7 +63,7 @@ namespace AwfulMetro.Core.Tools
             if (browser == null)
                 return;
 
-            var htmlUri = (Uri)e.NewValue;
+            var htmlUri = (Uri) e.NewValue;
             browser.Navigate(htmlUri);
         }
 

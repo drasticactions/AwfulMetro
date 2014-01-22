@@ -1,6 +1,5 @@
-﻿using HtmlAgilityPack;
-
-using System.Linq;
+﻿using System.Linq;
+using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Entity
 {
@@ -12,8 +11,8 @@ namespace AwfulMetro.Core.Entity
 
         public void Parse(HtmlNode smileNode)
         {
-            this.Title = smileNode.Descendants("div").FirstOrDefault().InnerText;
-            this.ImageUrl = smileNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
+            Title = smileNode.Descendants("div").FirstOrDefault().InnerText;
+            ImageUrl = smileNode.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
         }
     }
 }

@@ -11,7 +11,7 @@
     d:DesignWidth="346">
 
     <!-- This StackPanel acts as a root panel for vertical layout of the content sections -->
-    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
         <!-- The StackPanel(s) below define individual content sections -->
 
@@ -26,7 +26,7 @@
                 </TextBlock.Text>
             </TextBlock>
 
-            <ToggleSwitch x:Name="BookmarkLiveTiles" Toggled="BookmarkLiveTiles_Toggled"  />
+            <ToggleSwitch x:Name="BookmarkLiveTiles" Toggled="BookmarkLiveTiles_Toggled" />
         </StackPanel>
     </StackPanel>
 </SettingsFlyout>

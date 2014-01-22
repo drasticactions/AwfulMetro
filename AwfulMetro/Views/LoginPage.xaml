@@ -7,16 +7,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.DataContext>
-        <vm:LoginPageViewModel/>
+        <vm:LoginPageViewModel />
     </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Width="500" VerticalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords" Text="WARNING:             THIS APP WILL STEAL YOUR PASSWORD AND AUTO BAN YOU FROM SOMETHING AWFUL." FontSize="50" Margin="0,0,0,25" VerticalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords"
+                       Text="WARNING:             THIS APP WILL STEAL YOUR PASSWORD AND AUTO BAN YOU FROM SOMETHING AWFUL."
+                       FontSize="50" Margin="0,0,0,25" VerticalAlignment="Center" />
             <StackPanel Width="300">
-                <TextBox x:Name="Username" PlaceholderText="Username" Margin="0,0,0,15" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <PasswordBox x:Name="Password" PlaceholderText="Password" Margin="0,0,0,15" Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Command="{Binding ClickLoginButtonCommand}" />
+                <TextBox x:Name="Username" PlaceholderText="Username" Margin="0,0,0,15"
+                         Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <PasswordBox x:Name="Password" PlaceholderText="Password" Margin="0,0,0,15"
+                             Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center"
+                        Command="{Binding ClickLoginButtonCommand}" />
             </StackPanel>
         </StackPanel>
     </Grid>

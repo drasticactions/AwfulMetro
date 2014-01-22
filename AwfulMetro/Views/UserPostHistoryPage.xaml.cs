@@ -1,10 +1,12 @@
-using Windows.UI.Xaml;
-using AwfulMetro.Common;
-using AwfulMetro.Core.Manager;
-using AwfulMetro.Core.Tools;
 using System;
+using System.Collections.Generic;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using AwfulMetro.Common;
+using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -16,8 +18,8 @@ namespace AwfulMetro.Views
     public sealed partial class UserPostHistoryPage : Page
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
-        private readonly NavigationHelper _navigationHelper;
         private readonly ForumSearchManager _forumSearchManager = new ForumSearchManager();
+        private readonly NavigationHelper _navigationHelper;
 
         public UserPostHistoryPage()
         {
@@ -60,9 +62,9 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-
-            var userId = Convert.ToInt64(e.NavigationParameter);
-            var postHistory = await this._forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+            long userId = Convert.ToInt64(e.NavigationParameter);
+            List<ForumSearchEntity> postHistory =
+                await _forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
             DefaultViewModel["UserHistory"] =
                 postHistory;
             // TODO: Actually do forward/backward paging on user post history.
@@ -82,6 +84,16 @@ namespace AwfulMetro.Views
         /// </param>
         private void navigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ForwardButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #region NavigationHelper registration
@@ -107,15 +119,5 @@ namespace AwfulMetro.Views
         }
 
         #endregion
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ForwardButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

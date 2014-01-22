@@ -14,7 +14,7 @@ namespace AwfulMetro.Tests.Unit
         public void A_Cookie_Collection_Can_Be_Serialized()
         {
             //Arrange
-            var cookies = new CookieCollection { new Cookie("foo", "bar") };
+            var cookies = new CookieCollection {new Cookie("foo", "bar")};
             var cookieStream = new MemoryStream();
 
             //Act
@@ -29,16 +29,16 @@ namespace AwfulMetro.Tests.Unit
         {
             //Arrange
             var uri = new Uri("http://foo.com");
-            var cookies = new CookieCollection { new Cookie("foo", "bar") };
+            var cookies = new CookieCollection {new Cookie("foo", "bar")};
             var cookieStream = new MemoryStream();
 
             //Act
             CookieSerializer.Serialize(cookies, uri, cookieStream);
             cookieStream.Seek(0, SeekOrigin.Begin);
-            var deserialized = CookieSerializer.Deserialize(uri, cookieStream);
+            CookieContainer deserialized = CookieSerializer.Deserialize(uri, cookieStream);
 
             //Assert
-            Assert.AreEqual(1,deserialized.Count);
+            Assert.AreEqual(1, deserialized.Count);
             Assert.IsNotNull(deserialized.GetCookies(uri)["foo"]);
         }
     }

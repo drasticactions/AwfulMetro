@@ -12,9 +12,10 @@ namespace AwfulMetro.Core.Tools
         public static string BackgroundTaskProgress = string.Empty;
         public static bool BackgroundTaskRegistered = false;
 
-        public async static Task<BackgroundTaskRegistration> RegisterBackgroundTask(string taskEntryPoint, string name, IBackgroundTrigger trigger, IBackgroundCondition condition)
+        public static async Task<BackgroundTaskRegistration> RegisterBackgroundTask(string taskEntryPoint, string name,
+            IBackgroundTrigger trigger, IBackgroundCondition condition)
         {
-            var builder = new BackgroundTaskBuilder { Name = name, TaskEntryPoint = taskEntryPoint };
+            var builder = new BackgroundTaskBuilder {Name = name, TaskEntryPoint = taskEntryPoint};
 
             builder.SetTrigger(trigger);
 
@@ -54,7 +55,7 @@ namespace AwfulMetro.Core.Tools
 
         public static string GetBackgroundTaskStatus(string name)
         {
-            var registered = false;
+            bool registered = false;
             switch (name)
             {
                 case BackgroundTaskName:
@@ -62,9 +63,9 @@ namespace AwfulMetro.Core.Tools
                     break;
             }
 
-            var status = registered ? "Registered" : "Unregistered";
+            string status = registered ? "Registered" : "Unregistered";
 
-            var settings = ApplicationData.Current.LocalSettings;
+            ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
             if (settings.Values.ContainsKey(name))
             {
                 status += " - " + settings.Values[name];

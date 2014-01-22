@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
-using Windows.Storage;
-using Windows.Storage.Streams;
 
 namespace AwfulMetro.Core.Manager
 {
     public class ForumSearchManager
     {
         private readonly IWebManager _webManager;
+
         public ForumSearchManager(IWebManager webManager)
         {
-            this._webManager = webManager;
+            _webManager = webManager;
         }
 
-        public ForumSearchManager() : this(new WebManager()) { }
+        public ForumSearchManager() : this(new WebManager())
+        {
+        }
 
         public async Task<List<ForumSearchEntity>> GetSearchResults(String url)
         {
@@ -27,17 +30,23 @@ namespace AwfulMetro.Core.Manager
                 var searchResults = new List<ForumSearchEntity>();
 
                 //inject this
-                var doc = (await _webManager.DownloadHtml(url)).Document;
+                HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
 
-                HtmlNode searchNode = doc.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("inner"));
-                url = Constants.BASE_URL + "search.php" + searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty);
+                HtmlNode searchNode =
+                    doc.DocumentNode.Descendants("div")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("inner"));
+                url = Constants.BASE_URL + "search.php" +
+                      searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty);
 
                 doc = (await _webManager.DownloadHtml(url)).Document;
                 //Test persisting Html from search page.
                 //HtmlDocument doc = new HtmlDocument();
                 //string html = await LoadSearchPage("search.txt");
                 //doc.LoadHtml(html);
-                searchResults = ParseSearchRows(doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("main_full")));
+                searchResults =
+                    ParseSearchRows(
+                        doc.DocumentNode.Descendants("table")
+                            .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("main_full")));
                 //ForumSearchManager.SaveSearchPage("search.txt", doc.DocumentNode.OuterHtml.ToString());
                 return searchResults;
             }
@@ -45,19 +54,19 @@ namespace AwfulMetro.Core.Manager
             {
                 // Person does not have platinum.
                 return null;
-            } 
+            }
         }
 
         private List<ForumSearchEntity> ParseSearchRows(HtmlNode searchNode)
         {
-            List<ForumSearchEntity> searchRowEntityList = new List<ForumSearchEntity>();
-            var searchRowNodes = searchNode.Descendants("tr");
+            var searchRowEntityList = new List<ForumSearchEntity>();
+            IEnumerable<HtmlNode> searchRowNodes = searchNode.Descendants("tr");
             searchRowNodes.FirstOrDefault().Remove();
             foreach (HtmlNode searchRow in searchRowNodes)
             {
-                ForumSearchEntity searchRowEntity = new ForumSearchEntity();
+                var searchRowEntity = new ForumSearchEntity();
                 searchRowEntity.Parse(searchRow);
-                if(!string.IsNullOrEmpty(searchRowEntity.Author))
+                if (!string.IsNullOrEmpty(searchRowEntity.Author))
                     searchRowEntityList.Add(searchRowEntity);
             }
             return searchRowEntityList;
@@ -66,16 +75,17 @@ namespace AwfulMetro.Core.Manager
         private async void SaveSearchPage(string filename, string text)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            StorageFile sampleFile =
+                await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
-            var stream = await sampleFile.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite);
-            using (var outputStream = stream.GetOutputStreamAt(0))
+            IRandomAccessStream stream = await sampleFile.OpenAsync(FileAccessMode.ReadWrite);
+            using (IOutputStream outputStream = stream.GetOutputStreamAt(0))
             {
-                DataWriter dataWriter = new DataWriter(outputStream);
+                var dataWriter = new DataWriter(outputStream);
                 dataWriter.WriteString(text);
                 await dataWriter.StoreAsync();
-                await outputStream.FlushAsync(); 
-            } 
+                await outputStream.FlushAsync();
+            }
         }
 
         public async Task<string> LoadSearchPage(string filename)
@@ -84,12 +94,11 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 StorageFile sampleFile = await localFolder.GetFileAsync(filename);
-                var stream = await sampleFile.OpenAsync(FileAccessMode.ReadWrite);
+                IRandomAccessStream stream = await sampleFile.OpenAsync(FileAccessMode.ReadWrite);
                 string test;
-                using (var inputStream = stream.GetInputStreamAt(0))
+                using (IInputStream inputStream = stream.GetInputStreamAt(0))
                 {
-                    test = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
-
+                    test = await FileIO.ReadTextAsync(sampleFile);
                 }
                 return test;
             }

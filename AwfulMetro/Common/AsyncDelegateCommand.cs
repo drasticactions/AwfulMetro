@@ -6,10 +6,8 @@ namespace AwfulMetro.Common
 {
     public sealed class AsyncDelegateCommand : ICommand
     {
-        private readonly Predicate<object> _canExecute;
         private readonly Func<object, Task> _asyncExecute;
-
-        public event EventHandler CanExecuteChanged;
+        private readonly Predicate<object> _canExecute;
 
         public AsyncDelegateCommand(Func<object, Task> execute)
             : this(execute, null)
@@ -17,11 +15,13 @@ namespace AwfulMetro.Common
         }
 
         public AsyncDelegateCommand(Func<object, Task> asyncExecute,
-                       Predicate<object> canExecute)
+            Predicate<object> canExecute)
         {
             _asyncExecute = asyncExecute;
             _canExecute = canExecute;
         }
+
+        public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
@@ -45,7 +45,7 @@ namespace AwfulMetro.Common
 
         public void RaiseCanExecuteChanged()
         {
-            var handler = this.CanExecuteChanged;
+            EventHandler handler = CanExecuteChanged;
             if (handler != null)
             {
                 handler(this, EventArgs.Empty);

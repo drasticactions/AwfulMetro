@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Data;
 using AwfulMetro.Core.Annotations;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace AwfulMetro.Core.Tools
 {
@@ -20,19 +20,19 @@ namespace AwfulMetro.Core.Tools
             PageCount = pageCount + 1;
             ForumEntity = forumEntity;
         }
-       
-        public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)
-        {
-            return LoadDataAsync(count).AsAsyncOperation();
-        }
-
-        public bool HasMoreItems { get; protected set; }
 
         private int PageCount { get; set; }
 
         private bool IsLoading { [UsedImplicitly] get; set; }
 
         private ForumEntity ForumEntity { get; set; }
+
+        public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)
+        {
+            return LoadDataAsync(count).AsAsyncOperation();
+        }
+
+        public bool HasMoreItems { get; protected set; }
 
         public async Task<LoadMoreItemsResult> LoadDataAsync(uint count)
         {
@@ -42,13 +42,12 @@ namespace AwfulMetro.Core.Tools
             if (ForumEntity.IsBookmarks)
             {
                 forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, PageCount);
-                
             }
             else
             {
-                forumThreadEntities = await threadManager.GetForumThreads(ForumEntity, PageCount);   
+                forumThreadEntities = await threadManager.GetForumThreads(ForumEntity, PageCount);
             }
-            foreach (var forumThreadEntity in forumThreadEntities)
+            foreach (ForumThreadEntity forumThreadEntity in forumThreadEntities)
             {
                 Add(forumThreadEntity);
             }

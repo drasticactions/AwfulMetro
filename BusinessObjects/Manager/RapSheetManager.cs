@@ -9,19 +9,24 @@ namespace AwfulMetro.Core.Manager
     public class RapSheetManager
     {
         private readonly IWebManager _webManager;
+
         public RapSheetManager(IWebManager webManager)
         {
-            this._webManager = webManager;
+            _webManager = webManager;
         }
 
-        public RapSheetManager() : this(new WebManager()) { }
+        public RapSheetManager() : this(new WebManager())
+        {
+        }
 
         public async Task<List<ForumUserRapSheetEntity>> GetRapSheet(string url)
         {
             var rapSheets = new List<ForumUserRapSheetEntity>();
-            var doc = (await _webManager.DownloadHtml(url)).Document;
-            
-            HtmlNode rapSheetNode = doc.DocumentNode.Descendants("table").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("standard full"));
+            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+
+            HtmlNode rapSheetNode =
+                doc.DocumentNode.Descendants("table")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("standard full"));
             rapSheetNode.Descendants("tr").FirstOrDefault().Remove();
             if (rapSheetNode.Descendants("tr").Any())
             {
@@ -29,6 +34,5 @@ namespace AwfulMetro.Core.Manager
             }
             return rapSheets;
         }
-
     }
 }

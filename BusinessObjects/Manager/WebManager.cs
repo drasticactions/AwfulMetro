@@ -1,31 +1,17 @@
-﻿using System.Net.Http.Headers;
-using System.Net.NetworkInformation;
-using AwfulMetro.Core.Tools;
-using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using AwfulMetro.Core.Tools;
+using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Manager
 {
     public class WebManager : IWebManager
     {
-        private readonly ILocalStorageManager _localStorageManager;
-        public WebManager(ILocalStorageManager localStorageManager)
-        {
-            this._localStorageManager = localStorageManager;
-        }
-
-        public WebManager() : this(new LocalStorageManager()) { }
-
-        static WebManager()
-        {
-            CookieJar = new List<Cookie>();
-        }
-
         private const string ACCEPT = "text/html, application/xhtml+xml, */*";
 
         private const string POST_CONTENT_TYPE = "application/x-www-form-urlencoded";
@@ -34,33 +20,35 @@ namespace AwfulMetro.Core.Manager
         private const string EDIT_BOUNDARY = "----WebKitFormBoundaryksMFcMGBHc3jdB0P";
         private const string REPLY_CONTENT_TYPE = "multipart/form-data; boundary=" + REPLY_BOUNDARY;
         private const string EDIT_CONTENT_TYPE = "multipart/form-data; boundary=" + EDIT_BOUNDARY;
+        private readonly ILocalStorageManager _localStorageManager;
+
+        static WebManager()
+        {
+            CookieJar = new List<Cookie>();
+        }
+
+        public WebManager(ILocalStorageManager localStorageManager)
+        {
+            _localStorageManager = localStorageManager;
+        }
+
+        public WebManager() : this(new LocalStorageManager())
+        {
+        }
 
         public static List<Cookie> CookieJar { get; private set; }
 
         public bool IsNetworkAvailable
         {
-            get
-            {
-                return NetworkInterface.GetIsNetworkAvailable();
-            }
-        }
-        private static CookieContainer GetCookiesForUri(Uri uri)
-        {
-            var container = new CookieContainer();
-            var cookies = CookieJar;
-            foreach (Cookie cookie in cookies)
-            {
-                container.Add(uri, cookie);
-            }
-            return container;
+            get { return NetworkInterface.GetIsNetworkAvailable(); }
         }
 
         public async Task<CookieContainer> PostData(string url, string data)
         {
             var uri = new Uri(url);
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest) WebRequest.Create(url);
             request.Accept = ACCEPT;
-            request.CookieContainer = await this._localStorageManager.LoadCookie(Constants.COOKIE_FILE);
+            request.CookieContainer = await _localStorageManager.LoadCookie(Constants.COOKIE_FILE);
             request.Method = "POST";
             request.ContentType = POST_CONTENT_TYPE;
             request.UseDefaultCredentials = false;
@@ -70,9 +58,8 @@ namespace AwfulMetro.Core.Manager
                 writer.Write(data);
             }
 
-            var response = await request.GetResponseAsync();
+            WebResponse response = await request.GetResponseAsync();
             return request.CookieContainer;
-
         }
 
         public async Task<HttpResponseMessage> PostFormData(string url, MultipartFormDataContent form)
@@ -80,31 +67,21 @@ namespace AwfulMetro.Core.Manager
             // TODO: This is a temp solution. Every post should use HttpWebRequest or HttpClient, but not both. 
             var handler = new HttpClientHandler
             {
-                CookieContainer = await this._localStorageManager.LoadCookie(Constants.COOKIE_FILE),
+                CookieContainer = await _localStorageManager.LoadCookie(Constants.COOKIE_FILE),
                 UseDefaultCredentials = false
             };
             var httpClient = new HttpClient(handler);
-            var result = await httpClient.PostAsync(url, form);
+            HttpResponseMessage result = await httpClient.PostAsync(url, form);
             return result;
-        }
-
-        private static async Task<HttpWebRequest> CreateGetRequest(string url, ILocalStorageManager localStorageManager)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Accept = ACCEPT;
-            request.CookieContainer = await localStorageManager.LoadCookie(Constants.COOKIE_FILE);
-            request.Method = "GET";
-            request.UseDefaultCredentials = false;
-            return request;
         }
 
 
         public async Task<Result> DownloadHtml(string url)
         {
-            var request = await CreateGetRequest(url, this._localStorageManager);
+            HttpWebRequest request = await CreateGetRequest(url, _localStorageManager);
 
-            using (var response = await request.GetResponseAsync())
-            using (var stream = response.GetResponseStream())
+            using (WebResponse response = await request.GetResponseAsync())
+            using (Stream stream = response.GetResponseStream())
             using (var reader = new StreamReader(stream))
             {
                 string html = reader.ReadToEnd();
@@ -114,22 +91,31 @@ namespace AwfulMetro.Core.Manager
             }
         }
 
-        public class Result
+        private static CookieContainer GetCookiesForUri(Uri uri)
         {
-            public HtmlDocument Document { get; private set; }
-            public string AbsoluteUri { get; private set; }
-
-            public Result(HtmlDocument document, string absoluteUri)
+            var container = new CookieContainer();
+            List<Cookie> cookies = CookieJar;
+            foreach (Cookie cookie in cookies)
             {
-                this.Document = document;
-                this.AbsoluteUri = absoluteUri;
+                container.Add(uri, cookie);
             }
+            return container;
+        }
+
+        private static async Task<HttpWebRequest> CreateGetRequest(string url, ILocalStorageManager localStorageManager)
+        {
+            var request = (HttpWebRequest) WebRequest.Create(url);
+            request.Accept = ACCEPT;
+            request.CookieContainer = await localStorageManager.LoadCookie(Constants.COOKIE_FILE);
+            request.Method = "GET";
+            request.UseDefaultCredentials = false;
+            return request;
         }
 
         public static async Task<HtmlDocument> DownloadHtmlClient(HttpClient request, string url)
         {
-            var response = await request.GetAsync(url);
-            var stream = await response.Content.ReadAsStreamAsync();
+            HttpResponseMessage response = await request.GetAsync(url);
+            Stream stream = await response.Content.ReadAsStreamAsync();
             using (var reader = new StreamReader(stream))
             {
                 string html = reader.ReadToEnd();
@@ -137,6 +123,18 @@ namespace AwfulMetro.Core.Manager
                 doc.LoadHtml(html);
                 return doc;
             }
+        }
+
+        public class Result
+        {
+            public Result(HtmlDocument document, string absoluteUri)
+            {
+                Document = document;
+                AbsoluteUri = absoluteUri;
+            }
+
+            public HtmlDocument Document { get; private set; }
+            public string AbsoluteUri { get; private set; }
         }
     }
 }

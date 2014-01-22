@@ -1,32 +1,36 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AwfulMetro.Common;
-using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 
 namespace AwfulMetro.ViewModels
 {
     public class LoginPageViewModel : NotifierBase
     {
-        public event EventHandler<EventArgs> LoginSuccessful;
-        public event EventHandler<EventArgs> LoginFailed;
-
         private readonly IAuthenticationManager _authManager;
-        private string _userName;
         private string _password;
+        private string _userName;
+
+        public LoginPageViewModel(IAuthenticationManager authManager)
+        {
+            ClickLoginButtonCommand = new AsyncDelegateCommand(async o => { await ClickLoginButton(); },
+                o => CanClickLoginButton);
+            _authManager = authManager;
+        }
+
+        public LoginPageViewModel() : this(new AuthenticationManager())
+        {
+        }
 
         public string UserName
         {
-            get
-            {
-                return this._userName;
-            }
+            get { return _userName; }
             set
             {
-                if (this._userName != value)
+                if (_userName != value)
                 {
-                    this._userName = value;
-                    this.OnPropertyChanged();
+                    _userName = value;
+                    OnPropertyChanged();
                     ClickLoginButtonCommand.RaiseCanExecuteChanged();
                 }
             }
@@ -34,48 +38,33 @@ namespace AwfulMetro.ViewModels
 
         public string Password
         {
-            get
-            {
-                return this._password;
-            }
+            get { return _password; }
             set
             {
-                if (this._password != value)
+                if (_password != value)
                 {
-                    this._password = value;
-                    this.OnPropertyChanged();
+                    _password = value;
+                    OnPropertyChanged();
                     ClickLoginButtonCommand.RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public bool CanClickLoginButton 
+        public bool CanClickLoginButton
         {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password);
-            } 
+            get { return !string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password); }
         }
 
         public AsyncDelegateCommand ClickLoginButtonCommand { get; private set; }
-
-        public LoginPageViewModel(IAuthenticationManager authManager)
-        {
-            ClickLoginButtonCommand = new AsyncDelegateCommand(async o => { await this.ClickLoginButton(); }, o => CanClickLoginButton);
-            this._authManager = authManager;
-        }
-
-        public LoginPageViewModel() : this(new AuthenticationManager())
-        {
-            
-        }
+        public event EventHandler<EventArgs> LoginSuccessful;
+        public event EventHandler<EventArgs> LoginFailed;
 
         public async Task ClickLoginButton()
         {
             bool loginResult;
             try
             {
-                loginResult = await this._authManager.Authenticate(this.UserName, this.Password);
+                loginResult = await _authManager.Authenticate(UserName, Password);
             }
             catch (LoginFailedException)
             {

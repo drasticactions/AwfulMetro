@@ -11,8 +11,8 @@ namespace AwfulMetro.Core.Tools
     {
         public static void Serialize(CookieCollection cookies, Uri address, Stream stream)
         {
-            var serializer = new DataContractSerializer(typeof(IEnumerable<Cookie>));
-            var cookieList = cookies.OfType<Cookie>();
+            var serializer = new DataContractSerializer(typeof (IEnumerable<Cookie>));
+            IEnumerable<Cookie> cookieList = cookies.OfType<Cookie>();
 
             serializer.WriteObject(stream, cookieList);
         }
@@ -20,8 +20,8 @@ namespace AwfulMetro.Core.Tools
         public static CookieContainer Deserialize(Uri uri, Stream stream)
         {
             var container = new CookieContainer();
-            var serializer = new DataContractSerializer(typeof(IEnumerable<Cookie>));
-            var cookies = (IEnumerable<Cookie>)serializer.ReadObject(stream);
+            var serializer = new DataContractSerializer(typeof (IEnumerable<Cookie>));
+            var cookies = (IEnumerable<Cookie>) serializer.ReadObject(stream);
             var cookieCollection = new CookieCollection();
 
             foreach (Cookie cookie in cookies)

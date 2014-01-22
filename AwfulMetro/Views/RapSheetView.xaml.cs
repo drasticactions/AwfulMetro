@@ -1,10 +1,10 @@
+﻿using System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
-using System;
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -65,16 +65,17 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = false;
             if (e.NavigationParameter != null)
             {
-                var userId = Convert.ToInt64(e.NavigationParameter);
-                
+                long userId = Convert.ToInt64(e.NavigationParameter);
+
                 DefaultViewModel["RapSheet"] =
                     await
-                        this._rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+                        _rapSheetManager.GetRapSheet(Constants.BASE_URL +
+                                                     string.Format(Constants.USER_RAP_SHEET, userId));
             }
             else
             {
                 DefaultViewModel["RapSheet"] =
-                    await this._rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
+                    await _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
             }
         }
 
@@ -98,8 +99,8 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
             DefaultViewModel["RapSheet"] =
                 await
-                    this._rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
-                                                string.Format(Constants.PAGE_NUMBER, _currentPage));
+                    _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
+                                                 string.Format(Constants.PAGE_NUMBER, _currentPage));
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
@@ -108,8 +109,8 @@ namespace AwfulMetro.Views
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
             DefaultViewModel["RapSheet"] =
                 await
-                    this._rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
-                                                string.Format(Constants.PAGE_NUMBER, _currentPage));
+                    _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
+                                                 string.Format(Constants.PAGE_NUMBER, _currentPage));
         }
 
         #region NavigationHelper registration

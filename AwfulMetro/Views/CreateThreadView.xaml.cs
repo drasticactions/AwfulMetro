@@ -20,13 +20,13 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
+        private readonly SmileManager _smileManager = new SmileManager();
+        private readonly TagManager _tagManager = new TagManager();
         private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
         private ForumEntity _forum;
         private TagEntity _selectedTag;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
         private List<TagCategoryEntity> _tagList = new List<TagCategoryEntity>();
-        private readonly SmileManager _smileManager = new SmileManager();
-        private readonly TagManager _tagManager = new TagManager();
 
         public CreateThreadView()
         {
@@ -100,7 +100,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_smileCategoryList.Any())
             {
-                _smileCategoryList = await this._smileManager.GetSmileList();
+                _smileCategoryList = await _smileManager.GetSmileList();
             }
             DefaultViewModel["Groups"] = _smileCategoryList;
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -122,7 +122,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             if (!_tagList.Any())
             {
-                _tagList = await this._tagManager.GetTagList(_forum.ForumId);
+                _tagList = await _tagManager.GetTagList(_forum.ForumId);
             }
             DefaultViewModel["Groups"] = _tagList;
             loadingProgressBar.Visibility = Visibility.Collapsed;
