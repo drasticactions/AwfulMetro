@@ -7,17 +7,18 @@ jQuery.cookie = function(e, f, a) {
         var i = a.path ? "; path=" + a.path : "",
             k = a.domain ? "; domain=" + a.domain : "",
             a = a.secure ? "; secure" : "";
-        document.cookie = [e, "=", encodeURIComponent(f), g, i, k, a].join("")
+        document.cookie = [e, "=", encodeURIComponent(f), g, i, k, a].join("");
     } else {
         f = null;
         if (document.cookie && "" != document.cookie) {
             a = document.cookie.split(";");
-            for (g = 0; g < a.length; g++) if (i = jQuery.trim(a[g]), i.substring(0, e.length + 1) == e + "=") {
-                f = decodeURIComponent(i.substring(e.length + 1));
-                break
-            }
+            for (g = 0; g < a.length; g++)
+                if (i = jQuery.trim(a[g]), i.substring(0, e.length + 1) == e + "=") {
+                    f = decodeURIComponent(i.substring(e.length + 1));
+                    break;
+                }
         }
-        return f
+        return f;
     }
 };
 window.SA || (SA = {});
@@ -29,32 +30,33 @@ SA.utils = new function(e, f, a) {
         if (g.storageEnabled && null !== a) {
             var e = null;
             if (1 < arguments.length) e = arguments[1], null === e ? localStorage.removeItem(a) : localStorage.setItem(a, JSON.stringify(e));
-            else if (e = localStorage.getItem(a), null !== e) return JSON.parse(e)
+            else if (e = localStorage.getItem(a), null !== e) return JSON.parse(e);
         }
-        return null
+        return null;
     };
     g.qs = function(a) {
         if (a) {
             var g = [],
                 d;
             for (d in a) g.push(encodeURIComponent(d) + "=" + encodeURIComponent(a[d]));
-            return g.join("&")
+            return g.join("&");
         }
         a = {};
         if (g = e.location.search) for (var g = g.substr(1).split("&"), j = 0; j < g.length; j++) d = g[j].indexOf("="), -1 == d ? a[g[j]] = "" : a[decodeURIComponent(g[j].substr(0, d))] = decodeURIComponent(g[j].substr(d + 1));
-        return a
+        return a;
     };
     e.rf = function(e) {
-        a("td.postbody iframe").css("height", Math.min(e, 800))
-    }
+        a("td.postbody iframe").css("height", Math.min(e, 800));
+    };
 }(window, document, jQuery);
 new function(e, f, a) {
     var g = a.browser.webkit || a.browser.safari ? "body" : "html",
-        i, k = 0,
+        i,
+        k = 0,
         d = 0,
         j = function(a) {
             var d = Math.floor(160 * Math.random()) + 1;
-            return "http://fi.somethingawful.com/sideimages/" + a + "88/" + d + ".jpg"
+            return "http://fi.somethingawful.com/sideimages/" + a + "88/" + d + ".jpg";
         },
         b = function() {
             i.offset();
@@ -68,7 +70,7 @@ new function(e, f, a) {
                 e = e.height(),
                 j = j + e - d;
             b > j ? e > d && (h.top = j) : b >= k && (a.browser.msie && 7 > parseInt(a.browser.version, 10) ? h.top = b : (h.position = "fixed", h.top = 0));
-            i.css(h)
+            i.css(h);
         };
     a(f).ready(function() {
         var c = a("div.oma_pal"),
@@ -88,49 +90,54 @@ new function(e, f, a) {
             c = h.clone();
             c.addClass("right");
             c.attr("src", j("r"));
-            b.append(c)
+            b.append(c);
         });
         i = a("div#unregskyscraper");
         i.length && (k = i.offset().top - 10, d = i.height() + 10, a(e).scroll(b));
         a("iframe.adframe").each(function(d, b) {
-            a(b).attr("src", "/adframe.php?z=" + a(b).attr("data-zone"))
-        })
-    })
+            a(b).attr("src", "/adframe.php?z=" + a(b).attr("data-zone"));
+        });
+    });
 }(window, document, jQuery);
 
 function newposts(e) {
-    window.location.href = "/showthread.php?goto=newpost&threadid=" + e
+    window.location.href = "/showthread.php?goto=newpost&threadid=" + e;
 }
+
 function validate_pm(e, f) {
-    return "" == e.message.value || "" == e.touser.value ? (alert("Please complete the recipient and message fields."), !1) : 0 != f && e.message.value.length > f / 2 ? (alert("Your message is too long.\n\nReduce your message to " + f / 2 + " characters.\nIt is currently " + e.message.value.length + " characters long."), !1) : !0
+    return "" == e.message.value || "" == e.touser.value ? (alert("Please complete the recipient and message fields."), !1) : 0 != f && e.message.value.length > f / 2 ? (alert("Your message is too long.\n\nReduce your message to " + f / 2 + " characters.\nIt is currently " + e.message.value.length + " characters long."), !1) : !0;
 }
 
 function confirm_newpm() {
     input_box = confirm("You have a new private message. Click OK to view it, or cancel to hide this prompt.");
-    !0 == input_box && (second_box = confirm("Open in new window?\n\n(Press cancel to open in the current window.)"), !0 == second_box ? window.open("private.php", "pmnew") : window.location = "private.php")
+    !0 == input_box && (second_box = confirm("Open in new window?\n\n(Press cancel to open in the current window.)"), !0 == second_box ? window.open("private.php", "pmnew") : window.location = "private.php");
 }
+
 function posticon_sel(e) {
-    document.vbform.iconid.item(e).checked = !0
+    document.vbform.iconid.item(e).checked = !0;
 }
 
 function validate(e, f) {
     if (e.elements.namedItem("subject") && "" == e.subject.value) return alert("Please complete the subject field, shithead."), !1;
     var a = e.elements.namedItem("message");
-    return a && "" == e.message.value ? (alert("Please complete the message field, shithead."), !1) : 0 != f && a.length > f ? (alert("Your message is too long.\n\nReduce your message to " + f + " characters.\nIt is currently " + e.message.value.length + " characters long.\n  Are you trying to spam?\n  If so, then STOP!"), !1) : !0
+    return a && "" == e.message.value ? (alert("Please complete the message field, shithead."), !1) : 0 != f && a.length > f ? (alert("Your message is too long.\n\nReduce your message to " + f + " characters.\nIt is currently " + e.message.value.length + " characters long.\n  Are you trying to spam?\n  If so, then STOP!"), !1) : !0;
 }
 
 function checklength(e, f) {
     f || (f = 0);
     message = 0 != f ? "\nThe maximum permitted length is " + f + " characters." : "";
-    alert("Your message is " + e.message.value.length + " characters long." + message)
+    alert("Your message is " + e.message.value.length + " characters long." + message);
 }
+
 function rate_thread(e) {
     document.rateform.vote.value = e;
-    document.rateform.submit()
+    document.rateform.submit();
 }
+
 function reloadCaptcha() {
-    document.images.captcha.src = "captcha.php?" + Math.random()
+    document.images.captcha.src = "captcha.php?" + Math.random();
 }
+
 $(document).ready(function() {
     var e = $("#thread table.post");
     $(e).each(function(a, e) {
@@ -145,31 +152,35 @@ $(document).ready(function() {
             });
             var j = $(e).find("tr td.postlinks ul.profilelinks"),
                 b = 3 <= j.find("li").length ? 2 : 1;
-        } catch (c) {}
+        } catch (c) {
+        }
     });
     var f = RegExp(/^\(USER WAS (?:BANNED|PUT ON PROBATION) FOR THIS POST\)$/);
     $(e).each(function(a, e) {
         try {
             $(e).find("td.postbody > b:last").filter(function(a, d) {
-                return !!$(d).text().match(f)
-            }).wrapInner('<a href="/banlist.php?userid=' + $(e).data("userid") + '" />')
-        } catch (i) {}
+                return !!$(d).text().match(f);
+            }).wrapInner('<a href="/banlist.php?userid=' + $(e).data("userid") + '" />');
+        } catch (i) {
+        }
     });
     $("td.postbody .cancerous").closest("td").hover(function() {
-        $(".cancerous", this).addClass("hover")
+        $(".cancerous", this).addClass("hover");
     }, function() {
-        $(".cancerous", this).removeClass("hover")
-    })
+        $(".cancerous", this).removeClass("hover");
+    });
 });
 
 function add_whoposted_links() {
     $("#forum.threadlist tr.thread").each(function(e, f) {
         try {
             var a = f.id.match(/^thread(\d+)$/)[1];
-            $("td.replies", f).wrapInner('<a href="/misc.php?action=whoposted&amp;threadid=' + a + '" target="_blank" title="List users that posted in this thread" />')
-        } catch (g) {}
-    })
+            $("td.replies", f).wrapInner('<a href="/misc.php?action=whoposted&amp;threadid=' + a + '" target="_blank" title="List users that posted in this thread" />');
+        } catch (g) {
+        }
+    });
 }
+
 new function(e, f, a) {
     var g = [],
         i = /thread(\d+)/i;
@@ -198,9 +209,9 @@ new function(e, f, a) {
                     }, function(a) {
                         0 <= a.category_id && !e.disable_thread_coloring && h.addClass("category" + a.category_id);
                         h.removeClass("spin");
-                        b.addClass("bm" + a.category_id)
+                        b.addClass("bm" + a.category_id);
                     });
-                    return !1
+                    return !1;
                 });
                 var g = h.find("div.lastseen"),
                     f = g.find("a.x");
@@ -213,10 +224,10 @@ new function(e, f, a) {
                         action: "resetseen",
                         json: 1
                     }, function(a) {
-                        a.threadid && (h.removeClass("seen"), g.remove())
+                        a.threadid && (h.removeClass("seen"), g.remove());
                     });
-                    return !1
-                })
+                    return !1;
+                });
             }
         });
         var j = !1,
@@ -225,7 +236,7 @@ new function(e, f, a) {
         if (b.length && c.length) {
             var h = parseInt(a("body").attr("data-thread"), 10),
                 g = function() {
-                    c.hasClass("unbookmark") ? b.html("Unbookmark this thread") : b.html("Bookmark this thread")
+                    c.hasClass("unbookmark") ? b.html("Unbookmark this thread") : b.html("Bookmark this thread");
                 },
                 f = function() {
                     c.hasClass("bookmark") ? c.attr({
@@ -236,7 +247,7 @@ new function(e, f, a) {
                         src: "http://fi.somethingawful.com/images/buttons/button-unbookmark.png",
                         alt: "Unbookmark",
                         title: "Unbookmark thread"
-                    })
+                    });
                 },
                 d = function() {
                     if (j) return !1;
@@ -251,35 +262,36 @@ new function(e, f, a) {
                         a.bookmarked ? c.addClass("unbookmark") : c.addClass("bookmark");
                         f();
                         g();
-                        j = !1
-                    })
+                        j = !1;
+                    });
                 };
             c.click(d);
             b.click(d);
             f();
-            g()
+            g();
         }
-        if (a("body").hasClass("usercp") || a("body").hasClass("bookmark_threads")) d = a("table#forum"), d.length && (d.find("thead > tr").append("<th></th>"), d.find("tbody > tr").append('<td class="button_remove"><div title="Remove bookmark"></div></td>'), d.delegate("td.button_remove div", "click", function() {
-            var b = a(this),
-                d = b.parents("tr").eq(0),
-                c = i.exec(d.attr("id"));
-            if (c) {
-                c = c[1];
-                if (b.data("pending")) return !1;
-                b.data("pending", !0);
-                b.removeClass("warn");
-                b.addClass("spin");
-                a.post("/bookmarkthreads.php", {
-                    threadid: c,
-                    action: "remove",
-                    json: 1
-                }, function() {
-                    d.remove()
-                })
-            }
-            return !1
-        }))
-    })
+        if (a("body").hasClass("usercp") || a("body").hasClass("bookmark_threads"))
+            d = a("table#forum"), d.length && (d.find("thead > tr").append("<th></th>"), d.find("tbody > tr").append('<td class="button_remove"><div title="Remove bookmark"></div></td>'), d.delegate("td.button_remove div", "click", function() {
+                var b = a(this),
+                    d = b.parents("tr").eq(0),
+                    c = i.exec(d.attr("id"));
+                if (c) {
+                    c = c[1];
+                    if (b.data("pending")) return !1;
+                    b.data("pending", !0);
+                    b.removeClass("warn");
+                    b.addClass("spin");
+                    a.post("/bookmarkthreads.php", {
+                        threadid: c,
+                        action: "remove",
+                        json: 1
+                    }, function() {
+                        d.remove();
+                    });
+                }
+                return !1;
+            }));
+    });
 }(window, document, jQuery);
 new function(e, f, a) {
     a(f).ready(function() {
@@ -293,26 +305,26 @@ new function(e, f, a) {
                     threadid: k,
                     vote: d
                 }, function() {
-                    e.html(f[Math.floor(Math.random() * f.length)])
-                })
-            })
+                    e.html(f[Math.floor(Math.random() * f.length)]);
+                });
+            });
         }
-    })
+    });
 }(window, document, jQuery);
 new function(e, f, a) {
     var g = "_sessl",
         g = g + "",
         i = function(a) {
-            return parseInt(a, 10) + 0
+            return parseInt(a, 10) + 0;
         },
         k = function(a) {
             for (var a = a.substr(1).split("&"), e = 0, b, c = {}, h = a.length, f; e < h; e++) b = a[e].indexOf("="), -1 != b && (f = a[e].substr(0, b), b = a[e].substr(b + 1), c[f] = b);
-            return c
+            return c;
         };
     a(f).ready(function() {
         if (a("div#notregistered").length) {
             a("table#forum th a").each(function(b, d) {
-                a(d).replaceWith(d.childNodes)
+                a(d).replaceWith(d.childNodes);
             });
             a("ul.postbuttons img#button_bookmark").parent().remove();
             var d = e.location.search;
@@ -323,7 +335,7 @@ new function(e, f, a) {
                 if (f.hasOwnProperty("forumid")) d = i(f.forumid);
                 else {
                     var h = a('div.breadcrumbs a[href^="forumdisplay.php"]').last();
-                    h.length && (h = h.attr("href"), h = k(h.substr(h.indexOf("?"))), h.hasOwnProperty("forumid") && (d = i(h.forumid)))
+                    h.length && (h = h.attr("href"), h = k(h.substr(h.indexOf("?"))), h.hasOwnProperty("forumid") && (d = i(h.forumid)));
                 }
                 f.hasOwnProperty("threadid") && (b = i(f.threadid));
                 f.hasOwnProperty("postid") && (c = i(f.postid));
@@ -335,26 +347,28 @@ new function(e, f, a) {
                         t = i(value[1]),
                         w = i(value[2]),
                         l = i(value[3]);
-                    180 > h - l && (f = !1, n == d && t == b && w == c || (f = !0))
+                    180 > h - l && (f = !1, n == d && t == b && w == c || (f = !0));
                 }
                 f && (d = [d, b, c, h].join("."), a.cookie(g, d, {
                     expires: 10,
                     domain: "forums.somethingawful.com"
-                }), a("body").append('<img src="/s/' + d + '" alt="">'))
+                }), a("body").append('<img src="/s/' + d + '" alt="">'));
             }
         }
-    })
+    });
 }(window, document, jQuery);
 window.SA || (SA = {});
 SA.timg = new function(e, f, a) {
     var g = this,
         i = function(d, f) {
             var b = a(this).siblings("img"),
-                c, h;
-            if (b.attr("t_width")) a(this).removeClass("expanded"), b.attr({
-                width: b.attr("t_width"),
-                height: b.attr("t_height")
-            }), b.removeAttr("t_width"), b.removeAttr("t_height");
+                c,
+                h;
+            if (b.attr("t_width"))
+                a(this).removeClass("expanded"), b.attr({
+                    width: b.attr("t_width"),
+                    height: b.attr("t_height")
+                }), b.removeAttr("t_width"), b.removeAttr("t_height");
             else {
                 a(this).addClass("expanded");
                 b.attr({
@@ -370,7 +384,7 @@ SA.timg = new function(e, f, a) {
                     var i = b.position(),
                         g = (g - 3 * i.left) / c;
                     b.attr("width", c * g);
-                    b.attr("height", h * g)
+                    b.attr("height", h * g);
                 } else b.removeAttr("width"), b.removeAttr("height");
                 g = a.browser.webkit || a.browser.safari ? "body" : "html";
                 h = a(g).scrollTop();
@@ -380,9 +394,9 @@ SA.timg = new function(e, f, a) {
                 c < h && (h = c);
                 h != a(g).scrollTop() && (a.browser.msie && 7 > parseInt(a.browser.version, 10) ? a(g).scrollTop(h) : a(g).animate({
                     scrollTop: h
-                }, 150))
+                }, 150));
             }
-            return !1
+            return !1;
         },
         k = function() {
             var d = a(this);
@@ -416,27 +430,27 @@ SA.timg = new function(e, f, a) {
                     b.prepend(d);
                     f.click(i);
                     b.click(function(b) {
-                        if (1 === b.which || a.browser.msie && 9 > parseInt(a.browser.version, 10) && 0 === b.which) return i.call(f, b, !0), !1
-                    })
+                        if (1 === b.which || a.browser.msie && 9 > parseInt(a.browser.version, 10) && 0 === b.which) return i.call(f, b, !0), !1;
+                    });
                 }
-                d.trigger("timg.loaded")
+                d.trigger("timg.loaded");
             }
         };
     g.scan = function(d) {
         a(d).find("img.timg").each(function(d, b) {
             b = a(b);
-            b.hasClass("complete") || (b.addClass("loading"), b[0].complete || null !== b[0].naturalWidth && 0 < b[0].naturalWidth ? k.call(b) : b.load(k))
-        })
+            b.hasClass("complete") || (b.addClass("loading"), b[0].complete || null !== b[0].naturalWidth && 0 < b[0].naturalWidth ? k.call(b) : b.load(k));
+        });
     };
     a(f).ready(function() {
-        g.scan("body")
+        g.scan("body");
     });
     a(e).load(function() {
         var d = a("img.timg.loading");
         d.length && d.each(function(a, b) {
-            k.call(b)
-        })
-    })
+            k.call(b);
+        });
+    });
 }(window, document, jQuery);
 (function(e, f, a) {
     var g = !1,
@@ -465,14 +479,14 @@ SA.timg = new function(e, f, a) {
                 var b = null,
                     a = "postreply_" + a;
                 if (1 < arguments.length) b = arguments[1], null === b ? localStorage.removeItem(a) : localStorage.setItem(a, JSON.stringify(b));
-                else if (b = localStorage.getItem(a), null !== b) return JSON.parse(b)
+                else if (b = localStorage.getItem(a), null !== b) return JSON.parse(b);
             }
-            return null
+            return null;
         },
         G = function(a) {
             var b = "\n";
             "\n" != d[0].value.substr(d[0].value.length - 1) && (b += "\n");
-            s(b + a, null, !1)
+            s(b + a, null, !1);
         },
         E = function() {
             if (!g && i.length) {
@@ -482,15 +496,15 @@ SA.timg = new function(e, f, a) {
                     k[b.attr("href")] = a.body;
                     G(a.body);
                     b.children("img").attr("src", "http://fi.somethingawful.com/images/sa-quote-added.gif");
-                    E()
-                }, "json")
-            } else g = !1
+                    E();
+                }, "json");
+            } else g = !1;
         },
         O = function() {
             a(this).css("opacity", 0.6);
             i.push(this);
             E();
-            return !1
+            return !1;
         },
         H = function() {
             if (A && (null === b || 1 < b.length)) {
@@ -503,7 +517,7 @@ SA.timg = new function(e, f, a) {
                 D(c, {
                     time: e.getTime(),
                     message: a.trim(d[0].value)
-                })
+                });
             }
         },
         z = function() {
@@ -516,9 +530,9 @@ SA.timg = new function(e, f, a) {
                     scroll: d[0].scrollTop,
                     text: d[0].value
                 });
-                c = b.length - 1
+                c = b.length - 1;
             }
-            H()
+            H();
         },
         I = function() {
             if (b.length && 0 <= c && c < b.length) {
@@ -527,16 +541,16 @@ SA.timg = new function(e, f, a) {
                 u(a.start, a.end);
                 d[0].scrollTop = b[c].scroll;
                 p();
-                H()
+                H();
             }
         },
         J = function() {
             c = Math.min(b.length - 1, c + 1);
-            I()
+            I();
         },
         v = function() {
             clearInterval(h);
-            h = setTimeout(z, 250)
+            h = setTimeout(z, 250);
         },
         q = function() {
             var a = null;
@@ -544,28 +558,32 @@ SA.timg = new function(e, f, a) {
                 start: d[0].selectionStart,
                 end: d[0].selectionEnd
             });
-            return a
+            return a;
         },
         u = function(a) {
-            d[0].setSelectionRange(a, 2 == arguments.length ? arguments[1] : a)
+            d[0].setSelectionRange(a, 2 == arguments.length ? arguments[1] : a);
         },
         K = function(a) {
             for (var b = [
-                [0, 47],
-                [58, 64],
-                [91, 96],
-                [123, 126]
-            ], d = 0, e = b.length, c = !1; d < e; d++) if (a >= b[d][0] && a <= b[d][1]) {
-                c = !0;
-                break
-            }
-            return c
+                         [0, 47],
+                         [58, 64],
+                         [91, 96],
+                         [123, 126]
+                     ],
+                d = 0,
+                e = b.length,
+                c = !1; d < e; d++)
+                if (a >= b[d][0] && a <= b[d][1]) {
+                    c = !0;
+                    break;
+                }
+            return c;
         },
         L = function(a) {
             var b = q(),
                 e = d[0].value,
                 c = e.lastIndexOf("[" + a, b.start);
-            return -1 != c ? (c = e.indexOf("[/" + a + "]", c), -1 == c ? !1 : c + 3 > b.end) : !1
+            return -1 != c ? (c = e.indexOf("[/" + a + "]", c), -1 == c ? !1 : c + 3 > b.end) : !1;
         },
         s = function(a, b, c) {
             null === b && (b = q());
@@ -583,19 +601,20 @@ SA.timg = new function(e, f, a) {
             u(i);
             z();
             p();
-            return b
+            return b;
         },
         M = function(a) {
             var a = a.split("&"),
                 b = {},
-                d, c;
+                d,
+                c;
             for (c in a) d = a[c].indexOf("="), -1 != d ? b[a[c].substr(0, d)] = a[c].substr(d + 1) : b[a[c]] = !0;
-            return b
+            return b;
         },
         P = function() {
             var a = q(),
                 b = null;
-            return 5 <= a.start && (b = d[0].value.substr(a.start - 5), /^(\[img\]|\[url\]|\[url="?)/.test(b)) || 6 <= a.start && (b = d[0].value.substr(a.start - 6), /^\[timg\]/.test(b)) ? !0 : !1
+            return 5 <= a.start && (b = d[0].value.substr(a.start - 5), /^(\[img\]|\[url\]|\[url="?)/.test(b)) || 6 <= a.start && (b = d[0].value.substr(a.start - 6), /^\[timg\]/.test(b)) ? !0 : !1;
         },
         Q = function(a) {
             var b = null,
@@ -645,40 +664,48 @@ SA.timg = new function(e, f, a) {
                             var h = /([^:]+):\/\/([^\/]+)(\/.*)?/.exec(decodeURI(c));
                             if (h) {
                                 var f = {
-                                    scheme: h[1],
-                                    domain: h[2],
-                                    path: h[3] || "",
-                                    filename: "",
-                                    query: {},
-                                    fragment: ""
-                                },
-                                    h = f.path.lastIndexOf("#"); - 1 != h && (f.fragment = f.path.substr(h + 1), f.path = f.path.substr(0, h));
-                                h = f.path.lastIndexOf("?"); - 1 != h && (f.query = M(f.path.substr(h + 1)), f.path = f.path.substr(0, h));
-                                h = f.path.lastIndexOf("/"); - 1 != h && (f.filename = f.path.substr(h + 1));
-                                e = f
+                                        scheme: h[1],
+                                        domain: h[2],
+                                        path: h[3] || "",
+                                        filename: "",
+                                        query: {},
+                                        fragment: ""
+                                    },
+                                    h = f.path.lastIndexOf("#");
+                                - 1 != h && (f.fragment = f.path.substr(h + 1), f.path = f.path.substr(0, h));
+                                h = f.path.lastIndexOf("?");
+                                - 1 != h && (f.query = M(f.path.substr(h + 1)), f.path = f.path.substr(0, h));
+                                h = f.path.lastIndexOf("/");
+                                - 1 != h && (f.filename = f.path.substr(h + 1));
+                                e = f;
                             } else e = null;
                             var f = h = "",
                                 g = !1,
-                                i = e.filename.lastIndexOf("."); - 1 != i && (h = e.filename.substr(i + 1), f = e.filename.substr(0, i));
-                            if ((i = /^([^\.]+\.)?youtu\.be$/.test(e.domain)) || /^([^\.]+\.)?youtube(-nocookie)?\.com$/.test(e.domain)) if (e.query.v) c = '[video type="youtube"', e.query.hd && (c += ' res="hd"'), e.fragment && (g = M(e.fragment), g.t && (c += ' start="' + parseInt(g.t, 10) + '"')), c += "]" + e.query.v + "[/video]", g = !0;
-                            else if (i || /^\/embed/.test(e.path)) c = '[video type="youtube"', e.query.hd && (c += ' res="hd"'), e.query.start && (c += ' start="' + parseInt(e.query.start, 10) + '"'), c += "]" + e.path.substr(e.path.lastIndexOf("/") + 1) + "[/video]", g = !0;
-                            if (!g) switch (h) {
-                            case "jpg":
-                            case "gif":
-                            case "png":
-                                if (/(www\.|i\.)imgur.com/i.test(e.domain)) switch (e = "", 5 < f.length && (e = f.substr(f.length - 1)), e) {
-                                case "s":
-                                case "l":
-                                case "t":
-                                    c = "[url=" + (c.substr(0, c.lastIndexOf("/") + 1) + f.substr(0, f.length - 1) + "." + h) + "][img]" + c + "[/img][/url]";
-                                    break;
-                                default:
-                                    c = "[img]" + c + "[/img]"
-                                } else c = "[img]" + c + "[/img]"
-                            }
+                                i = e.filename.lastIndexOf(".");
+                            - 1 != i && (h = e.filename.substr(i + 1), f = e.filename.substr(0, i));
+                            if ((i = /^([^\.]+\.)?youtu\.be$/.test(e.domain)) || /^([^\.]+\.)?youtube(-nocookie)?\.com$/.test(e.domain))
+                                if (e.query.v) c = '[video type="youtube"', e.query.hd && (c += ' res="hd"'), e.fragment && (g = M(e.fragment), g.t && (c += ' start="' + parseInt(g.t, 10) + '"')), c += "]" + e.query.v + "[/video]", g = !0;
+                                else if (i || /^\/embed/.test(e.path)) c = '[video type="youtube"', e.query.hd && (c += ' res="hd"'), e.query.start && (c += ' start="' + parseInt(e.query.start, 10) + '"'), c += "]" + e.path.substr(e.path.lastIndexOf("/") + 1) + "[/video]", g = !0;
+                            if (!g)
+                                switch (h) {
+                                case "jpg":
+                                case "gif":
+                                case "png":
+                                    if (/(www\.|i\.)imgur.com/i.test(e.domain))
+                                        switch (e = "", 5 < f.length && (e = f.substr(f.length - 1)), e) {
+                                        case "s":
+                                        case "l":
+                                        case "t":
+                                            c = "[url=" + (c.substr(0, c.lastIndexOf("/") + 1) + f.substr(0, f.length - 1) + "." + h) + "][img]" + c + "[/img][/url]";
+                                            break;
+                                        default:
+                                            c = "[img]" + c + "[/img]";
+                                        }
+                                    else c = "[img]" + c + "[/img]";
+                                }
                         }
                         d.focus();
-                        s(c, a, !1)
+                        s(c, a, !1);
                     }, 50);
                     break;
                 case 88:
@@ -686,7 +713,7 @@ SA.timg = new function(e, f, a) {
                 case 89:
                     return J(), a.preventDefault(), a.stopPropagation(), !1;
                 case 90:
-                    return a.shiftKey ? J() : (c = Math.max(0, c - 1), I()), a.preventDefault(), a.stopPropagation(), !1
+                    return a.shiftKey ? J() : (c = Math.max(0, c - 1), I()), a.preventDefault(), a.stopPropagation(), !1;
                 }
                 if (null !== h && (b = q(), null !== b)) {
                     if (!a.shiftKey && b.start == b.end) {
@@ -700,18 +727,18 @@ SA.timg = new function(e, f, a) {
                         }; 0 <= i;) {
                             if (K(e.charCodeAt(i))) {
                                 i++;
-                                break
+                                break;
                             }
-                            i--
+                            i--;
                         }
                         for (g.start = i; i < f && !K(e.charCodeAt(i));) i++;
                         g.end = i;
-                        b = g
+                        b = g;
                     }
                     a.preventDefault();
                     a.stopPropagation();
                     s(h, b, !0);
-                    return !1
+                    return !1;
                 }
             } else {
                 h = null;
@@ -720,12 +747,12 @@ SA.timg = new function(e, f, a) {
                     !a.shiftKey && L("list") && (h = "\n[*]");
                     break;
                 case 9:
-                    L("code") && (h = "\t")
+                    L("code") && (h = "\t");
                 }
                 if (null !== h) return s(h, null, !1), a.preventDefault(), a.stopPropagation(), !1;
-                v()
+                v();
             }
-            return !0
+            return !0;
         },
         p = function() {
             var b = l.find("div.character-count"),
@@ -734,7 +761,7 @@ SA.timg = new function(e, f, a) {
             if (0 < c && 5E4 >= c && b.hasClass("over")) b.removeClass("over"), a('input.bginput[type="submit"]').attr("disabled", !1);
             else if (5E4 < c || 0 === c) b.addClass("over"), a('input.bginput[type="submit"]').attr("disabled", !0);
             B ? c = Math.round(1E5 * Math.random()) - 5E4 : 3E4 < c && !b.is(":visible") && b.show();
-            b.text(c + " / 50000")
+            b.text(c + " / 50000");
         };
     a(f).ready(function() {
         r = !! a('form[action="newthread.php"]').length;
@@ -750,10 +777,10 @@ SA.timg = new function(e, f, a) {
             d.keyup(p);
             d.change(function() {
                 v();
-                p()
+                p();
             });
             setInterval(function() {
-                C != d[0].value.length && (v(), p())
+                C != d[0].value.length && (v(), p());
             }, 1E3);
             B && l.find("div.character-count").show();
             void 0 !== d[0].selectionStart && void 0 !== d[0].selectionEnd ? x = "new" : f.selection && (x = "ie legacy");
@@ -771,7 +798,7 @@ SA.timg = new function(e, f, a) {
                     g = a('<a href="#">Append</a>');
                     g.click(function() {
                         s(c.message, null, !1);
-                        return !1
+                        return !1;
                     });
                     h.append(g);
                     g = a('<a href="#">Replace</a>');
@@ -779,7 +806,7 @@ SA.timg = new function(e, f, a) {
                         d[0].value = "";
                         s(c.message, null, !1);
                         u(c.length);
-                        return !1
+                        return !1;
                     });
                     h.append(g);
                     r || (g = a('<a href="#">Preview</a>'), g.click(function() {
@@ -794,7 +821,7 @@ SA.timg = new function(e, f, a) {
                             };
                         a('form[action="newreply.php"] input[type="checkbox"]:checked').each(function(b, c) {
                             c = a(c);
-                            e[c.attr("name")] = "yes"
+                            e[c.attr("name")] = "yes";
                         });
                         a.post("newreply.php?json=1", e, function(b) {
                             var c = m.find("div.postbody");
@@ -809,23 +836,23 @@ SA.timg = new function(e, f, a) {
                             c = m.offset();
                             c.top < a(b).scrollTop() && a(b).animate({
                                 scrollTop: c.top
-                            }, 150)
+                            }, 150);
                         });
-                        return !1
-                    }), h.append(g))
+                        return !1;
+                    }), h.append(g));
                 }
             } else l.find("div.save-state").text("Drafts not enabled in your browser");
             "new" == x && (e.adv_post_disabled ? (b = null, d.keyup(function() {
-                C != d[0].value.length && (v(), p())
+                C != d[0].value.length && (v(), p());
             })) : (j = a("<textarea></textarea>"), j.css({
                 position: "absolute",
                 left: -2E3,
                 top: d.offset().top
             }), a("body").append(j), d.keydown(Q), u(d[0].value.length), z()));
             p();
-            d.focus()
+            d.focus();
         }
-    })
+    });
 })(window, document, jQuery);
 window.SA || (SA = {});
 SA.thread = new function(e, f, a) {
@@ -843,18 +870,18 @@ SA.thread = new function(e, f, a) {
                     c.attr("id", b);
                     a(k).animate({
                         scrollTop: d
-                    }, 150)
+                    }, 150);
                 }
-                return !1
+                return !1;
             }
-            return !0
+            return !0;
         },
         j = function() {
             var b = a(this).attr("href"),
                 c = null;
             if (/^https?:\/\//.test(b) && !/^https?:\/\/(.*\.)?forums\.somethingawful\./.test(b) || /^\/?attachment\.php/.test(b)) return !0;
             g.test(b) ? c = g : i.test(b) && (c = i);
-            return null !== c ? (b = "post" + c.exec(b)[1], d(b)) : !0
+            return null !== c ? (b = "post" + c.exec(b)[1], d(b)) : !0;
         };
     a(f).ready(function() {
         var b = a('<div class="jump_top left">UP</div>'),
@@ -862,39 +889,39 @@ SA.thread = new function(e, f, a) {
         a(f).delegate("td.postbody a", "click", j);
         SA.utils.isMobile ? (a(".bbc-spoiler").bind("touchmove", function(a) {
             a.stopPropagation();
-            a.preventDefault()
+            a.preventDefault();
         }), a(".bbc-spoiler").bind("touchstart", function(b) {
-            b.target == this && (a(this).toggleClass("stay"), b.stopPropagation(), b.preventDefault())
+            b.target == this && (a(this).toggleClass("stay"), b.stopPropagation(), b.preventDefault());
         })) : (a(".bbc-spoiler").click(function(b) {
-            b.target == this && a(this).toggleClass("stay")
+            b.target == this && a(this).toggleClass("stay");
         }), a(".bbc-spoiler").hover(function() {
-            a(this).addClass("reveal")
+            a(this).addClass("reveal");
         }, function() {
-            a(this).removeClass("reveal")
+            a(this).removeClass("reveal");
         }));
         a("body.showpost").length || (a.browser.msie && 7 > parseInt(a.browser.version, 10) ? (c.show(), a("body").append(c)) : (a("body").append(b), a("body").append(c), a(f).mousemove(function(d) {
             var f = b.is(":visible"),
                 g = c.is(":visible"),
                 i = d.pageY > a(k).scrollTop() + a(e).height() - 100;
-            i && 100 > d.pageX ? (g && c.hide(), f || b.show()) : (i && d.pageX > a(e).width() - 100 ? g || c.show() : g && c.hide(), f && b.hide())
+            i && 100 > d.pageX ? (g && c.hide(), f || b.show()) : (i && d.pageX > a(e).width() - 100 ? g || c.show() : g && c.hide(), f && b.hide());
         })));
         a("div.jump_top").click(function() {
-            return d("top")
+            return d("top");
         });
         a('form.forum_jump select[name="forumid"]').change(function() {
             var b = a(this),
                 c = b.val(),
                 b = b.siblings('input[name="daysprune"]').val();
             if (-1 == c) return !1;
-            e.location.href = "/forumdisplay.php?daysprune=" + b + "&forumid=" + c
-        })
+            e.location.href = "/forumdisplay.php?daysprune=" + b + "&forumid=" + c;
+        });
     });
     a(e).load(function() {
         if (a("body.showthread").length && e.adjust_page_position && e.location.hash) {
             var b = a(e.location.hash);
-            b.length && (b = b.offset(), e.scrollTo(b.left, b.top))
+            b.length && (b = b.offset(), e.scrollTo(b.left, b.top));
         }
-    })
+    });
 }(window, document, jQuery);
 new function(e, f, a) {
     var g = 0,
@@ -904,16 +931,16 @@ new function(e, f, a) {
             a.get("/flag.php?forumid=26", function(a) {
                 i.attr("title", 'This flag proudly brought to you by "' + a.username + '" on ' + a.created);
                 i.attr("src", "http://fi.somethingawful.com/flags" + a.path + "?by=" + encodeURIComponent(a.username));
-                g = setTimeout(k, 6E4)
-            })
+                g = setTimeout(k, 6E4);
+            });
         };
     a(f).ready(function() {
         a(f).delegate("div.toggle_tags", "click", function() {
-            a(this).parents("div#filter").eq(0).toggleClass("open")
+            a(this).parents("div#filter").eq(0).toggleClass("open");
         });
         a("div.pages select").change(function() {
             var b = a(this).attr("data-url");
-            e.location.href = b + "&pagenumber=" + a(this).val()
+            e.location.href = b + "&pagenumber=" + a(this).val();
         });
         if (a("body.forumdisplay, body.showthread").length) {
             var d = a("div.breadcrumbs > span:first-child");
@@ -921,7 +948,7 @@ new function(e, f, a) {
                 var c = a(c),
                     d = [];
                 c.find("a").each(function(b, c) {
-                    d.push(a(c).clone())
+                    d.push(a(c).clone());
                 });
                 c.html(" &rsaquo; ");
                 c.append(d.pop());
@@ -931,11 +958,11 @@ new function(e, f, a) {
                     var f = a("<span></span>");
                     f.append(d);
                     f.append(e.clone());
-                    e.prepend(f)
+                    e.prepend(f);
                 }
-                e.addClass("up")
+                e.addClass("up");
             });
-            d.prepend('<a class="index" href="/" title="Forums index">&laquo;</a>&nbsp;')
+            d.prepend('<a class="index" href="/" title="Forums index">&laquo;</a>&nbsp;');
         }
         a(f).delegate("div.thread_tags a.if", "click", function(b) {
             if (b.shiftKey) {
@@ -944,14 +971,15 @@ new function(e, f, a) {
                 var b = b[1],
                     c = SA.utils.qs(),
                     d = null;
-                if (c.posticon) if (-1 == ("," + c.posticon).indexOf("," + b)) {
-                    d = c.posticon.split(",");
-                    for (d.push(b); 10 < d.length;) d.shift();
-                    c.posticon = d.join(",")
-                } else return !1;
+                if (c.posticon)
+                    if (-1 == ("," + c.posticon).indexOf("," + b)) {
+                        d = c.posticon.split(",");
+                        for (d.push(b); 10 < d.length;) d.shift();
+                        c.posticon = d.join(",");
+                    } else return !1;
                 else c.posticon = b;
                 e.location.href = "/forumdisplay.php?" + SA.utils.qs(c).replace(/%2c/ig, ",");
-                return !1
+                return !1;
             }
         });
         if (a("body.forum_26, body.forum_154").length) i = a(new Image), a("div#flag_container").append(i), k();
@@ -962,10 +990,10 @@ new function(e, f, a) {
                     var b = a("form.login_form"),
                         c = "https://forums.somethingawful.com/account.php";
                     g.is(":checked") ? a.cookie("secure_login", null) : (c = "/account.php", a.cookie("secure_login", "no"));
-                    b.attr("action", c)
+                    b.attr("action", c);
                 };
             g.click(d);
-            "no" == a.cookie("secure_login") && (g.attr("checked", null), d())
+            "no" == a.cookie("secure_login") && (g.attr("checked", null), d());
         }
-    })
+    });
 }(window, document, jQuery);

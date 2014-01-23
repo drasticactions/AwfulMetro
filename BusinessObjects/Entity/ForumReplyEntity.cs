@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
+﻿using System.Net;
 
 namespace AwfulMetro.Core.Entity
 {
@@ -40,7 +34,6 @@ namespace AwfulMetro.Core.Entity
 
         public void MapThreadInformation(string formKey, string formCookie, string quote, string threadId)
         {
-
             FormKey = formKey;
             FormCookie = formCookie;
             ThreadId = threadId;
@@ -53,6 +46,5 @@ namespace AwfulMetro.Core.Entity
             PostId = postId;
             Bookmark = bookmark;
         }
-
     }
 }

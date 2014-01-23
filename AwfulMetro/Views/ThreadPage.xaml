@@ -12,11 +12,9 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
         <CollectionViewSource
-        x:Name="itemsViewSource"
-        Source="{Binding Posts}"/>
+            x:Name="itemsViewSource"
+            Source="{Binding Posts}" />
     </Page.Resources>
 
     <!--
@@ -25,95 +23,111 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    	<VisualStateManager.VisualStateGroups>
+        <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
-            	<VisualState x:Name="FullScreen"/>
-            	<VisualState x:Name="Snapped">
-            		<Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadViewFullScreen">
+                <VisualState x:Name="FullScreen" />
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                       Storyboard.TargetName="ThreadViewFullScreen">
                             <DiscreteObjectKeyFrame KeyTime="0">
                                 <DiscreteObjectKeyFrame.Value>
                                     <Visibility>Collapsed</Visibility>
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ThreadListSnapped">
-            				<DiscreteObjectKeyFrame KeyTime="0">
-            					<DiscreteObjectKeyFrame.Value>
-            						<Visibility>Visible</Visibility>
-            					</DiscreteObjectKeyFrame.Value>
-            				</DiscreteObjectKeyFrame>
-            			</ObjectAnimationUsingKeyFrames>
-            		</Storyboard>
-            	</VisualState>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                       Storyboard.TargetName="ThreadListSnapped">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
             </VisualStateGroup>
-    	</VisualStateManager.VisualStateGroups>
+        </VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
-                <EntranceThemeTransition/>
+                <EntranceThemeTransition />
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="140" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
         <Grid Background="#FF1E72C9" RequestedTheme="Dark">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark"/>
-            <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}"  Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0" RequestedTheme="Dark"/>
+            <Button x:Name="backButton" Margin="39,59,39,0"
+                    Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                    Style="{StaticResource NavigationBackButtonNormalStyle}"
+                    VerticalAlignment="Top"
+                    AutomationProperties.Name="Back"
+                    AutomationProperties.AutomationId="BackButton"
+                    AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" />
+            <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0"
+                       RequestedTheme="Dark" />
         </Grid>
         <Grid Grid.Row="0" Canvas.ZIndex="99">
-            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
+            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto"
+                         Height="10" VerticalAlignment="Top" />
         </Grid>
         <Grid Grid.Row="1" x:Name="ThreadViewFullScreen">
-          <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="100"/>
-          </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1" HorizontalAlignment="Right" Background="#FFC5C5C5">
-                <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload" Click="ReplyButton_Click"/>
-                <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
-                <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
-                <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
-                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click" Label="Go To Last Post On Page" Icon="Download"/>
-                <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
-                	<ItemsPanelTemplate>
-                		<CarouselPanel/>
-                	</ItemsPanelTemplate>
-                </ComboBox>
-            </StackPanel>
-            <WebView DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" Grid.Column="0" x:Name="ThreadFullView"/>
-        </Grid>
-        <Grid Grid.Row="1" Visibility="Collapsed" x:Name="ThreadListSnapped">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Background="#FFC5C5C5" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <AppBarButton x:Name="ReplyButtonSnap" Label="Reply" IsEnabled="False" Icon="Upload" Click="ReplyButton_Click"/>
-                <AppBarButton x:Name="BackButtonSnap" IsEnabled="False" Click="BackButton_Click" Label="Back Page" Icon="Back"/>
-                <AppBarButton x:Name="ForwardButtonSnap" IsEnabled="False" Click="ForwardButton_Click"  Label="Forward Page" Icon="Forward"/>
-                <AppBarButton x:Name="RefreshButtonSnap" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh"/>
-                <ComboBox x:Name="CurrentPageSelectorSnap" SelectionChanged="CurrentPageSelector_SelectionChanged" Width="79" Height="30">
+                <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload"
+                              Click="ReplyButton_Click" />
+                <AppBarButton x:Name="BackButton" IsEnabled="False" Click="BackButton_Click" Label="Back Page"
+                              Icon="Back" />
+                <AppBarButton x:Name="ForwardButton" IsEnabled="False" Click="ForwardButton_Click" Label="Forward Page"
+                              Icon="Forward" />
+                <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh" />
+                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click"
+                              Label="Go To Last Post On Page" Icon="Download" />
+                <ComboBox x:Name="CurrentPageSelector" SelectionChanged="CurrentPageSelector_SelectionChanged"
+                          Width="79" Height="30">
                     <ItemsPanelTemplate>
-                        <CarouselPanel/>
+                        <CarouselPanel />
                     </ItemsPanelTemplate>
                 </ComboBox>
             </StackPanel>
-            <WebView Grid.Row="1" DOMContentLoaded="ThreadSnapView_OnDOMContentLoaded" x:Name="ThreadSnapView"/>
+            <WebView DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" Grid.Column="0" x:Name="ThreadFullView" />
         </Grid>
         
+        
+        <Grid Grid.Row="1" Visibility="Collapsed" x:Name="ThreadListSnapped">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Background="#FFC5C5C5" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <AppBarButton x:Name="ReplyButtonSnap" Label="Reply" IsEnabled="False" Icon="Upload"
+                              Click="ReplyButton_Click" />
+                <AppBarButton x:Name="BackButtonSnap" IsEnabled="False" Click="BackButton_Click" Label="Back Page"
+                              Icon="Back" />
+                <AppBarButton x:Name="ForwardButtonSnap" IsEnabled="False" Click="ForwardButton_Click"
+                              Label="Forward Page" Icon="Forward" />
+                <AppBarButton x:Name="RefreshButtonSnap" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh" />
+                <ComboBox x:Name="CurrentPageSelectorSnap" SelectionChanged="CurrentPageSelectorSnap_SelectionChanged"
+                          Width="79" Height="30">
+                    <ItemsPanelTemplate>
+                        <CarouselPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox>
+            </StackPanel>
+            <WebView Grid.Row="1" DOMContentLoaded="ThreadSnapView_OnDOMContentLoaded" x:Name="ThreadSnapView" />
+        </Grid>
+
     </Grid>
 
 </Page>

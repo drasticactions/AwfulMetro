@@ -16,10 +16,10 @@ namespace AwfulMetro.Views
     public sealed partial class UserProfileView : Page
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
-        private readonly NavigationHelper _navigationHelper;
-        private readonly ForumUserManager _forumUserManager = new ForumUserManager();
-        private readonly RapSheetManager _rapSheetManager = new RapSheetManager();
         private readonly ForumSearchManager _forumSearchManager = new ForumSearchManager();
+        private readonly ForumUserManager _forumUserManager = new ForumUserManager();
+        private readonly NavigationHelper _navigationHelper;
+        private readonly RapSheetManager _rapSheetManager = new RapSheetManager();
 
         public UserProfileView()
         {
@@ -63,7 +63,7 @@ namespace AwfulMetro.Views
         {
             long userId;
             userId = Convert.ToInt64(e.NavigationParameter);
-            var userProfile = await _forumUserManager.GetUserFromProfilePage(userId);
+            ForumUserEntity userProfile = await _forumUserManager.GetUserFromProfilePage(userId);
             DefaultViewModel["UserEntity"] = userProfile;
             DefaultViewModel["RapSheet"] =
                 await _rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));

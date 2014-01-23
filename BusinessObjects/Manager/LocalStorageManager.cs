@@ -11,6 +11,7 @@ namespace AwfulMetro.Core.Manager
     {
         Task SaveCookie(string filename, CookieContainer rcookie, Uri uri);
         Task<CookieContainer> LoadCookie(string filename);
+        Task<bool> RemoveCookies(string filename);
     }
 
     public class LocalStorageManager : ILocalStorageManager
@@ -18,7 +19,8 @@ namespace AwfulMetro.Core.Manager
         public async Task SaveCookie(string filename, CookieContainer rcookie, Uri uri)
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            StorageFile sampleFile = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            StorageFile sampleFile =
+                await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
             using (StorageStreamTransaction transaction = await sampleFile.OpenTransactedWriteAsync())
             {
@@ -43,6 +45,22 @@ namespace AwfulMetro.Core.Manager
                 //Ignore, we will ask for log in information.
             }
             return new CookieContainer();
+        }
+
+        public async Task<bool> RemoveCookies(string filename)
+        {
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            try
+            {
+                StorageFile sampleFile = await localFolder.GetFileAsync(filename);
+                sampleFile.DeleteAsync();
+                return true;
+            }
+            catch
+            {
+                //Ignore, we will ask for log in information.
+                return false;
+            }
         }
     }
 }

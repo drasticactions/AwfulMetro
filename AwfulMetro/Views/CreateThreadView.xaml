@@ -14,13 +14,13 @@
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">My Application</x:String>
         <CollectionViewSource
-        x:Name="itemsViewSource"
-        Source="{Binding PopularThreads}"/>
+            x:Name="itemsViewSource"
+            Source="{Binding PopularThreads}" />
         <CollectionViewSource
             x:Name="groupedItemsViewSource"
             Source="{Binding Groups}"
             IsSourceGrouped="true"
-            ItemsPath="List"/>
+            ItemsPath="List" />
     </Page.Resources>
 
     <!--
@@ -31,104 +31,112 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
-                <EntranceThemeTransition/>
+                <EntranceThemeTransition />
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="140" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
         <Grid Background="#FF1E72C9" RequestedTheme="Dark">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="Create Thread" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0"/>
+            <Button x:Name="backButton" Margin="39,59,39,0"
+                    Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                    Style="{StaticResource NavigationBackButtonNormalStyle}"
+                    VerticalAlignment="Top"
+                    AutomationProperties.Name="Back"
+                    AutomationProperties.AutomationId="BackButton"
+                    AutomationProperties.ItemType="Navigation Button" />
+            <TextBlock x:Name="pageTitle" Text="Create Thread" Style="{StaticResource HeaderTextBlockStyle}"
+                       Grid.Column="1"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0" />
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Margin="39,0,0,0" Grid.Column="0" HorizontalAlignment="Left">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="700"/>
+                    <ColumnDefinition Width="700" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock FontSize="20" VerticalAlignment="Center" Padding="0,0,25,0" Text="Subject:"/>
-                        <TextBox x:Name="PostTitle" Width="500"></TextBox>
+                        <TextBlock FontSize="20" VerticalAlignment="Center" Padding="0,0,25,0" Text="Subject:" />
+                        <TextBox x:Name="PostTitle" Width="500" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="TagButton" Margin="0,0,25,0" Content="Tag" Click="TagButton_Click"/>
-                        <Image x:Name="TagImage" Width="60" Height="23"/>
+                        <Button x:Name="TagButton" Margin="0,0,25,0" Content="Tag" Click="TagButton_Click" />
+                        <Image x:Name="TagImage" Width="60" Height="23" />
                     </StackPanel>
-                    <TextBox AcceptsReturn="True" x:Name="ReplyText" TextChanged="ReplyText_TextChanged" Width="600" Height="400" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                    <TextBox AcceptsReturn="True" x:Name="ReplyText" TextChanged="ReplyText_TextChanged" Width="600"
+                             Height="400" TextWrapping="Wrap" HorizontalAlignment="Left" />
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="PostButton" Content="Post" Click="PostButton_Click"/>
+                        <Button x:Name="PostButton" Content="Post" Click="PostButton_Click" />
                         <Button x:Name="SimilesButton" Content="Smilies" Click="SimilesButton_Click" />
-                        <Button x:Name="BBcodeButton" Content="BBcode" Click="BBcodeButton_Click"/>
-                        <TextBlock x:Name="PostCount" VerticalAlignment="Center" FontSize="25" Text="0/50000"/>
+                        <Button x:Name="BBcodeButton" Content="BBcode" Click="BBcodeButton_Click" />
+                        <TextBlock x:Name="PostCount" VerticalAlignment="Center" FontSize="25" Text="0/50000" />
                     </StackPanel>
                 </StackPanel>
             </Grid>
-                <GridView
-            x:Name="itemGridView"
-            AutomationProperties.AutomationId="ItemGridView"
-            AutomationProperties.Name="Grouped Items"
-            Grid.RowSpan="8"
-            Grid.Column="1"
-            Padding="0,0,0,0"
-            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"
-            IsItemClickEnabled="True"
-            ItemClick="itemGridView_ItemClick"
-            HorizontalAlignment="Left">
+            <GridView
+                x:Name="itemGridView"
+                AutomationProperties.AutomationId="ItemGridView"
+                AutomationProperties.Name="Grouped Items"
+                Grid.RowSpan="8"
+                Grid.Column="1"
+                Padding="0,0,0,0"
+                ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+                SelectionMode="None"
+                IsSwipeEnabled="false"
+                IsItemClickEnabled="True"
+                ItemClick="itemGridView_ItemClick"
+                HorizontalAlignment="Left">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Left" Width="125" Height="125">
                             <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
                                 <Border Height="50" Background="#FF415B64">
-                                    <Image Source="{Binding ImageUrl}" Stretch="None" AutomationProperties.Name="{Binding Title}"/>
+                                    <Image Source="{Binding ImageUrl}" Stretch="None"
+                                           AutomationProperties.Name="{Binding Title}" />
                                 </Border>
-                                <TextBlock Text="{Binding Title}" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                                <TextBlock Text="{Binding Title}" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>
                 <GridView.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="1,0,0,6">
-                                        <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
-                                    AutomationProperties.Name="Group Title"
-                                    Style="{StaticResource TextBlockButtonStyle}" >
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Category}" Margin="3,-7,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                            </StackPanel>
-                                        </Button>
-                                    </Grid>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </GridView.GroupStyle>
-                </GridView>
-                <!-- Horizontal scrolling grid -->
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid Margin="1,0,0,6">
+                                    <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
+                                            AutomationProperties.Name="Group Title"
+                                            Style="{StaticResource TextBlockButtonStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Category}" Margin="3,-7,10,10"
+                                                       Style="{StaticResource SubheaderTextBlockStyle}"
+                                                       TextWrapping="NoWrap" />
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </GridView.GroupStyle>
+            </GridView>
+            <!-- Horizontal scrolling grid -->
         </Grid>
 
         <Grid Canvas.ZIndex="99">
-            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
+            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto"
+                         Height="10" VerticalAlignment="Top" />
         </Grid>
     </Grid>
 </Page>

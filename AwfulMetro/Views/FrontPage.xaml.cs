@@ -1,4 +1,5 @@
-﻿using System;
+﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.System;
@@ -10,8 +11,6 @@ using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
-
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -22,8 +21,9 @@ namespace AwfulMetro.Views
     public sealed partial class FrontPage : Page
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
-        private readonly NavigationHelper _navigationHelper;
         private readonly FrontPageManager _frontPageManager = new FrontPageManager();
+        private readonly NavigationHelper _navigationHelper;
+
         public FrontPage()
         {
             InitializeComponent();
@@ -65,18 +65,17 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            HtmlDocument doc = await this._frontPageManager.GetFrontPage();
-            DefaultViewModel["PopularThreads"] = this._frontPageManager.GetPopularThreads(doc);
-            DefaultViewModel["PopularTrends"] = this._frontPageManager.GetPopularTrends(doc);
-            List<FrontPageArticleEntity> frontPageArticles = this._frontPageManager.GetFrontPageArticles(doc);
+            HtmlDocument doc = await _frontPageManager.GetFrontPage();
+            DefaultViewModel["PopularThreads"] = _frontPageManager.GetPopularThreads(doc);
+            DefaultViewModel["PopularTrends"] = _frontPageManager.GetPopularTrends(doc);
+            List<FrontPageArticleEntity> frontPageArticles = _frontPageManager.GetFrontPageArticles(doc);
 
             FrontPageArticleEntity mainArticle = frontPageArticles.FirstOrDefault();
             DefaultViewModel["MainArticle"] = mainArticle;
             frontPageArticles.Remove(mainArticle);
 
             DefaultViewModel["FrontPageArticles"] = frontPageArticles;
-            DefaultViewModel["FrontPageFeatures"] = this._frontPageManager.GetFeatures(doc);
-
+            DefaultViewModel["FrontPageFeatures"] = _frontPageManager.GetFeatures(doc);
         }
 
         /// <summary>
@@ -101,8 +100,8 @@ namespace AwfulMetro.Views
             {
                 string title = string.IsNullOrEmpty(threadEntity.Title) ? string.Empty : threadEntity.Title;
                 thread.ParseFromPopularThread(threadEntity.Title, threadEntity.Id);
-                var jsonObjectString = JsonConvert.SerializeObject(thread);
-                Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+                string jsonObjectString = JsonConvert.SerializeObject(thread);
+                Frame.Navigate(typeof (ThreadPage), jsonObjectString);
             }
         }
 

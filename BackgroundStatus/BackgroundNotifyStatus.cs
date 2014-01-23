@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Serialization;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
@@ -38,9 +38,10 @@ namespace AwfulMetro.BackgroundStatus
 
             if (localSettings.Values.ContainsKey("_threadIds"))
             {
-                DeserializeXmlToList((string)localSettings.Values["_threadIds"]);
-                var list = forumThreadEntities.Where(thread => _threadIds.Contains(thread.ThreadId)).ToList();
-                CreateToastNotifications(list);  
+                DeserializeXmlToList((string) localSettings.Values["_threadIds"]);
+                List<ForumThreadEntity> list =
+                    forumThreadEntities.Where(thread => _threadIds.Contains(thread.ThreadId)).ToList();
+                CreateToastNotifications(list);
             }
         }
 
@@ -64,14 +65,14 @@ namespace AwfulMetro.BackgroundStatus
         {
             try
             {
-                XmlSerializer xmlIzer = new XmlSerializer(typeof(List<long>));
+                var xmlIzer = new XmlSerializer(typeof (List<long>));
                 var strReader = new StringReader(listAsXml);
                 _threadIds = (xmlIzer.Deserialize(strReader)) as List<long>;
             }
 
             catch (Exception exc)
             {
-                System.Diagnostics.Debug.WriteLine(exc);
+                Debug.WriteLine(exc);
                 _threadIds = new List<long>();
             }
         }

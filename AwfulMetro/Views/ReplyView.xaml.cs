@@ -1,21 +1,18 @@
-﻿using System;
+﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.Data.Json;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
-
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -27,11 +24,12 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
+        private readonly ReplyManager _replyManager = new ReplyManager();
+        private readonly SmileManager _smileManager = new SmileManager();
         private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
+        private ForumReplyEntity _forumReply = new ForumReplyEntity();
         private ForumThreadEntity _forumThread;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
-        private ForumReplyEntity _forumReply = new ForumReplyEntity();
-        private readonly ReplyManager _replyManager = new ReplyManager();
 
         public ReplyView()
         {
@@ -42,46 +40,6 @@ namespace AwfulMetro.Views
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
-        private async void PreviousPostsWebView_ScriptNotify(object sender, NotifyEventArgs e)
-        {
-            string stringJson = e.Value;
-            var command = JsonConvert.DeserializeObject<ThreadCommand>(stringJson);
-            switch (command.Command)
-            {
-                case "profile":
-                    Frame.Navigate(typeof(UserProfileView), command.Id);
-                    break;
-                case "post_history":
-                    Frame.Navigate(typeof(UserPostHistoryPage), command.Id);
-                    break;
-                case "rap_sheet":
-                    Frame.Navigate(typeof(RapSheetView), command.Id);
-                    break;
-                case "quote":
-                    loadingProgressBar.Visibility = Visibility.Visible;
-                    var quoteString = await _replyManager.GetQuoteString(Convert.ToInt64(command.Id));
-                    quoteString = string.Concat(Environment.NewLine, quoteString);
-                    string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
-                    if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
-                    loadingProgressBar.Visibility = Visibility.Collapsed;
-                    break;
-                default:
-                     var msgDlg = new MessageDialog("Working on it!")
-                     {
-                         DefaultCommandIndex = 1
-                     };
-                    await msgDlg.ShowAsync();
-                    break;
-            }
-        }
-
-        public class ThreadCommand
-        {
-            public string Command { get; set; }
-            public string Id { get; set; }
-        }
-
-        private readonly SmileManager _smileManager = new SmileManager();
         /// <summary>
         ///     This can be changed to a strongly typed view model.
         /// </summary>
@@ -97,6 +55,39 @@ namespace AwfulMetro.Views
         public NavigationHelper NavigationHelper
         {
             get { return _navigationHelper; }
+        }
+
+        private async void PreviousPostsWebView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            string stringJson = e.Value;
+            var command = JsonConvert.DeserializeObject<ThreadCommand>(stringJson);
+            switch (command.Command)
+            {
+                case "profile":
+                    Frame.Navigate(typeof (UserProfileView), command.Id);
+                    break;
+                case "post_history":
+                    Frame.Navigate(typeof (UserPostHistoryPage), command.Id);
+                    break;
+                case "rap_sheet":
+                    Frame.Navigate(typeof (RapSheetView), command.Id);
+                    break;
+                case "quote":
+                    loadingProgressBar.Visibility = Visibility.Visible;
+                    string quoteString = await _replyManager.GetQuoteString(Convert.ToInt64(command.Id));
+                    quoteString = string.Concat(Environment.NewLine, quoteString);
+                    string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
+                    if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
+                    loadingProgressBar.Visibility = Visibility.Collapsed;
+                    break;
+                default:
+                    var msgDlg = new MessageDialog("ダメだよ～。")
+                    {
+                        DefaultCommandIndex = 1
+                    };
+                    await msgDlg.ShowAsync();
+                    break;
+            }
         }
 
 
@@ -116,7 +107,7 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            var jsonObjectString = (string)e.NavigationParameter;
+            var jsonObjectString = (string) e.NavigationParameter;
             long threadId = 0;
             try
             {
@@ -126,7 +117,7 @@ namespace AwfulMetro.Views
             {
                 threadId = Convert.ToInt64(jsonObjectString);
             }
-            
+
             //_forumPost = e.NavigationParameter as ForumPostEntity;
             if (_forumThread != null)
             {
@@ -167,7 +158,7 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Visible;
             _forumReply.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
-            var result = await replyManager.SendPost(_forumReply);
+            bool result = await replyManager.SendPost(_forumReply);
             if (result)
             {
                 Frame.GoBack();
@@ -175,7 +166,7 @@ namespace AwfulMetro.Views
             else
             {
                 loadingProgressBar.Visibility = Visibility.Collapsed;
-                var msgDlg = new Windows.UI.Popups.MessageDialog("Error making reply!");
+                var msgDlg = new MessageDialog("Error making reply!");
                 await msgDlg.ShowAsync();
             }
         }
@@ -231,6 +222,69 @@ namespace AwfulMetro.Views
             }
         }
 
+        private async void PreviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            PostPreviewRaw.Visibility = Visibility.Collapsed;
+
+            _forumReply.MapMessage(ReplyText.Text);
+            var replyManager = new ReplyManager();
+            string result = await replyManager.CreatePreviewPost(_forumReply);
+            if (!string.IsNullOrEmpty(result))
+            {
+                PostPreviewRaw.NavigateToString(result);
+                PostPreviewRaw.Visibility = Visibility.Visible;
+                PreviewPostGrid.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                loadingProgressBar.Visibility = Visibility.Collapsed;
+                PreviewPostGrid.Visibility = Visibility.Collapsed;
+                string messageText =
+                    string.Format(
+                        "No text?! What good is showing you a preview then! Type something in and try again!{0}{1}",
+                        Environment.NewLine, Constants.ASCII_2);
+                var msgDlg = new MessageDialog(messageText);
+                await msgDlg.ShowAsync();
+            }
+        }
+
+        private void LastPostsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ItemGridView.Visibility = Visibility.Collapsed;
+            PreviousPostsWebView.Visibility = Visibility.Visible;
+        }
+
+        private async void ImageUploadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            loadingProgressBar.Visibility = Visibility.Visible;
+            var openPicker = new FileOpenPicker
+            {
+                ViewMode = PickerViewMode.Thumbnail,
+                SuggestedStartLocation = PickerLocationId.PicturesLibrary
+            };
+            openPicker.FileTypeFilter.Add(".jpg");
+            openPicker.FileTypeFilter.Add(".jpeg");
+            openPicker.FileTypeFilter.Add(".png");
+            openPicker.FileTypeFilter.Add(".gif");
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            if (file == null) return;
+            IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
+            ImgurEntity result = await UploadManager.UploadImgur(stream);
+            if (result == null)
+            {
+                var msgDlg = new MessageDialog("Something went wrong with the upload. :-(.");
+                msgDlg.ShowAsync();
+                loadingProgressBar.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            // We have got an image up on Imgur! Time to get it into the reply box!
+
+            string imgLink = string.Format("[TIMG]{0}[/TIMG]", result.data.link);
+            ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, imgLink);
+            loadingProgressBar.Visibility = Visibility.Collapsed;
+        }
+
         #region NavigationHelper registration
 
         /// The methods provided in this section are simply used to allow
@@ -255,60 +309,10 @@ namespace AwfulMetro.Views
 
         #endregion
 
-        private async void PreviewButton_Click(object sender, RoutedEventArgs e)
+        public class ThreadCommand
         {
-            PostPreviewRaw.Visibility = Visibility.Collapsed;
-            PreviewPostGrid.Visibility = Visibility.Visible;
-            _forumReply.MapMessage(ReplyText.Text);
-            var replyManager = new ReplyManager();
-            var result = await replyManager.CreatePreviewPost(_forumReply);
-            if (!string.IsNullOrEmpty(result))
-            {
-                PostPreviewRaw.NavigateToString(result);
-                PostPreviewRaw.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                var msgDlg = new MessageDialog("No text?! What the fuck good is showing you a preview then! Type some shit in and try again!");
-                await msgDlg.ShowAsync();
-                PreviewPostGrid.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void LastPostsButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            ItemGridView.Visibility = Visibility.Collapsed;
-            PreviousPostsWebView.Visibility = Visibility.Visible;
-        }
-
-        private async void ImageUploadButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            var openPicker = new FileOpenPicker
-            {
-                ViewMode = PickerViewMode.Thumbnail,
-                SuggestedStartLocation = PickerLocationId.PicturesLibrary
-            };
-            openPicker.FileTypeFilter.Add(".jpg");
-            openPicker.FileTypeFilter.Add(".jpeg");
-            openPicker.FileTypeFilter.Add(".png");
-            openPicker.FileTypeFilter.Add(".gif");
-            var file = await openPicker.PickSingleFileAsync();
-            if (file == null) return;
-            IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
-            var result = await UploadManager.UploadImgur(stream);
-            if (result == null)
-            {
-                var msgDlg = new MessageDialog("Something went wrong with the upload. :-(.");
-                msgDlg.ShowAsync();
-                return;
-            }
-
-            // We have got an image up on Imgur! Time to get it into the reply box!
-
-            string imgLink = string.Format("[TIMG]{0}[/TIMG]", result.data.link);
-            ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, imgLink);
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            public string Command { get; set; }
+            public string Id { get; set; }
         }
     }
 }

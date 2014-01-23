@@ -2,14 +2,14 @@
 {
     public class BBCodeEntity
     {
+        public BBCodeEntity(string title, string code)
+        {
+            Title = title;
+            Code = code;
+        }
+
         public string Title { get; private set; }
 
         public string Code { get; private set; }
-
-        public BBCodeEntity(string title, string code)
-        {
-            this.Title = title;
-            this.Code = code;
-        }
     }
 }

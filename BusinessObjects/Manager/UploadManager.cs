@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using AwfulMetro.Core.Entity;
@@ -36,7 +35,7 @@ namespace AwfulMetro.Core.Manager
                 form.Add(new StringContent("file"), "type");
                 request.Content = form;
                 HttpResponseMessage response = await theAuthClient.SendAsync(request);
-                var responseString = await response.Content.ReadAsStringAsync();
+                string responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null) return null;
                 var imgurEntity = JsonConvert.DeserializeObject<ImgurEntity>(responseString);
                 return imgurEntity;

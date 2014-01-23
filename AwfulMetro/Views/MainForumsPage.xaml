@@ -5,30 +5,29 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AwfulMetro"
-    xmlns:data="using:AwfulMetro.Data"
     xmlns:common="using:AwfulMetro.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
         <!--
             Collection of grouped items displayed by this page, bound to a subset
             of the complete item list because items in groups cannot be virtualized
         -->
         <CollectionViewSource
-        x:Name="subforumViewSource"
-        Source="{Binding Groups}"/>
+            x:Name="subforumViewSource"
+            Source="{Binding Groups}" />
         <CollectionViewSource
-        x:Name="itemsViewSource"
-        Source="{Binding PopularThreads}"/>
+            x:Name="itemsViewSource"
+            Source="{Binding PopularThreads}" />
         <CollectionViewSource
             x:Name="groupedItemsViewSource"
             Source="{Binding Groups}"
             IsSourceGrouped="true"
-            ItemsPath="ForumList"/>
+            ItemsPath="ForumList" />
     </Page.Resources>
 
     <!--
@@ -39,93 +38,100 @@
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
-                <EntranceThemeTransition/>
+                <EntranceThemeTransition />
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="140" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <GridView
-            x:Name="itemGridView"
-            AutomationProperties.AutomationId="ItemGridView"
-            AutomationProperties.Name="Grouped Items"
-            Grid.Column="1"
-            Visibility="Visible"
-            Padding="0,0,40,46"
-            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"
-            IsItemClickEnabled="True"
-            ItemClick="ItemView_ItemClick">
+                x:Name="itemGridView"
+                AutomationProperties.AutomationId="ItemGridView"
+                AutomationProperties.Name="Grouped Items"
+                Grid.Column="1"
+                Visibility="Visible"
+                Padding="0,0,40,46"
+                ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+                SelectionMode="None"
+                IsSwipeEnabled="false"
+                IsItemClickEnabled="True"
+                ItemClick="ItemView_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid HorizontalAlignment="Left" Width="445" Height="100">
                             <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
-                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                       AutomationProperties.Name="{Binding Title}" />
                             </Border>
                             <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
-                                <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
-                                <TextBlock Text="{Binding Description}" Foreground="Black" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                                <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0" />
+                                <TextBlock Text="{Binding Description}" Foreground="Black"
+                                           Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"
+                                           Margin="15,0,15,10" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid GroupPadding="0,0,70,0"/>
+                        <ItemsWrapGrid GroupPadding="0,0,70,0" />
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-            <StackPanel x:Name="stackPanel" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2" Margin="0,0,-5,0">
-                <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet"/>
-                <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page" RenderTransformOrigin="0.5,0.5">
+            <StackPanel x:Name="stackPanel" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2"
+                        Margin="0,0,-5,0">
+                <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet" />
+                <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page"
+                              RenderTransformOrigin="0.5,0.5">
                     <AppBarButton.RenderTransform>
-                        <CompositeTransform ScaleX="0.95"/>
+                        <CompositeTransform ScaleX="0.95" />
                     </AppBarButton.RenderTransform>
                     <AppBarButton.Icon>
                         <BitmapIcon UriSource="ms-appx:///Assets/frontpage.png" RenderTransformOrigin="0.5,0.5">
                             <BitmapIcon.RenderTransform>
-                                <CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
+                                <CompositeTransform ScaleX="0.7" ScaleY="0.7" />
                             </BitmapIcon.RenderTransform>
                         </BitmapIcon>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_Click"  Label="Bookmarks">
+                <AppBarButton x:Name="BookmarkButton" Click="BookmarkButton_Click" Label="Bookmarks">
                     <AppBarButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon3.png" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon3.png" RenderTransformOrigin="0.5,0.5"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right">
                             <BitmapIcon.RenderTransform>
-                                <CompositeTransform ScaleX="0.7" ScaleY="0.7"/>
+                                <CompositeTransform ScaleX="0.7" ScaleY="0.7" />
                             </BitmapIcon.RenderTransform>
                         </BitmapIcon>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarButton  x:Name="LogoutButton" Label="Logout" Click="LogoutButton_OnClick" Icon="Remove"/>
             </StackPanel>
         </Grid>
         <!-- Horizontal scrolling grid -->
         <Grid Canvas.ZIndex="99">
-            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto" Height="10" VerticalAlignment="Top"/>
+            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto"
+                         Height="10" VerticalAlignment="Top" />
         </Grid>
         <!-- Back button and page title -->
         <Grid RequestedTheme="Dark" Background="#FF1E72C9">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60*"/>
-                <ColumnDefinition Width="623*"/>
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="623*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="grenadeButton" Grid.Column="0"
-        	VerticalAlignment="Center" HorizontalAlignment="Center" RequestedTheme="Dark" BorderThickness="0" Height="41" Width="41">
-                <Button.Background>
-                    <ImageBrush ImageSource="ms-appx:///Assets/grenadesm.png"/>
-                </Button.Background>
-            </Button>
-            <TextBlock x:Name="pageTitle" Text="Awful Forums Reader" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,0,0" Height="40"/>
+            <Image Source="ms-appx:///Assets/grenadesm.png" Grid.Column="0"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" RequestedTheme="Dark" Height="41" Width="41" />
+            <TextBlock x:Name="pageTitle" Text="Awful Forums Reader" Style="{StaticResource HeaderTextBlockStyle}"
+                       Grid.Column="1"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,0,0"
+                       Height="40" />
         </Grid>
     </Grid>
 </Page>

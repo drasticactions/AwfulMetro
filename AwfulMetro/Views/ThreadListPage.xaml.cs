@@ -1,11 +1,11 @@
+// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Serialization;
-using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.System;
@@ -20,7 +20,6 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using AwfulMetro.Core.Tools;
 using Newtonsoft.Json;
 
@@ -32,13 +31,14 @@ namespace AwfulMetro.Views
     public sealed partial class ThreadListPage
     {
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private readonly ForumManager _forumManager = new ForumManager();
         private readonly NavigationHelper _navigationHelper;
         private readonly ThreadManager _threadManager = new ThreadManager();
-        private readonly ForumManager _forumManager = new ForumManager();
         private ForumEntity _forumEntity;
         private PageScrollingCollection _forumPageScrollingCollection;
         private List<ForumThreadEntity> _forumThreadEntities;
-        private List<ForumEntity> _subForumEntities; 
+        private List<ForumEntity> _subForumEntities;
+
         public ThreadListPage()
         {
             InitializeComponent();
@@ -126,15 +126,15 @@ namespace AwfulMetro.Views
         private void ForumThreadList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((ForumThreadEntity) e.ClickedItem);
-            var jsonObjectString = JsonConvert.SerializeObject(itemId);
-            Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+            string jsonObjectString = JsonConvert.SerializeObject(itemId);
+            Frame.Navigate(typeof (ThreadPage), jsonObjectString);
         }
 
         private void SubForumList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var forumEntity = ((ForumEntity)e.ClickedItem);
-            var jsonObjectString = JsonConvert.SerializeObject(forumEntity);
-            this.Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
+            var forumEntity = ((ForumEntity) e.ClickedItem);
+            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
+            Frame.Navigate(typeof (ThreadListPage), jsonObjectString);
         }
 
         private async void AddThreadButton_Click(object sender, RoutedEventArgs e)
@@ -187,10 +187,11 @@ namespace AwfulMetro.Views
             if (_forumEntity.IsBookmarks)
             {
                 AddThreadButton.Visibility = Visibility.Collapsed;
+                FavoriteButton.Visibility = Visibility.Collapsed;
                 BookmarkSettings.Visibility = Visibility.Visible;
                 _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
                 _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
-                foreach (var forumThread in _forumThreadEntities)
+                foreach (ForumThreadEntity forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);
                 }
@@ -204,7 +205,7 @@ namespace AwfulMetro.Views
             {
                 _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
                 _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 1);
-                foreach (var forumThread in _forumThreadEntities)
+                foreach (ForumThreadEntity forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);
                 }
@@ -213,6 +214,151 @@ namespace AwfulMetro.Views
                 DefaultViewModel["Subforums"] = _subForumEntities;
             }
             RefreshBarButton.IsEnabled = true;
+        }
+
+        private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private async void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            UnreadButton.IsEnabled = false;
+            RefreshBarButton.IsEnabled = false;
+            var threadlist = new List<ForumThreadEntity>();
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            await _threadManager.AddBookmarks(threadIdList);
+            if (threadIdList.Count == 1)
+            {
+                var msgDlg =
+                    new MessageDialog(string.Format("'{0}' has been bookmarked! Good for you!{1}{2}",
+                        threadlist.First().Name, Environment.NewLine, Constants.ASCII_1))
+                    {
+                        DefaultCommandIndex = 1
+                    };
+                await msgDlg.ShowAsync();
+            }
+            else
+            {
+                string message = string.Format("{0} Bookmarks created!", threadIdList.Count);
+                var msgDlg = new MessageDialog(message)
+                {
+                    DefaultCommandIndex = 1
+                };
+                await msgDlg.ShowAsync();
+            }
+            UnreadButton.IsEnabled = true;
+            RefreshBarButton.IsEnabled = true;
+        }
+
+        private async void UnreadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var threadlist = new List<ForumThreadEntity>();
+            UnreadButton.IsEnabled = false;
+            RefreshBarButton.IsEnabled = false;
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            await _threadManager.MarkThreadUnread(threadIdList);
+
+            //Refresh forum threads.
+
+            loadingProgressBar.Visibility = Visibility.Visible;
+
+            await GetForumThreads();
+
+            loadingProgressBar.Visibility = Visibility.Collapsed;
+
+            if (threadIdList.Count == 1)
+            {
+                var msgDlg =
+                    new MessageDialog(
+                        string.Format("'{0}' is now \"Unread\"! Now go outside and do something productive!{1}{2}",
+                            threadlist.First().Name, Environment.NewLine, Constants.ASCII_1))
+                    {
+                        DefaultCommandIndex = 1
+                    };
+                await msgDlg.ShowAsync();
+            }
+            else
+            {
+                string message = string.Format("{0} are now \"Unread\"! My life now is now complete!!",
+                    threadIdList.Count);
+                var msgDlg = new MessageDialog(message)
+                {
+                    DefaultCommandIndex = 1
+                };
+                await msgDlg.ShowAsync();
+            }
+            UnreadButton.IsEnabled = true;
+            RefreshBarButton.IsEnabled = true;
+        }
+
+        private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+            UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+            NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
+        }
+
+        private async void NotificationButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var threadlist = new List<ForumThreadEntity>();
+            if (ForumThreadList.SelectedItems.Any())
+            {
+                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
+            }
+            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["_threadIds"] = SerializeListToXml(threadIdList);
+            var msgDlg = new MessageDialog(string.Format("{0} thread notifications added!", threadIdList.Count))
+            {
+                DefaultCommandIndex = 1
+            };
+            await msgDlg.ShowAsync();
+
+        }
+
+        public static string SerializeListToXml(List<long> list)
+        {
+            try
+            {
+                var xmlIzer = new XmlSerializer(typeof (List<long>));
+                var writer = new StringWriter();
+                xmlIzer.Serialize(writer, list);
+                Debug.WriteLine(writer.ToString());
+                return writer.ToString();
+            }
+
+            catch (Exception exc)
+            {
+                Debug.WriteLine(exc);
+                return String.Empty;
+            }
+        }
+
+        private async void RemoveNotificationsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values["_threadIds"] = string.Empty;
+            var msgDlg = new MessageDialog("Thread notifications removed!");
+            msgDlg.DefaultCommandIndex = 1;
+            await msgDlg.ShowAsync();
+        }
+
+        private async void RefreshBarButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            loadingProgressBar.Visibility = Visibility.Visible;
+
+            await GetForumThreads();
+
+            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         #region NavigationHelper registration
@@ -241,88 +387,5 @@ namespace AwfulMetro.Views
         }
 
         #endregion
-
-        private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
-        private async void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var threadlist = new List<ForumThreadEntity>();
-            if (ForumThreadList.SelectedItems.Any())
-            {
-                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
-            }
-            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
-            await _threadManager.AddBookmarks(threadIdList);
-        }
-
-        private async void UnreadButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var threadlist = new List<ForumThreadEntity>();
-            if (ForumThreadList.SelectedItems.Any())
-            {
-                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
-            }
-            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
-            await _threadManager.MarkThreadUnread(threadIdList);
-        }
-
-        private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-                FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
-                UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
-                NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
-        }
-
-        private void NotificationButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            var threadlist = new List<ForumThreadEntity>();
-            if (ForumThreadList.SelectedItems.Any())
-            {
-                threadlist.AddRange(ForumThreadList.SelectedItems.Cast<ForumThreadEntity>());
-            }
-            List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values["_threadIds"] = SerializeListToXml(threadIdList);
-        }
-
-        public static string SerializeListToXml(List<long> list)
-        {
-            try
-            {
-                var xmlIzer = new XmlSerializer(typeof (List<long>));
-                var writer = new StringWriter();
-                xmlIzer.Serialize(writer, list);
-                System.Diagnostics.Debug.WriteLine(writer.ToString());
-                return writer.ToString();
-            }
-
-            catch (Exception exc)
-            {
-                System.Diagnostics.Debug.WriteLine(exc);
-                return String.Empty;
-            }
-        }
-
-        private async void RemoveNotificationsButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            localSettings.Values["_threadIds"] = string.Empty;
-            var msgDlg = new MessageDialog("Thread notifications removed! (ÅEÉ÷ÅE)Ém");
-            msgDlg.DefaultCommandIndex = 1;
-            await msgDlg.ShowAsync();
-        }
-
-        private async void RefreshBarButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            loadingProgressBar.Visibility = Visibility.Visible;
-
-            await GetForumThreads();
-
-            loadingProgressBar.Visibility = Visibility.Collapsed;
-
-        }
     }
 }

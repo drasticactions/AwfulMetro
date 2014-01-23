@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
-using AwfulMetro.Core.Tools;
-using HtmlAgilityPack;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using AwfulMetro.Core.Tools;
+using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Entity
 {
     // Food for thought: This might be better served as a ForumUser entity, with a ForumUserProfile subclass.
     public class ForumUserEntity
     {
-        private ForumUserEntity() { }
+        private ForumUserEntity()
+        {
+        }
 
         public string Username { get; private set; }
 
@@ -64,12 +66,18 @@ namespace AwfulMetro.Core.Entity
                             .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author"))
                             .InnerHtml),
                 DateJoined =
-                   DateTime.Parse(postNode.Descendants("dd")
+                    DateTime.Parse(postNode.Descendants("dd")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("registered"))
                         .InnerHtml)
             };
-            var avatarTitle = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
-            var avatarImage = postNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("title")).Descendants("img").FirstOrDefault();
+            HtmlNode avatarTitle =
+                postNode.Descendants("dd")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
+            HtmlNode avatarImage =
+                postNode.Descendants("dd")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("title"))
+                    .Descendants("img")
+                    .FirstOrDefault();
 
             if (avatarTitle != null)
             {
@@ -79,35 +87,53 @@ namespace AwfulMetro.Core.Entity
             {
                 user.AvatarLink = FixPostHtmlImage(avatarImage.OuterHtml);
             }
-            user.Id = Convert.ToInt64(postNode.DescendantsAndSelf("td").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo")).GetAttributeValue("class", string.Empty).Split('-')[1]);
+            user.Id =
+                Convert.ToInt64(
+                    postNode.DescendantsAndSelf("td")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"))
+                        .GetAttributeValue("class", string.Empty)
+                        .Split('-')[1]);
             return user;
         }
 
         /// <summary>
-        /// Gets avatar information from the user login page.
-        /// Note: This should not be done in this way. It needs to be refactored
+        ///     Gets avatar information from the user login page.
+        ///     Note: This should not be done in this way. It needs to be refactored
         /// </summary>
         /// <param name="threadNode">The "thread" class node on the user profile page.</param>
         /// <param name="user">The user entity, parsed from FromUserProfile</param>
         public void FromUserProfileAvatarInformation(HtmlNode threadNode)
         {
-            var avatarTitle = threadNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
-            var avatarImage = threadNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title")).Descendants("img").Any() ? threadNode.Descendants("dd").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("title")).Descendants("img").FirstOrDefault() : null;
+            HtmlNode avatarTitle =
+                threadNode.Descendants("dd")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
+            HtmlNode avatarImage =
+                threadNode.Descendants("dd")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"))
+                    .Descendants("img")
+                    .Any()
+                    ? threadNode.Descendants("dd")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("title"))
+                        .Descendants("img")
+                        .FirstOrDefault()
+                    : null;
 
             if (avatarTitle != null)
             {
-                this.AvatarTitle = WebUtility.HtmlDecode(avatarTitle.InnerText).WithoutNewLines().Trim();
+                AvatarTitle = WebUtility.HtmlDecode(avatarTitle.InnerText).WithoutNewLines().Trim();
             }
             if (avatarImage != null)
             {
-                this.AvatarLink = FixPostHtmlImage(avatarImage.OuterHtml);
+                AvatarLink = FixPostHtmlImage(avatarImage.OuterHtml);
             }
         }
 
         public static ForumUserEntity FromUserProfile(HtmlNode profileNode, HtmlNode authorNode)
         {
-            var additionalNode = profileNode.Descendants("dl").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));
-            var additionalProfileAttributes = ParseAdditionalProfileAttributes(additionalNode);
+            HtmlNode additionalNode =
+                profileNode.Descendants("dl")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("additional"));
+            Dictionary<string, string> additionalProfileAttributes = ParseAdditionalProfileAttributes(additionalNode);
 
             var user = new ForumUserEntity
             {
@@ -122,9 +148,10 @@ namespace AwfulMetro.Core.Entity
                 LastPostDate = DateTime.Parse(additionalProfileAttributes["Last Post"])
             };
 
-            foreach (var aboutParagraph in profileNode.Descendants("p"))
+            foreach (HtmlNode aboutParagraph in profileNode.Descendants("p"))
             {
-                user.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) + Environment.NewLine + Environment.NewLine;
+                user.AboutUser += WebUtility.HtmlDecode(aboutParagraph.InnerText.WithoutNewLines().Trim()) +
+                                  Environment.NewLine + Environment.NewLine;
             }
             if (additionalProfileAttributes.ContainsKey("Seller Rating"))
             {
@@ -139,25 +166,29 @@ namespace AwfulMetro.Core.Entity
 
         private static Dictionary<string, string> ParseAdditionalProfileAttributes(HtmlNode additionalNode)
         {
-            var dts = additionalNode.Descendants("dt");
-            var dds = additionalNode.Descendants("dd");
-            var result = dts.Zip(dds, (first, second) => new Tuple<string, string>(first.InnerText, second.InnerText)).ToDictionary(k=>k.Item1, v=>v.Item2);
+            IEnumerable<HtmlNode> dts = additionalNode.Descendants("dt");
+            IEnumerable<HtmlNode> dds = additionalNode.Descendants("dd");
+            Dictionary<string, string> result =
+                dts.Zip(dds, (first, second) => new Tuple<string, string>(first.InnerText, second.InnerText))
+                    .ToDictionary(k => k.Item1, v => v.Item2);
             // Clean up malformed HTML that results in the "last post" value being all screwy
-            var lastPostValue = result["Last Post"];
-            var removalStartIndex = lastPostValue.IndexOf('\n');
-            var lengthToRemove = lastPostValue.Length - removalStartIndex;
+            string lastPostValue = result["Last Post"];
+            int removalStartIndex = lastPostValue.IndexOf('\n');
+            int lengthToRemove = lastPostValue.Length - removalStartIndex;
             result["Last Post"] = lastPostValue.Remove(removalStartIndex, lengthToRemove);
             return result;
         }
 
         /// <summary>
-        /// Fixes the missing tags in an users avatar HTML node.
+        ///     Fixes the missing tags in an users avatar HTML node.
         /// </summary>
         /// <param name="postHtml"></param>
         /// <returns></returns>
         private static string FixPostHtmlImage(string postHtml)
         {
-            return "<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"></head><body style=\"background-color: white;\"></head><body>" + postHtml + "</body></html>";
+            return
+                "<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/ui-light.css\"></head><body style=\"background-color: white;\"></head><body>" +
+                postHtml + "</body></html>";
         }
     }
 }

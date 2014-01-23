@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="52978DrasticActions.AwfulForumsReader" Publisher="CN=49056560-3A92-41D0-8509-DF4FE44F646C" Version="1.2.0.19" />
+  <Identity Name="52978DrasticActions.AwfulForumsReader" Publisher="CN=49056560-3A92-41D0-8509-DF4FE44F646C" Version="1.2.0.36" />
   <Properties>
     <DisplayName>Awful Forums Reader</DisplayName>
     <PublisherDisplayName>ティム・ミラー</PublisherDisplayName>
@@ -15,8 +15,8 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="AwfulMetro.App">
-      <m2:VisualElements DisplayName="Awful Forums Reader" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="AwfulMetro" ForegroundText="light" BackgroundColor="#1E72C9" ToastCapable="true">
-        <m2:DefaultTile ShortName="AwfulMetro" Wide310x150Logo="Assets\Wide310x150Logo.png">
+      <m2:VisualElements DisplayName="Awful Forums Reader" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="Awful Forums Reader" ForegroundText="light" BackgroundColor="#1E72C9" ToastCapable="true">
+        <m2:DefaultTile ShortName="Awful Forums Reader" Wide310x150Logo="Assets\Wide310x150Logo.png">
         </m2:DefaultTile>
         <m2:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png" />
         <m2:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="white" />
