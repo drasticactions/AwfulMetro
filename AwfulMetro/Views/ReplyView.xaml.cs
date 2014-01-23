@@ -81,7 +81,7 @@ namespace AwfulMetro.Views
                     loadingProgressBar.Visibility = Visibility.Collapsed;
                     break;
                 default:
-                    var msgDlg = new MessageDialog("Working on it!")
+                    var msgDlg = new MessageDialog("ダメだよ～。")
                     {
                         DefaultCommandIndex = 1
                     };
