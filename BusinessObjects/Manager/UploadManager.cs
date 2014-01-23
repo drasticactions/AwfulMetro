@@ -26,9 +26,7 @@ namespace AwfulMetro.Core.Manager
                 request.Headers.Authorization = new AuthenticationHeaderValue("Client-ID", "e5c018ac1f4c157");
                 var form = new MultipartFormDataContent();
                 var t = new StreamContent(fileStream.AsStream());
-                const int maxUriLength = 32766;
-                //TODO: See if this is the correct way to use imgur's v3 api. I can't see why
-                // we would still need to convert images to base64.
+                // TODO: See if this is the correct way to use imgur's v3 api. I can't see why we would still need to convert images to base64.
                 string base64Img = Convert.ToBase64String(imageData);
                 t.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
                 form.Add(new StringContent(base64Img), @"image");

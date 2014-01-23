@@ -320,25 +320,26 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
+            <RowDefinition Height="70" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
-        <Grid Background="#FF1E72C9" RequestedTheme="Dark">
+        <Grid Background="{StaticResource AwfulBlue}" RequestedTheme="Dark">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0"
+            <Button x:Name="backButton"
                     Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
-                    VerticalAlignment="Top"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
                     AutomationProperties.Name="Back"
                     AutomationProperties.AutomationId="BackButton"
                     AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" />
             <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1"
-                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0" />
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" />
         </Grid>
         
         
@@ -461,9 +462,9 @@
                                 </StackPanel>
                                 <Border x:Name="ReplySinceLastOpenedCount"
                                         Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}"
-                                        BorderThickness="2" Height="25" VerticalAlignment="Center"
+                                        BorderThickness="2" Height="25" MinWidth="100" VerticalAlignment="Center"
                                         HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                         <TextBlock FontSize="15" x:Name="ReplyCount"
                                                    Foreground="{Binding RepliesSinceLastOpened, Converter={StaticResource RepliesSinceLastOpenedColorConverter}}"
                                                    Text="{Binding RepliesSinceLastOpened}" />
@@ -559,9 +560,9 @@
                                 </StackPanel>
                                 <Border x:Name="ReplySinceLastOpenedCount"
                                         Visibility="{Binding HasBeenViewed, Converter={StaticResource booleanToVisibilityConverter}}"
-                                        BorderThickness="2" Height="25" VerticalAlignment="Center"
+                                        BorderThickness="2" Height="25" MinWidth="100" VerticalAlignment="Center"
                                         HorizontalAlignment="Right" Grid.Column="2" BorderBrush="#FFCDCDCD">
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                                         <TextBlock FontSize="15" x:Name="ReplyCount"
                                                    Foreground="{Binding RepliesSinceLastOpened, Converter={StaticResource RepliesSinceLastOpenedColorConverter}}"
                                                    Text="{Binding RepliesSinceLastOpened}" />

@@ -42,7 +42,7 @@ namespace AwfulMetro.Core.Entity
 
         public void MapEditPostInformation(string quote, long postId, string bookmark)
         {
-            Quote = quote;
+            Quote = WebUtility.HtmlDecode(quote);
             PostId = postId;
             Bookmark = bookmark;
         }

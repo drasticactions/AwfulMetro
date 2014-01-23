@@ -176,8 +176,10 @@ namespace AwfulMetro.Core.Manager
 
         public static string HtmlEncode(string text)
         {
-            //TODO: Taken directly off of the internet to fix Unicode support. Need to enhance.
-            char[] chars = text.ToCharArray();
+            // In order to get Unicode characters fully working, we need to first encode the entire post.
+            // THEN we decode the bits we can safely pass in, like single/double quotes.
+            // If we don't, the post format will be screwed up.
+            char[] chars = WebUtility.HtmlEncode(text).ToCharArray();
             var result = new StringBuilder(text.Length + (int) (text.Length*0.1));
 
             foreach (char c in chars)
@@ -190,6 +192,9 @@ namespace AwfulMetro.Core.Manager
             }
 
             result.Replace("&quot;", "\"");
+            result.Replace("&#39;", @"'");
+            result.Replace("&lt;", @"<");
+            result.Replace("&gt;", @">");
             return result.ToString();
         }
 
@@ -238,6 +243,11 @@ namespace AwfulMetro.Core.Manager
                 {new StringContent("Submit Reply"), "submit"},
                 {new StringContent("Preview Reply"), "preview"}
             };
+
+            // We post to SA the same way we would for a normal reply, but instead of getting a redirect back to the
+            // thread, we'll get redirected to back to the reply screen with the preview message on it.
+            // From here we can parse that preview and return it to the user.
+
             HttpResponseMessage response = await _webManager.PostFormData(Constants.NEW_REPLY, form);
             Stream stream = await response.Content.ReadAsStreamAsync();
             using (var reader = new StreamReader(stream))
@@ -275,7 +285,7 @@ namespace AwfulMetro.Core.Manager
             };
             HttpResponseMessage response = await _webManager.PostFormData(Constants.NEW_REPLY, form);
 
-            return true;
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> SendUpdatePost(ForumReplyEntity forumReplyEntity)
@@ -294,7 +304,7 @@ namespace AwfulMetro.Core.Manager
             };
             HttpResponseMessage response = await _webManager.PostFormData(Constants.EDIT_POST, form);
 
-            return true;
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<string> GetQuoteString(long postId)
@@ -310,7 +320,8 @@ namespace AwfulMetro.Core.Manager
 
             try
             {
-                return WebUtility.HtmlDecode(textNode.InnerText);
+                // TODO: Figure out why in the hell we have to decode the HTML twice for Unicode to render properly.
+                return WebUtility.HtmlDecode(WebUtility.HtmlDecode(textNode.InnerText));
             }
             catch (Exception)
             {
