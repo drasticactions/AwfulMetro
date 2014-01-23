@@ -272,8 +272,9 @@
             AutomationProperties.AutomationId="ItemListView"
             AutomationProperties.Name="Grouped Items"
             Visibility="Collapsed"
-            Padding="0,0,-100,46"
+            Padding="0,0,0,46"
             Margin="0,0,100,0"
+            HorizontalAlignment="Stretch"
             ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
@@ -281,7 +282,7 @@
             ItemClick="ItemView_ItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid HorizontalAlignment="Center" Height="60" MinWidth="572" Margin="0,0,100,0">
+                    <Grid HorizontalAlignment="Center" Height="60" MinWidth="572" Width="Auto">
                         <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
                             <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
                                        AutomationProperties.Name="{Binding Title}" />
