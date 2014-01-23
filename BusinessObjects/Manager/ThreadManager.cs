@@ -42,7 +42,7 @@ namespace AwfulMetro.Core.Manager
 
             HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
 
-            HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").ToArray();
+            HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("id", "").Equals("thread")).ToArray();
 
             HtmlNode threadNode = replyNodes.FirstOrDefault(node => node.GetAttributeValue("id", "").Equals("thread"));
 
@@ -50,13 +50,19 @@ namespace AwfulMetro.Core.Manager
 
             IEnumerable<HtmlNode> postNodes =
                 threadNode.Descendants("table")
-                    .Where(node => node.GetAttributeValue("class", string.Empty).Equals("post "));
+                    .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post"));
+
+            // Some thread pages have malformed HTML, which causes HTML Agility pack to get extra nodes we don't want
+            // So instead of directly editing the node, we'll get each post and create a new Html string.
+            string postHtml = string.Empty;
 
             foreach (HtmlNode post in postNodes)
             {
                 HtmlNode userInfoNode =
                     post.Descendants("td")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"));
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo")) ??
+                    post.Descendants("dl")
+                            .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"));
 
                 int userId = ParseInt(userInfoNode.GetAttributeValue("class", string.Empty));
 
@@ -124,9 +130,10 @@ namespace AwfulMetro.Core.Manager
 
                 //postDateNode.InnerHtml = string.Concat("<div style=\"display: inline-block;\">", toPostButton, usersPostsInThreadButton, "</div>", postDate);
                 postDateNode.InnerHtml = postDate;
+                postHtml += post.OuterHtml;
             }
 
-            bodyNode.InnerHtml = threadNode.OuterHtml;
+            bodyNode.InnerHtml = postHtml;
 
             return WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml);
         }
