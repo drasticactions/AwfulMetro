@@ -36,21 +36,91 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="DefaultLayout">
+                    <!-- The default Visibility properties are set in the XAML that defines the objects. -->
+                </VisualState>
+                <VisualState x:Name="MinimalLayout">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="defaultTitle" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="minimalTitle" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="defaultNavigation" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="minimalNavigation" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemListView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="PortraitLayout">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="portraitView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition />
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <!-- page title -->
+        <Grid RequestedTheme="Dark" Background="{StaticResource AwfulBlue}" Visibility="Visible" x:Name="defaultTitle" MinHeight="140">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="623*" />
+            </Grid.ColumnDefinitions>
+            <Image Source="ms-appx:///Assets/grenadesm.png" Grid.Column="0"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" RequestedTheme="Dark" Height="41" Width="41" />
+            <TextBlock x:Name="pageTitle" Text="Awful Forums Reader" Style="{StaticResource HeaderTextBlockStyle}"
+                       Grid.Column="1"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,0,0"
+                       Height="40" />
+        </Grid>
+        <Grid RequestedTheme="Dark" Background="{StaticResource AwfulBlue}" Visibility="Collapsed" x:Name="minimalTitle" MinHeight="80">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Source="ms-appx:///Assets/grenadesm.png" Grid.Column="0"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" RequestedTheme="Dark" Height="31" Width="31" />
+            <TextBlock x:Name="pageTitleSnap" Text="Awful Forums Reader"
+                       Grid.Column="1"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,0,0"
+                       Height="20" Style="{StaticResource MiniHeader}"/>
+        </Grid>
+
+        <!-- Main content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
+            <!-- > 500 px view -->
             <GridView
                 x:Name="itemGridView"
                 AutomationProperties.AutomationId="ItemGridView"
@@ -65,17 +135,14 @@
                 ItemClick="ItemView_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid HorizontalAlignment="Left" Width="445" Height="100">
+                        <Grid HorizontalAlignment="Left" Width="400" Height="60">
                             <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
                                 <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
                                        AutomationProperties.Name="{Binding Title}" />
                             </Border>
                             <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
                                 <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
-                                           Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0" />
-                                <TextBlock Text="{Binding Description}" Foreground="Black"
-                                           Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"
-                                           Margin="15,0,15,10" />
+                                           Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -86,8 +153,10 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-            <StackPanel x:Name="stackPanel" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2"
-                        Margin="0,0,-5,0">
+
+            <!-- navigation on the right -->
+            <StackPanel x:Name="defaultNavigation" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2"
+                        Margin="0,0,-5,0" Visibility="Visible">
                 <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet" />
                 <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page"
                               RenderTransformOrigin="0.5,0.5">
@@ -120,18 +189,112 @@
             <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto"
                          Height="10" VerticalAlignment="Top" />
         </Grid>
-        <!-- Back button and page title -->
-        <Grid RequestedTheme="Dark" Background="#FF1E72C9">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60*" />
-                <ColumnDefinition Width="623*" />
-            </Grid.ColumnDefinitions>
-            <Image Source="ms-appx:///Assets/grenadesm.png" Grid.Column="0"
-                   VerticalAlignment="Center" HorizontalAlignment="Center" RequestedTheme="Dark" Height="41" Width="41" />
-            <TextBlock x:Name="pageTitle" Text="Awful Forums Reader" Style="{StaticResource HeaderTextBlockStyle}"
-                       Grid.Column="1"
-                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,0,0"
-                       Height="40" />
+
+        <!-- Snapped view -->
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <!-- content -->
+            <ListView
+                Grid.Row="1"
+                x:Name="itemListView"
+                AutomationProperties.AutomationId="ItemListView"
+                AutomationProperties.Name="Grouped Items"
+                Visibility="Collapsed"
+                Padding="0,0,0,46"
+                ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+                SelectionMode="None"
+                IsSwipeEnabled="false"
+                IsItemClickEnabled="True"
+                ItemClick="ItemView_ItemClick">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Center" Width="500" Height="60">
+                            <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
+                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                       AutomationProperties.Name="{Binding Title}" />
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!-- navigation -->
+            <StackPanel x:Name="minimalNavigation" Orientation="Horizontal" Background="#FFC5C5C5" HorizontalAlignment="Stretch" Grid.Row="0" Visibility="Collapsed">
+                <AppBarButton x:Name="RapSheetButtonSnap" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet" />
+                <AppBarButton x:Name="FrontPageButtonSnap" Click="FrontPageButton_Click" Label="Front Page"
+                              RenderTransformOrigin="0.5,0.5">
+                    <AppBarButton.RenderTransform>
+                        <CompositeTransform ScaleX="0.95" />
+                    </AppBarButton.RenderTransform>
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/frontpage.png" RenderTransformOrigin="0.5,0.5">
+                            <BitmapIcon.RenderTransform>
+                                <CompositeTransform ScaleX="0.7" ScaleY="0.7" />
+                            </BitmapIcon.RenderTransform>
+                        </BitmapIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="BookmarkButtonSnap" Click="BookmarkButton_Click" Label="Bookmarks">
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon3.png" RenderTransformOrigin="0.5,0.5"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right">
+                            <BitmapIcon.RenderTransform>
+                                <CompositeTransform ScaleX="0.7" ScaleY="0.7" />
+                            </BitmapIcon.RenderTransform>
+                        </BitmapIcon>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton  x:Name="LogoutButtonSnap" Label="Logout" Click="LogoutButton_OnClick" Icon="Remove"/>
+            </StackPanel>
         </Grid>
+        
+        <!-- portrait view -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" /> <!-- for when we start pinning fav subforums -->
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <ListView
+            Grid.Row="1"
+            Grid.Column="0"
+            x:Name="portraitView"
+            AutomationProperties.AutomationId="ItemListView"
+            AutomationProperties.Name="Grouped Items"
+            Visibility="Collapsed"
+            Padding="0,0,0,46"
+            Margin="0,0,100,0"
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+            SelectionMode="None"
+            IsSwipeEnabled="false"
+            IsItemClickEnabled="True"
+            ItemClick="ItemView_ItemClick">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Center" Height="60" MinWidth="572" Width="Auto">
+                        <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
+                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                       AutomationProperties.Name="{Binding Title}" />
+                        </Border>
+                        <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                            <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </Grid>
 </Page>
