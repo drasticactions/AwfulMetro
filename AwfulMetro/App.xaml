@@ -12,10 +12,24 @@
         <!-- Application-specific resources -->
 
         <x:String x:Key="AppName">AwfulMetro</x:String>
+        
         <tools:AvatarWebViewConverter x:Key="AvatarWebViewConverter" />
         <tools:ThreadHeaderColorConverter x:Key="ThreadHeaderColorConverter" />
         <tools:SubforumHeaderColorConverter x:Key="SubforumHeaderColorConverter" />
         <tools:RatingVisibilityConverter x:Key="RatingVisibilityConverter" />
         <tools:RepliesSinceLastOpenedColorConverter x:Key="RepliesSinceLastOpenedColorConverter" />
+        
+        <SolidColorBrush x:Key="AwfulBlue" Color="#FF1E72C9"/>
+        
+        <!-- 
+            A miniatured version of the blue header
+            MinHeight="80"
+            Height="20"
+        -->
+        <Style x:Key="MiniHeader" BasedOn="{StaticResource BaseTextBlockStyle}" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="LineHeight" Value="20"/>
+        </Style>
     </Application.Resources>
 </Application>

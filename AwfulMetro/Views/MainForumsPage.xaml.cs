@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ServiceModel.Channels;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,8 +29,24 @@ namespace AwfulMetro.Views
             InitializeComponent();
             NavigationHelper = new NavigationHelper(this);
             NavigationHelper.LoadState += navigationHelper_LoadState;
+            this.SizeChanged += MainForumsPage_SizeChanged;
         }
 
+        private void MainForumsPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width <= 500)
+            {
+                VisualStateManager.GoToState(this, "MinimalLayout", true);
+            }
+            else if (e.NewSize.Width <= e.NewSize.Height)
+            {
+                VisualStateManager.GoToState(this, "PortraitLayout", true);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "DefaultLayout", true);
+            } 
+        }
 
         /// <summary>
         ///     NavigationHelper is used on each page to aid in navigation and
