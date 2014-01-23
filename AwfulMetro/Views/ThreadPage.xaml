@@ -12,8 +12,6 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
         <CollectionViewSource
             x:Name="itemsViewSource"
             Source="{Binding Posts}" />
@@ -105,6 +103,8 @@
             </StackPanel>
             <WebView DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" Grid.Column="0" x:Name="ThreadFullView" />
         </Grid>
+        
+        
         <Grid Grid.Row="1" Visibility="Collapsed" x:Name="ThreadListSnapped">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100" />

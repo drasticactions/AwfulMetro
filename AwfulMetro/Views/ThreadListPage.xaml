@@ -340,6 +340,8 @@
             <TextBlock x:Name="pageTitle" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1"
                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0" />
         </Grid>
+        
+        
         <Grid RequestedTheme="Light" x:Name="ThreadViewFullScreen" Grid.Row="1" Margin="-5,0,5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -480,17 +482,17 @@
         
         <Grid RequestedTheme="Light" x:Name="ThreadViewSnapped" Visibility="Collapsed" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" /> <!--account for the scrollbar when there are a lot of subforums-->
                 <RowDefinition Height="*" />
+                <!--<RowDefinition Height="*" />-->
             </Grid.RowDefinitions>
-            <GridView x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="1"
+            <GridView x:Name="SubForumListSnapped" ItemClick="SubForumList_ItemClick" Grid.Row="0"
                       ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None"
-                      IsItemClickEnabled="True" Height="100">
+                      IsItemClickEnabled="True" Height="Auto" MaxHeight="110">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid HorizontalAlignment="Center" Width="100" Height="100">
+                        <StackPanel Orientation="Horizontal" Width="100">
+                            <Grid VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="100" Width="100">
                                 <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
                                     <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
                                            AutomationProperties.Name="{Binding Title}" />
@@ -507,12 +509,12 @@
                                                Margin="15,0,15,10" />
                                 </StackPanel>
                             </Grid>
-                        </Grid>
+                        </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
             <ListView x:Name="ForumThreadListSnapped" HorizontalAlignment="Left" ItemClick="ForumThreadList_ItemClick"
-                      Grid.Row="2" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None"
+                      Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None"
                       IsItemClickEnabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
