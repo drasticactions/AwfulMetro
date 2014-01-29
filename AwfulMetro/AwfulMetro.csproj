@@ -176,6 +176,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="Assets\219.css" />
     <Content Include="Assets\BadgeLogo.scale-100.png" />
     <Content Include="Assets\BadgeLogo.scale-140.png" />
     <Content Include="Assets\BadgeLogo.scale-180.png" />
@@ -183,6 +184,7 @@
     <Content Include="Assets\bookmarkicon2.png" />
     <Content Include="Assets\bookmarkicon3.png" />
     <Content Include="Assets\clearicon.png" />
+    <Content Include="Assets\default-forum.css" />
     <Content Include="Assets\frontpage.png" />
     <Content Include="Assets\grenadesm.png" />
     <Content Include="Assets\js\threadTemplate.js" />

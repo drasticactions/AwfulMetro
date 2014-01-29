@@ -1,0 +1,10 @@
+button, input[type=button], input[type=reset], input[type=submit] {
+	background-color: transparent;
+	color: #2F6EBB;
+}
+
+button[type=submit]:hover, input[type=submit]:hover {
+    background-clip: border-box;
+    background-color: #C6D9FB;
+    border-color: transparent;
+}

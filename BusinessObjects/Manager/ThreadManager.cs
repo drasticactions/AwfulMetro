@@ -32,6 +32,17 @@ namespace AwfulMetro.Core.Manager
             return await GetThreadHtml(doc);
         }
 
+        private string GetForumThreadCss(int forumId)
+        {
+            switch (forumId)
+            {
+                case 219:
+                    return "219.css";
+                default:
+                    return "default-forum.css";
+            }
+        }
+
         public async Task<string> GetThreadHtml(HtmlDocument doc)
         {
             string html = await PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
@@ -41,6 +52,21 @@ namespace AwfulMetro.Core.Manager
             doc2.LoadHtml(html);
 
             HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
+
+            // Get thread body.
+            var forumBodyNode = doc.DocumentNode.Descendants("body").FirstOrDefault();
+
+            if (forumBodyNode != null)
+            {
+                var forumId = Convert.ToInt32(forumBodyNode.GetAttributeValue("data-forum", string.Empty));
+                var headNode = doc2.DocumentNode.Descendants("head").FirstOrDefault();
+                var cssNode = doc2.CreateElement("link");
+                headNode.AppendChild(cssNode);
+                cssNode.SetAttributeValue("href", string.Format("ms-appx-web:///Assets/{0}", GetForumThreadCss(forumId)));
+                cssNode.SetAttributeValue("media", "all");
+                cssNode.SetAttributeValue("rel", "stylesheet");
+                cssNode.SetAttributeValue("type", "text/css");
+            }
 
             HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("id", "").Equals("thread")).ToArray();
 
@@ -81,29 +107,29 @@ namespace AwfulMetro.Core.Manager
                 string profileButton =
                     WebUtility.HtmlDecode(
                         string.Format(
-                            "<li><button onclick=\"window.ForumCommand('profile', '{0}');\">Profile</button></li>",
+                            "<li><input type=\"submit\" value=\"Profile\" onclick=\"window.ForumCommand('profile', '{0}');\"></input></li>",
                             userId));
 
                 string postHistoryButton =
                     WebUtility.HtmlDecode(
                         string.Format(
-                            "<li><button onclick=\"window.ForumCommand('post_history', '{0}');\">Post History</button></li>",
+                            "<li><input type=\"submit\"  value=\"Post History\" onclick=\"window.ForumCommand('post_history', '{0}');\"></input></li>",
                             userId));
 
                 string rapSheetButton =
                     WebUtility.HtmlDecode(
                         string.Format(
-                            "<li><button onclick=\"window.ForumCommand('rap_sheet', '{0}');\">Rap Sheet</button></li>",
+                            "<li><input type=\"submit\" value=\"Rap Sheet\" onclick=\"window.ForumCommand('rap_sheet', '{0}');\"></input></li>",
                             userId));
 
                 string quoteButton =
                     WebUtility.HtmlDecode(
                         string.Format(
-                            "<li><button onclick=\"window.ForumCommand('quote', '{0}');\">Quote</button></li>", postId));
+                            "<li><input type=\"submit\" value=\"Quote\" onclick=\"window.ForumCommand('quote', '{0}');\"></input></li>", postId));
 
                 string editButton =
                     WebUtility.HtmlDecode(
-                        string.Format("<li><button onclick=\"window.ForumCommand('edit', '{0}');\">Edit</button></li>",
+                        string.Format("<li><input type=\"submit\" value=\"Edit\"   onclick=\"window.ForumCommand('edit', '{0}');\"></input></li>",
                             postId));
 
                 profileLinksNode.InnerHtml = isCurrentUserPost
@@ -135,7 +161,7 @@ namespace AwfulMetro.Core.Manager
 
             bodyNode.InnerHtml = postHtml;
 
-            return WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml);
+            return WebUtility.HtmlDecode(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml));
         }
 
         private int ParseInt(string postClass)

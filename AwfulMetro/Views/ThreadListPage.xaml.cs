@@ -64,7 +64,9 @@ namespace AwfulMetro.Views
             get { return _navigationHelper; }
         }
 
+        private string ViewStateStringSnapped { get; set; }
 
+        private string ViewStateStringFullScreen { get; set; }
         /// <summary>
         ///     Populates the page with content passed during navigation. Any saved state is also
         ///     provided when recreating a page from a prior session.
@@ -87,9 +89,22 @@ namespace AwfulMetro.Views
             var forumInfo = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (forumInfo == null) return;
             _forumEntity = forumInfo;
+            ViewStateStringFullScreen = "FullScreen" + GetViewStateString(forumInfo.ForumId);
+            ViewStateStringSnapped = "Snapped" + GetViewStateString(forumInfo.ForumId);
             pageTitle.Text = _forumEntity.Name;
             await GetForumThreads();
             loadingProgressBar.Visibility = Visibility.Collapsed;
+        }
+
+        private string GetViewStateString(long forumId)
+        {
+            switch (forumId)
+            {
+                case 219:
+                    return "_YOSPOS";
+                default:
+                    return string.Empty;
+            }
         }
 
         /// <summary>
@@ -163,14 +178,13 @@ namespace AwfulMetro.Views
         private void ChangeViewTemplate(double width)
         {
             ApplicationView currentView = ApplicationView.GetForCurrentView();
-
             if (currentView.Orientation == ApplicationViewOrientation.Landscape)
             {
-                VisualStateManager.GoToState(this, "FullScreen", false);
+                VisualStateManager.GoToState(this, ViewStateStringFullScreen, false);
             }
             else
             {
-                VisualStateManager.GoToState(this, width <= 620 ? "Snapped" : "FullScreen", false);
+                VisualStateManager.GoToState(this, width <= 620 ? ViewStateStringSnapped : ViewStateStringFullScreen, false);
             }
         }
 

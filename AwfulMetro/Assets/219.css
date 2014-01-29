@@ -1,0 +1,70 @@
+body {
+	background-color: black;
+	color: #57FF57;
+}
+
+button, input[type=button], input[type=reset], input[type=submit] {
+	background-color: transparent;
+	color: #57FF57;
+	font-family: "consolas", "monaco", monospace !important;
+}
+
+button[type=submit]:hover, input[type=submit]:hover {
+    background-clip: border-box;
+    background-color: #C6D9FB;
+    border-color: transparent;
+	animation-name:animes;
+	animation-duration:1s;
+	animation-iteration-count:infinite;
+	animation-direction:alternate;
+	animation-timing-function:ease-in-out;
+}
+
+::selection {
+    background-color: #29D829;
+    color: rgb(255, 255, 255);
+}
+
+.altcolor2,tr.altcolor2 td,td.altcolor2 {
+    background-color: black;
+}
+
+.altcolor1,tr.altcolor1 td,td.altcolor1 {
+    background-color: black;
+}
+
+#thread dl.userinfo dt.author {
+	padding-bottom: 4px;
+	font-weight: bolder;
+	color: #57FF57 !important;
+	font-size: 14px !important;
+	text-shadow: 0 0 0 #EEEEEE;
+	font-family: "consolas", "monaco", monospace !important;
+}
+
+#mods,div.pages,#copyright,#forum th,#forum td.lastpost,#forum span.pages,#thread div.postbar,td.postdate,td.postlinks,#thread dl.userinfo dd,#thread tr.postbar td,div.threadrate,div.subscribe {
+    color: #57FF57;
+    font: normal normal normal 12px "consolas", "monaco", monospace;
+}
+
+body, tr, th, .postbody, p, li, blockquote, h4, .author,.breadcrumbs {
+	color: #57FF57 !important;
+	font: normal normal normal 15px "consolas", "monaco", monospace !important;
+}
+
+.bbc-block {
+	background: transparent !important;
+    border-top: 1px solid #57FF57 !important;
+    border-bottom: 1px solid #57FF57 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-radius: 0 !important;
+}
+
+.registered, .postdate, .bbc-center {
+	color: #57FF57 !important;
+}
+
+@keyframes animes {
+    0%{background:#57ff57;color:#000}50%{background:#000;color:#57ff57}100%{background:#57ff57;color:#000}
+}
