@@ -346,6 +346,108 @@
                 		</ObjectAnimationUsingKeyFrames>
                 	</Storyboard>
                 </VisualState>
+                <VisualState x:Name="Snapped_YOSPOS">
+                	<Storyboard>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                			Storyboard.TargetName="ThreadViewFullScreen">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Collapsed</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                			Storyboard.TargetName="ThreadViewSnapped">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Visible</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background)" Storyboard.TargetName="grid1">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<SolidColorBrush Color="Black"/>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background)" Storyboard.TargetName="ThreadViewSnapped">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<SolidColorBrush Color="Black"/>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                	</Storyboard>
+                </VisualState>
+                <VisualState x:Name="FullScreen_FYAD">
+                	<Storyboard>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                			Storyboard.TargetName="ThreadViewFullScreen">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Visible</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                			Storyboard.TargetName="ThreadViewSnapped">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Collapsed</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background)" Storyboard.TargetName="grid1">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<SolidColorBrush Color="#FFFF00D1"/>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background)" Storyboard.TargetName="ThreadViewFullScreen">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<SolidColorBrush Color="#FFFF00D1"/>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                	</Storyboard>
+                </VisualState>
+                <VisualState x:Name="Snapped_FYAD">
+                	<Storyboard>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                			Storyboard.TargetName="ThreadViewFullScreen">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Collapsed</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                			Storyboard.TargetName="ThreadViewSnapped">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<Visibility>Visible</Visibility>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background)" Storyboard.TargetName="grid1">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<SolidColorBrush Color="#FFFF00D1"/>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background)" Storyboard.TargetName="ThreadViewSnapped">
+                			<DiscreteObjectKeyFrame KeyTime="0">
+                				<DiscreteObjectKeyFrame.Value>
+                					<SolidColorBrush Color="#FFFF00D1"/>
+                				</DiscreteObjectKeyFrame.Value>
+                			</DiscreteObjectKeyFrame>
+                		</ObjectAnimationUsingKeyFrames>
+                	</Storyboard>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid.ChildrenTransitions>

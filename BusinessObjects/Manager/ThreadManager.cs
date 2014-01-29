@@ -38,6 +38,8 @@ namespace AwfulMetro.Core.Manager
             {
                 case 219:
                     return "219.css";
+                case 26:
+                    return "26.css";
                 default:
                     return "default-forum.css";
             }

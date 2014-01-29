@@ -102,6 +102,8 @@ namespace AwfulMetro.Views
             {
                 case 219:
                     return "_YOSPOS";
+                case 26:
+                    return "_FYAD";
                 default:
                     return string.Empty;
             }
