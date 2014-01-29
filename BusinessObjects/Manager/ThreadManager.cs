@@ -60,14 +60,19 @@ namespace AwfulMetro.Core.Manager
 
             if (forumBodyNode != null)
             {
-                var forumId = Convert.ToInt32(forumBodyNode.GetAttributeValue("data-forum", string.Empty));
-                var headNode = doc2.DocumentNode.Descendants("head").FirstOrDefault();
-                var cssNode = doc2.CreateElement("link");
-                headNode.AppendChild(cssNode);
-                cssNode.SetAttributeValue("href", string.Format("ms-appx-web:///Assets/{0}", GetForumThreadCss(forumId)));
-                cssNode.SetAttributeValue("media", "all");
-                cssNode.SetAttributeValue("rel", "stylesheet");
-                cssNode.SetAttributeValue("type", "text/css");
+                var forumIdNode = forumBodyNode.GetAttributeValue("data-forum", string.Empty);
+                if (!string.IsNullOrEmpty(forumIdNode))
+                {
+                    var forumId = Convert.ToInt32(forumIdNode);
+                    var headNode = doc2.DocumentNode.Descendants("head").FirstOrDefault();
+                    var cssNode = doc2.CreateElement("link");
+                    headNode.AppendChild(cssNode);
+                    cssNode.SetAttributeValue("href",
+                        string.Format("ms-appx-web:///Assets/{0}", GetForumThreadCss(forumId)));
+                    cssNode.SetAttributeValue("media", "all");
+                    cssNode.SetAttributeValue("rel", "stylesheet");
+                    cssNode.SetAttributeValue("type", "text/css");
+                }
             }
 
             HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("id", "").Equals("thread")).ToArray();
