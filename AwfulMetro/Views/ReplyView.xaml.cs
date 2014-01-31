@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using Windows.UI.Core;
 using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -137,6 +140,27 @@ namespace AwfulMetro.Views
             ReplyText.Text = _forumReply.Quote;
             PreviousPostsWebView.NavigateToString(_forumReply.PreviousPostsRaw);
             loadingProgressBar.Visibility = Visibility.Collapsed;
+        }
+        private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
+        {
+            ChangeViewTemplate(e.Size.Width);
+        }
+
+        private void PageUnloaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SizeChanged -= Window_SizeChanged;
+        }
+
+        private void PageLoaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SizeChanged += Window_SizeChanged;
+        }
+
+
+        private void ChangeViewTemplate(double width)
+        {
+            ApplicationView currentView = ApplicationView.GetForCurrentView();
+            VisualStateManager.GoToState(this, currentView.IsFullScreen ? "FullScreen" : "Snapped", false);
         }
 
         /// <summary>
@@ -300,6 +324,11 @@ namespace AwfulMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             _navigationHelper.OnNavigatedTo(e);
+            Rect bounds = Window.Current.Bounds;
+            ChangeViewTemplate(bounds.Width);
+
+            Loaded += PageLoaded;
+            Unloaded += PageUnloaded;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
