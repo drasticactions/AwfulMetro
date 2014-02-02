@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -35,7 +36,7 @@ namespace AwfulMetro.Views
         {
             InitializeComponent();
             navigationHelper = new NavigationHelper(this);
-            PreviousPostsWebView.ScriptNotify += PreviousPostsWebView_ScriptNotify;
+            PreviewLastPostWebView.ScriptNotify += PreviousPostsWebView_ScriptNotify;
             navigationHelper.LoadState += navigationHelper_LoadState;
             navigationHelper.SaveState += navigationHelper_SaveState;
         }
@@ -115,7 +116,7 @@ namespace AwfulMetro.Views
                 return;
             }
             ReplyText.Text = _forumReply.Quote;
-            PreviousPostsWebView.NavigateToString(_forumReply.PreviousPostsRaw);
+            PreviewLastPostWebView.NavigateToString(_forumReply.PreviousPostsRaw);
             LoadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
@@ -155,7 +156,7 @@ namespace AwfulMetro.Views
         {
             LoadingProgressBar.Visibility = Visibility.Visible;
             ItemGridView.Visibility = Visibility.Visible;
-            PreviousPostsWebView.Visibility = Visibility.Collapsed;
+            PreviewLastPostWebView.Visibility = Visibility.Collapsed;
             if (!_smileCategoryList.Any())
             {
                 _smileCategoryList = await _smileManager.GetSmileList();
@@ -168,7 +169,7 @@ namespace AwfulMetro.Views
         {
             LoadingProgressBar.Visibility = Visibility.Visible;
             ItemGridView.Visibility = Visibility.Visible;
-            PreviousPostsWebView.Visibility = Visibility.Collapsed;
+            PreviewLastPostWebView.Visibility = Visibility.Collapsed;
             if (!_bbCodeList.Any())
             {
                 _bbCodeList = BBCodeManager.BBCodes;
@@ -179,23 +180,26 @@ namespace AwfulMetro.Views
 
         private async void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            PostPreviewRaw.Visibility = Visibility.Collapsed;
-            PreviewPostGrid.Visibility = Visibility.Visible;
+            ItemGridView.Visibility = Visibility.Collapsed;
+            PreviewLastPostWebView.Visibility = Visibility.Visible;
+
             _forumReply.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
-            string result = await replyManager.CreatePreviewEditPost(_forumReply);
+            string result = await replyManager.CreatePreviewPost(_forumReply);
             if (!string.IsNullOrEmpty(result))
             {
-                PostPreviewRaw.NavigateToString(result);
-                PostPreviewRaw.Visibility = Visibility.Visible;
+                PreviewLastPostWebView.NavigateToString(result);
+                PreviewLastPostWebView.Visibility = Visibility.Visible;
             }
             else
             {
-                var msgDlg =
-                    new MessageDialog(
-                        "No text?! What the fuck good is showing you a preview then! Type some shit in and try again!");
+                LoadingProgressBar.Visibility = Visibility.Collapsed;
+                string messageText =
+                    string.Format(
+                        "No text?! What good is showing you a preview then! Type something in and try again!{0}{1}",
+                        Environment.NewLine, Constants.ASCII_2);
+                var msgDlg = new MessageDialog(messageText);
                 await msgDlg.ShowAsync();
-                PreviewPostGrid.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -231,8 +235,9 @@ namespace AwfulMetro.Views
 
         private void LastPostsButton_OnClick(object sender, RoutedEventArgs e)
         {
+            PreviewLastPostWebView.NavigateToString(_forumReply.PreviousPostsRaw);
             ItemGridView.Visibility = Visibility.Collapsed;
-            PreviousPostsWebView.Visibility = Visibility.Visible;
+            PreviewLastPostWebView.Visibility = Visibility.Visible;
         }
 
         private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)

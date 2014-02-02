@@ -38,7 +38,7 @@ namespace AwfulMetro.Views
         {
             InitializeComponent();
             _navigationHelper = new NavigationHelper(this);
-            PreviousPostsWebView.ScriptNotify += PreviousPostsWebView_ScriptNotify;
+            PreviewLastPostWebView.ScriptNotify += PreviousPostsWebView_ScriptNotify;
             _navigationHelper.LoadState += navigationHelper_LoadState;
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
@@ -138,29 +138,8 @@ namespace AwfulMetro.Views
                 return;
             }
             ReplyText.Text = _forumReply.Quote;
-            PreviousPostsWebView.NavigateToString(_forumReply.PreviousPostsRaw);
+            PreviewLastPostWebView.NavigateToString(_forumReply.PreviousPostsRaw);
             loadingProgressBar.Visibility = Visibility.Collapsed;
-        }
-        private void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
-        {
-            ChangeViewTemplate(e.Size.Width);
-        }
-
-        private void PageUnloaded(object sender, RoutedEventArgs e)
-        {
-            Window.Current.SizeChanged -= Window_SizeChanged;
-        }
-
-        private void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            Window.Current.SizeChanged += Window_SizeChanged;
-        }
-
-
-        private void ChangeViewTemplate(double width)
-        {
-            ApplicationView currentView = ApplicationView.GetForCurrentView();
-            VisualStateManager.GoToState(this, currentView.IsFullScreen ? "FullScreen" : "Snapped", false);
         }
 
         /// <summary>
@@ -199,7 +178,7 @@ namespace AwfulMetro.Views
         {
             loadingProgressBar.Visibility = Visibility.Visible;
             ItemGridView.Visibility = Visibility.Visible;
-            PreviousPostsWebView.Visibility = Visibility.Collapsed;
+            PreviewLastPostWebView.Visibility = Visibility.Collapsed;
             if (!_smileCategoryList.Any())
             {
                 _smileCategoryList = await _smileManager.GetSmileList();
@@ -212,7 +191,7 @@ namespace AwfulMetro.Views
         {
             loadingProgressBar.Visibility = Visibility.Visible;
             ItemGridView.Visibility = Visibility.Visible;
-            PreviousPostsWebView.Visibility = Visibility.Collapsed;
+            PreviewLastPostWebView.Visibility = Visibility.Collapsed;
             if (!_bbCodeList.Any())
             {
                 _bbCodeList = BBCodeManager.BBCodes;
@@ -248,21 +227,20 @@ namespace AwfulMetro.Views
 
         private async void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            PostPreviewRaw.Visibility = Visibility.Collapsed;
+            ItemGridView.Visibility = Visibility.Collapsed;
+            PreviewLastPostWebView.Visibility = Visibility.Visible;
 
             _forumReply.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
             string result = await replyManager.CreatePreviewPost(_forumReply);
             if (!string.IsNullOrEmpty(result))
             {
-                PostPreviewRaw.NavigateToString(result);
-                PostPreviewRaw.Visibility = Visibility.Visible;
-                PreviewPostGrid.Visibility = Visibility.Visible;
+                PreviewLastPostWebView.NavigateToString(result);
+                PreviewLastPostWebView.Visibility = Visibility.Visible;
             }
             else
             {
                 loadingProgressBar.Visibility = Visibility.Collapsed;
-                PreviewPostGrid.Visibility = Visibility.Collapsed;
                 string messageText =
                     string.Format(
                         "No text?! What good is showing you a preview then! Type something in and try again!{0}{1}",
@@ -274,8 +252,9 @@ namespace AwfulMetro.Views
 
         private void LastPostsButton_OnClick(object sender, RoutedEventArgs e)
         {
+            PreviewLastPostWebView.NavigateToString(_forumReply.PreviousPostsRaw);
             ItemGridView.Visibility = Visibility.Collapsed;
-            PreviousPostsWebView.Visibility = Visibility.Visible;
+            PreviewLastPostWebView.Visibility = Visibility.Visible;
         }
 
         private async void ImageUploadButton_OnClick(object sender, RoutedEventArgs e)
@@ -325,10 +304,6 @@ namespace AwfulMetro.Views
         {
             _navigationHelper.OnNavigatedTo(e);
             Rect bounds = Window.Current.Bounds;
-            ChangeViewTemplate(bounds.Width);
-
-            Loaded += PageLoaded;
-            Unloaded += PageUnloaded;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

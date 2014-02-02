@@ -58,100 +58,76 @@
             <TextBlock x:Name="pageTitle" Text="Edit" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1"
                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" />
         </Grid>
-        <Grid Grid.Row="1" Margin="-10,5,10,-5">
+        <Grid Grid.Row="1" Margin="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Margin="10,0,0,0" HorizontalAlignment="Stretch">
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Margin="15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="90" />
-                    </Grid.ColumnDefinitions>
-                    <TextBox IsSpellCheckEnabled="True" AcceptsReturn="True" Grid.Column="0"
-                             HorizontalAlignment="Stretch" Margin="25,0,25,10" x:Name="ReplyText" TextWrapping="Wrap" />
-                    <StackPanel Grid.Column="1">
-                        <Button x:Name="EditButton" HorizontalAlignment="Stretch" Content="Edit"
-                                Click="EditButton_Click" />
-                        <Button x:Name="SimilesButton" HorizontalAlignment="Stretch" Content="Smilies"
-                                Click="SimilesButton_Click" />
-                        <Button x:Name="BBcodeButton" HorizontalAlignment="Stretch" Content="BBcode"
-                                Click="BBcodeButton_Click" />
-                        <Button x:Name="PreviewButton" HorizontalAlignment="Stretch" Content="Preview"
-                                Click="PreviewButton_Click" />
-                        <Button x:Name="LastPostsButton" HorizontalAlignment="Stretch" Content="Last Post"
-                                Click="LastPostsButton_OnClick" />
-                        <Button x:Name="ImageUploadButton" HorizontalAlignment="Stretch" Content="Imgur"
-                                Click="ImageUploadButton_OnClick" />
-                    </StackPanel>
-                </Grid>
-                <Grid x:Name="PreviewPostGrid" Margin="15" Grid.Row="1" Visibility="Collapsed">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" FontSize="30" Foreground="Black" VerticalAlignment="Center" Text="Preview" />
-                    <ProgressRing Grid.Row="1" Height="200" Width="200" VerticalAlignment="Center"
-                                  HorizontalAlignment="Center" IsActive="True" />
-                    <WebView Grid.Row="1" Margin="15" x:Name="PostPreviewRaw"
-                             tools:WebViewHelper.Html="{Binding PostHtml}" />
-                </Grid>
-            </Grid>
-            <WebView Grid.Column="1" x:Name="PreviousPostsWebView" Margin="15" />
-            <GridView
+                <TextBox IsSpellCheckEnabled="True" AcceptsReturn="True" Grid.Row="0"
+                             HorizontalAlignment="Stretch" Margin="15" x:Name="ReplyText" TextWrapping="Wrap" />
+                <WebView x:Name="PreviewLastPostWebView" Grid.Row="1" Margin="15" />
+                <GridView
                 x:Name="ItemGridView"
+                Margin="15"
                 Visibility="Collapsed"
                 ItemClick="itemGridView_ItemClick"
                 AutomationProperties.AutomationId="ItemGridView"
                 AutomationProperties.Name="Grouped Items"
-                Grid.RowSpan="8"
-                Grid.Column="1"
+                Grid.Row="1"
                 Padding="0,0,0,0"
                 ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
                 SelectionMode="None"
                 IsSwipeEnabled="false"
                 IsItemClickEnabled="True"
                 HorizontalAlignment="Left">
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Left" Width="125" Height="125">
-                            <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
-                                <Border Height="50" Background="#FF415B64">
-                                    <Image Source="{Binding ImageUrl}" Stretch="None"
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Left" Width="125" Height="125">
+                                <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                    <Border Height="50" Background="#FF415B64">
+                                        <Image Source="{Binding ImageUrl}" Stretch="None"
                                            AutomationProperties.Name="{Binding Title}" />
-                                </Border>
-                                <TextBlock Text="{Binding Title}" Foreground="Black"
+                                    </Border>
+                                    <TextBlock Text="{Binding Title}" Foreground="Black"
                                            Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0" />
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                <GridView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <Grid Margin="1,0,0,6">
-                                    <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="1,0,0,6">
+                                        <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
                                             AutomationProperties.Name="Group Title"
                                             Style="{StaticResource TextBlockButtonStyle}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Category}" Margin="3,-7,10,10"
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Category}" Margin="3,-7,10,10"
                                                        Style="{StaticResource SubheaderTextBlockStyle}"
                                                        TextWrapping="NoWrap" />
-                                        </StackPanel>
-                                    </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </GridView.GroupStyle>
-            </GridView>
-            <!-- Horizontal scrolling grid -->
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </GridView.GroupStyle>
+                </GridView>
+            </Grid>
+            <StackPanel Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="1">
+                <AppBarButton x:Name="PostButton" Click="EditButton_Click" Label="Edit" />
+                <AppBarButton x:Name="SimilesButton" Click="SimilesButton_Click" Label="Smilies" />
+                <AppBarButton x:Name="BBcodeButton" Click="BBcodeButton_Click" Label="BBcode" />
+                <AppBarButton x:Name="PreviewButton" Click="PreviewButton_Click" Label="Preview" />
+                <AppBarButton x:Name="LastPostsButton" Click="LastPostsButton_OnClick" Label="Last Post" />
+                <AppBarButton x:Name="ImageUploadButton" Click="ImageUploadButton_OnClick" Label="Imgur" />
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="0" Canvas.ZIndex="99">
             <ProgressBar x:Name="LoadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto"
