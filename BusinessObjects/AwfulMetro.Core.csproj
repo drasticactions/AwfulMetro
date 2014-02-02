@@ -145,6 +145,7 @@
     <Compile Include="Tools\BackgroundTaskUtils.cs" />
     <Compile Include="Tools\Constants.cs" />
     <Compile Include="Tools\CookieSerializer.cs" />
+    <Compile Include="Tools\HtmlButtonBuilder.cs" />
     <Compile Include="Tools\NotifyStatusTile.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\PageScrollingCollection.cs" />

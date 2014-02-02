@@ -58,6 +58,8 @@ namespace AwfulMetro.Core.Manager
             // Get thread body.
             var forumBodyNode = doc.DocumentNode.Descendants("body").FirstOrDefault();
 
+
+
             if (forumBodyNode != null)
             {
                 var forumIdNode = forumBodyNode.GetAttributeValue("data-forum", string.Empty);
@@ -111,33 +113,25 @@ namespace AwfulMetro.Core.Manager
                         .FirstOrDefault(node => node.GetAttributeValue("alt", string.Empty).Equals("Edit")) != null;
                 profileLinksNode.InnerHtml = string.Empty;
 
-                string profileButton =
-                    WebUtility.HtmlDecode(
-                        string.Format(
-                            "<li><input type=\"submit\" value=\"Profile\" onclick=\"window.ForumCommand('profile', '{0}');\"></input></li>",
-                            userId));
+                string clickHandler = string.Format("window.ForumCommand('profile', '{0}')", userId);
 
-                string postHistoryButton =
-                    WebUtility.HtmlDecode(
-                        string.Format(
-                            "<li><input type=\"submit\"  value=\"Post History\" onclick=\"window.ForumCommand('post_history', '{0}');\"></input></li>",
-                            userId));
+                string profileButton = HtmlButtonBuilder.CreateSubmitButton("Profile", clickHandler);
 
-                string rapSheetButton =
-                    WebUtility.HtmlDecode(
-                        string.Format(
-                            "<li><input type=\"submit\" value=\"Rap Sheet\" onclick=\"window.ForumCommand('rap_sheet', '{0}');\"></input></li>",
-                            userId));
+                clickHandler = string.Format("window.ForumCommand('rap_sheet', '{0}')", userId);
 
-                string quoteButton =
-                    WebUtility.HtmlDecode(
-                        string.Format(
-                            "<li><input type=\"submit\" value=\"Quote\" onclick=\"window.ForumCommand('quote', '{0}');\"></input></li>", postId));
+                string rapSheetButton = HtmlButtonBuilder.CreateSubmitButton("Rap Sheet", clickHandler);
 
-                string editButton =
-                    WebUtility.HtmlDecode(
-                        string.Format("<li><input type=\"submit\" value=\"Edit\"   onclick=\"window.ForumCommand('edit', '{0}');\"></input></li>",
-                            postId));
+                clickHandler = string.Format("window.ForumCommand('quote', '{0}')", postId);
+
+                string quoteButton = HtmlButtonBuilder.CreateSubmitButton("Quote", clickHandler);
+
+                clickHandler = string.Format("window.ForumCommand('edit', '{0}')", postId);
+
+                string editButton = HtmlButtonBuilder.CreateSubmitButton("Edit", clickHandler);
+
+                clickHandler = string.Format("window.ForumCommand('post_history', '{0}')", userId);
+
+                string postHistoryButton = HtmlButtonBuilder.CreateSubmitButton("Post History", clickHandler);
 
                 profileLinksNode.InnerHtml = isCurrentUserPost
                     ? string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton,
