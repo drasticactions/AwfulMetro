@@ -38,6 +38,8 @@
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
+        public const string NEW_THREAD_BASE = BASE_URL + "newthread.php";
+
         public const string NEW_REPLY = BASE_URL + "newreply.php";
 
         public const string EDIT_POST = BASE_URL + "editpost.php";

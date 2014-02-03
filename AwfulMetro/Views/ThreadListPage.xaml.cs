@@ -158,8 +158,9 @@ namespace AwfulMetro.Views
         {
             ForumEntity itemId = _forumEntity;
             // TODO: Finish native new thread function.
-            await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.NEW_THREAD, itemId.ForumId)));
-            //Frame.Navigate(typeof (CreateThreadView), itemId);
+            //await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.NEW_THREAD, itemId.ForumId)));
+            string jsonObjectString = JsonConvert.SerializeObject(_forumEntity);
+            Frame.Navigate(typeof(NewThreadView), jsonObjectString);
         }
 
         private void PageUnloaded(object sender, RoutedEventArgs e)

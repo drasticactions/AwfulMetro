@@ -115,7 +115,10 @@
     <Compile Include="Entity\FrontPageArticleEntity.cs" />
     <Compile Include="Entity\FrontPageWebArticleEntity.cs" />
     <Compile Include="Entity\ImgurEntity.cs" />
+    <Compile Include="Entity\NewThreadEntity.cs" />
     <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
+    <Compile Include="Entity\PostIconCategoryEntity.cs" />
+    <Compile Include="Entity\PostIconEntity.cs" />
     <Compile Include="Entity\PrivateMessageEntity.cs" />
     <Compile Include="Entity\SmileCategoryEntity.cs" />
     <Compile Include="Entity\SmileEntity.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="Manager\IWebManager.cs" />
     <Compile Include="Manager\LocalStorageManager.cs" />
     <Compile Include="Manager\LoginFailedException.cs" />
+    <Compile Include="Manager\PostIconManager.cs" />
     <Compile Include="Manager\RapSheetManager.cs" />
     <Compile Include="Manager\ReplyManager.cs" />
     <Compile Include="Manager\SmileManager.cs" />

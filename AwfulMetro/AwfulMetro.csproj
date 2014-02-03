@@ -144,6 +144,9 @@
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewThreadView.xaml.cs">
+      <DependentUpon>NewThreadView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PrivateMessageListView.xaml.cs">
       <DependentUpon>PrivateMessageListView.xaml</DependentUpon>
     </Compile>
@@ -191,6 +194,7 @@
     <Content Include="Assets\js\threadTemplate.js" />
     <Content Include="Assets\mainsite.css" />
     <Content Include="Assets\MainSite.html" />
+    <Content Include="Assets\shitpost.gif" />
     <Content Include="Assets\thread.html" />
     <Content Include="Assets\ui-light-new.css" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
@@ -250,6 +254,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewThreadView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

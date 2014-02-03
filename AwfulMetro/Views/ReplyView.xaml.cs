@@ -120,8 +120,6 @@ namespace AwfulMetro.Views
             {
                 threadId = Convert.ToInt64(jsonObjectString);
             }
-
-            //_forumPost = e.NavigationParameter as ForumPostEntity;
             if (_forumThread != null)
             {
                 _forumReply = await _replyManager.GetReplyCookies(_forumThread);

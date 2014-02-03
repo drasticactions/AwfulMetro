@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -262,6 +266,129 @@ namespace AwfulMetro.Core.Manager
                 forumThreadList.Add(threadEntity);
             }
             return forumThreadList;
+        }
+
+        public async Task<NewThreadEntity> GetThreadCookies(long forumId)
+        {
+            try
+            {
+                string url = string.Format(Constants.NEW_THREAD, forumId);
+                WebManager.Result result = await _webManager.DownloadHtml(url);
+                HtmlDocument doc = result.Document;
+
+                HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();
+
+                HtmlNode formKeyNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("formkey"));
+
+                HtmlNode formCookieNode =
+                    formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("form_cookie"));
+
+                var newForumEntity = new NewThreadEntity();
+                try
+                {
+                    string formKey = formKeyNode.GetAttributeValue("value", "");
+                    string formCookie = formCookieNode.GetAttributeValue("value", "");
+                    newForumEntity.FormKey = formKey;
+                    newForumEntity.FormCookie = formCookie;
+                    return newForumEntity;
+                }
+                catch (Exception)
+                {
+                    throw new InvalidOperationException("Could not parse new thread form data.");
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> CreateNewThread(NewThreadEntity newThreadEntity)
+        {
+            if (newThreadEntity == null)
+                return false;
+            var form = new MultipartFormDataContent
+            {
+                {new StringContent("postthread"), "action"},
+                {new StringContent(newThreadEntity.Forum.ForumId.ToString(CultureInfo.InvariantCulture)), "forumid"},
+                {new StringContent(newThreadEntity.FormKey), "formkey"},
+                {new StringContent(newThreadEntity.FormCookie), "form_cookie"},
+                {new StringContent(newThreadEntity.PostIcon.Id.ToString(CultureInfo.InvariantCulture)), "iconid"},
+                {new StringContent(HtmlEncode(newThreadEntity.Subject)), "subject"},
+                {new StringContent(HtmlEncode(newThreadEntity.Content)), "message"},
+                {new StringContent(newThreadEntity.ParseUrl.ToString()), "parseurl"},
+                {new StringContent("Submit Reply"), "submit"}
+            };
+            HttpResponseMessage response = await _webManager.PostFormData(Constants.NEW_THREAD_BASE, form);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<string> CreateNewThreadPreview(NewThreadEntity newThreadEntity)
+        {
+            if (newThreadEntity == null)
+                return string.Empty;
+            var form = new MultipartFormDataContent
+            {
+                {new StringContent("postthread"), "action"},
+                {new StringContent(newThreadEntity.Forum.ForumId.ToString(CultureInfo.InvariantCulture)), "forumid"},
+                {new StringContent(newThreadEntity.FormKey), "formkey"},
+                {new StringContent(newThreadEntity.FormCookie), "form_cookie"},
+                {new StringContent(newThreadEntity.PostIcon.Id.ToString(CultureInfo.InvariantCulture)), "iconid"},
+                {new StringContent(HtmlEncode(newThreadEntity.Subject)), "subject"},
+                {new StringContent(HtmlEncode(newThreadEntity.Content)), "message"},
+                {new StringContent(newThreadEntity.ParseUrl.ToString()), "parseurl"},
+                {new StringContent("Submit Post"), "submit"},
+                {new StringContent("Preview Post"), "preview"}
+            };
+
+            // We post to SA the same way we would for a normal reply, but instead of getting a redirect back to the
+            // thread, we'll get redirected to back to the reply screen with the preview message on it.
+            // From here we can parse that preview and return it to the user.
+
+            HttpResponseMessage response = await _webManager.PostFormData(Constants.NEW_THREAD_BASE, form);
+            Stream stream = await response.Content.ReadAsStreamAsync();
+            using (var reader = new StreamReader(stream))
+            {
+                string html = reader.ReadToEnd();
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").ToArray();
+
+                HtmlNode previewNode =
+                    replyNodes.FirstOrDefault(node => node.GetAttributeValue("class", "").Equals("inner postbody"));
+                return previewNode == null ? string.Empty : FixPostHtml(previewNode.OuterHtml);
+            }
+        }
+
+        private static string FixPostHtml(String postHtml)
+        {
+            return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body>" + postHtml + "</body></html>";
+        }
+
+        public static string HtmlEncode(string text)
+        {
+            // In order to get Unicode characters fully working, we need to first encode the entire post.
+            // THEN we decode the bits we can safely pass in, like single/double quotes.
+            // If we don't, the post format will be screwed up.
+            char[] chars = WebUtility.HtmlEncode(text).ToCharArray();
+            var result = new StringBuilder(text.Length + (int)(text.Length * 0.1));
+
+            foreach (char c in chars)
+            {
+                int value = Convert.ToInt32(c);
+                if (value > 127)
+                    result.AppendFormat("&#{0};", value);
+                else
+                    result.Append(c);
+            }
+
+            result.Replace("&quot;", "\"");
+            result.Replace("&#39;", @"'");
+            result.Replace("&lt;", @"<");
+            result.Replace("&gt;", @">");
+            return result.ToString();
         }
     }
 }
