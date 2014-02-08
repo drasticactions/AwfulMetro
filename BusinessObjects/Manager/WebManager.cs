@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Text;
 using System.Threading.Tasks;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
@@ -79,10 +80,10 @@ namespace AwfulMetro.Core.Manager
         public async Task<Result> DownloadHtml(string url)
         {
             HttpWebRequest request = await CreateGetRequest(url, _localStorageManager);
-
+            Encoding encoding = Encoding.GetEncoding("windows-1252");
             using (WebResponse response = await request.GetResponseAsync())
             using (Stream stream = response.GetResponseStream())
-            using (var reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream, encoding))
             {
                 string html = reader.ReadToEnd();
                 var doc = new HtmlDocument();
