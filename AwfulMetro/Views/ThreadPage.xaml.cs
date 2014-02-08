@@ -105,6 +105,7 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
+            
             var jsonObjectString = (string) e.NavigationParameter;
             _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
@@ -119,12 +120,16 @@ namespace AwfulMetro.Views
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
             ReplyButtonSnap.IsEnabled = !_forumThread.IsLocked;
             loadingProgressBar.Visibility = Visibility.Collapsed;
+            
+            // Set the default focus on the page to either one of the web views.
+            CheckOrientation();
 
             // TODO: Remove duplicate buttons and find a better way to handle navigation
             BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             CurrentPageSelectorSnap.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelectorSnap.SelectedValue = _forumThread.CurrentPage;
+            
         }
 
 
@@ -226,11 +231,23 @@ namespace AwfulMetro.Views
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
+        private void CheckOrientation()
+        {
+            ApplicationView currentView = ApplicationView.GetForCurrentView();
+            if (currentView.Orientation == ApplicationViewOrientation.Landscape)
+            {
+                ThreadFullView.Focus(FocusState.Programmatic);
+            }
+            else
+            {
+                ThreadSnapView.Focus(FocusState.Programmatic);
+            }
+        }
+
 
         private void ChangeViewTemplate(double width)
         {
             ApplicationView currentView = ApplicationView.GetForCurrentView();
-
             // TODO: Add Portrait View State
             VisualStateManager.GoToState(this,
                 currentView.Orientation == ApplicationViewOrientation.Landscape ? "FullScreen" : "Snapped", false);
