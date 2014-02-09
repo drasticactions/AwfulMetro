@@ -1,7 +1,11 @@
 ﻿// The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.ServiceModel.Channels;
+using System.Xml.Serialization;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Popups;
@@ -22,7 +26,7 @@ namespace AwfulMetro.Views
     public sealed partial class MainForumsPage : Page
     {
         private readonly ForumManager _forumManager = new ForumManager();
-
+        private List<long> _forumIds = new List<long>();
         public MainForumsPage()
         {
             DefaultViewModel = new ObservableDictionary();
@@ -78,23 +82,19 @@ namespace AwfulMetro.Views
             List<ForumCategoryEntity> forumGroupList = await _forumManager.GetForumCategoryMainPage();
             DefaultViewModel["Groups"] = forumGroupList;
             DefaultViewModel["ForumCategory"] = forumGroupList;
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.ContainsKey("_forumIds"))
+            {
+                DeserializeXmlToList((string) localSettings.Values["_forumIds"]);
+                var forumEntities = new List<ForumEntity>();
+                foreach (var forumGroup in forumGroupList)
+                {
+                    var f = forumGroup.ForumList.Where(forum => _forumIds.Contains(forum.ForumId)).ToList();
+                    forumEntities.AddRange(f);
+                }
+                DefaultViewModel["Subforums"] = forumEntities;
+            }
             loadingProgressBar.Visibility = Visibility.Collapsed;
-        }
-
-        /// <summary>
-        ///     Invoked when a group header is clicked.
-        /// </summary>
-        /// <param name="sender">The Button used as a group header for the selected group.</param>
-        /// <param name="e">Event data that describes how the click was initiated.</param>
-        private void Header_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Implement Zoom using Headers.
-
-            // Determine what group the Button instance represents
-            //var group = (sender as FrameworkElement).DataContext;
-            // Navigate to the appropriate destination page, configuring the new page
-            // by passing required information as a navigation parameter
-            //this.Frame.Navigate(typeof(GroupDetailPage), ((SampleDataGroup)group).UniqueId);
         }
 
         /// <summary>
@@ -197,6 +197,67 @@ namespace AwfulMetro.Views
         private void cancelButtonClick(IUICommand command)
         {
             return;
+        }
+
+        private void FavoriteForumButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var forumList = new List<ForumEntity>();
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (itemGridView.SelectedItems.Any())
+            {
+                forumList.AddRange(itemGridView.SelectedItems.Cast<ForumEntity>());
+                List<long> forumIdList = forumList.Select(forum => forum.ForumId).ToList();
+                
+                localSettings.Values["_forumIds"] = SerializeListToXml(forumIdList);
+            }
+            else
+            {
+                localSettings.Values["_forumIds"] = null;
+            }
+            DefaultViewModel["Subforums"] = forumList;
+        }
+
+        private static string SerializeListToXml(List<long> list)
+        {
+            try
+            {
+                var xmlIzer = new XmlSerializer(typeof(List<long>));
+                var writer = new StringWriter();
+                xmlIzer.Serialize(writer, list);
+                Debug.WriteLine(writer.ToString());
+                return writer.ToString();
+            }
+
+            catch (Exception exc)
+            {
+                Debug.WriteLine(exc);
+                return String.Empty;
+            }
+        }
+
+        public void DeserializeXmlToList(string listAsXml)
+        {
+            try
+            {
+                var xmlIzer = new XmlSerializer(typeof(List<long>));
+                var strReader = new StringReader(listAsXml);
+                _forumIds = (xmlIzer.Deserialize(strReader)) as List<long>;
+            }
+
+            catch (Exception exc)
+            {
+                Debug.WriteLine(exc);
+                _forumIds = new List<long>();
+            }
+        }
+
+        private void FavoriteForumList_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            // Navigate to the appropriate destination page, configuring the new page
+            // by passing required information as a navigation parameter
+            var forumEntity = ((ForumEntity)e.ClickedItem);
+            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
+            Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
     }
 }

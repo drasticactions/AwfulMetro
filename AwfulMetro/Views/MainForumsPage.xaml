@@ -19,7 +19,7 @@
         -->
         <CollectionViewSource
             x:Name="subforumViewSource"
-            Source="{Binding Groups}" />
+            Source="{Binding Subforums}" />
         <CollectionViewSource
             x:Name="itemsViewSource"
             Source="{Binding PopularThreads}" />
@@ -116,11 +116,39 @@
         <!-- Main content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <!-- > 500 px view -->
+
+            <GridView x:Name="FavoriteForumList" ItemClick="FavoriteForumList_OnItemClick" Grid.Column="0"
+                      ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None"
+                      IsItemClickEnabled="True">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid HorizontalAlignment="Left" Width="100" Height="100">
+                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                           AutomationProperties.Name="{Binding Title}" />
+                                </Border>
+                                <StackPanel VerticalAlignment="Bottom"
+                                            Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                    <TextBlock Text="{Binding Name}"
+                                               Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}"
+                                               Style="{StaticResource TitleTextBlockStyle}" Height="60"
+                                               Margin="15,0,15,0" />
+                                    <TextBlock Text="{Binding Description}"
+                                               Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}"
+                                               Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"
+                                               Margin="15,0,15,10" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+            
             <GridView
                 x:Name="itemGridView"
                 AutomationProperties.AutomationId="ItemGridView"
@@ -129,8 +157,8 @@
                 Visibility="Visible"
                 Padding="0,0,40,46"
                 ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
-                SelectionMode="None"
-                IsSwipeEnabled="false"
+                SelectionMode="Multiple"
+                IsSwipeEnabled="True"
                 IsItemClickEnabled="True"
                 ItemClick="ItemView_ItemClick">
                 <GridView.ItemTemplate>
@@ -181,6 +209,7 @@
                         </BitmapIcon>
                     </AppBarButton.Icon>
                 </AppBarButton>
+                <AppBarButton x:Name="FavoriteForumButton" Icon="Favorite" Label="Favorite Forum" Click="FavoriteForumButton_OnClick" />
                 <AppBarButton  x:Name="LogoutButton" Label="Logout" Click="LogoutButton_OnClick" Icon="Remove"/>
             </StackPanel>
         </Grid>
@@ -253,11 +282,12 @@
                 <AppBarButton  x:Name="LogoutButtonSnap" Label="Logout" Click="LogoutButton_OnClick" Icon="Remove"/>
             </StackPanel>
         </Grid>
-        
+
         <!-- portrait view -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" /> <!-- for when we start pinning fav subforums -->
+                <RowDefinition Height="Auto" />
+                <!-- for when we start pinning fav subforums -->
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
