@@ -32,7 +32,7 @@
             <Setter Property="TabNavigation" Value="Local" />
             <Setter Property="IsHoldingEnabled" Value="True" />
             <Setter Property="Margin" Value="0,0,0,-8" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Top" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -75,7 +75,7 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
+            <RowDefinition Height="70" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -85,172 +85,171 @@
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0"
+            <Button x:Name="backButton"
                     Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
-                    VerticalAlignment="Top"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
                     AutomationProperties.Name="Back"
                     AutomationProperties.AutomationId="BackButton"
                     AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" />
-            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}"
-                       Grid.Column="1"
-                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0"
+            <TextBlock x:Name="pageTitle" Text="Front Page" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center"
                        RequestedTheme="Dark" />
         </Grid>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="550" />
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="250" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid>
+            <ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Margin="15" x:Name="MainArticleGrid" Tapped="MainArticleGrid_OnTapped" Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border BorderThickness="4" BorderBrush="#FF415B64" Width="180" Height="180" Grid.Column="0">
+                        <Border BorderThickness="4" VerticalAlignment="Top" BorderBrush="#FF415B64" Width="180" Height="180" Grid.Column="0">
                             <Image x:Name="ArticleImage" Source="{Binding MainArticle.ArticleImage}" />
                         </Border>
-                        <StackPanel Margin="0,30,0,0" Grid.Column="1">
-                            <TextBlock FontSize="30" Text="{Binding MainArticle.Title}" TextWrapping="WrapWholeWords" />
+                        <StackPanel Margin="0,0,0,0" Grid.Column="1">
+                            <TextBlock FontSize="30" Foreground="Black" Text="{Binding MainArticle.Title}" TextWrapping="WrapWholeWords" />
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Date:" Foreground="Gray" FontSize="15" />
                                 <TextBlock Margin="10,0,0,0" Text="{Binding MainArticle.Date}" Foreground="Gray"
                                            FontSize="15" />
-                                <TextBlock Margin="10,0,0,0" Text="Author:" Foreground="Gray" FontSize="15" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Author:" Foreground="Gray" FontSize="15" />
                                 <TextBlock Margin="10,0,0,0" Text="{Binding MainArticle.Author}" Foreground="Gray"
                                            FontSize="15" />
                             </StackPanel>
-                            <TextBlock Text="{Binding MainArticle.ArticleText}" FontSize="20"
+                            <TextBlock Foreground="Black" Text="{Binding MainArticle.ArticleText}" FontSize="20"
                                        TextWrapping="WrapWholeWords" />
                         </StackPanel>
                     </Grid>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="500" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ListView Header="New Articles" FontSize="20" Grid.Column="0" Width="500"
+                    <Grid Grid.Row="1" Grid.Margin="15">
+                        <ListView Header="New Articles" Foreground="Black" VerticalAlignment="Top" FontSize="20" x:Name="NewArticlesListView" ItemClick="NewArticlesListView_OnItemClick"
                               ItemsSource="{Binding Source={StaticResource frontPageViewSource}}" SelectionMode="None">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="150">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100" />
-                                        <ColumnDefinition Width="400" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border BorderThickness="4" VerticalAlignment="Top" BorderBrush="#FF415B64"
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border BorderThickness="4" VerticalAlignment="Top" BorderBrush="#FF415B64"
                                             Width="80" Height="80" Grid.Column="0">
-                                        <Image Tapped="ArticleImage_Tapped" Source="{Binding ArticleImage}" />
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Top" Height="200" Grid.Column="1">
-                                        <TextBlock x:Name="ArticleTitle" Tapped="ArticleTitle_Tapped" FontSize="15"
+                                            <Image Source="{Binding ArticleImage}" />
+                                        </Border>
+                                        <StackPanel VerticalAlignment="Top" Grid.Column="1">
+                                            <TextBlock x:Name="ArticleTitle" Foreground="Black" FontSize="15"
                                                    Text="{Binding Title}" TextWrapping="WrapWholeWords" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Date:" Foreground="Gray" FontSize="11" />
-                                            <TextBlock Margin="10,0,0,0" Text="{Binding Date}" Foreground="Gray"
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Date:" Foreground="Gray" FontSize="11" />
+                                                <TextBlock Margin="10,0,0,0" Text="{Binding Date}" Foreground="Gray"
                                                        FontSize="11" />
-                                            <TextBlock x:Name="AuthorField" Tapped="AuthorField_Tapped"
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock x:Name="AuthorField"
                                                        Margin="10,0,0,0" Text="Author:" Foreground="Gray" FontSize="11" />
-                                            <TextBlock Margin="10,0,0,0" Text="{Binding Author}" Foreground="Gray"
+                                                <TextBlock Margin="10,0,0,0" Text="{Binding Author}" Foreground="Gray"
                                                        FontSize="11" />
-                                        </StackPanel>
-                                        <TextBlock Tapped="ArticleTitle_Tapped" Text="{Binding ArticleText}"
+                                            </StackPanel>
+                                            <TextBlock Foreground="Black" Text="{Binding ArticleText}"
                                                    FontSize="13" TextWrapping="WrapWholeWords" />
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    <ListView Header="Features" FontSize="20" Grid.Column="1"
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Margin="15">
+                        <ListView Header="Features" Foreground="Black" FontSize="20" x:Name="FeaturesListView" ItemClick="FeaturesListView_OnItemClick"
                               ItemsSource="{Binding Source={StaticResource frontPageFeatureViewSource}}"
                               SelectionMode="None">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Height="140">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60" />
-                                        <ColumnDefinition Width="250" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border VerticalAlignment="Top" BorderThickness="4" BorderBrush="#FF415B64"
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border VerticalAlignment="Top" BorderThickness="4" BorderBrush="#FF415B64"
                                             Width="50" Height="50" Grid.Column="0">
-                                        <Image Tapped="ArticleImage_Tapped" Source="{Binding ArticleImage}" />
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Top" Height="200" Grid.Column="1">
-                                        <TextBlock Tapped="ArticleTitle_Tapped" FontSize="15" Text="{Binding Title}"
+                                            <Image Source="{Binding ArticleImage}" />
+                                        </Border>
+                                        <StackPanel VerticalAlignment="Top" Grid.Column="1">
+                                            <TextBlock Foreground="Black" FontSize="15" Text="{Binding Title}"
                                                    TextWrapping="WrapWholeWords" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="Feature:" Foreground="Gray" FontSize="11" />
-                                            <TextBlock x:Name="FeatureField" Tapped="FeatureField_Tapped"
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Feature:" Foreground="Gray" FontSize="11" />
+                                                <TextBlock x:Name="FeatureField" 
                                                        Margin="10,0,0,0" Text="{Binding FeatureTitle}"
                                                        Foreground="Gray" FontSize="11" />
-                                        </StackPanel>
-                                        <TextBlock Text="{Binding ArticleText}" FontSize="13"
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding ArticleText}" Foreground="Black" FontSize="13"
                                                    TextWrapping="WrapWholeWords" />
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-
-            </Grid>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="390" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <ListView Header="Popular Threads" Grid.Row="0" FontSize="30" Width="550" Height="390"
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Margin="15">
+                        <ListView Header="Popular Threads" Foreground="Black" Grid.Row="0" FontSize="20"
                           ItemClick="PopularThreadList_ItemClick" x:Name="PopularThreadList"
                           ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None"
                           IsItemClickEnabled="True" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Background="#FFF1F1F1" Height="40">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="#FFF1F1F1" Height="40">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                         Grid.Column="0" Width="60" Height="15">
-                                    <Image Source="{Binding Tag}" AutomationProperties.Name="{Binding Title}" />
-                                </Border>
-                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Width="500"
+                                            <Image Source="{Binding Tag}" AutomationProperties.Name="{Binding Title}" />
+                                        </Border>
+                                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
                                             Grid.Column="1">
-                                    <TextBlock x:Name="ThreadTitle" TextWrapping="WrapWholeWords"
+                                            <TextBlock x:Name="ThreadTitle" Foreground="Black" TextWrapping="WrapWholeWords"
                                                Text="{Binding Title}" />
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <ListView Header="What's Hot" Grid.Row="1" FontSize="30" Width="550" Height="300"
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <Grid Grid.Row="4" Grid.Margin="15">
+                        <ListView Header="What's Hot" Foreground="Black" FontSize="20"
                           x:Name="ForumTrendList" ItemsSource="{Binding Source={StaticResource trendsViewSource}}"
                           SelectionMode="None" IsItemClickEnabled="True"
+                                  ItemClick="ForumTrendList_OnItemClick"
                           ItemContainerStyle="{StaticResource ListViewItemStyle1}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Background="#FFF1F1F1" Height="40">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Width="500"
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="#FFF1F1F1" Height="40">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
                                             Grid.Column="1">
-                                    <TextBlock x:Name="TrendTitle" Tapped="TrendTitle_Tapped"
+                                            <TextBlock x:Name="TrendTitle" 
                                                TextWrapping="WrapWholeWords" Text="{Binding Title}" />
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
         </Grid>
 
     </Grid>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
@@ -23,6 +24,7 @@ namespace AwfulMetro.Views
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly FrontPageManager _frontPageManager = new FrontPageManager();
         private readonly NavigationHelper _navigationHelper;
+        private FrontPageArticleEntity _mainArticle;
 
         public FrontPage()
         {
@@ -72,6 +74,7 @@ namespace AwfulMetro.Views
 
             FrontPageArticleEntity mainArticle = frontPageArticles.FirstOrDefault();
             DefaultViewModel["MainArticle"] = mainArticle;
+            _mainArticle = mainArticle;
             frontPageArticles.Remove(mainArticle);
 
             DefaultViewModel["FrontPageArticles"] = frontPageArticles;
@@ -96,68 +99,10 @@ namespace AwfulMetro.Views
         {
             var threadEntity = e.ClickedItem as PopularThreadsTrendsEntity;
             var thread = new ForumThreadEntity();
-            if (threadEntity != null)
-            {
-                string title = string.IsNullOrEmpty(threadEntity.Title) ? string.Empty : threadEntity.Title;
-                thread.ParseFromPopularThread(threadEntity.Title, threadEntity.Id);
-                string jsonObjectString = JsonConvert.SerializeObject(thread);
-                Frame.Navigate(typeof (ThreadPage), jsonObjectString);
-            }
-        }
-
-        private async void ArticleImage_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var image = e.OriginalSource as Image;
-            if (image != null)
-            {
-                var frontPageArticle = image.DataContext as FrontPageArticleEntity;
-                if (frontPageArticle != null)
-                    await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.ArticleLink));
-            }
-        }
-
-        private async void ArticleTitle_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var textBlock = e.OriginalSource as TextBlock;
-            if (textBlock != null)
-            {
-                var frontPageArticle = textBlock.DataContext as FrontPageArticleEntity;
-                if (frontPageArticle != null)
-                    await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.ArticleLink));
-            }
-        }
-
-        private async void AuthorField_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var textBlock = e.OriginalSource as TextBlock;
-            if (textBlock != null)
-            {
-                var frontPageArticle = textBlock.DataContext as FrontPageArticleEntity;
-                if (frontPageArticle != null)
-                    await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.AuthorLink));
-            }
-        }
-
-        private async void FeatureField_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var textBlock = e.OriginalSource as TextBlock;
-            if (textBlock != null)
-            {
-                var frontPageArticle = textBlock.DataContext as FrontPageArticleEntity;
-                if (frontPageArticle != null)
-                    await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.FeatureLink));
-            }
-        }
-
-        private async void TrendTitle_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            var textBlock = e.OriginalSource as TextBlock;
-            if (textBlock != null)
-            {
-                var frontPageArticle = textBlock.DataContext as FrontPageArticleEntity;
-                if (frontPageArticle != null)
-                    await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + frontPageArticle.ArticleLink));
-            }
+            if (threadEntity == null) return;
+            thread.ParseFromPopularThread(threadEntity.Title, threadEntity.Id);
+            string jsonObjectString = JsonConvert.SerializeObject(thread);
+            Frame.Navigate(typeof (ThreadPage), jsonObjectString);
         }
 
         #region NavigationHelper registration
@@ -183,5 +128,31 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void MainArticleGrid_OnTapped(object sender, TappedRoutedEventArgs e)
+        {
+            // TODO: Use LocationURL from _mainArticle to redirect to Article Viewer
+        }
+
+        private void FeaturesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var articleEntity = e.ClickedItem as FrontPageArticleEntity;
+            if (articleEntity == null) return;
+            // TODO: Use LocationURL to redirect to Article Viewer
+        }
+
+        private void NewArticlesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var articleEntity = e.ClickedItem as FrontPageArticleEntity;
+            if (articleEntity == null) return;
+            // TODO: Use LocationURL to redirect to Article Viewer
+        }
+
+        private void ForumTrendList_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var articleEntity = e.ClickedItem as PopularThreadsTrendsEntity;
+            if (articleEntity == null) return;
+            // TODO: Use LocationURL to redirect to Article Viewer
+        }
     }
 }
