@@ -116,6 +116,9 @@
     <Compile Include="Tools\SubforumFontColorConverter.cs" />
     <Compile Include="Tools\SubforumHeaderColorConverter.cs" />
     <Compile Include="Tools\ThreadHeaderColorConverter.cs" />
+    <Compile Include="Views\ArticleViewer.xaml.cs">
+      <DependentUpon>ArticleViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BookmarkSettingsFlyout.xaml.cs">
       <DependentUpon>BookmarkSettingsFlyout.xaml</DependentUpon>
     </Compile>
@@ -128,9 +131,6 @@
     </Compile>
     <Compile Include="Views\FrontPage.xaml.cs">
       <DependentUpon>FrontPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FrontPageArticle.xaml.cs">
-      <DependentUpon>FrontPageArticle.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainForumsPage.xaml.cs">
       <DependentUpon>MainForumsPage.xaml</DependentUpon>
@@ -196,6 +196,7 @@
     <Content Include="Assets\js\threadTemplate.js" />
     <Content Include="Assets\mainsite.css" />
     <Content Include="Assets\MainSite.html" />
+    <Content Include="Assets\MainSiteTest.html" />
     <Content Include="Assets\shitpost.gif" />
     <Content Include="Assets\thread.html" />
     <Content Include="Assets\ui-light-new.css" />
@@ -206,6 +207,10 @@
     <None Include="AwfulMetro_TemporaryKey.pfx" />
     <None Include="AwfulMetro_TemporaryKey.pfx.snk" />
     <None Include="Package.StoreAssociation.xml" />
+    <Page Include="Views\ArticleViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BookmarkSettingsFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,10 +249,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FrontPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FrontPageArticle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

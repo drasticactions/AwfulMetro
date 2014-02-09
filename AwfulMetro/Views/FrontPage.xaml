@@ -133,7 +133,7 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.Margin="15">
                         <ListView Header="New Articles" Foreground="Black" VerticalAlignment="Top" FontSize="20" x:Name="NewArticlesListView" ItemClick="NewArticlesListView_OnItemClick"
-                              ItemsSource="{Binding Source={StaticResource frontPageViewSource}}" SelectionMode="None">
+                              ItemsSource="{Binding Source={StaticResource frontPageViewSource}}" IsItemClickEnabled="True" SelectionMode="None">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -170,6 +170,7 @@
                     <Grid Grid.Row="2" Grid.Margin="15">
                         <ListView Header="Features" Foreground="Black" FontSize="20" x:Name="FeaturesListView" ItemClick="FeaturesListView_OnItemClick"
                               ItemsSource="{Binding Source={StaticResource frontPageFeatureViewSource}}"
+                                IsItemClickEnabled="True"
                               SelectionMode="None">
                             <ListView.ItemTemplate>
                                 <DataTemplate>

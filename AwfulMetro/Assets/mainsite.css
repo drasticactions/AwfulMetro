@@ -503,6 +503,7 @@ body.sa div.organ.directory ul li a.feed img {
 div.article_meta {
     color: #777;
     position: relative;
+	margin: 15px;
 }
 
 div.article_meta div.article_head { padding-right: 110px; }
@@ -544,6 +545,7 @@ div.article, body.article_body {
     font-size: 14px;
     line-height: 1.5em;
     text-align: left;
+	margin: 15px;
 }
 
 div.article .center, body.article_body .center {

@@ -129,30 +129,34 @@ namespace AwfulMetro.Views
 
         #endregion
 
-        private void MainArticleGrid_OnTapped(object sender, TappedRoutedEventArgs e)
+        private async void MainArticleGrid_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            // TODO: Use LocationURL from _mainArticle to redirect to Article Viewer
+            await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + _mainArticle.ArticleLink));
+            //Frame.Navigate(typeof(ArticleViewer), string.Format("http://www.somethingawful.com/{0}", _mainArticle.ArticleLink));
         }
 
-        private void FeaturesListView_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            var articleEntity = e.ClickedItem as FrontPageArticleEntity;
-            if (articleEntity == null) return;
-            // TODO: Use LocationURL to redirect to Article Viewer
-        }
-
-        private void NewArticlesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        private async void FeaturesListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var articleEntity = e.ClickedItem as FrontPageArticleEntity;
             if (articleEntity == null) return;
-            // TODO: Use LocationURL to redirect to Article Viewer
+            await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + articleEntity.ArticleLink));
+            //Frame.Navigate(typeof(ArticleViewer), string.Format("http://www.somethingawful.com/{0}", articleEntity.ArticleLink));
         }
 
-        private void ForumTrendList_OnItemClick(object sender, ItemClickEventArgs e)
+        private async void NewArticlesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var articleEntity = e.ClickedItem as FrontPageArticleEntity;
+            if (articleEntity == null) return;
+            await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + articleEntity.ArticleLink));
+            //Frame.Navigate(typeof(ArticleViewer), string.Format("http://www.somethingawful.com/{0}", articleEntity.ArticleLink));
+        }
+
+        private async void ForumTrendList_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var articleEntity = e.ClickedItem as PopularThreadsTrendsEntity;
             if (articleEntity == null) return;
-            // TODO: Use LocationURL to redirect to Article Viewer
+            await Launcher.LaunchUriAsync(new Uri(Constants.FRONT_PAGE + articleEntity.LocationUrl));
+            //Frame.Navigate(typeof(ArticleViewer), articleEntity.LocationUrl);
         }
     }
 }

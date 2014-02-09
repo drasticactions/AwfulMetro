@@ -89,16 +89,37 @@ namespace AwfulMetro.Core.Manager
             return frontPageFeatureList;
         }
 
-        public async Task<FrontPageWebArticleEntity> GetFrontPageArticle(string url)
+        public async Task<FrontPageWebArticleEntity> GetArticleMetaData(string url)
         {
             HtmlDocument articleDoc = (await _webManager.DownloadHtml(url)).Document;
+            string articleHtml = await ParseArticleHtml(articleDoc);
+            var frontPageArticleEntity = new FrontPageWebArticleEntity();
+            frontPageArticleEntity.MapTo(WebUtility.HtmlDecode(articleHtml), 1);
+            return frontPageArticleEntity;
+        }
+
+        private int GetTotalPages(HtmlDocument articleDoc)
+        {
+            HtmlNode articleNode =
+                articleDoc.DocumentNode.Descendants()
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("organ pager"));
+            if (articleNode == null) return 0;
+            return 0;
+        }
+
+        private async Task<string> ParseArticleHtml(HtmlDocument articleDoc)
+        {
             HtmlNode articleNode =
                 articleDoc.DocumentNode.Descendants()
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("cavity left"));
-            HtmlNode articleBodyNode =
-                articleNode.Descendants()
-                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("organ article"));
-
+            articleNode.Descendants()
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("social")).Remove();
+            articleNode.Descendants()
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("organ article_nav")).Remove();
+            articleNode.Descendants()
+        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("organ recent_articles")).Remove();
+            articleNode.Descendants()
+        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("article_head")).Remove();
             string html = await PathIO.ReadTextAsync("ms-appx:///Assets/MainSite.html");
 
             var doc2 = new HtmlDocument();
@@ -107,11 +128,9 @@ namespace AwfulMetro.Core.Manager
 
             HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
 
-            bodyNode.InnerHtml = articleBodyNode.OuterHtml;
+            bodyNode.InnerHtml = articleNode.OuterHtml;
 
-            var frontPageArticleEntity = new FrontPageWebArticleEntity();
-            frontPageArticleEntity.MapTo(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml), 1);
-            return frontPageArticleEntity;
+            return doc2.DocumentNode.OuterHtml;
         }
 
         public async Task<HtmlDocument> GetFrontPage()
