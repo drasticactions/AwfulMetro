@@ -20,6 +20,10 @@ namespace AwfulMetro.Views
             {
                 BookmarkLiveTiles.IsOn = (bool) _localSettings.Values[Constants.BOOKMARK_BACKGROUND];
             }
+            if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_STARTUP))
+            {
+                LoadBookmarksOnLoadSwitch.IsOn = (bool)_localSettings.Values[Constants.BOOKMARK_STARTUP];
+            }
         }
 
         private void BookmarkSelectionMode_Click(object sender, RoutedEventArgs e)
@@ -46,6 +50,20 @@ namespace AwfulMetro.Views
             {
                 BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
                 _localSettings.Values[Constants.BOOKMARK_BACKGROUND] = false;
+            }
+        }
+
+        private void LoadBookmarksOnLoadSwitch_OnToggled(object sender, RoutedEventArgs e)
+        {
+            var toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch == null) return;
+            if (toggleSwitch.IsOn)
+            {
+                _localSettings.Values[Constants.BOOKMARK_STARTUP] = true;
+            }
+            else
+            {
+                _localSettings.Values[Constants.BOOKMARK_STARTUP] = false;
             }
         }
     }

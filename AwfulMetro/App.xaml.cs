@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Notifications;
@@ -10,11 +11,13 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using AwfulMetro.Common;
+using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 using AwfulMetro.Views;
 
 // The Grid App template is documented at http://go.microsoft.com/fwlink/?LinkId=234226
+using Newtonsoft.Json;
 
 namespace AwfulMetro
 {
@@ -96,9 +99,19 @@ namespace AwfulMetro
                 }
                 else
                 {
-                    if (!rootFrame.Navigate(typeof (MainForumsPage)))
+                    var localSettings = ApplicationData.Current.LocalSettings;
+                    if (localSettings.Values.ContainsKey(Constants.BOOKMARK_STARTUP) && (bool)localSettings.Values[Constants.BOOKMARK_STARTUP])
                     {
-                        throw new Exception("Failed to create initial page");
+                            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+                            string jsonObjectString = JsonConvert.SerializeObject(forum);
+                            rootFrame.Navigate(typeof(ThreadListPage), jsonObjectString);
+                    }
+                    else
+                    {
+                        if (!rootFrame.Navigate(typeof(MainForumsPage)))
+                        {
+                            throw new Exception("Failed to create initial page");
+                        }
                     }
                 }
             }

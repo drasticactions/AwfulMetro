@@ -404,5 +404,10 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void ReturnToMainButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainForumsPage));
+        }
     }
 }

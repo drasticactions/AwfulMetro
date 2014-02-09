@@ -27,6 +27,16 @@
             </TextBlock>
 
             <ToggleSwitch x:Name="BookmarkLiveTiles" Toggled="BookmarkLiveTiles_Toggled" />
+
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Launch Bookmarks Page On Startup" />
+
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">
+                <TextBlock.Text>
+                    If enabled, the bookmarks page will be launched on startup.
+                </TextBlock.Text>
+            </TextBlock>
+
+            <ToggleSwitch x:Name="LoadBookmarksOnLoadSwitch" Toggled="LoadBookmarksOnLoadSwitch_OnToggled" />
         </StackPanel>
     </StackPanel>
 </SettingsFlyout>

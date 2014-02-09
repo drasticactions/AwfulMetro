@@ -488,6 +488,11 @@
             <StackPanel Grid.Row="0" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2"
                         Margin="0,0,-5,0">
                 <AppBarButton x:Name="AddThreadButton" Click="AddThreadButton_Click" Icon="Add" Label="New Thread" />
+                <AppBarButton x:Name="ReturnToMainButton" Click="ReturnToMainButton_OnClick" Label="Return to Main Forums">
+                    <AppBarButton.Icon>
+                        <SymbolIcon/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
                 <AppBarButton x:Name="FavoriteButton" IsEnabled="False" Click="FavoriteButton_OnClick" Label="Bookmark">
                     <AppBarButton.Icon>
                         <BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon.png" RenderTransformOrigin="0.5,0.5">
