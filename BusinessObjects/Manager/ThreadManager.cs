@@ -107,6 +107,8 @@ namespace AwfulMetro.Core.Manager
 
                 int postId = ParseInt(post.GetAttributeValue("id", string.Empty));
 
+                int postIndex = ParseInt(post.GetAttributeValue("data-idx", string.Empty));
+
                 //TODO: Create HTML Render engine to handle this, rather than hard coding. That way it can be used for the front page or other web views.
 
                 HtmlNode profileLinksNode =
@@ -137,11 +139,15 @@ namespace AwfulMetro.Core.Manager
 
                 string postHistoryButton = HtmlButtonBuilder.CreateSubmitButton("Post History", clickHandler);
 
+                clickHandler = string.Format("window.ForumCommand('markAsLastRead', '{0}')", postIndex);
+
+                string markAsLastReadButton = HtmlButtonBuilder.CreateSubmitButton("Mark As Last Read", clickHandler);
+
                 profileLinksNode.InnerHtml = isCurrentUserPost
                     ? string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton,
-                        quoteButton, editButton, "</ul>")
+                        quoteButton, markAsLastReadButton, editButton, "</ul>")
                     : string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton,
-                        quoteButton, "</ul>");
+                        quoteButton, markAsLastReadButton, "</ul>");
 
                 HtmlNode postDateNode = post.Descendants("td")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postdate"));
@@ -167,6 +173,12 @@ namespace AwfulMetro.Core.Manager
             bodyNode.InnerHtml = postHtml;
 
             return WebUtility.HtmlDecode(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml));
+        }
+
+        public async Task<bool> MarkPostAsLastRead(ForumThreadEntity threadEntity, int index)
+        {
+            await _webManager.DownloadHtml(string.Format(Constants.LAST_READ, index, threadEntity.ThreadId));
+            return true;
         }
 
         private int ParseInt(string postClass)

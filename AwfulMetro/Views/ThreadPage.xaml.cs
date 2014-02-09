@@ -78,6 +78,9 @@ namespace AwfulMetro.Views
                 case "edit":
                     Frame.Navigate(typeof (EditReplyPage), command.Id);
                     break;
+                case "markAsLastRead":
+                    await _threadManager.MarkPostAsLastRead(_forumThread, Convert.ToInt32(command.Id));
+                    break;
                 default:
                     var msgDlg = new MessageDialog("Working on it!")
                     {

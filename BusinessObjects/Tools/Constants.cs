@@ -34,6 +34,8 @@
 
         public const string BOOKMARK = BASE_URL + "bookmarkthreads.php";
 
+        public const string LAST_READ = BASE_URL + "showthread.php?action=setseen&index={0}&threadid={1}";
+
         public const string REMOVE_BOOKMARK = "json=1&action=remove&threadid={0}";
 
         public const string ADD_BOOKMARK = "json=1&action=add&threadid={0}";
