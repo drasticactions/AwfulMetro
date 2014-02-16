@@ -208,6 +208,7 @@ namespace AwfulMetro.Views
                 BookmarkSettings.Visibility = Visibility.Visible;
                 _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
                 _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
+                _forumThreadEntities = _forumThreadEntities.OrderByDescending(node => node.RepliesSinceLastOpened).ToList();
                 foreach (ForumThreadEntity forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);
