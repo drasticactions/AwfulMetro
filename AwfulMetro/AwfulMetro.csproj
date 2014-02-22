@@ -207,6 +207,10 @@
     <None Include="AwfulMetro_TemporaryKey.pfx" />
     <None Include="AwfulMetro_TemporaryKey.pfx.snk" />
     <None Include="Package.StoreAssociation.xml" />
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ArticleViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
