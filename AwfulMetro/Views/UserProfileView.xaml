@@ -94,7 +94,7 @@
                             </Grid.RowDefinitions>
                             <TextBlock FontSize="25" Grid.Row="0" Text="Post History" />
                             <WebView x:Name="PostHistoryWebView" Grid.Row="1" web:WebViewHelper.Html="{Binding UserSearchHtml}" Height="300" />
-                            <TextBlock  Grid.Row="1" x:Name="DenyPostHistoryTextBlock" Visibility="Collapsed" TextAlignment="Left" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="Black" FontSize="20" TextWrapping="WrapWholeWords"/>
+                            <TextBlock  Grid.Row="1" x:Name="DenyPostHistoryTextBlock" Visibility="Collapsed" TextWrapping="Wrap" Style="{StaticResource SubheaderTextBlockStyle}"  />
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="2">
@@ -105,7 +105,7 @@
                             </Grid.RowDefinitions>
                             <TextBlock FontSize="25" Grid.Row="0" Text="Rap Sheet" />
                             <WebView x:Name="RapSheetWebView" Grid.Row="1" web:WebViewHelper.Html="{Binding RapSheetHtml}"  Height="300"  />
-                            <TextBlock  Grid.Row="1" x:Name="RapSheetTextBlock" Visibility="Collapsed" TextAlignment="Left" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="Black" FontSize="20" TextWrapping="WrapWholeWords"/>
+                            <TextBlock  Grid.Row="1" x:Name="RapSheetTextBlock" Visibility="Collapsed" TextWrapping="Wrap" Style="{StaticResource SubheaderTextBlockStyle}" />
                         </Grid>
                     </Grid>
                 </Grid>
