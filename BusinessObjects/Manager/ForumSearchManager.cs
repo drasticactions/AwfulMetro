@@ -77,7 +77,7 @@ namespace AwfulMetro.Core.Manager
             catch (Exception)
             {
                 // Person does not have platinum.
-                return null;
+                return string.Empty;
             }
         }
 
