@@ -130,7 +130,7 @@ namespace AwfulMetro.Views
             }
             if (_forumReply == null)
             {
-                var msgDlg = new MessageDialog("Can't reply in this thread!");
+                var msgDlg = new MessageDialog("You can't reply in this thread!");
                 await msgDlg.ShowAsync();
                 Frame.GoBack();
                 return;

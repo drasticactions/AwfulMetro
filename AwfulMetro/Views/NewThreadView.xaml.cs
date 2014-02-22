@@ -89,6 +89,13 @@ namespace AwfulMetro.Views
             pageTitle.Text = string.Format("New Thread - {0}", forumInfo.Name);
             _forumEntity = forumInfo;
             _newThreadEntity = await _threadManager.GetThreadCookies(forumInfo.ForumId);
+            if (_newThreadEntity == null)
+            {
+                var msgDlg = new MessageDialog("You can't make a new thread in this forum!");
+                await msgDlg.ShowAsync();
+                Frame.GoBack();
+                return;
+            }
             var blankPostIconEntity = new PostIconEntity {Id = 0, Title = "Shit"};
             PostIconImage.Source = new BitmapImage(new Uri("ms-appx://Assets/shitpost.gif"));
             _postIcon = blankPostIconEntity;

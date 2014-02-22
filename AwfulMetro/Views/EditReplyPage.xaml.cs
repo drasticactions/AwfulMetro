@@ -110,7 +110,7 @@ namespace AwfulMetro.Views
             _forumReply = await _replyManager.GetReplyCookiesForEdit(threadId);
             if (_forumReply == null)
             {
-                var msgDlg = new MessageDialog("Can't reply in this thread!");
+                var msgDlg = new MessageDialog("You can't edit this post!");
                 await msgDlg.ShowAsync();
                 Frame.GoBack();
                 return;
