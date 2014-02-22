@@ -563,8 +563,7 @@ table.standard th, table.standard td {
 }
 
 table.standard th {
-    background: #069;
-    color: #FFF;
+    color: black;
     font-weight: 700;
 }
 

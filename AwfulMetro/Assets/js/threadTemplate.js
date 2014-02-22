@@ -15,3 +15,12 @@ var ScrollToDiv = function(pti) {
         scrollTop: $(pti).offset().top
     }, 0);
 };
+
+var ScrollToTable = function (pti) {
+    var table = $('table[data-idx=' + "'" + pti + "'" + ']');
+    if (table.length > 0) {
+        $('html, body').animate({
+            scrollTop: $('table[data-idx=' + "'" + pti + "'" + ']').offset().top
+        }, 0);
+    }
+};

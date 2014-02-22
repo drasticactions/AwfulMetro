@@ -66,15 +66,13 @@ namespace AwfulMetro.Views
             ForwardButton.IsEnabled = false;
             BackButton.IsEnabled = false;
             long userId = Convert.ToInt64(e.NavigationParameter);
-            List<ForumSearchEntity> postHistory =
-                await _forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
-            DefaultViewModel["UserHistory"] =
-                postHistory;
-            if (postHistory != null && postHistory.Count >= 1) return;
+            string html = await _forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+            PostHistoryWebView.NavigateToString(html);
+            if (!string.IsNullOrEmpty(html)) return;
             DenyPostHistoryTextBlock.Text =  string.Format(
-                "What? Nothing here?!?{0}You probably have to buy platinum access to see this.{0} Get that first, I'll be waiting...{0}{1}", System.Environment.NewLine,
+                "What? Nothing here?!?{0}You probably have to buy platinum access to see this.{0} Get that first, I'll be waiting...{0}{1}", Environment.NewLine,
                 Constants.ASCII_5);
-            PostHistorytListView.Visibility = Visibility.Collapsed;
+            PostHistoryWebView.Visibility = Visibility.Collapsed;
             DenyPostHistoryTextBlock.Visibility = Visibility.Visible;
         }
 

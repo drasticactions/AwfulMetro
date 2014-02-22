@@ -51,5 +51,27 @@ namespace AwfulMetro.Core.Tools
             var toastNotification = new ToastNotification(notificationXml);
             ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
         }
+
+        public static void CreateToastNotification(string text)
+        {
+            XmlDocument notificationXml =
+    ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText01);
+            XmlNodeList toastElements = notificationXml.GetElementsByTagName("text");
+            toastElements[0].AppendChild(
+                notificationXml.CreateTextNode(text));
+            XmlNodeList imageElement = notificationXml.GetElementsByTagName("image");
+            string imageName = string.Empty;
+            if (string.IsNullOrEmpty(imageName))
+            {
+                imageName = @"Assets/Logo.scale-100.png";
+            }
+            imageElement[0].Attributes[1].NodeValue = imageName;
+            IXmlNode toastNode = notificationXml.SelectSingleNode("/toast");
+            string test = "{" + string.Format("type:'toast'") + "}";
+            var xmlElement = (XmlElement)toastNode;
+            if (xmlElement != null) xmlElement.SetAttribute("launch", test);
+            var toastNotification = new ToastNotification(notificationXml);
+            ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
+        }
     }
 }

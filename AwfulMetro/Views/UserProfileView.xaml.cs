@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
@@ -64,11 +65,27 @@ namespace AwfulMetro.Views
             long userId;
             userId = Convert.ToInt64(e.NavigationParameter);
             ForumUserEntity userProfile = await _forumUserManager.GetUserFromProfilePage(userId);
+            pageTitle.Text = string.Format("Profile - {0}", userProfile.Username);
             DefaultViewModel["UserEntity"] = userProfile;
-            DefaultViewModel["RapSheet"] =
-                await _rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
-            DefaultViewModel["UserSearch"] =
-                await _forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+            string rapsheetHtml = await _rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));
+            string postHistoryHtml = await _forumSearchManager.GetSearchResults(string.Format(Constants.USER_POST_HISTORY, userId));
+            if (string.IsNullOrEmpty(rapsheetHtml))
+            {
+                RapSheetTextBlock.Text =
+                    string.Format(
+                        "Sorry, but you can't make yourself feel better by judging this user. They've done nothing wrong!{0}Don't you feel like shit now? Knowing that you are not as good as this, pure, goon?{0}I wish I could help you, but I'm just an awful forum viewer.{0}I can't fix your fucked up life and post history.",
+                        Environment.NewLine);
+                RapSheetWebView.Visibility = Visibility.Collapsed;
+                RapSheetTextBlock.Visibility = Visibility.Visible;
+            }
+            if (string.IsNullOrEmpty(postHistoryHtml))
+            {
+                DenyPostHistoryTextBlock.Text = string.Format("What? No post history?!? What has brought such tragedy?!{0}Oh yeah, you need platinum access to see this. Get that first.", Environment.NewLine);
+                PostHistoryWebView.Visibility = Visibility.Collapsed;
+                DenyPostHistoryTextBlock.Visibility = Visibility.Visible;
+            }
+            DefaultViewModel["RapSheetHtml"] = rapsheetHtml;
+            DefaultViewModel["UserSearchHtml"] = postHistoryHtml;
         }
 
         #region NavigationHelper registration

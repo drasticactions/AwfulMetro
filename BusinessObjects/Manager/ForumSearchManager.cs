@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -23,11 +24,17 @@ namespace AwfulMetro.Core.Manager
         {
         }
 
-        public async Task<List<ForumSearchEntity>> GetSearchResults(String url)
+        public async Task<string> GetSearchResults(String url)
         {
             try
             {
-                var searchResults = new List<ForumSearchEntity>();
+                string htmlBody = await PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
+
+                var doc2 = new HtmlDocument();
+
+                doc2.LoadHtml(htmlBody);
+
+                HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
 
                 //inject this
                 HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
@@ -35,20 +42,37 @@ namespace AwfulMetro.Core.Manager
                 HtmlNode searchNode =
                     doc.DocumentNode.Descendants("div")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("inner"));
-                url = Constants.BASE_URL + "search.php" +
-                      searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty);
+                url = string.Format("{0}search.php{1}", Constants.BASE_URL, searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty));
 
                 doc = (await _webManager.DownloadHtml(url)).Document;
-                //Test persisting Html from search page.
-                //HtmlDocument doc = new HtmlDocument();
-                //string html = await LoadSearchPage("search.txt");
-                //doc.LoadHtml(html);
-                searchResults =
-                    ParseSearchRows(
-                        doc.DocumentNode.Descendants("table")
-                            .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("main_full")));
-                //ForumSearchManager.SaveSearchPage("search.txt", doc.DocumentNode.OuterHtml.ToString());
-                return searchResults;
+                var tableNode = doc.DocumentNode.Descendants("table")
+                    .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("main_full"));
+
+                tableNode.SetAttributeValue("style", "width: 100%");
+
+                HtmlNode[] linkNodes = tableNode.Descendants("a").ToArray();
+
+                if (!linkNodes.Any())
+                {
+                    // User has no items on their rap sheet, return nothing back.
+                    return string.Empty;
+                }
+
+                foreach (var linkNode in linkNodes)
+                {
+                    var divNode = HtmlNode.CreateNode(linkNode.InnerText);
+                    linkNode.ParentNode.ReplaceChild(divNode.ParentNode, linkNode);
+                }
+
+                HtmlNode[] jumpPostsNodes = tableNode.Descendants("div").Where(node => node.GetAttributeValue("align", string.Empty).Equals("right")).ToArray();
+
+                foreach (var jumpPost in jumpPostsNodes)
+                {
+                    jumpPost.Remove();
+                }
+
+                bodyNode.InnerHtml = tableNode.OuterHtml;
+                return WebUtility.HtmlDecode(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml));
             }
             catch (Exception)
             {

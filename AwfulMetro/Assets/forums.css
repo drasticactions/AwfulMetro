@@ -1341,13 +1341,6 @@ tr.category2 td.star div, td.star.bm2 div { background-image: url('http://fi.som
 
 /** Profile edit **/
 
-.modifyprofile .standard th, .modifyoptions .standard th, .modifypassword .standard h2, .listedit .standard h2, .member_account_features .standard h2, .dictionary_show .standard h2, .gloryhole .standard h2, .banlist .standard h2, .supportmail .standard h2, #main_full th, .getinfo .standard th, .newthread .standard h2, .online_users .standard h2, .newreply .standard h2, .editpost .standard h2, .threads_editthread .standard th {
-    font-family: Arial;
-    /** Small text at top of the tables **/
-    font-size: 10px;
-    padding-left: 10px;
-}
-
 .modifyprofile #content table.standard span.smalltext a { color: #FFF; }
 
 .modifyprofile table.standard td { padding-left: 10px; }

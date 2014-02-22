@@ -10,149 +10,106 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:web="using:AwfulMetro.Core.Tools"
     mc:Ignorable="d">
-
-    <Page.Resources>
-        <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
-        <CollectionViewSource
-            x:Name="itemsViewSource"
-            Source="{Binding RapSheet}" />
-        <CollectionViewSource
-            x:Name="postHistorySource"
-            Source="{Binding UserSearch}" />
-    </Page.Resources>
-
-    <!--
-        This grid acts as a root panel for the page.
-    -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition />
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <Hub RequestedTheme="Dark">
-            <Hub.Header>
-                <!-- Back button and page title -->
+        <!-- Back button and page title -->
+        <Grid Background="#FF1E72C9" RequestedTheme="Dark">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="backButton"
+                    Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+                    Style="{StaticResource NavigationBackButtonNormalStyle}"
+                                        VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    AutomationProperties.Name="Back"
+                    AutomationProperties.AutomationId="BackButton"
+                    AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" />
+            <TextBlock x:Name="pageTitle" Text="Profile" Style="{StaticResource HeaderTextBlockStyle}"
+                       Grid.Column="1"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center"
+                       RequestedTheme="Dark" />
+        </Grid>
+        <ScrollViewer RequestedTheme="Light" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Grid.Row="1">
+            <Grid>
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="backButton" Margin="0,0,39,0"
-                            Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
-                            Style="{StaticResource NavigationBackButtonNormalStyle}"
-                            VerticalAlignment="Top"
-                            AutomationProperties.Name="Back"
-                            AutomationProperties.AutomationId="BackButton"
-                            AutomationProperties.ItemType="Navigation Button" />
-                    <TextBlock x:Name="pageTitle" Text="{Binding UserEntity.Username}"
-                               Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1"
-                               IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Top" />
-                </Grid>
-            </Hub.Header>
-
-            <HubSection Width="500" Margin="0,0,0,0">
-                <HubSection.Background>
-                    <SolidColorBrush Color="#51A5FC" />
-                </HubSection.Background>
-                <DataTemplate>
-                    <ScrollViewer>
-                        <StackPanel HorizontalAlignment="Left">
-                            <WebView x:Name="AvatarImage" Width="125" Height="130"
+                     <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <StackPanel>
+                                <WebView Margin="15" x:Name="AvatarImage" Width="125" Height="130" VerticalAlignment="Center" 
                                      web:WebViewHelper.Html="{Binding UserEntity.AvatarLink}"
-                                     HorizontalAlignment="Left" />
-                            <TextBlock x:Name="UserAvatarTitle" TextWrapping="Wrap"
-                                       Text="{Binding UserEntity.AvatarTitle}" Margin="0,0,0,60" FontSize="20" />
-                            <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Margin="0,10,0,0"
+                                     HorizontalAlignment="Center" />
+                                <TextBlock Margin="15" x:Name="UserAvatarTitle" TextAlignment="Center" TextWrapping="Wrap"
+                                       Text="{Binding UserEntity.AvatarTitle}" FontSize="18" />
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Column="1" Margin="15">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" 
                                        TextWrapping="Wrap"
                                        Text="{Binding UserEntity.AboutUser}" />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Member Since: " FontSize="25" />
-                                <TextBlock FontSize="25" Text="{Binding UserEntity.DateJoined}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Member Since: " FontSize="25" />
+                                    <TextBlock FontSize="25" Text="{Binding UserEntity.DateJoined}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="25" Text="Post Count: " />
+                                    <TextBlock FontSize="25" Text="{Binding UserEntity.PostCount}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="25" Text="Post Rate: " />
+                                    <TextBlock FontSize="25" Text="{Binding UserEntity.PostRate}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="25" Text="Last Post: " />
+                                    <TextBlock FontSize="25" Text="{Binding UserEntity.LastPostDate}" />
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="25" Text="Post Count: " />
-                                <TextBlock FontSize="25" Text="{Binding UserEntity.PostCount}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="25" Text="Post Rate: " />
-                                <TextBlock FontSize="25" Text="{Binding UserEntity.PostRate}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="25" Text="Last Post: " />
-                                <TextBlock FontSize="25" Text="{Binding UserEntity.LastPostDate}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </ScrollViewer>
-                </DataTemplate>
-            </HubSection>
-            <HubSection Width="750" Header="Post History">
-                <HubSection.Background>
-                    <SolidColorBrush Color="#6BBFFF" />
-                </HubSection.Background>
-                <DataTemplate>
-                    <ItemsControl x:Name="PostHistoryView" Grid.Row="1"
-                                  ItemsSource="{Binding Source={StaticResource postHistorySource}}">
-                        <ItemsControl.Template>
-                            <ControlTemplate>
-                                <ScrollViewer Padding="{TemplateBinding Padding}">
-                                    <ItemsPresenter />
-                                </ScrollViewer>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderThickness="3" BorderBrush="Gainsboro">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="250" />
-                                            <ColumnDefinition Width="400" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding ThreadTitle}" TextWrapping="Wrap" Grid.Column="0" />
-                                        <TextBlock Text="{Binding PostContent}" TextWrapping="Wrap" Grid.Column="1" />
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </DataTemplate>
-            </HubSection>
-            <HubSection Width="700" Header="Rap Sheet">
-                <HubSection.Background>
-                    <SolidColorBrush Color="#84D8FF" />
-                </HubSection.Background>
-                <DataTemplate>
-                    <ItemsControl x:Name="RapSheetListView" Grid.Row="1"
-                                  ItemsSource="{Binding Source={StaticResource itemsViewSource}}">
-                        <ItemsControl.Template>
-                            <ControlTemplate>
-                                <ScrollViewer Padding="{TemplateBinding Padding}">
-                                    <ItemsPresenter />
-                                </ScrollViewer>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderThickness="3" BorderBrush="Gainsboro">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="150" />
-                                            <ColumnDefinition Width="300" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Type}" Grid.Column="0" />
-                                        <TextBlock Text="{Binding Date}" Grid.Column="1" />
-                                        <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap"
-                                                   Grid.Column="2" />
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </DataTemplate>
-            </HubSection>
-
-        </Hub>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="25" Grid.Row="0" Text="Post History" />
+                            <WebView x:Name="PostHistoryWebView" Grid.Row="1" web:WebViewHelper.Html="{Binding UserSearchHtml}" Height="300" />
+                            <TextBlock  Grid.Row="1" x:Name="DenyPostHistoryTextBlock" Visibility="Collapsed" TextAlignment="Left" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="Black" FontSize="20" TextWrapping="WrapWholeWords"/>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="25" Grid.Row="0" Text="Rap Sheet" />
+                            <WebView x:Name="RapSheetWebView" Grid.Row="1" web:WebViewHelper.Html="{Binding RapSheetHtml}"  Height="300"  />
+                            <TextBlock  Grid.Row="1" x:Name="RapSheetTextBlock" Visibility="Collapsed" TextAlignment="Left" VerticalAlignment="Top" HorizontalAlignment="Center" Foreground="Black" FontSize="20" TextWrapping="WrapWholeWords"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

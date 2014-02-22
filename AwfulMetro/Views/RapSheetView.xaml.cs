@@ -65,13 +65,12 @@ namespace AwfulMetro.Views
         {
             ForwardButton.IsEnabled = true;
             BackButton.IsEnabled = false;
-            var rapSheet = new List<ForumUserRapSheetEntity>();
+            string html = string.Empty;
             if (e.NavigationParameter != null)
             {
                 long userId = Convert.ToInt64(e.NavigationParameter);
                 ForwardButton.IsEnabled = false;
-                rapSheet =
-                    await
+                html = await
                         _rapSheetManager.GetRapSheet(Constants.BASE_URL +
                                                      string.Format(Constants.USER_RAP_SHEET, userId));
                 NoRapSheetTextBlock.Text =
@@ -81,19 +80,18 @@ namespace AwfulMetro.Views
             }
             else
             {
-                
-                DefaultViewModel["RapSheet"] =
-                    await _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
+                html = await _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET);
                 NoRapSheetTextBlock.Text =
     string.Format(
         "Everyone is perfect and has no flaws.{0}Sorry to disappoint you, so look at this instead.{0}{1}", System.Environment.NewLine,
                         Constants.ASCII_3);
             }
-            DefaultViewModel["RapSheet"] = rapSheet;
-            if (rapSheet != null && rapSheet.Count > 0) return;
-            ForwardButton.IsEnabled = false;
-            RapSheetListView.Visibility = Visibility.Collapsed;
-            NoRapSheetTextBlock.Visibility = Visibility.Visible;
+            RapSheetWebView.NavigateToString(html);
+            //DefaultViewModel["RapSheet"] = rapSheet;
+            if (!string.IsNullOrEmpty(html)) return;
+             ForwardButton.IsEnabled = false;
+             RapSheetWebView.Visibility = Visibility.Collapsed;
+             NoRapSheetTextBlock.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -114,20 +112,23 @@ namespace AwfulMetro.Views
         {
             _currentPage--;
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
-            DefaultViewModel["RapSheet"] =
+            string html =
                 await
                     _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
                                                  string.Format(Constants.PAGE_NUMBER, _currentPage));
+            RapSheetWebView.NavigateToString(html);
         }
 
         private async void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
             _currentPage++;
             BackButton.IsEnabled = _currentPage >= 2 ? true : false;
-            DefaultViewModel["RapSheet"] =
+            string html =
                 await
                     _rapSheetManager.GetRapSheet(Constants.BASE_URL + Constants.RAP_SHEET +
                                                  string.Format(Constants.PAGE_NUMBER, _currentPage));
+            RapSheetWebView.NavigateToString(html);
+
         }
 
         #region NavigationHelper registration

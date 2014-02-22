@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -80,6 +81,10 @@ namespace AwfulMetro.Views
                     break;
                 case "markAsLastRead":
                     await _threadManager.MarkPostAsLastRead(_forumThread, Convert.ToInt32(command.Id));
+                    int nextPost = Convert.ToInt32(command.Id) + 1;
+                    await ThreadFullView.InvokeScriptAsync("ScrollToTable", new[] { nextPost.ToString() });
+                    await ThreadSnapView.InvokeScriptAsync("ScrollToTable", new[] { nextPost.ToString() });
+                    NotifyStatusTile.CreateToastNotification("Post marked as last read! Now smash this computer and live your life!");
                     break;
                 default:
                     var msgDlg = new MessageDialog("Working on it!")

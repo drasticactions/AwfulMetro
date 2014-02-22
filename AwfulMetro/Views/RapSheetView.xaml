@@ -30,7 +30,7 @@
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
+            <RowDefinition Height="70" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -40,16 +40,17 @@
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0"
+            <Button x:Name="backButton"
                     Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
-                    VerticalAlignment="Top"
+                                        VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
                     AutomationProperties.Name="Back"
                     AutomationProperties.AutomationId="BackButton"
                     AutomationProperties.ItemType="Navigation Button" RequestedTheme="Dark" />
             <TextBlock x:Name="pageTitle" Text="Rap Sheet" Style="{StaticResource HeaderTextBlockStyle}"
                        Grid.Column="1"
-                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,15,0,0"
+                       IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center"
                        RequestedTheme="Dark" />
         </Grid>
         <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" />
@@ -58,45 +59,14 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <StackPanel Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="1" Margin="0,0,-5,0">
+            <StackPanel Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="1">
                 <AppBarButton x:Name="BackButton" Click="BackButton_Click" Label="Back Page" Icon="Back" />
                 <AppBarButton x:Name="ForwardButton" Click="ForwardButton_Click" Label="Forward Page" Icon="Forward" />
             </StackPanel>
             <Viewbox Grid.Column="0">
                 <TextBlock x:Name="NoRapSheetTextBlock" Visibility="Collapsed" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" FontSize="20" TextWrapping="WrapWholeWords"/>
             </Viewbox>
-            <ItemsControl x:Name="RapSheetListView" Grid.Column="0"
-                          ItemsSource="{Binding Source={StaticResource itemsViewSource}}">
-                <ItemsControl.Template>
-                    <ControlTemplate>
-                        <ScrollViewer Padding="{TemplateBinding Padding}">
-                            <ItemsPresenter />
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ItemsControl.Template>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="3" BorderBrush="Gainsboro">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="400" />
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="150" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding PunishmentType}" Grid.Column="0" />
-                                <TextBlock Text="{Binding Date}" Grid.Column="1" />
-                                <TextBlock Text="{Binding HorribleJerk}" Grid.Column="2" />
-                                <TextBlock Text="{Binding PunishmentReason}" TextWrapping="Wrap" Grid.Column="3" />
-                                <TextBlock Text="{Binding RequestedBy}" Grid.Column="4" />
-                                <TextBlock Text="{Binding ApprovedBy}" Grid.Column="5" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <WebView x:Name="RapSheetWebView" Grid.Column="0" />
         </Grid>
 
     </Grid>

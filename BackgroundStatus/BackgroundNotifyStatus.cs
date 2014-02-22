@@ -36,7 +36,7 @@ namespace AwfulMetro.BackgroundStatus
             List<ForumThreadEntity> forumThreadEntities = await _threadManager.GetBookmarks(forumCategory, 1);
             CreateBookmarkLiveTiles(forumThreadEntities);
 
-            if (localSettings.Values.ContainsKey("_threadIds"))
+            if (localSettings.Values.ContainsKey("_threadIds") && !string.IsNullOrEmpty((string)localSettings.Values["_threadIds"]))
             {
                 DeserializeXmlToList((string) localSettings.Values["_threadIds"]);
                 List<ForumThreadEntity> list =

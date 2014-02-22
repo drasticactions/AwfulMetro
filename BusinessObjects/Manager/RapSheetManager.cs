@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Windows.Storage;
 using AwfulMetro.Core.Entity;
 using HtmlAgilityPack;
 
@@ -19,20 +22,40 @@ namespace AwfulMetro.Core.Manager
         {
         }
 
-        public async Task<List<ForumUserRapSheetEntity>> GetRapSheet(string url)
+        public async Task<string> GetRapSheet(string url)
         {
-            var rapSheets = new List<ForumUserRapSheetEntity>();
             HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
 
+            string html = await PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
+
+            var doc2 = new HtmlDocument();
+
+            doc2.LoadHtml(html);
+
+            HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
             HtmlNode rapSheetNode =
                 doc.DocumentNode.Descendants("table")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("standard full"));
             rapSheetNode.Descendants("tr").FirstOrDefault().Remove();
-            if (rapSheetNode.Descendants("tr").Any())
+
+            rapSheetNode.SetAttributeValue("style", "width: 100%");
+
+            HtmlNode[] linkNodes = rapSheetNode.Descendants("a").ToArray();
+
+            if (!linkNodes.Any())
             {
-                rapSheets.AddRange(rapSheetNode.Descendants("tr").Select(ForumUserRapSheetEntity.FromRapSheet));
+                // User has no items on their rap sheet, return nothing back.
+                return string.Empty;
             }
-            return rapSheets;
+
+            foreach (var linkNode in linkNodes)
+            {
+                var divNode = HtmlNode.CreateNode(linkNode.InnerText);
+                linkNode.ParentNode.ReplaceChild(divNode.ParentNode, linkNode);
+            }
+
+            bodyNode.InnerHtml = rapSheetNode.OuterHtml;
+            return WebUtility.HtmlDecode(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml));
         }
     }
 }
