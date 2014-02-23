@@ -12,6 +12,20 @@
         <script type="text/javascript" async="" src="ms-appx-web:///Assets/forums.combined.js"></script>
         <script type="text/javascript" async="" src="ms-appx-web:///Assets/jquery-ui.min.js"></script>
         <script type="text/javascript" async="" src="ms-appx-web:///Assets/js/threadTemplate.js"></script>
+        <script type="text/javascript" async="" src="ms-appx-web:///Assets/js/url.min.js"></script>
+        <script type="text/javascript">
+            window.onload = function () {
+                $(".postbody a").click(function () {
+                    var bool = window.OpenLink(this.href);
+                    return bool;
+                });
+
+                $(".standard a").click(function () {
+                    var bool = window.OpenLink(this.href);
+                    return bool;
+                });
+            };
+        </script>
         <title>Forum Thread</title>
     </head>
     <body id="thread">

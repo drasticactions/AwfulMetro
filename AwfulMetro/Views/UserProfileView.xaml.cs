@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -64,7 +65,23 @@ namespace AwfulMetro.Views
         {
             long userId;
             userId = Convert.ToInt64(e.NavigationParameter);
-            ForumUserEntity userProfile = await _forumUserManager.GetUserFromProfilePage(userId);
+            ForumUserEntity userProfile = null;
+            try
+            {
+                userProfile = await _forumUserManager.GetUserFromProfilePage(userId);
+            }
+            catch (Exception)
+            {
+                // User does not exist.
+                // Can't show error message block in try/catch.
+            }
+            if (userProfile == null)
+            {
+                var msgDlg = new MessageDialog("User does not exist.");
+                await msgDlg.ShowAsync();
+                Frame.GoBack();
+                return;
+            }
             pageTitle.Text = string.Format("Profile - {0}", userProfile.Username);
             DefaultViewModel["UserEntity"] = userProfile;
             string rapsheetHtml = await _rapSheetManager.GetRapSheet(Constants.BASE_URL + string.Format(Constants.USER_RAP_SHEET, userId));

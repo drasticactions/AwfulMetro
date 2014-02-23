@@ -27,7 +27,6 @@ namespace AwfulMetro.Views
         private readonly PostManager _postManager = new PostManager();
         private readonly ThreadManager _threadManager = new ThreadManager();
         private ForumThreadEntity _forumThread;
-        private List<ForumPostEntity> _threadPosts;
 
         public ThreadPage()
         {
@@ -86,8 +85,25 @@ namespace AwfulMetro.Views
                     await ThreadSnapView.InvokeScriptAsync("ScrollToTable", new[] { nextPost.ToString() });
                     NotifyStatusTile.CreateToastNotification("Post marked as last read! Now smash this computer and live your life!");
                     break;
+                case "openThread":
+                    // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
+                    // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
+                    var threadManager = new ThreadManager();
+                    var thread =  await threadManager.GetThread(command.Id);
+                    if (thread == null)
+                    {
+                        var error = new MessageDialog("Specified post was not found in the live forums.")
+                        {
+                            DefaultCommandIndex = 1
+                        };
+                        await error.ShowAsync();
+                        break;
+                    }
+                    string jsonObjectString = JsonConvert.SerializeObject(thread);
+                    Frame.Navigate(typeof (ThreadPage), jsonObjectString);
+                    break;
                 default:
-                    var msgDlg = new MessageDialog("Working on it!")
+                    var msgDlg = new MessageDialog("Not working yet!")
                     {
                         DefaultCommandIndex = 1
                     };

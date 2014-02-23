@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -9,6 +10,7 @@ using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -26,6 +28,7 @@ namespace AwfulMetro.Views
         {
             InitializeComponent();
             _navigationHelper = new NavigationHelper(this);
+            RapSheetWebView.ScriptNotify += WebView_ScriptNotify;
             _navigationHelper.LoadState += navigationHelper_LoadState;
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
@@ -47,6 +50,48 @@ namespace AwfulMetro.Views
             get { return _navigationHelper; }
         }
 
+        private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            string stringJson = e.Value;
+            var command = JsonConvert.DeserializeObject<ReplyView.ThreadCommand>(stringJson);
+            switch (command.Command)
+            {
+                case "profile":
+                    Frame.Navigate(typeof(UserProfileView), command.Id);
+                    break;
+                case "post_history":
+                    Frame.Navigate(typeof(UserPostHistoryPage), command.Id);
+                    break;
+                case "rap_sheet":
+                    Frame.Navigate(typeof(RapSheetView), command.Id);
+                    break;
+                case "openThread":
+                    // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
+                    // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
+                    var threadManager = new ThreadManager();
+                    var thread = await threadManager.GetThread(command.Id);
+                    if (thread == null)
+                    {
+                        var error = new MessageDialog("Specified post was not found in the live forums.")
+                        {
+                            DefaultCommandIndex = 1
+                        };
+                        await error.ShowAsync();
+                        break;
+                    }
+                    string jsonObjectString = JsonConvert.SerializeObject(thread);
+                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+                    break;
+                default:
+                    var msgDlg = new MessageDialog("Not working yet!")
+                    {
+                        DefaultCommandIndex = 1
+                    };
+                    await msgDlg.ShowAsync();
+                    break;
+            }
+        }
+
 
         /// <summary>
         ///     Populates the page with content passed during navigation. Any saved state is also
@@ -65,8 +110,9 @@ namespace AwfulMetro.Views
         {
             ForwardButton.IsEnabled = true;
             BackButton.IsEnabled = false;
-            string html = string.Empty;
-            if (e.NavigationParameter != null)
+            string html;
+
+            if (e.NavigationParameter != null && !string.IsNullOrEmpty((string)e.NavigationParameter))
             {
                 long userId = Convert.ToInt64(e.NavigationParameter);
                 ForwardButton.IsEnabled = false;
@@ -87,7 +133,6 @@ namespace AwfulMetro.Views
                         Constants.ASCII_3);
             }
             RapSheetWebView.NavigateToString(html);
-            //DefaultViewModel["RapSheet"] = rapSheet;
             if (!string.IsNullOrEmpty(html)) return;
              ForwardButton.IsEnabled = false;
              RapSheetWebView.Visibility = Visibility.Collapsed;

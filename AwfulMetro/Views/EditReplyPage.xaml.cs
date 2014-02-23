@@ -65,24 +65,39 @@ namespace AwfulMetro.Views
             switch (command.Command)
             {
                 case "profile":
-                    Frame.Navigate(typeof (UserProfileView), command.Id);
+                    Frame.Navigate(typeof(UserProfileView), command.Id);
                     break;
                 case "post_history":
-                    Frame.Navigate(typeof (UserPostHistoryPage), command.Id);
+                    Frame.Navigate(typeof(UserPostHistoryPage), command.Id);
                     break;
                 case "rap_sheet":
-                    Frame.Navigate(typeof (RapSheetView), command.Id);
+                    Frame.Navigate(typeof(RapSheetView), command.Id);
                     break;
                 case "quote":
-                    LoadingProgressBar.Visibility = Visibility.Visible;
-                    string quoteString = await _replyManager.GetQuoteString(Convert.ToInt64(command.Id));
-                    quoteString = string.Concat(Environment.NewLine, quoteString);
-                    string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
-                    if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
-                    LoadingProgressBar.Visibility = Visibility.Collapsed;
+                    Frame.Navigate(typeof(ReplyView), command.Id);
+                    break;
+                case "edit":
+                    Frame.Navigate(typeof(EditReplyPage), command.Id);
+                    break;
+                case "openThread":
+                    // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
+                    // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
+                    var threadManager = new ThreadManager();
+                    var thread = await threadManager.GetThread(command.Id);
+                    if (thread == null)
+                    {
+                        var error = new MessageDialog("Specified post was not found in the live forums.")
+                        {
+                            DefaultCommandIndex = 1
+                        };
+                        await error.ShowAsync();
+                        break;
+                    }
+                    string jsonObjectString = JsonConvert.SerializeObject(thread);
+                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
                     break;
                 default:
-                    var msgDlg = new MessageDialog("Working on it!")
+                    var msgDlg = new MessageDialog("Not working yet!")
                     {
                         DefaultCommandIndex = 1
                     };

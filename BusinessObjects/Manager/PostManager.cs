@@ -36,6 +36,8 @@ namespace AwfulMetro.Core.Manager
             }
 
 
+
+
             WebManager.Result result = await _webManager.DownloadHtml(url);
             HtmlDocument doc = result.Document;
             string responseUri = result.AbsoluteUri;

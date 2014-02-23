@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using Windows.Data.Html;
+using Windows.UI.Xaml.Controls;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 
@@ -130,6 +132,48 @@ namespace AwfulMetro.Core.Entity
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon"));
             if (first != null)
                 ImageIconLocation = first.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
+        }
+
+        /// <summary>
+        /// If we are coming to this thread from another thread, we need to parse the thread information differently.
+        /// </summary>
+        /// <param name="threadDocument">The thread HTML Document.</param>
+        public void ParseFromThread(HtmlDocument threadDocument)
+        {
+            var title = threadDocument.DocumentNode.Descendants("title").FirstOrDefault();
+
+            if (title != null)
+            {
+                Name = title.InnerText;
+            }
+
+            var threadIdNode = threadDocument.DocumentNode.Descendants("body").First();
+            ThreadId = Convert.ToInt64(threadIdNode.GetAttributeValue("data-thread", string.Empty));
+
+            Location = string.Format(Constants.THREAD_PAGE, this.ThreadId);
+            var pageNavigationNode = threadDocument.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("pages top"));
+            if (string.IsNullOrWhiteSpace(pageNavigationNode.InnerHtml))
+            {
+                TotalPages = 1;
+                CurrentPage = 1;
+            }
+            else
+            {
+                var lastPageNode = pageNavigationNode.Descendants("a").FirstOrDefault(node => node.GetAttributeValue("title", string.Empty).Equals("Last page"));
+                if (lastPageNode != null)
+                {
+                    string urlHref = lastPageNode.GetAttributeValue("href", string.Empty);
+                    var query = Extensions.ParseQueryString(urlHref);
+                    TotalPages = Convert.ToInt32(query["pagenumber"]);
+                }
+
+                var pageSelector = pageNavigationNode.Descendants("select").FirstOrDefault();
+
+                var selectedPage = pageSelector.Descendants("option")
+                    .FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Equals("selected"));
+
+                CurrentPage = Convert.ToInt32(selectedPage.GetAttributeValue("value", string.Empty));
+            }
         }
 
         public void ParseFromPopularThread(string name, long threadId)

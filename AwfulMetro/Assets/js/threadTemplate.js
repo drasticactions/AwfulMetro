@@ -24,3 +24,33 @@ var ScrollToTable = function (pti) {
         }, 0);
     }
 };
+
+var OpenLink = function(link) {
+    var hostname = $.url('hostname', link);
+    // If the link is not for another SA thread, open it in IE.
+    if (hostname != 'forums.somethingawful.com' && hostname != "") {
+        return true;
+    }
+    var file = $.url('file', link);
+    switch(file)
+    {
+        case 'showthread.php':
+            //$.url('?threadid', link)
+            ForumCommand('openThread', link);
+            break;
+        case 'member.php':
+            ForumCommand('profile', $.url('?userid', link));
+            break;
+        case 'forumdisplay.php':
+            ForumCommand('openForum', link);
+            break;
+        case 'search.php':
+            if ($.url('?action', link) == 'do_search_posthistory') {
+                ForumCommand('post_history', $.url('?userid', link));
+            }
+            break;
+        case 'banlist.php':
+            ForumCommand('rap_sheet', $.url('?userid', link));
+    }
+    return false;
+};
