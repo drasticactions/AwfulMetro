@@ -68,7 +68,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBox IsSpellCheckEnabled="True" AcceptsReturn="True" Grid.Row="0"
+                <TextBox KeyDown="ReplyText_OnKeyDown" KeyUp="ReplyText_OnKeyUp" IsSpellCheckEnabled="True" AcceptsReturn="True" Grid.Row="0"
                              HorizontalAlignment="Stretch" Margin="15" x:Name="ReplyText" TextWrapping="Wrap" />
                 <WebView x:Name="PreviewLastPostWebView" Grid.Row="1" Margin="15" />
                 <GridView

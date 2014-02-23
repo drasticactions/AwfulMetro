@@ -5,9 +5,11 @@ using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
@@ -252,6 +254,11 @@ namespace AwfulMetro.Views
 
             if (item.GetType() != typeof (BBCodeEntity)) return;
             var bbcode = (BBCodeEntity) e.ClickedItem;
+            InsertBbCode(bbcode);
+        }
+
+        private void InsertBbCode(BBCodeEntity bbcode)
+        {
             if (!string.IsNullOrEmpty(ReplyText.SelectedText))
             {
                 string selectedText = "[{0}]" + ReplyText.SelectedText + "[/{0}]";
@@ -288,5 +295,38 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private bool _isCtrlKeyPressed;
+
+        private void ReplyText_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Control) _isCtrlKeyPressed = true;
+            else if (_isCtrlKeyPressed)
+            {
+                // U and Q are used with system commands, so we can't catpure them here.
+                // We need different commands for them...
+                switch (e.Key)
+                {
+                    case VirtualKey.U:
+                        InsertBbCode(new BBCodeEntity("u", "u"));
+                        break;
+                    case VirtualKey.B:
+                        InsertBbCode(new BBCodeEntity("b", "b"));
+                        break;
+                    case VirtualKey.S:
+                        InsertBbCode(new BBCodeEntity("s", "s"));
+                        break;
+                    case VirtualKey.Q:
+                        InsertBbCode(new BBCodeEntity("quote", "quote"));
+                        break;
+                }
+                _isCtrlKeyPressed = false;
+            }
+        }
+
+        private void ReplyText_OnKeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Control) _isCtrlKeyPressed = false;
+        }
     }
 }
