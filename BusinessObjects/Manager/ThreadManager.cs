@@ -220,6 +220,7 @@ namespace AwfulMetro.Core.Manager
             }
 
             HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+
             HtmlNode forumNode =
                 doc.DocumentNode.Descendants()
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
@@ -280,6 +281,10 @@ namespace AwfulMetro.Core.Manager
 
             HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
 
+            HtmlNode bodyNode = doc.DocumentNode.Descendants("body").First();
+
+            int forumId = Convert.ToInt32(bodyNode.GetAttributeValue("data-forum", string.Empty));
+
             HtmlNode forumNode =
                 doc.DocumentNode.Descendants()
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
@@ -291,6 +296,7 @@ namespace AwfulMetro.Core.Manager
             {
                 var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
+                threadEntity.ForumId = forumId;
                 forumThreadList.Add(threadEntity);
             }
             return forumThreadList;

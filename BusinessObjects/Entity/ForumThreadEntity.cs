@@ -51,6 +51,8 @@ namespace AwfulMetro.Core.Entity
 
         public long ThreadId { get; set; }
 
+        public int ForumId { get; set; }
+
         /// <summary>
         ///     Parses a thread HTML node to extract the information from it.
         /// </summary>

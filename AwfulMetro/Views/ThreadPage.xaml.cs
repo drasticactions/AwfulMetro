@@ -345,5 +345,14 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private async void ReturnToParentForum_OnClick(object sender, RoutedEventArgs e)
+        {
+            var msgDlg = new MessageDialog("Not working yet!")
+            {
+                DefaultCommandIndex = 1
+            };
+            await msgDlg.ShowAsync();
+        }
     }
 }

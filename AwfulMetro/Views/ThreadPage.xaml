@@ -101,11 +101,12 @@
                         <CarouselPanel />
                     </ItemsPanelTemplate>
                 </ComboBox>
+                <AppBarButton x:Name="ReturnToParentForum" Label="Return to Parent Forum" Click="ReturnToParentForum_OnClick" Icon="Up" />
             </StackPanel>
             <WebView DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" Grid.Column="0" x:Name="ThreadFullView" />
         </Grid>
-        
-        
+
+
         <Grid Grid.Row="1" Visibility="Collapsed" x:Name="ThreadListSnapped">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100" />
