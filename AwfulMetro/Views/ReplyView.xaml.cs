@@ -190,8 +190,9 @@ namespace AwfulMetro.Views
         private async void SimilesButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            ItemGridView.Visibility = Visibility.Visible;
+            ItemGridViewContainer.Visibility = Visibility.Visible;
             PreviewLastPostWebView.Visibility = Visibility.Collapsed;
+            FilterBox.Visibility = Visibility.Visible;
             if (!_smileCategoryList.Any())
             {
                 _smileCategoryList = await _smileManager.GetSmileList();
@@ -203,8 +204,9 @@ namespace AwfulMetro.Views
         private void BBcodeButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            ItemGridView.Visibility = Visibility.Visible;
+            ItemGridViewContainer.Visibility = Visibility.Visible;
             PreviewLastPostWebView.Visibility = Visibility.Collapsed;
+            FilterBox.Visibility = Visibility.Collapsed;
             if (!_bbCodeList.Any())
             {
                 _bbCodeList = BBCodeManager.BBCodes;
@@ -240,7 +242,7 @@ namespace AwfulMetro.Views
 
         private async void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            ItemGridView.Visibility = Visibility.Collapsed;
+            ItemGridViewContainer.Visibility = Visibility.Collapsed;
             PreviewLastPostWebView.Visibility = Visibility.Visible;
 
             _forumReply.MapMessage(ReplyText.Text);
@@ -266,7 +268,7 @@ namespace AwfulMetro.Views
         private void LastPostsButton_OnClick(object sender, RoutedEventArgs e)
         {
             PreviewLastPostWebView.NavigateToString(_forumReply.PreviousPostsRaw);
-            ItemGridView.Visibility = Visibility.Collapsed;
+            ItemGridViewContainer.Visibility = Visibility.Collapsed;
             PreviewLastPostWebView.Visibility = Visibility.Visible;
         }
 
@@ -330,6 +332,53 @@ namespace AwfulMetro.Views
         {
             public string Command { get; set; }
             public string Id { get; set; }
+        }
+
+        private void FilterBox_OnSuggestionsRequested(SearchBox sender, SearchBoxSuggestionsRequestedEventArgs args)
+        {
+            if (_smileCategoryList == null) return;
+            string queryText = args.QueryText;
+            if (string.IsNullOrEmpty(queryText)) return;
+            var suggestionCollection = args.Request.SearchSuggestionCollection;
+            foreach (var smile in _smileCategoryList.SelectMany(smileCategory => smileCategory.List.Where(smile => smile.Title.Contains(queryText))))
+            {
+                suggestionCollection.AppendQuerySuggestion(smile.Title);
+            }
+        }
+
+        private void FilterBox_OnQuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+        {
+            if (_smileCategoryList == null) return;
+            string queryText = args.QueryText;
+            if (string.IsNullOrEmpty(queryText)) return;
+            var result = _smileCategoryList.SelectMany(
+                smileCategory => smileCategory.List.Where(smile => smile.Title.Equals(queryText))).FirstOrDefault();
+            if (result == null)
+            {
+                return;
+            }
+            ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, result.Title);
+            FilterBox.QueryText = string.Empty;
+        }
+
+        private void FilterBox_OnQueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)
+        {
+            if (_smileCategoryList == null) return;
+            string queryText = args.QueryText;
+            if (string.IsNullOrEmpty(queryText))
+            {
+                DefaultViewModel["Groups"] = _smileCategoryList;
+                return;
+            }
+            var result = _smileCategoryList.SelectMany(
+                smileCategory => smileCategory.List.Where(smile => smile.Title.Equals(queryText))).FirstOrDefault();
+            if (result != null) return;
+            var searchList = _smileCategoryList.SelectMany(
+                smileCategory => smileCategory.List.Where(smile => smile.Title.Contains(queryText)));
+            List<SmileEntity> smileListEntities = searchList.ToList();
+            var searchSmileCategory = new SmileCategoryEntity("Search", smileListEntities);
+            var fakeSmileCategoryList = new List<SmileCategoryEntity> {searchSmileCategory};
+            DefaultViewModel["Groups"] = fakeSmileCategoryList;
         }
     }
 }
