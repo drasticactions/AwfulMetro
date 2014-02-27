@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Net;
+using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Entity
@@ -14,6 +16,8 @@ namespace AwfulMetro.Core.Entity
         public string Sender { get; set; }
 
         public string Date { get; set; }
+
+        public string MessageUrl { get; set; }
 
         public void Parse(HtmlNode rowNode)
         {
@@ -34,11 +38,16 @@ namespace AwfulMetro.Core.Entity
                 Icon = icon.GetAttributeValue("src", string.Empty);
             }
 
+            var titleNode = rowNode.Descendants("td")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
+
             Title =
-                rowNode.Descendants("td")
-                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"))
+               titleNode
                     .InnerText.Replace("\n", string.Empty);
 
+            string titleHref = titleNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Replace("&amp;", "&");
+
+            MessageUrl = Constants.BASE_URL + titleHref;
 
             Sender = rowNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("sender"))

@@ -183,8 +183,7 @@
             </GridView>
 
             <!-- navigation on the right -->
-            <StackPanel x:Name="defaultNavigation" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2"
-                        Margin="0,0,-5,0" Visibility="Visible">
+            <StackPanel x:Name="defaultNavigation" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2" Visibility="Visible">
                 <AppBarButton x:Name="RapSheetButton" Click="RapSheetButton_Click" Icon="Admin" Label="Rap Sheet" />
                 <AppBarButton x:Name="FrontPageButton" Click="FrontPageButton_Click" Label="Front Page"
                               RenderTransformOrigin="0.5,0.5">

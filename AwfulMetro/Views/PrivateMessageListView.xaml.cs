@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 
 namespace AwfulMetro.Views
@@ -113,7 +114,8 @@ namespace AwfulMetro.Views
 
         private void PrivateMessageList_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            throw new NotImplementedException();
+            var itemId = ((PrivateMessageEntity)e.ClickedItem);
+            Frame.Navigate(typeof(PrivateMessageView), itemId.MessageUrl);
         }
     }
 }
