@@ -56,6 +56,8 @@
 
         public const string USER_POST_HISTORY = BASE_URL + "search.php?action=do_search_posthistory&userid={0}";
 
+        public const string PRIVATE_MESSAGES = BASE_URL + "private.php";
+
         public const string PAGE_NUMBER = "&pagenumber={0}";
 
         public const string THREAD_PAGE = BASE_URL + "showthread.php?threadid={0}";

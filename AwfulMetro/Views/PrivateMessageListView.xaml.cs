@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using AwfulMetro.Core.Manager;
 
 namespace AwfulMetro.Views
 {
@@ -15,6 +16,7 @@ namespace AwfulMetro.Views
     {
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper navigationHelper;
+        private readonly PrivateMessageManager _privateMessageManager = new PrivateMessageManager();
 
         public PrivateMessageListView()
         {
@@ -55,8 +57,10 @@ namespace AwfulMetro.Views
         ///     a dictionary of state preserved by this page during an earlier
         ///     session. The state will be null the first time a page is visited.
         /// </param>
-        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            var privateMessageList = await _privateMessageManager.GetPrivateMessages(0);
+            PrivateMessageList.ItemsSource = privateMessageList;
         }
 
         /// <summary>
@@ -106,5 +110,10 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void PrivateMessageList_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

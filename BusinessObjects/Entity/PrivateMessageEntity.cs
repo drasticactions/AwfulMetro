@@ -23,16 +23,23 @@ namespace AwfulMetro.Core.Entity
                     .Descendants("img")
                     .FirstOrDefault()
                     .GetAttributeValue("src", string.Empty);
-            Icon =
-                rowNode.Descendants("td")
+
+            var icon = rowNode.Descendants("td")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon"))
                     .Descendants("img")
-                    .FirstOrDefault()
-                    .GetAttributeValue("src", string.Empty);
+                    .FirstOrDefault();
+            
+            if (icon != null)
+            {
+                Icon = icon.GetAttributeValue("src", string.Empty);
+            }
+
             Title =
                 rowNode.Descendants("td")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"))
-                    .InnerText;
+                    .InnerText.Replace("\n", string.Empty);
+
+
             Sender = rowNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("sender"))
                 .InnerText;

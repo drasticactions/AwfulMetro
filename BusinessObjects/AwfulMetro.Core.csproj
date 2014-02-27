@@ -136,6 +136,7 @@
     <Compile Include="Manager\LocalStorageManager.cs" />
     <Compile Include="Manager\LoginFailedException.cs" />
     <Compile Include="Manager\PostIconManager.cs" />
+    <Compile Include="Manager\PrivateMessageManager.cs" />
     <Compile Include="Manager\RapSheetManager.cs" />
     <Compile Include="Manager\ReplyManager.cs" />
     <Compile Include="Manager\SmileManager.cs" />

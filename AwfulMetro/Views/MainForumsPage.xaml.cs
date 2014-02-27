@@ -259,5 +259,10 @@ namespace AwfulMetro.Views
             string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
             Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
         }
+
+        private void PrivateMessagesButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(PrivateMessageListView));
+        }
     }
 }

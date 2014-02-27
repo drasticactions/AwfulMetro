@@ -151,9 +151,6 @@
     <Compile Include="Views\PrivateMessageListView.xaml.cs">
       <DependentUpon>PrivateMessageListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PrivateMessageView.xaml.cs">
-      <DependentUpon>PrivateMessageView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\RapSheetView.xaml.cs">
       <DependentUpon>RapSheetView.xaml</DependentUpon>
     </Compile>
@@ -271,10 +268,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PrivateMessageListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PrivateMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
