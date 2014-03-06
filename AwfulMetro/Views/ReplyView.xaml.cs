@@ -76,7 +76,12 @@ namespace AwfulMetro.Views
                     Frame.Navigate(typeof(RapSheetView), command.Id);
                     break;
                 case "quote":
-                    Frame.Navigate(typeof(ReplyView), command.Id);
+                      loadingProgressBar.Visibility = Visibility.Visible;
+                        string quoteString = await _replyManager.GetQuoteString(Convert.ToInt64(command.Id));
+                        quoteString = string.Concat(Environment.NewLine, quoteString);
+                        string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
+                    if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
+                    loadingProgressBar.Visibility = Visibility.Collapsed;
                     break;
                 case "edit":
                     Frame.Navigate(typeof(EditReplyPage), command.Id);
