@@ -74,7 +74,6 @@ namespace AwfulMetro.Core.Manager
             doc2.LoadHtml(html);
 
             HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
-
             // Get thread body.
             var forumBodyNode = doc.DocumentNode.Descendants("body").FirstOrDefault();
 

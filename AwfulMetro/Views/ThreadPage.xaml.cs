@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
@@ -27,7 +28,8 @@ namespace AwfulMetro.Views
         private readonly PostManager _postManager = new PostManager();
         private readonly ThreadManager _threadManager = new ThreadManager();
         private ForumThreadEntity _forumThread;
-
+        private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
+        private int _zoomSize;
         public ThreadPage()
         {
             InitializeComponent();
@@ -153,7 +155,16 @@ namespace AwfulMetro.Views
             ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             CurrentPageSelectorSnap.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelectorSnap.SelectedValue = _forumThread.CurrentPage;
-            
+            if (_localSettings.Values.ContainsKey("zoomSize"))
+            {
+                _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
+                ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            }
+            else
+            {
+                _zoomSize = 13;
+            }
         }
 
 
@@ -353,6 +364,30 @@ namespace AwfulMetro.Views
                 DefaultCommandIndex = 1
             };
             await msgDlg.ShowAsync();
+        }
+
+        private void FontIncrease_Click(object sender, RoutedEventArgs e)
+        {
+            _zoomSize += 1;
+            ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            _localSettings.Values["zoomSize"] = _zoomSize;
+        }
+
+        private void FontDecrease_Click(object sender, RoutedEventArgs e)
+        {
+            _zoomSize -= 1;
+            ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            _localSettings.Values["zoomSize"] = _zoomSize;
+        }
+
+        private void RemoveStyle_Click(object sender, RoutedEventArgs e)
+        {
+            _zoomSize = 13;
+            ThreadFullView.InvokeScriptAsync("RemoveCustomStyle", null);
+            ThreadSnapView.InvokeScriptAsync("RemoveCustomStyle", null);
+            _localSettings.Values["zoomSize"] = null;
         }
     }
 }

@@ -131,5 +131,11 @@
         </Grid>
 
     </Grid>
-
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="Remove Custom Font Size" Icon="Font" Click="RemoveStyle_Click"/>
+            <AppBarButton Label="Decrease Font Size" Icon="FontDecrease" Click="FontDecrease_Click"/>
+            <AppBarButton Label="Increase Font Size"  Click="FontIncrease_Click" Icon="FontIncrease"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

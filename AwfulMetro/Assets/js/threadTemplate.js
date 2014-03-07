@@ -54,3 +54,23 @@ var OpenLink = function(link) {
     }
     return false;
 };
+
+var ResizeWebviewFont = function(value) {
+    $('body').css('font-size', value + 'px');
+    $('a').css('font-size', value + 'px');
+    $('div').css('font-size', value + 'px');
+    $('tr').css('font-size', value + 'px');
+    $('td').css('font-size', value + 'px');
+    $('dl').css('font-size', value + 'px');
+    $('dt').css('font-size', value + 'px');
+};
+
+var RemoveCustomStyle = function() {
+    $('body').removeAttr('style');
+    $('a').removeAttr('style');
+    $('div').removeAttr('style');
+    $('tr').removeAttr('style');
+    $('td').removeAttr('style');
+    $('dl').removeAttr('style');
+    $('dt').removeAttr('style');
+};
