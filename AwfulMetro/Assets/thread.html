@@ -24,6 +24,12 @@
                     var bool = window.OpenLink(this.href);
                     return bool;
                 });
+
+                var forumCommandObject = {
+                    "Command": "setFont",
+                    "Id": null
+                };
+                window.external.notify(JSON.stringify(forumCommandObject));
             };
         </script>
         <title>Forum Thread</title>

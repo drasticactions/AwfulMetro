@@ -87,6 +87,18 @@ namespace AwfulMetro.Views
                     await ThreadSnapView.InvokeScriptAsync("ScrollToTable", new[] { nextPost.ToString() });
                     NotifyStatusTile.CreateToastNotification("Post marked as last read! Now smash this computer and live your life!");
                     break;
+                case "setFont":
+                    if (_localSettings.Values.ContainsKey("zoomSize"))
+                    {
+                        _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
+                        ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                        ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                    }
+                    else
+                    {
+                        _zoomSize = 14;
+                    }
+                    break;
                 case "openThread":
                     // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
                     // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
@@ -155,16 +167,6 @@ namespace AwfulMetro.Views
             ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             CurrentPageSelectorSnap.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelectorSnap.SelectedValue = _forumThread.CurrentPage;
-            if (_localSettings.Values.ContainsKey("zoomSize"))
-            {
-                _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
-                ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-                ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-            }
-            else
-            {
-                _zoomSize = 13;
-            }
         }
 
 
@@ -384,7 +386,7 @@ namespace AwfulMetro.Views
 
         private void RemoveStyle_Click(object sender, RoutedEventArgs e)
         {
-            _zoomSize = 13;
+            _zoomSize = 14;
             ThreadFullView.InvokeScriptAsync("RemoveCustomStyle", null);
             ThreadSnapView.InvokeScriptAsync("RemoveCustomStyle", null);
             _localSettings.Values["zoomSize"] = null;
