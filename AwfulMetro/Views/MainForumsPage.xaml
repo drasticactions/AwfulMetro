@@ -148,8 +148,8 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-            <ScrollViewer ZoomMode="Disabled" Grid.Column="1">
-                <GridView
+            
+            <GridView
                 x:Name="itemGridView"
                 AutomationProperties.AutomationId="ItemGridView"
                 AutomationProperties.Name="Grouped Items"
@@ -161,28 +161,26 @@
                 IsSwipeEnabled="True"
                 IsItemClickEnabled="True"
                 ItemClick="ItemView_ItemClick">
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid HorizontalAlignment="Left" Width="350" Height="60">
-                                <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
-                                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Left" Width="400" Height="60">
+                            <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
+                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
                                        AutomationProperties.Name="{Binding Title}" />
-                                </Border>
-                                <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
-                                    <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
+                            </Border>
+                            <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
                                            Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapGrid Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                </GridView>
-            </ScrollViewer>
-            
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid GroupPadding="0,0,70,0" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
 
             <!-- navigation on the right -->
             <StackPanel x:Name="defaultNavigation" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="2" Visibility="Visible">
