@@ -28,6 +28,28 @@
             Source="{Binding Groups}"
             IsSourceGrouped="true"
             ItemsPath="ForumList" />
+        <DataTemplate x:Key="ForumTemplate">
+            <Grid HorizontalAlignment="Left" Width="400" Height="60">
+                <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
+                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                       AutomationProperties.Name="{Binding Title}" />
+                </Border>
+                <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                    <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="headerTemplate">
+            <Grid Margin="5,0,0,5" Width="225">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black" VerticalAlignment="Center"/>
+                <Rectangle Grid.Row="1" Fill="GreenYellow" Height="1" Margin="0,7,0,0"/>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
     <!--
@@ -159,27 +181,23 @@
                 ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
                 SelectionMode="Multiple"
                 IsSwipeEnabled="True"
+                ItemTemplate="{StaticResource ForumTemplate}"
                 IsItemClickEnabled="True"
                 ItemClick="ItemView_ItemClick">
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Left" Width="400" Height="60">
-                            <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
-                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
-                                       AutomationProperties.Name="{Binding Title}" />
-                            </Border>
-                            <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
-                                <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
-                                           Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid GroupPadding="0,0,70,0" />
+                        <WrapGrid Orientation="Vertical"/>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
+                <GridView.GroupStyle>
+                    <GroupStyle HeaderTemplate="{StaticResource headerTemplate}">
+                        <GroupStyle.Panel>
+                            <ItemsPanelTemplate>
+                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                            </ItemsPanelTemplate>
+                        </GroupStyle.Panel>
+                    </GroupStyle>
+                </GridView.GroupStyle>
             </GridView>
 
             <!-- navigation on the right -->
@@ -256,6 +274,15 @@
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.GroupStyle>
+                    <GroupStyle HeaderTemplate="{StaticResource headerTemplate}">
+                        <GroupStyle.Panel>
+                            <ItemsPanelTemplate>
+                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                            </ItemsPanelTemplate>
+                        </GroupStyle.Panel>
+                    </GroupStyle>
+                </ListView.GroupStyle>
             </ListView>
             <!-- navigation -->
             <StackPanel x:Name="minimalNavigation" Orientation="Horizontal" Background="#FFC5C5C5" HorizontalAlignment="Stretch" Grid.Row="0" Visibility="Collapsed">
@@ -334,6 +361,15 @@
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource headerTemplate}">
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </ListView.GroupStyle>
         </ListView>
 
     </Grid>
