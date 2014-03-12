@@ -27,6 +27,7 @@ namespace AwfulMetro.Views
     {
         private readonly ForumManager _forumManager = new ForumManager();
         private List<long> _forumIds = new List<long>();
+        private ForumCategoryEntity _favoritesEntity;
         public MainForumsPage()
         {
             DefaultViewModel = new ObservableDictionary();
@@ -80,20 +81,22 @@ namespace AwfulMetro.Views
         {
             loadingProgressBar.Visibility = Visibility.Visible;
             List<ForumCategoryEntity> forumGroupList = await _forumManager.GetForumCategoryMainPage();
-            DefaultViewModel["Groups"] = forumGroupList;
-            DefaultViewModel["ForumCategory"] = forumGroupList;
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             if (localSettings.Values.ContainsKey("_forumIds"))
             {
                 DeserializeXmlToList((string) localSettings.Values["_forumIds"]);
                 var forumEntities = new List<ForumEntity>();
-                foreach (var forumGroup in forumGroupList)
+                foreach (var f in forumGroupList.Select(forumGroup => forumGroup.ForumList.Where(forum => _forumIds.Contains(forum.ForumId)).ToList()))
                 {
-                    var f = forumGroup.ForumList.Where(forum => _forumIds.Contains(forum.ForumId)).ToList();
                     forumEntities.AddRange(f);
                 }
-                DefaultViewModel["Subforums"] = forumEntities;
+                _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
+                {
+                    ForumList = forumEntities
+                };
+                DefaultViewModel["Subforums"] = new List<ForumCategoryEntity> { _favoritesEntity };
             }
+            DefaultViewModel["Groups"] = forumGroupList;
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
@@ -214,7 +217,11 @@ namespace AwfulMetro.Views
             {
                 localSettings.Values["_forumIds"] = null;
             }
-            DefaultViewModel["Subforums"] = forumList;
+            _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
+            {
+                ForumList = forumList
+            };
+            DefaultViewModel["Subforums"] = new List<ForumCategoryEntity> { _favoritesEntity };
         }
 
         private static string SerializeListToXml(List<long> list)
