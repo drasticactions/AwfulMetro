@@ -180,11 +180,6 @@
                 ItemTemplate="{StaticResource ForumTemplate}"
                 IsItemClickEnabled="True"
                 ItemClick="ItemView_ItemClick">
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapGrid Orientation="Vertical"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
                 <GridView.GroupStyle>
                     <GroupStyle HeaderTemplate="{StaticResource headerTemplate}">
                         <GroupStyle.Panel>
