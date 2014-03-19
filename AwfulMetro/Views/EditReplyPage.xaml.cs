@@ -32,6 +32,8 @@ namespace AwfulMetro.Views
         private ForumReplyEntity _forumReply = new ForumReplyEntity();
         private ForumThreadEntity _forumThread;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
+        private int _zoomSize;
+        private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
         public EditReplyPage()
@@ -78,6 +80,17 @@ namespace AwfulMetro.Views
                     break;
                 case "edit":
                     Frame.Navigate(typeof(EditReplyPage), command.Id);
+                    break;
+                case "setFont":
+                    if (_localSettings.Values.ContainsKey("zoomSize"))
+                    {
+                        _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
+                        PreviewLastPostWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                    }
+                    else
+                    {
+                        _zoomSize = 14;
+                    }
                     break;
                 case "openThread":
                     // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.

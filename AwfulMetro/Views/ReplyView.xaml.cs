@@ -32,6 +32,8 @@ namespace AwfulMetro.Views
         private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
         private ForumReplyEntity _forumReply = new ForumReplyEntity();
         private ForumThreadEntity _forumThread;
+        private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
+        private int _zoomSize;
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
 
         public ReplyView()
@@ -82,6 +84,17 @@ namespace AwfulMetro.Views
                         string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
                     if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
                     loadingProgressBar.Visibility = Visibility.Collapsed;
+                    break;
+                case "setFont":
+                    if (_localSettings.Values.ContainsKey("zoomSize"))
+                    {
+                        _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
+                        PreviewLastPostWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                    }
+                    else
+                    {
+                        _zoomSize = 14;
+                    }
                     break;
                 case "edit":
                     Frame.Navigate(typeof(EditReplyPage), command.Id);
