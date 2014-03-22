@@ -212,16 +212,17 @@ namespace AwfulMetro.Views
                 List<long> forumIdList = forumList.Select(forum => forum.ForumId).ToList();
                 
                 localSettings.Values["_forumIds"] = SerializeListToXml(forumIdList);
+                _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
+                {
+                    ForumList = forumList
+                };
+                DefaultViewModel["Subforums"] = new List<ForumCategoryEntity> { _favoritesEntity };
             }
             else
             {
                 localSettings.Values["_forumIds"] = null;
+                DefaultViewModel["Subforums"] = null;
             }
-            _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
-            {
-                ForumList = forumList
-            };
-            DefaultViewModel["Subforums"] = new List<ForumCategoryEntity> { _favoritesEntity };
         }
 
         private static string SerializeListToXml(List<long> list)

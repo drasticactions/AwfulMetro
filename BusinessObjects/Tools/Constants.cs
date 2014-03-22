@@ -6,6 +6,8 @@
 
         public const string BOOKMARK_STARTUP = "BookmarkStartup";
 
+        public const string BOOKMARK_DEFAULT = "BookmarkDefault";
+
         public const string BASE_URL = "http://forums.somethingawful.com/";
 
         public const string BOOKMARKS_URL = BASE_URL + "bookmarkthreads.php?perage=40&sortorder=desc&sortfield=";

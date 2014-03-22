@@ -110,6 +110,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\AvatarWebViewConverter.cs" />
+    <Compile Include="Tools\BookmarkSorting.cs" />
     <Compile Include="Tools\DateTimeParseConverter.cs" />
     <Compile Include="Tools\RatingVisibilityConverter.cs" />
     <Compile Include="Tools\RepliesSinceLastOpenedColorConverter.cs" />

@@ -37,6 +37,20 @@
             </TextBlock>
 
             <ToggleSwitch x:Name="LoadBookmarksOnLoadSwitch" Toggled="LoadBookmarksOnLoadSwitch_OnToggled" />
+
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Sort Bookmarks" />
+
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">
+                <TextBlock.Text>
+                    Set how threads are sorted in the bookmarks view.
+                </TextBlock.Text>
+            </TextBlock>
+
+            <ComboBox HorizontalAlignment="Stretch" x:Name="FilterComboBox"  SelectedIndex="0" SelectionChanged="FilterComboBox_OnSelectionChanged" Grid.Row="2">
+                <ComboBoxItem Content="Forums Default"/>
+                <ComboBoxItem Content="Most Unread First"/>
+            </ComboBox>
+
         </StackPanel>
     </StackPanel>
 </SettingsFlyout>

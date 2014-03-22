@@ -21,6 +21,7 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Tools;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -38,6 +39,7 @@ namespace AwfulMetro.Views
         private PageScrollingCollection _forumPageScrollingCollection;
         private List<ForumThreadEntity> _forumThreadEntities;
         private List<ForumEntity> _subForumEntities;
+        private ApplicationDataContainer _localSettings;
 
         public ThreadListPage()
         {
@@ -206,9 +208,19 @@ namespace AwfulMetro.Views
                 AddThreadButton.Visibility = Visibility.Collapsed;
                 FavoriteButton.Visibility = Visibility.Collapsed;
                 BookmarkSettings.Visibility = Visibility.Visible;
+                _localSettings = ApplicationData.Current.LocalSettings;
                 _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
                 _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
-                _forumThreadEntities = _forumThreadEntities.OrderByDescending(node => node.RepliesSinceLastOpened).ToList();
+                if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_DEFAULT))
+                {
+                    BookmarkSorting selectedIndex = (BookmarkSorting) _localSettings.Values[Constants.BOOKMARK_DEFAULT];
+                    switch (selectedIndex)
+                    {
+                        case BookmarkSorting.MostUnreadOnTop:
+                            _forumThreadEntities = _forumThreadEntities.OrderByDescending(node => node.RepliesSinceLastOpened).ToList();
+                            break;
+                    }
+                }
                 foreach (ForumThreadEntity forumThread in _forumThreadEntities)
                 {
                     _forumPageScrollingCollection.Add(forumThread);

@@ -24,6 +24,14 @@ namespace AwfulMetro.Views
             {
                 LoadBookmarksOnLoadSwitch.IsOn = (bool)_localSettings.Values[Constants.BOOKMARK_STARTUP];
             }
+            if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_DEFAULT))
+            {
+                FilterComboBox.SelectedIndex = (int) _localSettings.Values[Constants.BOOKMARK_DEFAULT];
+            }
+            else
+            {
+                FilterComboBox.SelectedIndex = 0;
+            }
         }
 
         private void BookmarkSelectionMode_Click(object sender, RoutedEventArgs e)
@@ -65,6 +73,13 @@ namespace AwfulMetro.Views
             {
                 _localSettings.Values[Constants.BOOKMARK_STARTUP] = false;
             }
+        }
+
+        private void FilterComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FilterComboBox == null) return;
+            // TODO: Make Enum.
+            _localSettings.Values[Constants.BOOKMARK_DEFAULT] = FilterComboBox.SelectedIndex;
         }
     }
 }
