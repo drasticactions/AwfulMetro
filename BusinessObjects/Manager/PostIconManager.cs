@@ -40,5 +40,23 @@ namespace AwfulMetro.Core.Manager
             var postIconCategoryList = new List<PostIconCategoryEntity> {postIconCategoryEntity};
             return postIconCategoryList;
         }
+
+        public async Task<IEnumerable<PostIconCategoryEntity>> GetPmPostIcons()
+        {
+            string url = Constants.NEW_PRIVATE_MESSAGE;
+            WebManager.Result result = await _webManager.DownloadHtml(url);
+            HtmlDocument doc = result.Document;
+            HtmlNode[] pageNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", string.Empty).Equals("posticon")).ToArray();
+            var postIconEntityList = new List<PostIconEntity>();
+            foreach (var pageNode in pageNodes)
+            {
+                var postIconEntity = new PostIconEntity();
+                postIconEntity.Parse(pageNode);
+                postIconEntityList.Add(postIconEntity);
+            }
+            var postIconCategoryEntity = new PostIconCategoryEntity("Post Icon", postIconEntityList);
+            var postIconCategoryList = new List<PostIconCategoryEntity> { postIconCategoryEntity };
+            return postIconCategoryList;
+        }
     }
 }

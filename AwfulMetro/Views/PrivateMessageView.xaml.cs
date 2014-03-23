@@ -16,7 +16,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
+using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -28,6 +30,7 @@ namespace AwfulMetro.Views
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private PrivateMessageEntity _privateMessageEntity;
         private readonly PrivateMessageManager _privateMessageManager = new PrivateMessageManager();
 
         /// <summary>
@@ -69,8 +72,9 @@ namespace AwfulMetro.Views
         /// session. The state will be null the first time a page is visited.</param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var messageUrl = (String)e.NavigationParameter;
-            PrivateMessageWebView.NavigateToString(await _privateMessageManager.GetPrivateMessageHtml(messageUrl));
+            var stringJson = (String)e.NavigationParameter;
+            _privateMessageEntity = JsonConvert.DeserializeObject<PrivateMessageEntity>(stringJson);
+            PrivateMessageWebView.NavigateToString(await _privateMessageManager.GetPrivateMessageHtml(_privateMessageEntity.MessageUrl));
         }
 
         /// <summary>
@@ -107,5 +111,11 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void NewMessageButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            string jsonObjectString = JsonConvert.SerializeObject(_privateMessageEntity);
+            Frame.Navigate(typeof(NewPrivateMessagePage), jsonObjectString);
+        }
     }
 }

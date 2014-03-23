@@ -146,8 +146,8 @@
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NewPrivateMessageView.xaml.cs">
-      <DependentUpon>NewPrivateMessageView.xaml</DependentUpon>
+    <Compile Include="Views\NewPrivateMessagePage.xaml.cs">
+      <DependentUpon>NewPrivateMessagePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewThreadView.xaml.cs">
       <DependentUpon>NewThreadView.xaml</DependentUpon>
@@ -270,7 +270,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NewPrivateMessageView.xaml">
+    <Page Include="Views\NewPrivateMessagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

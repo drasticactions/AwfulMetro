@@ -1,56 +1,49 @@
-﻿using System;
+﻿using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using Windows.UI.Popups;
+using Windows.UI.Xaml.Media.Imaging;
+using AwfulMetro.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Storage;
-using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-using AwfulMetro.Common;
+// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
-using AwfulMetro.Core.Tools;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class NewPrivateMessageView : Page
+    public sealed partial class NewPrivateMessagePage : Page
     {
-        public NewPrivateMessageView()
-        {
-            this.InitializeComponent();
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += navigationHelper_LoadState;
-            this.navigationHelper.SaveState += navigationHelper_SaveState;
-        }
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private ForumEntity _forumEntity;
         private readonly SmileManager _smileManager = new SmileManager();
-        private readonly ThreadManager _threadManager = new ThreadManager();
+        private readonly PrivateMessageManager _privateMessageManager = new PrivateMessageManager();
         private readonly PostIconManager _postIconManager = new PostIconManager();
         private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
         private PostIconEntity _postIcon;
-        private NewThreadEntity _newThreadEntity;
-        private IEnumerable<PostIconCategoryEntity> _postIconEntities = new List<PostIconCategoryEntity>(); 
+        private NewPrivateMessageEntity _newPrivateMessageEntity;
+        private IEnumerable<PostIconCategoryEntity> _postIconEntities = new List<PostIconCategoryEntity>();
         private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
+
         /// <summary>
         /// This can be changed to a strongly typed view model.
         /// </summary>
@@ -68,6 +61,15 @@ namespace AwfulMetro.Views
             get { return this.navigationHelper; }
         }
 
+
+        public NewPrivateMessagePage()
+        {
+            this.InitializeComponent();
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += navigationHelper_LoadState;
+            this.navigationHelper.SaveState += navigationHelper_SaveState;
+        }
+
         /// <summary>
         /// Populates the page with content passed during navigation. Any saved state is also
         /// provided when recreating a page from a prior session.
@@ -79,24 +81,17 @@ namespace AwfulMetro.Views
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session. The state will be null the first time a page is visited.</param>
-        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             var jsonObjectString = (string)e.NavigationParameter;
-            var forumInfo = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
-            if (forumInfo == null) return;
-            pageTitle.Text = string.Format("New Thread - {0}", forumInfo.Name);
-            _forumEntity = forumInfo;
-            _newThreadEntity = await _threadManager.GetThreadCookies(forumInfo.ForumId);
-            if (_newThreadEntity == null)
-            {
-                var msgDlg = new MessageDialog("You can't make a new thread in this forum!");
-                await msgDlg.ShowAsync();
-                Frame.GoBack();
-                return;
-            }
-            var blankPostIconEntity = new PostIconEntity {Id = 0, Title = "Shit"};
+            var blankPostIconEntity = new PostIconEntity { Id = 0, Title = "Shit" };
             PostIconImage.Source = new BitmapImage(new Uri("ms-appx://Assets/shitpost.gif"));
             _postIcon = blankPostIconEntity;
+            if (string.IsNullOrEmpty(jsonObjectString)) return;
+            var privateMessage = JsonConvert.DeserializeObject<PrivateMessageEntity>(jsonObjectString);
+            if (privateMessage == null) return;
+            SubjectTextBox.Text = string.Format("Re: {0}", privateMessage.Title);
+            RecipientTextBox.Text = privateMessage.Sender;
         }
 
         /// <summary>
@@ -111,20 +106,12 @@ namespace AwfulMetro.Views
         {
         }
 
-        /// The methods provided in this section are simply used to allow
-        /// NavigationHelper to respond to the page's navigation methods.
-        /// 
-        /// Page specific logic should be placed in event handlers for the  
-        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
-        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
-        /// in addition to page state preserved during an earlier session.
-
         private async void PostButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _newThreadEntity.MapTo(SubjectTextBox.Text, ReplyText.Text, _forumEntity, _postIcon);
-            bool result = await _threadManager.CreateNewThread(_newThreadEntity);
+            _newPrivateMessageEntity = new NewPrivateMessageEntity();
+            _newPrivateMessageEntity.MapTo(_postIcon, SubjectTextBox.Text, RecipientTextBox.Text, ReplyText.Text);
+            bool result = await _privateMessageManager.SendPrivateMessage(_newPrivateMessageEntity);
             if (result)
             {
                 Frame.GoBack();
@@ -132,7 +119,7 @@ namespace AwfulMetro.Views
             else
             {
                 loadingProgressBar.Visibility = Visibility.Collapsed;
-                var msgDlg = new MessageDialog("Error making thread!");
+                var msgDlg = new MessageDialog("Error sending PM!");
                 await msgDlg.ShowAsync();
             }
         }
@@ -143,7 +130,7 @@ namespace AwfulMetro.Views
             ItemGridView.Visibility = Visibility.Visible;
             if (!_postIconEntities.Any())
             {
-                _postIconEntities = await _postIconManager.GetPostIcons(_forumEntity);
+                _postIconEntities = await _postIconManager.GetPmPostIcons();
             }
             DefaultViewModel["Groups"] = _postIconEntities;
             loadingProgressBar.Visibility = Visibility.Collapsed;
@@ -236,5 +223,28 @@ namespace AwfulMetro.Views
                 if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.SelectionStart, text);
             }
         }
+
+        #region NavigationHelper registration
+
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// 
+        /// Page specific logic should be placed in event handlers for the  
+        /// <see cref="GridCS.Common.NavigationHelper.LoadState"/>
+        /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
+        /// The navigation parameter is available in the LoadState method 
+        /// in addition to page state preserved during an earlier session.
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            navigationHelper.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            navigationHelper.OnNavigatedFrom(e);
+        }
+
+        #endregion
     }
 }

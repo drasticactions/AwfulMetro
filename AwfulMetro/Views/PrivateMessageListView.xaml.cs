@@ -7,6 +7,7 @@ using AwfulMetro.Common;
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
@@ -85,7 +86,7 @@ namespace AwfulMetro.Views
 
         private void NewMessageButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Frame.Navigate(typeof(NewPrivateMessagePage));
         }
 
         #region NavigationHelper registration
@@ -115,7 +116,8 @@ namespace AwfulMetro.Views
         private void PrivateMessageList_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((PrivateMessageEntity)e.ClickedItem);
-            Frame.Navigate(typeof(PrivateMessageView), itemId.MessageUrl);
+            string jsonObjectString = JsonConvert.SerializeObject(itemId);
+            Frame.Navigate(typeof(PrivateMessageView), jsonObjectString);
         }
     }
 }

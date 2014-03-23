@@ -44,6 +44,10 @@
 
         public const string NEW_THREAD = BASE_URL + "newthread.php?action=newthread&forumid={0}";
 
+        public const string NEW_PRIVATE_MESSAGE = BASE_URL + "private.php?action=newmessage";
+
+        public const string NEW_PRIVATE_MESSAGE_BASE = BASE_URL + "private.php";
+
         public const string NEW_THREAD_BASE = BASE_URL + "newthread.php";
 
         public const string NEW_REPLY = BASE_URL + "newreply.php";

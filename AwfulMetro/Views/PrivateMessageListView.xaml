@@ -55,7 +55,7 @@
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Row="0" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="1">
-                <AppBarButton x:Name="NewMessageButton" IsEnabled="False" Label="New PM" Icon="Add"
+                <AppBarButton x:Name="NewMessageButton" Label="New PM" Icon="Add"
                               Click="NewMessageButton_OnClick" />
                 <AppBarButton x:Name="RefreshBarButton" IsEnabled="False" Click="RefreshBarButton_OnClick"
                               Label="Refresh" Icon="Refresh" />

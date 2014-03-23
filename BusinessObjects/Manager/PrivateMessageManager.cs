@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -24,6 +26,25 @@ namespace AwfulMetro.Core.Manager
         public PrivateMessageManager()
             : this(new WebManager())
         {
+        }
+
+        public async Task<bool> SendPrivateMessage(NewPrivateMessageEntity newPrivateMessageEntity)
+        {
+            if (newPrivateMessageEntity == null)
+                return false;
+            var form = new MultipartFormDataContent
+            {
+                {new StringContent("dosend"), "action"},
+                {new StringContent(newPrivateMessageEntity.Receiver), "touser"},
+                {new StringContent(newPrivateMessageEntity.Icon.Id.ToString(CultureInfo.InvariantCulture)), "iconid"},
+                {new StringContent(HtmlEncode(newPrivateMessageEntity.Title)), "title"},
+                {new StringContent(HtmlEncode(newPrivateMessageEntity.Body)), "message"},
+                {new StringContent("yes"), "parseurl"},
+                {new StringContent("yes"), "parseurl"},
+                {new StringContent("Send Message"), "submit"}
+            };
+            HttpResponseMessage response = await _webManager.PostFormData(Constants.NEW_PRIVATE_MESSAGE_BASE, form);
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<List<PrivateMessageEntity>> GetPrivateMessages(int page)
@@ -139,5 +160,28 @@ namespace AwfulMetro.Core.Manager
             return Convert.ToInt32(int1);
         }
 
+        private static string HtmlEncode(string text)
+        {
+            // In order to get Unicode characters fully working, we need to first encode the entire post.
+            // THEN we decode the bits we can safely pass in, like single/double quotes.
+            // If we don't, the post format will be screwed up.
+            char[] chars = WebUtility.HtmlEncode(text).ToCharArray();
+            var result = new StringBuilder(text.Length + (int)(text.Length * 0.1));
+
+            foreach (char c in chars)
+            {
+                int value = Convert.ToInt32(c);
+                if (value > 127)
+                    result.AppendFormat("&#{0};", value);
+                else
+                    result.Append(c);
+            }
+
+            result.Replace("&quot;", "\"");
+            result.Replace("&#39;", @"'");
+            result.Replace("&lt;", @"<");
+            result.Replace("&gt;", @">");
+            return result.ToString();
+        }
     }
 }

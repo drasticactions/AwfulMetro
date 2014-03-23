@@ -57,7 +57,7 @@
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <StackPanel Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="1">
-                <AppBarButton x:Name="NewMessageButton" IsEnabled="False" Label="New PM" Icon="Add"/>
+                <AppBarButton x:Name="NewMessageButton" Click="NewMessageButton_OnClick" Label="Reply" Icon="Add"/>
             </StackPanel>
             <WebView x:Name="PrivateMessageWebView" Grid.Column="0" />
         </Grid>

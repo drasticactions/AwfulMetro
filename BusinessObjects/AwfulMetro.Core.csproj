@@ -115,6 +115,7 @@
     <Compile Include="Entity\FrontPageArticleEntity.cs" />
     <Compile Include="Entity\FrontPageWebArticleEntity.cs" />
     <Compile Include="Entity\ImgurEntity.cs" />
+    <Compile Include="Entity\NewPrivateMessageEntity.cs" />
     <Compile Include="Entity\NewThreadEntity.cs" />
     <Compile Include="Entity\PopularThreadsTrendsEntity.cs" />
     <Compile Include="Entity\PostIconCategoryEntity.cs" />
