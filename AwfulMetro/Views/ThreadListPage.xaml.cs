@@ -22,6 +22,7 @@ using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 using AwfulMetro.Tools;
+using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -29,9 +30,11 @@ namespace AwfulMetro.Views
     /// <summary>
     ///     A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class ThreadListPage
+    public sealed partial class ThreadListPage : Page, IDisposable
     {
-        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+
+
+        private ThreadListPageViewModel _vm;
         private readonly ForumManager _forumManager = new ForumManager();
         private readonly NavigationHelper _navigationHelper;
         private readonly ThreadManager _threadManager = new ThreadManager();
@@ -49,13 +52,6 @@ namespace AwfulMetro.Views
             _navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
-        /// <summary>
-        ///     This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return _defaultViewModel; }
-        }
 
         /// <summary>
         ///     NavigationHelper is used on each page to aid in navigation and
@@ -85,16 +81,18 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Assign a bindable collection of items to this.DefaultViewModel["Items"]
-            loadingProgressBar.Visibility = Visibility.Visible;
+            //loadingProgressBar.Visibility = Visibility.Visible;
 
             var jsonObjectString = (string) e.NavigationParameter;
             var forumInfo = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (forumInfo == null) return;
-            _forumEntity = forumInfo;
+            _vm.Initialize(forumInfo);
+
+            // TODO: This is stupid shit that should be removed.
             ViewStateStringFullScreen = "FullScreen" + GetViewStateString(forumInfo.ForumId);
             ViewStateStringSnapped = "Snapped" + GetViewStateString(forumInfo.ForumId);
-            pageTitle.Text = _forumEntity.Name;
-            await GetForumThreads();
+            //pageTitle.Text = _forumEntity.Name;
+            //await GetForumThreads();
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
@@ -202,48 +200,48 @@ namespace AwfulMetro.Views
 
         private async Task GetForumThreads()
         {
-            RefreshBarButton.IsEnabled = false;
-            if (_forumEntity.IsBookmarks)
-            {
-                AddThreadButton.Visibility = Visibility.Collapsed;
-                FavoriteButton.Visibility = Visibility.Collapsed;
-                BookmarkSettings.Visibility = Visibility.Visible;
-                _localSettings = ApplicationData.Current.LocalSettings;
-                _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
-                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
-                if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_DEFAULT))
-                {
-                    BookmarkSorting selectedIndex = (BookmarkSorting) _localSettings.Values[Constants.BOOKMARK_DEFAULT];
-                    switch (selectedIndex)
-                    {
-                        case BookmarkSorting.MostUnreadOnTop:
-                            _forumThreadEntities = _forumThreadEntities.OrderByDescending(node => node.RepliesSinceLastOpened).ToList();
-                            break;
-                    }
-                }
-                foreach (ForumThreadEntity forumThread in _forumThreadEntities)
-                {
-                    _forumPageScrollingCollection.Add(forumThread);
-                }
-                DefaultViewModel["Threads"] = _forumPageScrollingCollection;
-                SubForumList.Visibility = Visibility.Collapsed;
-                SubForumListSnapped.Visibility = Visibility.Collapsed;
-                NotificationButton.Visibility = Visibility.Visible;
-                RemoveNotificationsButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
-                _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 1);
-                foreach (ForumThreadEntity forumThread in _forumThreadEntities)
-                {
-                    _forumPageScrollingCollection.Add(forumThread);
-                }
-                _subForumEntities = await _forumManager.GetSubForums(_forumEntity);
-                DefaultViewModel["Threads"] = _forumPageScrollingCollection;
-                DefaultViewModel["Subforums"] = _subForumEntities;
-            }
-            RefreshBarButton.IsEnabled = true;
+            //RefreshBarButton.IsEnabled = false;
+            //if (_forumEntity.IsBookmarks)
+            //{
+            //    AddThreadButton.Visibility = Visibility.Collapsed;
+            //    FavoriteButton.Visibility = Visibility.Collapsed;
+            //    BookmarkSettings.Visibility = Visibility.Visible;
+            //    _localSettings = ApplicationData.Current.LocalSettings;
+            //    _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
+            //    _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
+            //    if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_DEFAULT))
+            //    {
+            //        BookmarkSorting selectedIndex = (BookmarkSorting) _localSettings.Values[Constants.BOOKMARK_DEFAULT];
+            //        switch (selectedIndex)
+            //        {
+            //            case BookmarkSorting.MostUnreadOnTop:
+            //                _forumThreadEntities = _forumThreadEntities.OrderByDescending(node => node.RepliesSinceLastOpened).ToList();
+            //                break;
+            //        }
+            //    }
+            //    foreach (ForumThreadEntity forumThread in _forumThreadEntities)
+            //    {
+            //        _forumPageScrollingCollection.Add(forumThread);
+            //    }
+            //    DefaultViewModel["Threads"] = _forumPageScrollingCollection;
+            //    SubForumList.Visibility = Visibility.Collapsed;
+            //    SubForumListSnapped.Visibility = Visibility.Collapsed;
+            //    NotificationButton.Visibility = Visibility.Visible;
+            //    RemoveNotificationsButton.Visibility = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
+            //    _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 1);
+            //    foreach (ForumThreadEntity forumThread in _forumThreadEntities)
+            //    {
+            //        _forumPageScrollingCollection.Add(forumThread);
+            //    }
+            //    _subForumEntities = await _forumManager.GetSubForums(_forumEntity);
+            //    DefaultViewModel["Threads"] = _forumPageScrollingCollection;
+            //    DefaultViewModel["Subforums"] = _subForumEntities;
+            //}
+            //RefreshBarButton.IsEnabled = true;
         }
 
         private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
@@ -401,6 +399,7 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            _vm = (ThreadListPageViewModel)DataContext;
             _navigationHelper.OnNavigatedTo(e);
             SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
             Rect bounds = Window.Current.Bounds;
@@ -421,6 +420,10 @@ namespace AwfulMetro.Views
         private void ReturnToMainButton_OnClick(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainForumsPage));
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

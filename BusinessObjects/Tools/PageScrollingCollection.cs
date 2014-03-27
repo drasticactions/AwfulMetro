@@ -17,7 +17,7 @@ namespace AwfulMetro.Core.Tools
         {
             HasMoreItems = true;
             IsLoading = false;
-            PageCount = pageCount + 1;
+            PageCount = pageCount;
             ForumEntity = forumEntity;
         }
 
@@ -38,7 +38,7 @@ namespace AwfulMetro.Core.Tools
         {
             IsLoading = true;
             var threadManager = new ThreadManager();
-            List<ForumThreadEntity> forumThreadEntities;
+            ObservableCollection<ForumThreadEntity> forumThreadEntities;
             if (ForumEntity.IsBookmarks)
             {
                 forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, PageCount);

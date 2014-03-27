@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -208,10 +209,9 @@ namespace AwfulMetro.Core.Manager
             return Convert.ToInt32(int1);
         }
 
-        public async Task<List<ForumThreadEntity>> GetBookmarks(ForumEntity forumCategory, int page)
+        public async Task<ObservableCollection<ForumThreadEntity>> GetBookmarks(ForumEntity forumCategory, int page)
         {
-            var forumSubcategoryList = new List<ForumEntity>();
-            var forumThreadList = new List<ForumThreadEntity>();
+            var forumThreadList = new ObservableCollection<ForumThreadEntity>();
             String url = Constants.BOOKMARKS_URL;
             if (forumCategory.CurrentPage > 0)
             {
@@ -273,7 +273,7 @@ namespace AwfulMetro.Core.Manager
             return true;
         }
 
-        public async Task<List<ForumThreadEntity>> GetForumThreads(ForumEntity forumCategory, int page)
+        public async Task<ObservableCollection<ForumThreadEntity>> GetForumThreads(ForumEntity forumCategory, int page)
         {
             // TODO: Remove parsing logic from managers. I don't think they have a place here...
             string url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER, page);
@@ -287,7 +287,7 @@ namespace AwfulMetro.Core.Manager
             HtmlNode forumNode =
                 doc.DocumentNode.Descendants()
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
-            var forumThreadList = new List<ForumThreadEntity>();
+            var forumThreadList = new ObservableCollection<ForumThreadEntity>();
             foreach (
                 HtmlNode threadNode in
                     forumNode.Descendants("tr")

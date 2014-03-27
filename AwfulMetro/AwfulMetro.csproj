@@ -120,6 +120,7 @@
     <Compile Include="Tools\SubforumHeaderColorConverter.cs" />
     <Compile Include="Tools\ThreadHeaderColorConverter.cs" />
     <Compile Include="ViewModels\MainForumsPageViewModel.cs" />
+    <Compile Include="ViewModels\ThreadListPageViewModel.cs" />
     <Compile Include="Views\ArticleViewer.xaml.cs">
       <DependentUpon>ArticleViewer.xaml</DependentUpon>
     </Compile>
@@ -333,6 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\MainForumsPageViewModelSampleData.xaml" />
+    <DesignData Include="SampleData\ThreadListPageViewModelSampleData.xaml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

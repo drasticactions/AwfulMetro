@@ -104,14 +104,14 @@ namespace AwfulMetro.Core.Manager
             return doc;
         }
 
-        public async Task<List<ForumEntity>> GetSubForums(ForumEntity forumCategory)
+        public async Task<ObservableCollection<ForumEntity>> GetSubForums(ForumEntity forumCategory)
         {
             var subforumList = new List<ForumEntity>();
             string url = forumCategory.Location;
             HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
             if (
                 !doc.DocumentNode.Descendants()
-                    .Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"))) return subforumList;
+                    .Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"))) return null;
             HtmlNode forumNode =
                 doc.DocumentNode.Descendants()
                     .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"));
@@ -122,7 +122,12 @@ namespace AwfulMetro.Core.Manager
                         Constants.BASE_URL +
                         subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty),
                         string.Empty, true));
-            return subforumList;
+            var obSubforumList = new ObservableCollection<ForumEntity>();
+            foreach (var forum in subforumList)
+            {
+                obSubforumList.Add(forum);
+            }
+            return obSubforumList;
         }
 
         private ForumEntity AddDebugForum()
