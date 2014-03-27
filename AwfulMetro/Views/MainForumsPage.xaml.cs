@@ -1,6 +1,7 @@
 ﻿// The Grouped Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234231
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -23,14 +25,15 @@ namespace AwfulMetro.Views
     /// <summary>
     ///     A page that displays a grouped collection of items.
     /// </summary>
-    public sealed partial class MainForumsPage : Page
+    public sealed partial class MainForumsPage : Page, IDisposable
     {
+        private MainForumsPageViewModel _vm;
+
         private readonly ForumManager _forumManager = new ForumManager();
         private List<long> _forumIds = new List<long>();
         private ForumCategoryEntity _favoritesEntity;
         public MainForumsPage()
         {
-            DefaultViewModel = new ObservableDictionary();
             InitializeComponent();
             NavigationHelper = new NavigationHelper(this);
             NavigationHelper.LoadState += navigationHelper_LoadState;
@@ -60,11 +63,6 @@ namespace AwfulMetro.Views
         public NavigationHelper NavigationHelper { get; private set; }
 
         /// <summary>
-        ///     This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel { get; private set; }
-
-        /// <summary>
         ///     Populates the page with content passed during navigation.  Any saved state is also
         ///     provided when recreating a page from a prior session.
         /// </summary>
@@ -77,27 +75,8 @@ namespace AwfulMetro.Views
         ///     a dictionary of state preserved by this page during an earlier
         ///     session.  The state will be null the first time a page is visited.
         /// </param>
-        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            List<ForumCategoryEntity> forumGroupList = await _forumManager.GetForumCategoryMainPage();
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            if (localSettings.Values.ContainsKey("_forumIds"))
-            {
-                DeserializeXmlToList((string) localSettings.Values["_forumIds"]);
-                var forumEntities = new List<ForumEntity>();
-                foreach (var f in forumGroupList.Select(forumGroup => forumGroup.ForumList.Where(forum => _forumIds.Contains(forum.ForumId)).ToList()))
-                {
-                    forumEntities.AddRange(f);
-                }
-                _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
-                {
-                    ForumList = forumEntities
-                };
-                DefaultViewModel["Subforums"] = new List<ForumCategoryEntity> { _favoritesEntity };
-            }
-            DefaultViewModel["Groups"] = forumGroupList;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -148,6 +127,7 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            _vm = (MainForumsPageViewModel)DataContext;
             NavigationHelper.OnNavigatedTo(e);
         }
 
@@ -204,6 +184,7 @@ namespace AwfulMetro.Views
 
         private void FavoriteForumButton_OnClick(object sender, RoutedEventArgs e)
         {
+            // TODO: Move to view model? Change click handler?
             var forumList = new List<ForumEntity>();
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             if (itemGridView.SelectedItems.Any())
@@ -216,12 +197,11 @@ namespace AwfulMetro.Views
                 {
                     ForumList = forumList
                 };
-                DefaultViewModel["Subforums"] = new List<ForumCategoryEntity> { _favoritesEntity };
+                _vm.SetFavoriteForums(new ObservableCollection<ForumCategoryEntity> { _favoritesEntity }); 
             }
             else
             {
                 localSettings.Values["_forumIds"] = null;
-                DefaultViewModel["Subforums"] = null;
             }
         }
 
@@ -271,6 +251,10 @@ namespace AwfulMetro.Views
         private void PrivateMessagesButton_OnClick(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(PrivateMessageListView));
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

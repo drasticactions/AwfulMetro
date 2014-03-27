@@ -72,14 +72,7 @@ namespace AwfulMetro.ViewModels
                 loginResult = false;
             }
 
-            if (loginResult)
-            {
-                base.RaiseEvent(LoginSuccessful, EventArgs.Empty);
-            }
-            else
-            {
-                base.RaiseEvent(LoginFailed, EventArgs.Empty);
-            }
+            base.RaiseEvent(loginResult ? LoginSuccessful : LoginFailed, EventArgs.Empty);
         }
     }
 }

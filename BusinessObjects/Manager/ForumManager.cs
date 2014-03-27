@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,46 +25,54 @@ namespace AwfulMetro.Core.Manager
         {
         }
 
-        public async Task<List<ForumCategoryEntity>> GetForumCategoryMainPage()
+        public async Task<ObservableCollection<ForumCategoryEntity>> GetForumCategoryMainPage()
         {
-            var forumGroupList = new List<ForumCategoryEntity>();
-
-            HtmlDocument doc = (await _webManager.DownloadHtml(Constants.FORUM_LIST_PAGE)).Document;
-
-            HtmlNode forumNode =
-                doc.DocumentNode.Descendants("select")
-                    .FirstOrDefault(node => node.GetAttributeValue("name", string.Empty).Equals("forumid"));
-            if (forumNode != null)
+            try
             {
-                IEnumerable<HtmlNode> forumNodes = forumNode.Descendants("option");
+                var forumGroupList = new ObservableCollection<ForumCategoryEntity>();
 
-                foreach (HtmlNode node in forumNodes)
+                HtmlDocument doc = (await _webManager.DownloadHtml(Constants.FORUM_LIST_PAGE)).Document;
+
+                HtmlNode forumNode =
+                    doc.DocumentNode.Descendants("select")
+                        .FirstOrDefault(node => node.GetAttributeValue("name", string.Empty).Equals("forumid"));
+                if (forumNode != null)
                 {
-                    string value = node.Attributes["value"].Value;
-                    int id;
-                    if (!int.TryParse(value, out id) || id <= -1) continue;
-                    if (node.NextSibling.InnerText.Contains("--"))
+                    IEnumerable<HtmlNode> forumNodes = forumNode.Descendants("option");
+
+                    foreach (HtmlNode node in forumNodes)
                     {
-                        string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
-                        bool isSubforum = node.NextSibling.InnerText.Count(c => c == '-') > 2;
-                        var forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value),
-                            string.Empty, isSubforum);
-                        forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
-                    }
-                    else
-                    {
-                        string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText);
-                        var forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
-                        forumGroupList.Add(forumGroup);
+                        string value = node.Attributes["value"].Value;
+                        int id;
+                        if (!int.TryParse(value, out id) || id <= -1) continue;
+                        if (node.NextSibling.InnerText.Contains("--"))
+                        {
+                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
+                            bool isSubforum = node.NextSibling.InnerText.Count(c => c == '-') > 2;
+                            var forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value),
+                                string.Empty, isSubforum);
+                            forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
+                        }
+                        else
+                        {
+                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText);
+                            var forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
+                            forumGroupList.Add(forumGroup);
+                        }
                     }
                 }
-            }
 
 #if DEBUG
-            forumGroupList[3].ForumList.Add(AddDebugForum());
+                forumGroupList[3].ForumList.Add(AddDebugForum());
 #endif
 
-            return forumGroupList;
+                return forumGroupList;
+            }
+                // TODO: Expand catch for specific errors.
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public async Task<HtmlDocument> GetForumFrontPageHtml()

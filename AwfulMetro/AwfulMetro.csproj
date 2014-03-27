@@ -19,6 +19,7 @@
     <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
     <PackageCertificateThumbprint>D12681557DBD742BCA1D2F87BF61DFB6AFFE3886</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
+    <ExpressionBlendVersion>12.0.50203.70</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -118,6 +119,7 @@
     <Compile Include="Tools\SubforumFontColorConverter.cs" />
     <Compile Include="Tools\SubforumHeaderColorConverter.cs" />
     <Compile Include="Tools\ThreadHeaderColorConverter.cs" />
+    <Compile Include="ViewModels\MainForumsPageViewModel.cs" />
     <Compile Include="Views\ArticleViewer.xaml.cs">
       <DependentUpon>ArticleViewer.xaml</DependentUpon>
     </Compile>
@@ -328,6 +330,9 @@
       <Project>{3b2bfa3c-0eaf-4e71-b9e2-45db1e9a4ebe}</Project>
       <Name>AwfulMetro.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <DesignData Include="SampleData\MainForumsPageViewModelSampleData.xaml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

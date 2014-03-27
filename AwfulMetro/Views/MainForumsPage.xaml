@@ -1,15 +1,17 @@
 ﻿<Page
     x:Name="pageRoot"
     x:Class="AwfulMetro.Views.MainForumsPage"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AwfulMetro"
     xmlns:common="using:AwfulMetro.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:AwfulMetro.ViewModels"
     mc:Ignorable="d">
-
+    <Page.DataContext>
+        <viewModels:MainForumsPageViewModel />
+    </Page.DataContext>
     <Page.Resources>
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
@@ -18,18 +20,17 @@
             of the complete item list because items in groups cannot be virtualized
         -->
         <CollectionViewSource
-            x:Name="subforumViewSource"
+            x:Name="FavoriteForumViewSource"
             IsSourceGrouped="true"
-            Source="{Binding Subforums}"
+            Source="{Binding FavoriteForumGroupList}"
+            d:Source="{Binding FavoriteForumGroupList, Source={d:DesignData /SampleData/MainForumsPageViewModelSampleData.xaml}}"
             ItemsPath="ForumList"
             />
         <CollectionViewSource
-            x:Name="itemsViewSource"
-            Source="{Binding PopularThreads}" />
-        <CollectionViewSource
-            x:Name="groupedItemsViewSource"
-            Source="{Binding Groups}"
+            x:Name="ForumViewSource"
+            Source="{Binding ForumGroupList}"
             IsSourceGrouped="true"
+            d:Source="{Binding ForumGroupList, Source={d:DesignData /SampleData/MainForumsPageViewModelSampleData.xaml}}"
             ItemsPath="ForumList" />
         <DataTemplate x:Key="ForumTemplate">
             <Grid HorizontalAlignment="Left" Width="400" Height="60">
@@ -145,9 +146,9 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <ScrollViewer ZoomMode="Disabled"  Grid.Column="0">
+            <ScrollViewer ZoomMode="Disabled" VerticalScrollBarVisibility="Hidden"  Grid.Column="0">
                 <GridView x:Name="FavoriteForumList" ItemClick="FavoriteForumList_OnItemClick" Grid.Column="0"
-                      ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None" ItemTemplate="{StaticResource ForumTemplate}"
+                      ItemsSource="{Binding Source={StaticResource FavoriteForumViewSource}}" SelectionMode="None" ItemTemplate="{StaticResource ForumTemplate}"
                       IsItemClickEnabled="True">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -165,8 +166,6 @@
                     </GridView.GroupStyle>
                 </GridView>
             </ScrollViewer>
-            
-            
             <GridView
                 x:Name="itemGridView"
                 AutomationProperties.AutomationId="ItemGridView"
@@ -174,7 +173,7 @@
                 Grid.Column="1"
                 Visibility="Visible"
                 Padding="0,0,40,46"
-                ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+                ItemsSource="{Binding Source={StaticResource ForumViewSource}}"
                 SelectionMode="Multiple"
                 IsSwipeEnabled="True"
                 ItemTemplate="{StaticResource ForumTemplate}"
@@ -246,7 +245,7 @@
                 AutomationProperties.Name="Grouped Items"
                 Visibility="Collapsed"
                 Padding="0,0,0,46"
-                ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+                ItemsSource="{Binding Source={StaticResource ForumViewSource}}"
                 SelectionMode="None"
                 IsSwipeEnabled="false"
                 IsItemClickEnabled="True"
@@ -327,7 +326,7 @@
             Padding="0,0,0,46"
             Margin="0,0,100,0"
             HorizontalAlignment="Stretch"
-            ItemsSource="{Binding Source={StaticResource groupedItemsViewSource}}"
+            ItemsSource="{Binding Source={StaticResource ForumViewSource}}"
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"

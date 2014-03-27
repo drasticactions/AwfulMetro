@@ -22,11 +22,9 @@ namespace AwfulMetro.Views
         public void Dispose()
         {
             var vm = DataContext as LoginPageViewModel;
-            if (vm != null)
-            {
-                vm.LoginFailed -= OnLoginFailed;
-                vm.LoginSuccessful -= OnLoginSuccessful;
-            }
+            if (vm == null) return;
+            vm.LoginFailed -= OnLoginFailed;
+            vm.LoginSuccessful -= OnLoginSuccessful;
         }
 
         private void OnLoginSuccessful(object sender, EventArgs e)
