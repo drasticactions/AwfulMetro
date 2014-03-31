@@ -215,7 +215,7 @@ namespace AwfulMetro.Views
 
             _forumReply.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
-            string result = await replyManager.CreatePreviewPost(_forumReply);
+            string result = await replyManager.CreatePreviewEditPost(_forumReply);
             if (!string.IsNullOrEmpty(result))
             {
                 PreviewLastPostWebView.NavigateToString(result);
