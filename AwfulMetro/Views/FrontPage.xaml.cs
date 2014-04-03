@@ -67,6 +67,7 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            // TODO: This view should NOT need to do any html parsing. Get this out of here!
             HtmlDocument doc = await _frontPageManager.GetFrontPage();
             DefaultViewModel["PopularThreads"] = _frontPageManager.GetPopularThreads(doc);
             DefaultViewModel["PopularTrends"] = _frontPageManager.GetPopularTrends(doc);

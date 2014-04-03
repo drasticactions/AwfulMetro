@@ -145,9 +145,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BusinessObjects\AwfulMetro.Core.csproj">
-      <Project>{3b2bfa3c-0eaf-4e71-b9e2-45db1e9a4ebe}</Project>
-      <Name>AwfulMetro.Core</Name>
+    <ProjectReference Include="..\AwfulMetro.Pcl.Core\AwfulMetro.Pcl.Core.csproj">
+      <Project>{5fbcefb5-672f-45f5-a7d8-5788d3565b28}</Project>
+      <Name>AwfulMetro.Pcl.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

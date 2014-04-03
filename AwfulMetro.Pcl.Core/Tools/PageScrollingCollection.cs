@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Data;
-using AwfulMetro.Core.Annotations;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 
@@ -23,7 +22,7 @@ namespace AwfulMetro.Core.Tools
 
         private int PageCount { get; set; }
 
-        private bool IsLoading { [UsedImplicitly] get; set; }
+        private bool IsLoading { get; set; }
 
         private ForumEntity ForumEntity { get; set; }
 
