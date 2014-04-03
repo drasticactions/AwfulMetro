@@ -32,5 +32,6 @@
             <Setter Property="LineHeight" Value="20"/>
         </Style>
         <tools:DateTimeParseConverter x:Key="DateTimeParseConverter" />
+        <tools:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Application.Resources>
 </Application>

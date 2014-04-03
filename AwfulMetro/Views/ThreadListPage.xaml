@@ -514,7 +514,7 @@
                         </BitmapIcon>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="RefreshBarButton" IsEnabled="False" Click="RefreshBarButton_OnClick"
+                <AppBarButton x:Name="RefreshBarButton" IsEnabled="{Binding ForumPageScrollingCollection.IsLoading, Converter={StaticResource InvertBooleanConverter}}" Click="RefreshBarButton_OnClick"
                               Label="Refresh" Icon="Refresh" />
                 <AppBarButton x:Name="NotificationButton" Click="NotificationButton_OnClick" Visibility="Collapsed"
                               IsEnabled="False" Label="Add to Notifications" Icon="SolidStar" />

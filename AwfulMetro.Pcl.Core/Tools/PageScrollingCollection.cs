@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml.Data;
@@ -22,7 +24,17 @@ namespace AwfulMetro.Core.Tools
 
         private int PageCount { get; set; }
 
-        private bool IsLoading { get; set; }
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+
+            private set
+            {
+                _isLoading = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("IsLoading"));
+            }
+        }
 
         private ForumEntity ForumEntity { get; set; }
 
