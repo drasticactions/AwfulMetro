@@ -1,0 +1,324 @@
+﻿<ViewModels:MainForumsPageViewModel xmlns:ViewModels="using:AwfulMetro.ViewModels" xmlns:Entity="using:AwfulMetro.Core.Entity" xmlns:System="using:System">
+	<ViewModels:MainForumsPageViewModel.ForumGroupList>
+		<Entity:ForumCategoryEntity Location="Curabitur phasellus praesent" Name="Maecenas class nam cras">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="20" Description="Vestibulum aenean accumsan sed dis" IsSubforum="True" IsBookmarks="False" Location="Convallis aliquam" Name="Curae consequat" TotalPages="47">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="94" Description="Facilisis quisque vivamus" IsSubforum="True" IsBookmarks="False" Location="Elementum est integer etiam" Name="Dignissim donec adipiscing parturient duis" TotalPages="62">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="48" Description="Lorem morbi nulla proin" IsSubforum="True" IsBookmarks="False" Location="Aliquam leo mauris fringilla fusce" Name="Fermentum vestibulum hac nunc amet" TotalPages="23">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="38" Description="Mus bibendum dictumst ante" IsSubforum="True" IsBookmarks="False" Location="Dolor blandit adipiscing" Name="Vestibulum nullam habitasse aliquet augue" TotalPages="84">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="48" Description="Hendrerit vestibulum fames nec auctor" IsSubforum="True" IsBookmarks="False" Location="Arcu aptent" Name="Parturient vestibulum" TotalPages="68">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Himenaeos imperdiet commodo facilisi diam" Name="Adipiscing eleifend congue">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="46" Description="Interdum porttitor cubilia eget non" IsSubforum="True" IsBookmarks="False" Location="Penatibus inceptos" Name="Conubia parturient faucibus habitant malesuada" TotalPages="68">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="40" Description="Sed elit felis" IsSubforum="True" IsBookmarks="False" Location="Cursus dictum per lobortis" Name="Tincidunt tristique" TotalPages="17">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="96" Description="Dapibus pharetra vestibulum placerat" IsSubforum="True" IsBookmarks="False" Location="Sit nascetur libero ultricies" Name="Lectus ipsum sem justo vestibulum" TotalPages="22">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="60" Description="Sed adipiscing" IsSubforum="True" IsBookmarks="False" Location="Erat egestas venenatis nam luctus" Name="Ligula pulvinar vel litora enim" TotalPages="45">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="88" Description="Sagittis eros feugiat magnis" IsSubforum="True" IsBookmarks="False" Location="Lacus parturient" Name="Euismod dis" TotalPages="84">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Gravida senectus mattis" Name="Vestibulum nibh">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="79" Description="Nisl mollis suscipit" IsSubforum="True" IsBookmarks="False" Location="Parturient mauris nisi" Name="Vestibulum sociosqu est lorem adipiscing" TotalPages="12">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="61" Description="Magna vestibulum adipiscing" IsSubforum="True" IsBookmarks="False" Location="Vestibulum torquent lacinia" Name="Montes iaculis nostra" TotalPages="54">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="15" Description="Natoque vulputate neque leo netus" IsSubforum="True" IsBookmarks="False" Location="Nunc ornare odio" Name="Massa metus hac morbi laoreet" TotalPages="94">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="94" Description="Ultrices curabitur sapien" IsSubforum="True" IsBookmarks="False" Location="Primis nec rutrum" Name="Mus nulla platea posuere" TotalPages="78">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="13" Description="Pretium consequat" IsSubforum="True" IsBookmarks="False" Location="Maecenas potenti praesent sociis phasellus" Name="Vehicula volutpat semper non" TotalPages="52">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Bibendum convallis viverra orci" Name="Per rhoncus sodales accumsan">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="92" Description="Tellus quam sit quis aliquam" IsSubforum="True" IsBookmarks="False" Location="Sed eleifend sem taciti pede" Name="Dictumst porta" TotalPages="50">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="13" Description="Vel nam faucibus quisque elementum" IsSubforum="True" IsBookmarks="False" Location="Dignissim tempor facilisi" Name="Purus integer" TotalPages="59">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="97" Description="Fringilla urna" IsSubforum="True" IsBookmarks="False" Location="Habitant facilisis fermentum" Name="Risus tempus tortor vivamus sed" TotalPages="37">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="34" Description="Blandit duis commodo varius" IsSubforum="True" IsBookmarks="False" Location="Dis aliquam est velit aliquet" Name="Habitasse turpis cras" TotalPages="28">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="79" Description="Interdum hendrerit lobortis parturient mus" IsSubforum="True" IsBookmarks="False" Location="Dapibus inceptos nunc leo egestas" Name="Conubia hac cubilia" TotalPages="60">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Mauris feugiat vitae class" Name="Nascetur amet euismod aenean">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="11" Description="Gravida imperdiet iaculis ante aptent" IsSubforum="True" IsBookmarks="False" Location="Vestibulum nullam himenaeos vestibulum" Name="Nec pharetra" TotalPages="57">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="35" Description="Porttitor diam laoreet per tincidunt" IsSubforum="True" IsBookmarks="False" Location="Non lacinia adipiscing placerat" Name="Arcu malesuada penatibus auctor" TotalPages="16">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="31" Description="Elit posuere etiam pulvinar" IsSubforum="True" IsBookmarks="False" Location="Eget sem natoque donec" Name="Curae sed tristique ultricies venenatis" TotalPages="92">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="38" Description="Nibh phasellus" IsSubforum="True" IsBookmarks="False" Location="Erat potenti eros curabitur" Name="Enim parturient fusce congue vulputate" TotalPages="37">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="33" Description="Libero sagittis sit nisl senectus" IsSubforum="True" IsBookmarks="False" Location="Convallis dictum vestibulum lectus nisi" Name="Consequat cursus" TotalPages="64">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Lorem nunc adipiscing" Name="Vel dignissim vestibulum">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="70" Description="Sed morbi" IsSubforum="True" IsBookmarks="False" Location="Odio nam ligula litora" Name="Elementum sociosqu" TotalPages="36">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="60" Description="Mattis facilisis dis" IsSubforum="True" IsBookmarks="False" Location="Proin magnis pretium" Name="Luctus nulla" TotalPages="58">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="44" Description="Fermentum hac leo" IsSubforum="True" IsBookmarks="False" Location="Rhoncus suscipit" Name="Est augue dolor" TotalPages="18">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="86" Description="Fringilla mauris felis vestibulum" IsSubforum="True" IsBookmarks="False" Location="Ultrices vestibulum" Name="Torquent sodales parturient orci fames" TotalPages="49">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="56" Description="Habitasse pede ipsum quisque" IsSubforum="True" IsBookmarks="False" Location="Mus mollis montes integer nec" Name="Viverra aliquam vehicula" TotalPages="53">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Vivamus per aliquam justo parturient" Name="Volutpat adipiscing non maecenas">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="29" Description="Praesent platea primis vestibulum" IsSubforum="True" IsBookmarks="False" Location="Ornare hendrerit sed" Name="Aliquet quam nostra vestibulum" TotalPages="59">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="80" Description="Lorem himenaeos" IsSubforum="True" IsBookmarks="False" Location="Quis rutrum sapien" Name="Lacus blandit" TotalPages="95">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="76" Description="Parturient massa metus cras vestibulum" IsSubforum="True" IsBookmarks="False" Location="Imperdiet urna adipiscing magna" Name="Sem sit" TotalPages="96">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="65" Description="Vel semper" IsSubforum="True" IsBookmarks="False" Location="Penatibus vestibulum adipiscing" Name="Morbi malesuada" TotalPages="81">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="19" Description="Duis dis" IsSubforum="True" IsBookmarks="False" Location="Netus taciti porttitor nulla" Name="Neque nam sed accumsan sociis" TotalPages="69">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Purus risus tellus nunc amet" Name="Bibendum commodo porta">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="87" Description="Vestibulum dictumst ante eleifend" IsSubforum="True" IsBookmarks="False" Location="Hac tempor" Name="Velit vitae est parturient" TotalPages="41">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="66" Description="Tortor cubilia" IsSubforum="True" IsBookmarks="False" Location="Arcu mus diam class tincidunt" Name="Leo tempus conubia" TotalPages="38">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="82" Description="Habitant non varius" IsSubforum="True" IsBookmarks="False" Location="Ultricies curae facilisi faucibus" Name="Turpis tristique nec vestibulum" TotalPages="31">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="77" Description="Dapibus egestas" IsSubforum="True" IsBookmarks="False" Location="Elit enim adipiscing erat" Name="Donec inceptos venenatis interdum eget" TotalPages="55">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="33" Description="Parturient mauris vestibulum gravida curabitur" IsSubforum="True" IsBookmarks="False" Location="Vulputate euismod aenean feugiat per" Name="Etiam eros fusce" TotalPages="23">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Sem phasellus" Name="Iaculis nibh sed">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="65" Description="Lobortis nascetur convallis lacinia" IsSubforum="True" IsBookmarks="False" Location="Sit vel nisl" Name="Consequat nisi" TotalPages="67">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="55" Description="Nullam parturient pharetra" IsSubforum="True" IsBookmarks="False" Location="Adipiscing lorem nam elementum" Name="Dignissim vestibulum nunc" TotalPages="49">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="81" Description="Leo mus vestibulum nec" IsSubforum="True" IsBookmarks="False" Location="Est hac morbi orci" Name="Sed facilisis odio dis laoreet" TotalPages="65">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="89" Description="Quam placerat adipiscing pulvinar quis" IsSubforum="True" IsBookmarks="False" Location="Proin natoque pede vestibulum posuere" Name="Non per nulla" TotalPages="54">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="24" Description="Urna augue" IsSubforum="True" IsBookmarks="False" Location="Pretium parturient sed" Name="Fermentum potenti sagittis" TotalPages="89">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+		<Entity:ForumCategoryEntity Location="Cras aptent vel duis" Name="Sem sit senectus">
+			<Entity:ForumCategoryEntity.CategoryId>
+				<System:Int64/>
+			</Entity:ForumCategoryEntity.CategoryId>
+			<Entity:ForumCategoryEntity.ForumList>
+				<Entity:ForumEntity CurrentPage="51" Description="Vestibulum nunc" IsSubforum="True" IsBookmarks="False" Location="Fringilla sodales habitasse" Name="Auctor rhoncus" TotalPages="85">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="72" Description="Arcu fames congue" IsSubforum="True" IsBookmarks="False" Location="Dolor vestibulum ante adipiscing sed" Name="Hendrerit nam sociosqu amet" TotalPages="35">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="40" Description="Parturient himenaeos" IsSubforum="True" IsBookmarks="False" Location="Suscipit viverra dis" Name="Diam cursus" TotalPages="52">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="77" Description="Hac imperdiet enim ultrices" IsSubforum="True" IsBookmarks="False" Location="Aliquam eget elit" Name="Torquent vestibulum est" TotalPages="39">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+				<Entity:ForumEntity CurrentPage="39" Description="Malesuada integer penatibus" IsSubforum="True" IsBookmarks="False" Location="Felis vehicula" Name="Vestibulum dictum adipiscing" TotalPages="34">
+					<Entity:ForumEntity.ForumId>
+						<System:Int64/>
+					</Entity:ForumEntity.ForumId>
+				</Entity:ForumEntity>
+			</Entity:ForumCategoryEntity.ForumList>
+		</Entity:ForumCategoryEntity>
+	</ViewModels:MainForumsPageViewModel.ForumGroupList>
+</ViewModels:MainForumsPageViewModel>

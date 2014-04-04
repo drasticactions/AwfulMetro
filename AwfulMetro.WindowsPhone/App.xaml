@@ -3,6 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AwfulMetro"
+    xmlns:tools="using:AwfulMetro.Tools"
     RequestedTheme="Light">
 
+    <Application.Resources>
+        <SolidColorBrush x:Key="AwfulBlue" Color="#FF1E72C9"/>
+        <tools:SubforumHeaderColorConverter x:Key="SubforumHeaderColorConverter" />
+    </Application.Resources>
 </Application>

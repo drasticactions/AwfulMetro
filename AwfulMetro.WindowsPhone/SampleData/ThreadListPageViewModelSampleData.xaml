@@ -1,0 +1,108 @@
+﻿<ViewModels:ThreadListPageViewModel xmlns:ViewModels="using:AwfulMetro.ViewModels" xmlns:Tools="using:AwfulMetro.Core.Tools" xmlns:Entity="using:AwfulMetro.Core.Entity" xmlns:System="using:System" ForumTitle="Maecenas nam praesent aenean">
+	<ViewModels:ThreadListPageViewModel.ForumPageScrollingCollection>
+		<Tools:PageScrollingCollection HasMoreItems="True">
+			<Entity:ForumThreadEntity Author="Bibendum donec dictumst" CurrentPage="34" CanMarkAsUnread="True" ForumId="61" HasBeenViewed="False" ImageIconLocation="Integer curae cras" IsSticky="False" IsLocked="True" KilledBy="Consequat est mauris convallis" Location="Accumsan aliquam phasellus sed" Name="Class curabitur" RepliesSinceLastOpened="63" RatingImage="Duis vestibulum adipiscing dis nunc" ReplyCount="67" Rating="89" ScrollToPostString="Etiam dignissim quisque amet" ScrollToPost="93" TotalPages="56" ViewCount="86">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Aptent leo vestibulum" CurrentPage="60" CanMarkAsUnread="True" ForumId="30" HasBeenViewed="False" ImageIconLocation="Vestibulum facilisi arcu diam" IsSticky="False" IsLocked="True" KilledBy="Vivamus morbi auctor elit" Location="Parturient ante" Name="Fusce hac lorem eleifend nullam" RepliesSinceLastOpened="31" RatingImage="Eget faucibus" ReplyCount="43" Rating="60" ScrollToPostString="Nulla congue aliquam" ScrollToPost="52" TotalPages="48" ViewCount="59">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Blandit vestibulum eros inceptos interdum" CurrentPage="86" CanMarkAsUnread="True" ForumId="13" HasBeenViewed="False" ImageIconLocation="Aliquet non vestibulum erat proin" IsSticky="False" IsLocked="True" KilledBy="Nascetur commodo" Location="Parturient enim" Name="Mus habitant nec adipiscing" RepliesSinceLastOpened="56" RatingImage="Lobortis per" ReplyCount="54" Rating="84" ScrollToPostString="Pharetra elementum conubia nibh facilisis" ScrollToPost="43" TotalPages="67" ViewCount="54">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Sem dictum sit" CurrentPage="18" CanMarkAsUnread="True" ForumId="30" HasBeenViewed="False" ImageIconLocation="Dolor parturient fermentum cubilia nisi" IsSticky="False" IsLocked="True" KilledBy="Fames sagittis lectus orci" Location="Augue sed cursus" Name="Adipiscing placerat" RepliesSinceLastOpened="13" RatingImage="Nisl pulvinar vel nunc odio" ReplyCount="50" Rating="41" ScrollToPostString="Dapibus vestibulum" ScrollToPost="66" TotalPages="21" ViewCount="74">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Adipiscing dis est feugiat" CurrentPage="94" CanMarkAsUnread="True" ForumId="89" HasBeenViewed="False" ImageIconLocation="Fringilla felis sed" IsSticky="False" IsLocked="True" KilledBy="Habitasse libero sociosqu justo leo" Location="Euismod vestibulum" Name="Egestas senectus nam" RepliesSinceLastOpened="11" RatingImage="Ipsum hac gravida" ReplyCount="18" Rating="62" ScrollToPostString="Suscipit lacus" ScrollToPost="60" TotalPages="69" ViewCount="45">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Luctus magnis" CurrentPage="13" CanMarkAsUnread="True" ForumId="39" HasBeenViewed="False" ImageIconLocation="Torquent pede" IsSticky="False" IsLocked="True" KilledBy="Parturient himenaeos" Location="Laoreet lorem natoque litora" Name="Iaculis hendrerit mus ligula lacinia" RepliesSinceLastOpened="73" RatingImage="Ultrices magna massa" ReplyCount="45" Rating="70" ScrollToPostString="Vestibulum vestibulum mattis nec non" ScrollToPost="92" TotalPages="65" ViewCount="90">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Metus duis nunc" CurrentPage="89" CanMarkAsUnread="True" ForumId="80" HasBeenViewed="False" ImageIconLocation="Volutpat adipiscing mollis cras" IsSticky="False" IsLocked="True" KilledBy="Maecenas imperdiet" Location="Quis posuere mauris urna" Name="Quam vehicula" RepliesSinceLastOpened="75" RatingImage="Potenti montes morbi" ReplyCount="80" Rating="97" ScrollToPostString="Nostra pretium ornare" ScrollToPost="35" TotalPages="23" ViewCount="80">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Accumsan malesuada aliquam penatibus" CurrentPage="89" CanMarkAsUnread="True" ForumId="35" HasBeenViewed="False" ImageIconLocation="Viverra sed" IsSticky="False" IsLocked="True" KilledBy="Netus sem vestibulum nulla dictumst" Location="Vestibulum sodales per praesent" Name="Neque parturient rhoncus" RepliesSinceLastOpened="81" RatingImage="Porttitor bibendum" ReplyCount="53" Rating="23" ScrollToPostString="Tincidunt eleifend amet sit integer" ScrollToPost="50" TotalPages="93" ViewCount="86">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Facilisi ultricies venenatis quisque faucibus" CurrentPage="51" CanMarkAsUnread="True" ForumId="59" HasBeenViewed="False" ImageIconLocation="Nam rutrum" IsSticky="False" IsLocked="True" KilledBy="Adipiscing purus sapien" Location="Platea primis porta ante" Name="Vel tristique" RepliesSinceLastOpened="13" RatingImage="Vulputate arcu" ReplyCount="93" Rating="22" ScrollToPostString="Semper vivamus habitant sociis" ScrollToPost="60" TotalPages="98" ViewCount="40">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+			<Entity:ForumThreadEntity Author="Tellus aliquam risus velit" CurrentPage="69" CanMarkAsUnread="True" ForumId="47" HasBeenViewed="False" ImageIconLocation="Lobortis nascetur convallis taciti" IsSticky="False" IsLocked="True" KilledBy="Est hac" Location="Diam consequat" Name="Inceptos curabitur sed interdum phasellus" RepliesSinceLastOpened="76" RatingImage="Dis dignissim aliquet pharetra" ReplyCount="93" Rating="21" ScrollToPostString="Leo parturient placerat vitae" ScrollToPost="47" TotalPages="25" ViewCount="95">
+				<Entity:ForumThreadEntity.ThreadId>
+					<System:Int64/>
+				</Entity:ForumThreadEntity.ThreadId>
+			</Entity:ForumThreadEntity>
+		</Tools:PageScrollingCollection>
+	</ViewModels:ThreadListPageViewModel.ForumPageScrollingCollection>
+	<ViewModels:ThreadListPageViewModel.SubForumEntities>
+		<Entity:ForumEntity CurrentPage="81" Description="Commodo non sagittis tempus senectus" IsSubforum="False" IsBookmarks="True" Location="Class pulvinar blandit vestibulum" Name="Mus nec elementum tempor" TotalPages="11">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="33" Description="Sed elit donec parturient suscipit" IsSubforum="False" IsBookmarks="True" Location="Eget per" Name="Curae vestibulum sociosqu adipiscing" TotalPages="40">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="20" Description="Lorem vehicula sem" IsSubforum="False" IsBookmarks="True" Location="Etiam ultrices fermentum fusce" Name="Enim torquent vestibulum facilisis conubia" TotalPages="90">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="16" Description="Cubilia adipiscing nibh" IsSubforum="False" IsBookmarks="True" Location="Morbi eros vestibulum" Name="Sit erat" TotalPages="28">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="19" Description="Nunc hendrerit odio vel" IsSubforum="False" IsBookmarks="True" Location="Proin nisl habitasse parturient egestas" Name="Dapibus volutpat nisi nulla fringilla" TotalPages="81">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="58" Description="Dolor orci tortor" IsSubforum="False" IsBookmarks="True" Location="Maecenas himenaeos" Name="Augue euismod" TotalPages="82">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="81" Description="Vestibulum feugiat accumsan malesuada" IsSubforum="False" IsBookmarks="True" Location="Fames praesent" Name="Imperdiet pede" TotalPages="79">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="96" Description="Dictumst nam" IsSubforum="False" IsBookmarks="True" Location="Bibendum felis" Name="Penatibus quam" TotalPages="55">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="50" Description="Adipiscing facilisi cras" IsSubforum="False" IsBookmarks="True" Location="Sed quis urna vestibulum" Name="Gravida turpis eleifend" TotalPages="45">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+		<Entity:ForumEntity CurrentPage="80" Description="Duis ipsum habitant inceptos tristique" IsSubforum="False" IsBookmarks="True" Location="Dis parturient faucibus varius" Name="Porttitor tincidunt" TotalPages="35">
+			<Entity:ForumEntity.ForumId>
+				<System:Int64/>
+			</Entity:ForumEntity.ForumId>
+		</Entity:ForumEntity>
+	</ViewModels:ThreadListPageViewModel.SubForumEntities>
+</ViewModels:ThreadListPageViewModel>

@@ -28,9 +28,6 @@ namespace AwfulMetro.Views
     public sealed partial class MainForumsPage : Page, IDisposable
     {
         private MainForumsPageViewModel _vm;
-
-        private readonly ForumManager _forumManager = new ForumManager();
-        private List<long> _forumIds = new List<long>();
         private ForumCategoryEntity _favoritesEntity;
         public MainForumsPage()
         {
@@ -220,22 +217,6 @@ namespace AwfulMetro.Views
             {
                 Debug.WriteLine(exc);
                 return String.Empty;
-            }
-        }
-
-        public void DeserializeXmlToList(string listAsXml)
-        {
-            try
-            {
-                var xmlIzer = new XmlSerializer(typeof(List<long>));
-                var strReader = new StringReader(listAsXml);
-                _forumIds = (xmlIzer.Deserialize(strReader)) as List<long>;
-            }
-
-            catch (Exception exc)
-            {
-                Debug.WriteLine(exc);
-                _forumIds = new List<long>();
             }
         }
 

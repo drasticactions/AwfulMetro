@@ -5,9 +5,40 @@
     xmlns:local="using:AwfulMetro.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:AwfulMetro.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="White">
+    <Page.DataContext>
+        <viewModels:MainForumsPageViewModel />
+    </Page.DataContext>
+    <Page.Resources>
+        <CollectionViewSource
+            x:Name="ForumViewSource"
+            Source="{Binding ForumGroupList}"
+            IsSourceGrouped="true"
+            d:Source="{Binding ForumGroupList, Source={d:DesignData /SampleData/MainForumsPageViewModelSampleData.xaml}}"
+            ItemsPath="ForumList" />
+        <DataTemplate x:Key="ForumTemplate">
+            <Grid Margin="15" HorizontalAlignment="Stretch" Height="60">
+                <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
+                </Border>
+                <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                    <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" TextTrimming="CharacterEllipsis" Height="20" Margin="15,0,15,30" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderTemplate">
+            <Grid Margin="5,0,0,5" Width="225">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black" VerticalAlignment="Center"/>
+                <Rectangle Grid.Row="1" Fill="GreenYellow" Height="1" Margin="0,7,0,0"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid x:Name="LayoutRoot">
 
         <Grid.ChildrenTransitions>
@@ -22,14 +53,38 @@
         </Grid.RowDefinitions>
 
         <!-- TitlePanel -->
-        <StackPanel Grid.Row="0" Margin="24,17,0,28">
-            <TextBlock Text="My Application" Style="{ThemeResource TitleTextBlockStyle}" Typography.Capitals="SmallCaps"/>
-            <TextBlock Text="page title" Margin="0,12,0,0" Style="{ThemeResource HeaderTextBlockStyle}"/>
+        <StackPanel Grid.Row="0" Margin="24,50,0,28">
+            <TextBlock Text="Awful Forums Reader" FontSize="30" Style="{ThemeResource MessageDialogTitleStyle}" Typography.Capitals="SmallCaps"/>
         </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="1" x:Name="ContentRoot">
-
+        <Grid Background="White" Grid.Row="1" x:Name="ContentRoot">
+            <ListView
+                AutomationProperties.AutomationId="ItemGridView"
+                AutomationProperties.Name="Grouped Items"
+                Visibility="Visible"
+                
+                ItemsSource="{Binding Source={StaticResource ForumViewSource}}"
+                SelectionMode="Multiple"
+                IsSwipeEnabled="True"
+                ItemTemplate="{StaticResource ForumTemplate}"
+                IsItemClickEnabled="True"
+                ItemClick="ItemView_ItemClick">
+                                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.GroupStyle>
+                    <GroupStyle HeaderTemplate="{StaticResource HeaderTemplate}">
+                        <GroupStyle.Panel>
+                            <ItemsPanelTemplate>
+                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                            </ItemsPanelTemplate>
+                        </GroupStyle.Panel>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
         </Grid>
     </Grid>
 </Page>

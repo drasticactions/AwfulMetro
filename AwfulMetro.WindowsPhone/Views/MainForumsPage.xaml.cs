@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
+using AwfulMetro.ViewModels;
 
 namespace AwfulMetro.Views
 {
@@ -27,6 +28,7 @@ namespace AwfulMetro.Views
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private MainForumsPageViewModel _vm;
 
         public MainForumsPage()
         {
@@ -98,6 +100,7 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            _vm = (MainForumsPageViewModel)DataContext;
             this.navigationHelper.OnNavigatedTo(e);
         }
 
@@ -107,5 +110,10 @@ namespace AwfulMetro.Views
         }
 
         #endregion
+
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
