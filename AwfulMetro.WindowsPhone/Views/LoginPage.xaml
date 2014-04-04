@@ -5,9 +5,12 @@
     xmlns:local="using:AwfulMetro.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:AwfulMetro.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Page.DataContext>
+        <viewModels:LoginPageViewModel />
+    </Page.DataContext>
     <Grid x:Name="LayoutRoot">
 
         <Grid.ChildrenTransitions>
@@ -22,13 +25,13 @@
         </Grid.RowDefinitions>
 
         <!-- TitlePanel -->
-        <StackPanel Grid.Row="0" Margin="24,17,0,28">
-            <TextBlock Text="My Application" Style="{ThemeResource TitleTextBlockStyle}" Typography.Capitals="SmallCaps"/>
-            <TextBlock Text="page title" Margin="0,12,0,0" Style="{ThemeResource HeaderTextBlockStyle}"/>
-        </StackPanel>
         <Grid Grid.Row="1" x:Name="ContentRoot">
-            <Image Margin="15" Source="/Assets/grenade.png" />
-            <Button Margin="15" Click="LoginButton_OnClick" x:Name="LoginButton" x:Uid="LoginButton" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Content="Login"/>
+            <StackPanel VerticalAlignment="Bottom" Margin="15">
+                <Image Margin="50" Source="/Assets/grenade.png" />
+                <TextBox Name="Username" Header="Username" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <PasswordBox  Name="Password" Header="Password" Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <Button Command="{Binding ClickLoginButtonCommand}" x:Name="LoginButton" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Content="Login"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
