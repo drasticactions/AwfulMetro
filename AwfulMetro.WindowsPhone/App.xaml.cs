@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -15,8 +17,12 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
+using AwfulMetro.Views;
 
 namespace AwfulMetro
 {
@@ -43,7 +49,7 @@ namespace AwfulMetro
         /// search results, and so forth.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -91,9 +97,21 @@ namespace AwfulMetro
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
+                var localStorageManager = new LocalStorageManager();
+                CookieContainer cookieTest = await localStorageManager.LoadCookie(Constants.COOKIE_FILE);
+                if (cookieTest.Count <= 0)
                 {
-                    throw new Exception("Failed to create initial page");
+                    if (!rootFrame.Navigate(typeof(LoginPage)))
+                    {
+                        throw new Exception("Failed to create initial page");
+                    }
+                }
+                else
+                {
+                        if (!rootFrame.Navigate(typeof(MainForumsPage)))
+                        {
+                            throw new Exception("Failed to create initial page");
+                        }
                 }
             }
 
