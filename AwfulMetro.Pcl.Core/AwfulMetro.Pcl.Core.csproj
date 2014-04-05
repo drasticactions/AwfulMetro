@@ -91,6 +91,7 @@
     <Compile Include="Tools\HtmlButtonBuilder.cs" />
     <Compile Include="Tools\NotifyStatusTile.cs" />
     <Compile Include="Tools\PageScrollingCollection.cs" />
+    <Compile Include="Tools\PrivateMessageScrollingCollection.cs" />
     <Compile Include="Tools\WebViewHelper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ThreadHeaderColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainForumsPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PrivateMessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ThreadListPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

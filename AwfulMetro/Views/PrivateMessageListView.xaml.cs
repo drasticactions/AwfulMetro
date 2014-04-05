@@ -7,6 +7,7 @@ using AwfulMetro.Common;
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -16,24 +17,15 @@ namespace AwfulMetro.Views
     /// </summary>
     public sealed partial class PrivateMessageListView : Page
     {
-        private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private readonly NavigationHelper navigationHelper;
+        private readonly NavigationHelper _navigationHelper;
         private readonly PrivateMessageManager _privateMessageManager = new PrivateMessageManager();
-
+        private PrivateMessageViewModel _vm;
         public PrivateMessageListView()
         {
             InitializeComponent();
-            navigationHelper = new NavigationHelper(this);
-            navigationHelper.LoadState += navigationHelper_LoadState;
-            navigationHelper.SaveState += navigationHelper_SaveState;
-        }
-
-        /// <summary>
-        ///     This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return defaultViewModel; }
+            _navigationHelper = new NavigationHelper(this);
+            _navigationHelper.LoadState += navigationHelper_LoadState;
+            _navigationHelper.SaveState += navigationHelper_SaveState;
         }
 
         /// <summary>
@@ -42,7 +34,7 @@ namespace AwfulMetro.Views
         /// </summary>
         public NavigationHelper NavigationHelper
         {
-            get { return navigationHelper; }
+            get { return _navigationHelper; }
         }
 
 
@@ -59,10 +51,9 @@ namespace AwfulMetro.Views
         ///     a dictionary of state preserved by this page during an earlier
         ///     session. The state will be null the first time a page is visited.
         /// </param>
-        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var privateMessageList = await _privateMessageManager.GetPrivateMessages(0);
-            PrivateMessageList.ItemsSource = privateMessageList;
+            _vm.GetPrivateMessages();
         }
 
         /// <summary>
@@ -103,12 +94,13 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            navigationHelper.OnNavigatedTo(e);
+            _vm = (PrivateMessageViewModel) DataContext;
+            _navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            navigationHelper.OnNavigatedFrom(e);
+            _navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion

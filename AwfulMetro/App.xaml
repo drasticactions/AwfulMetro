@@ -5,6 +5,7 @@
     xmlns:local="using:AwfulMetro"
     xmlns:localData="using:AwfulMetro.Data"
     xmlns:tools="using:AwfulMetro.Tools"
+    xmlns:common="using:AwfulMetro.Common"
     RequestedTheme="Light">
 
     <Application.Resources>
@@ -33,5 +34,6 @@
         </Style>
         <tools:DateTimeParseConverter x:Key="DateTimeParseConverter" />
         <tools:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <common:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
     </Application.Resources>
 </Application>
