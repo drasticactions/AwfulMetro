@@ -72,7 +72,7 @@ namespace AwfulMetro.Views
 
         private void RefreshBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            _vm.GetPrivateMessages();
         }
 
         private void NewMessageButton_OnClick(object sender, RoutedEventArgs e)

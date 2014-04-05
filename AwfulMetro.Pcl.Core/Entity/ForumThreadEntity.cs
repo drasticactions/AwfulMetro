@@ -18,6 +18,8 @@ namespace AwfulMetro.Core.Entity
         public string Location { get; set; }
 
         public string ImageIconLocation { get; set; }
+        // TODO: Add to unit tests.
+        public string StoreImageIconLocation { get; set; }
 
         public string Author { get; set; }
 
@@ -117,7 +119,7 @@ namespace AwfulMetro.Core.Entity
                         .FirstOrDefault()
                         .GetAttributeValue("src", string.Empty)
                     : null;
-            // Isn't this user configurable?
+            // TODO: Make this user configurable
             TotalPages = (ReplyCount/40) + 1;
             Location = Constants.BASE_URL +
                        threadNode.Descendants("a")
@@ -134,6 +136,12 @@ namespace AwfulMetro.Core.Entity
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon"));
             if (first != null)
                 ImageIconLocation = first.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
+
+            HtmlNode second =
+                threadNode.Descendants("td")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon2"));
+            if (second != null)
+                StoreImageIconLocation = second.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
         }
 
         /// <summary>
