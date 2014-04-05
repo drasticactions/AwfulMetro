@@ -21,7 +21,7 @@
         -->
         <CollectionViewSource
             x:Name="FavoriteForumViewSource"
-            IsSourceGrouped="true"
+            IsSourceGrouped="True"
             Source="{Binding FavoriteForumGroupList}"
             d:Source="{Binding FavoriteForumGroupList, Source={d:DesignData /SampleData/MainForumsPageViewModelSampleData.xaml}}"
             ItemsPath="ForumList"
@@ -146,24 +146,38 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <ScrollViewer ZoomMode="Disabled" VerticalScrollBarVisibility="Hidden"  Grid.Column="0">
+            <ScrollViewer ZoomMode="Disabled" VerticalScrollBarVisibility="Hidden" Grid.Column="0">
                 <GridView x:Name="FavoriteForumList" ItemClick="FavoriteForumList_OnItemClick" Grid.Column="0"
-                      ItemsSource="{Binding Source={StaticResource FavoriteForumViewSource}}" SelectionMode="None" ItemTemplate="{StaticResource ForumTemplate}"
+                      ItemsSource="{Binding Source={StaticResource FavoriteForumViewSource} }" SelectionMode="None"
                       IsItemClickEnabled="True">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid HorizontalAlignment="Left" Width="100" Height="100">
+                                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                           AutomationProperties.Name="{Binding Title}" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Bottom"
+                                            Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                        <TextBlock Text="{Binding Name}"
+                                               Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}"
+                                               Style="{StaticResource TitleTextBlockStyle}" Height="60"
+                                               Margin="15,0,15,0" />
+                                        <TextBlock Text="{Binding Description}"
+                                               Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}"
+                                               Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"
+                                               Margin="15,0,15,10" />
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapGrid Orientation="Horizontal"/>
+                            <WrapGrid Orientation="Vertical"/>
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
-                    <GridView.GroupStyle>
-                        <GroupStyle HeaderTemplate="{StaticResource headerTemplate}">
-                            <GroupStyle.Panel>
-                                <ItemsPanelTemplate>
-                                    <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
-                                </ItemsPanelTemplate>
-                            </GroupStyle.Panel>
-                        </GroupStyle>
-                    </GridView.GroupStyle>
                 </GridView>
             </ScrollViewer>
             <GridView

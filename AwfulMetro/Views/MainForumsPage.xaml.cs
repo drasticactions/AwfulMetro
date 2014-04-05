@@ -199,6 +199,7 @@ namespace AwfulMetro.Views
             else
             {
                 localSettings.Values["_forumIds"] = null;
+                _vm.SetFavoriteForums(null);
             }
         }
 
