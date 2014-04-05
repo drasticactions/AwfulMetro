@@ -496,7 +496,7 @@
                         <SymbolIcon/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="FavoriteButton" IsEnabled="False" Click="FavoriteButton_OnClick" Label="Bookmark">
+                <AppBarButton x:Name="FavoriteButton" Visibility="{Binding IsBookmarks, Converter={StaticResource booleanToVisibilityConverter}}" IsEnabled="False" Click="FavoriteButton_OnClick" Label="Bookmark">
                     <AppBarButton.Icon>
                         <BitmapIcon UriSource="ms-appx:///Assets/bookmarkicon.png" RenderTransformOrigin="0.5,0.5">
                             <BitmapIcon.RenderTransform>
@@ -523,7 +523,7 @@
                 <AppBarButton x:Name="BookmarkSettings" Visibility="Collapsed" Click="BookmarkSettings_Click"
                               Icon="Setting" Label="Bookmark Settings" />
             </StackPanel>
-            <GridView x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Grid.Column="0"
+            <GridView x:Name="SubForumList" ItemClick="SubForumList_ItemClick" Margin="15,0,0,0" Grid.Column="0"
                       ItemsSource="{Binding Source={StaticResource subforumViewSource}}" SelectionMode="None"
                       IsItemClickEnabled="True">
                 <GridView.ItemTemplate>
@@ -722,8 +722,8 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <Grid Grid.Row="0" Canvas.ZIndex="99">
-            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto"
+        <Grid Grid.Row="1" Canvas.ZIndex="99">
+            <ProgressBar IsIndeterminate="True" Visibility="{Binding ForumPageScrollingCollection.IsLoading, Converter={StaticResource booleanToVisibilityConverter}}" Width="Auto"
                          Height="10" VerticalAlignment="Top" />
         </Grid>
     </Grid>

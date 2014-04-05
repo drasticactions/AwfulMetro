@@ -39,10 +39,6 @@ namespace AwfulMetro.Views
         private readonly NavigationHelper _navigationHelper;
         private readonly ThreadManager _threadManager = new ThreadManager();
         private ForumEntity _forumEntity;
-        private PageScrollingCollection _forumPageScrollingCollection;
-        private List<ForumThreadEntity> _forumThreadEntities;
-        private List<ForumEntity> _subForumEntities;
-        private ApplicationDataContainer _localSettings;
 
         public ThreadListPage()
         {
@@ -84,16 +80,13 @@ namespace AwfulMetro.Views
             //loadingProgressBar.Visibility = Visibility.Visible;
 
             var jsonObjectString = (string) e.NavigationParameter;
-            var forumInfo = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
-            if (forumInfo == null) return;
-            _vm.Initialize(forumInfo);
+            _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
+            if (_forumEntity == null) return;
+            _vm.Initialize(_forumEntity);
 
             // TODO: This is stupid shit that should be removed.
-            ViewStateStringFullScreen = "FullScreen" + GetViewStateString(forumInfo.ForumId);
-            ViewStateStringSnapped = "Snapped" + GetViewStateString(forumInfo.ForumId);
-            //pageTitle.Text = _forumEntity.Name;
-            //await GetForumThreads();
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            ViewStateStringFullScreen = "FullScreen" + GetViewStateString(_forumEntity.ForumId);
+            ViewStateStringSnapped = "Snapped" + GetViewStateString(_forumEntity.ForumId);
         }
 
         private string GetViewStateString(long forumId)
@@ -156,9 +149,6 @@ namespace AwfulMetro.Views
 
         private async void AddThreadButton_Click(object sender, RoutedEventArgs e)
         {
-            ForumEntity itemId = _forumEntity;
-            // TODO: Finish native new thread function.
-            //await Launcher.LaunchUriAsync(new Uri(string.Format(Constants.NEW_THREAD, itemId.ForumId)));
             string jsonObjectString = JsonConvert.SerializeObject(_forumEntity);
             Frame.Navigate(typeof(NewThreadView), jsonObjectString);
         }
@@ -195,53 +185,6 @@ namespace AwfulMetro.Views
         {
             var up = new BookmarkSettingsFlyout();
             up.Show();
-        }
-
-
-        private async Task GetForumThreads()
-        {
-            //RefreshBarButton.IsEnabled = false;
-            //if (_forumEntity.IsBookmarks)
-            //{
-            //    AddThreadButton.Visibility = Visibility.Collapsed;
-            //    FavoriteButton.Visibility = Visibility.Collapsed;
-            //    BookmarkSettings.Visibility = Visibility.Visible;
-            //    _localSettings = ApplicationData.Current.LocalSettings;
-            //    _forumThreadEntities = await _threadManager.GetBookmarks(_forumEntity, 1);
-            //    _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
-            //    if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_DEFAULT))
-            //    {
-            //        BookmarkSorting selectedIndex = (BookmarkSorting) _localSettings.Values[Constants.BOOKMARK_DEFAULT];
-            //        switch (selectedIndex)
-            //        {
-            //            case BookmarkSorting.MostUnreadOnTop:
-            //                _forumThreadEntities = _forumThreadEntities.OrderByDescending(node => node.RepliesSinceLastOpened).ToList();
-            //                break;
-            //        }
-            //    }
-            //    foreach (ForumThreadEntity forumThread in _forumThreadEntities)
-            //    {
-            //        _forumPageScrollingCollection.Add(forumThread);
-            //    }
-            //    DefaultViewModel["Threads"] = _forumPageScrollingCollection;
-            //    SubForumList.Visibility = Visibility.Collapsed;
-            //    SubForumListSnapped.Visibility = Visibility.Collapsed;
-            //    NotificationButton.Visibility = Visibility.Visible;
-            //    RemoveNotificationsButton.Visibility = Visibility.Visible;
-            //}
-            //else
-            //{
-            //    _forumPageScrollingCollection = new PageScrollingCollection(_forumEntity, 1);
-            //    _forumThreadEntities = await _threadManager.GetForumThreads(_forumEntity, 1);
-            //    foreach (ForumThreadEntity forumThread in _forumThreadEntities)
-            //    {
-            //        _forumPageScrollingCollection.Add(forumThread);
-            //    }
-            //    _subForumEntities = await _forumManager.GetSubForums(_forumEntity);
-            //    DefaultViewModel["Threads"] = _forumPageScrollingCollection;
-            //    DefaultViewModel["Subforums"] = _subForumEntities;
-            //}
-            //RefreshBarButton.IsEnabled = true;
         }
 
         private void ForumThreadList_OnTapped(object sender, TappedRoutedEventArgs e)
@@ -294,14 +237,6 @@ namespace AwfulMetro.Views
             }
             List<long> threadIdList = threadlist.Select(thread => thread.ThreadId).ToList();
             await _threadManager.MarkThreadUnread(threadIdList);
-
-            //Refresh forum threads.
-
-            loadingProgressBar.Visibility = Visibility.Visible;
-
-            await GetForumThreads();
-
-            loadingProgressBar.Visibility = Visibility.Collapsed;
 
             if (threadIdList.Count == 1)
             {
@@ -380,13 +315,9 @@ namespace AwfulMetro.Views
             await msgDlg.ShowAsync();
         }
 
-        private async void RefreshBarButton_OnClick(object sender, RoutedEventArgs e)
+        private void RefreshBarButton_OnClick(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
-
-            await GetForumThreads();
-
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            _vm.Initialize(_forumEntity);
         }
 
         #region NavigationHelper registration

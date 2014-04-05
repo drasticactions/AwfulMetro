@@ -12,7 +12,7 @@ using AwfulMetro.Core.Manager;
 
 namespace AwfulMetro.Core.Tools
 {
-    public class PageScrollingCollection : ObservableCollection<ForumThreadEntity>, ISupportIncrementalLoading
+    public class PageScrollingCollection : ObservableCollection<ForumThreadEntity>, ISupportIncrementalLoading, INotifyPropertyChanged
     {
         public PageScrollingCollection(ForumEntity forumEntity, int pageCount)
         {

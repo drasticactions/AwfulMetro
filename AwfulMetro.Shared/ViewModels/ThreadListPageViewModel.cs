@@ -21,6 +21,7 @@ namespace AwfulMetro.ViewModels
         private ObservableCollection<ForumEntity> _subForumEntities;
         private ApplicationDataContainer _localSettings;
         private string _forumTitle;
+        private bool _isBookmarks;
 
         public ThreadListPageViewModel()
         {
@@ -32,6 +33,16 @@ namespace AwfulMetro.ViewModels
             set
             {
                 SetProperty(ref _forumTitle, value);
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBookmarks
+        {
+            get { return _isBookmarks; }
+            set
+            {
+                SetProperty(ref _isBookmarks, value);
                 OnPropertyChanged();
             }
         }
@@ -58,6 +69,7 @@ namespace AwfulMetro.ViewModels
 
         public async void Initialize(ForumEntity forumEntity)
         {
+            IsBookmarks = forumEntity.IsBookmarks;
             ForumTitle = forumEntity.Name;
             if (forumEntity.IsBookmarks)
             {
