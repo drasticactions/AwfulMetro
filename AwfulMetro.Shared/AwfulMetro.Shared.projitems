@@ -30,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainForumsPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PrivateMessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ThreadListPageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ThreadViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\219.css" />

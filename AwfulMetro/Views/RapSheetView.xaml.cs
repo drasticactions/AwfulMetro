@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -22,6 +23,8 @@ namespace AwfulMetro.Views
         private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
         private readonly RapSheetManager _rapSheetManager = new RapSheetManager();
+        private int _zoomSize;
+        private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
         private int _currentPage = 1;
 
         public RapSheetView()
@@ -81,6 +84,17 @@ namespace AwfulMetro.Views
                     }
                     string jsonObjectString = JsonConvert.SerializeObject(thread);
                     Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+                    break;
+                case "setFont":
+                    if (_localSettings.Values.ContainsKey("zoomSize"))
+                    {
+                        _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
+                        RapSheetWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                    }
+                    else
+                    {
+                        _zoomSize = 14;
+                    }
                     break;
                 default:
                     var msgDlg = new MessageDialog("Not working yet!")
