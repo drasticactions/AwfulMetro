@@ -24,9 +24,14 @@ namespace AwfulMetro.Core.Tools
             var cookies = (IEnumerable<Cookie>) serializer.ReadObject(stream);
             var cookieCollection = new CookieCollection();
 
+            // TODO: HUGE HACK. For some reason Windows Phone does not use the Domain Key on a cookie, but only the domain when making requests.
+            // Windows 8 won't break on it, but Windows Phone will, since the Domain Key and Domain are different on SA.
+            // We need to move this code to a more common place.
+
             foreach (Cookie cookie in cookies)
             {
-                cookieCollection.Add(cookie);
+                var fixedCookie = new Cookie(cookie.Name, cookie.Value, "/", ".somethingawful.com");
+                cookieCollection.Add(fixedCookie);
             }
             container.Add(uri, cookieCollection);
             return container;

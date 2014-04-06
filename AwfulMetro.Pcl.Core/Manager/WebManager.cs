@@ -69,6 +69,7 @@ namespace AwfulMetro.Core.Manager
             var handler = new HttpClientHandler
             {
                 CookieContainer = await _localStorageManager.LoadCookie(Constants.COOKIE_FILE),
+                UseCookies = true,
                 UseDefaultCredentials = false
             };
             var httpClient = new HttpClient(handler);
@@ -79,16 +80,21 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<Result> DownloadHtml(string url)
         {
-            HttpWebRequest request = await CreateGetRequest(url, _localStorageManager);
-            Encoding encoding = Encoding.GetEncoding("windows-1252");
-            using (WebResponse response = await request.GetResponseAsync())
-            using (Stream stream = response.GetResponseStream())
-            using (var reader = new StreamReader(stream, encoding))
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = await _localStorageManager.LoadCookie(Constants.COOKIE_FILE),
+                UseCookies = true,
+                UseDefaultCredentials = false
+            };
+            var httpClient = new HttpClient(handler);
+            HttpResponseMessage result = await httpClient.GetAsync(url);
+            Stream stream = await result.Content.ReadAsStreamAsync();
+            using (var reader = new StreamReader(stream))
             {
                 string html = reader.ReadToEnd();
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
-                return new Result(doc, response.ResponseUri.AbsoluteUri);
+                return new Result(doc, result.RequestMessage.RequestUri.AbsoluteUri);
             }
         }
 
@@ -101,29 +107,6 @@ namespace AwfulMetro.Core.Manager
                 container.Add(uri, cookie);
             }
             return container;
-        }
-
-        private static async Task<HttpWebRequest> CreateGetRequest(string url, ILocalStorageManager localStorageManager)
-        {
-            var request = (HttpWebRequest) WebRequest.Create(url);
-            request.Accept = ACCEPT;
-            request.CookieContainer = await localStorageManager.LoadCookie(Constants.COOKIE_FILE);
-            request.Method = "GET";
-            request.UseDefaultCredentials = false;
-            return request;
-        }
-
-        public static async Task<HtmlDocument> DownloadHtmlClient(HttpClient request, string url)
-        {
-            HttpResponseMessage response = await request.GetAsync(url);
-            Stream stream = await response.Content.ReadAsStreamAsync();
-            using (var reader = new StreamReader(stream))
-            {
-                string html = reader.ReadToEnd();
-                var doc = new HtmlDocument();
-                doc.LoadHtml(html);
-                return doc;
-            }
         }
 
         public class Result

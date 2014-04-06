@@ -59,6 +59,18 @@ namespace AwfulMetro.Core.Manager
                 return false;
             }
 
+            var fixedCookieContainer = new CookieContainer();
+
+            // TODO: HUGE HACK. For some reason Windows Phone does not use the Domain Key on a cookie, but only the domain when making requests.
+            // Windows 8 won't break on it, but Windows Phone will, since the Domain Key and Domain are different on SA.
+            // We need to move this code to a more common place.
+
+            foreach (Cookie cookie in cookies.GetCookies(new Uri(Constants.COOKIE_DOMAIN_URL)))
+            {
+                var fixedCookie = new Cookie(cookie.Name, cookie.Value, "/", ".somethingawful.com");
+                fixedCookieContainer.Add(new Uri(Constants.COOKIE_DOMAIN_URL), fixedCookie);
+            }
+
             await _localStorageManager.SaveCookie(Constants.COOKIE_FILE, cookies, new Uri(Constants.COOKIE_DOMAIN_URL));
             return true;
         }
