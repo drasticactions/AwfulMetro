@@ -19,7 +19,7 @@
             d:Source="{Binding ForumGroupList, Source={d:DesignData /SampleData/MainForumsPageViewModelSampleData.xaml}}"
             ItemsPath="ForumList" />
         <DataTemplate x:Key="ForumTemplate">
-            <Grid Margin="15" HorizontalAlignment="Stretch" Height="60">
+            <Grid Margin="5" HorizontalAlignment="Stretch" Height="60">
                 <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
                 </Border>
                 <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
@@ -52,39 +52,44 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- TitlePanel -->
-        <StackPanel Grid.Row="0" Margin="24,50,0,28">
-            <TextBlock Text="Awful Forums Reader" FontSize="30" Style="{ThemeResource MessageDialogTitleStyle}" Typography.Capitals="SmallCaps"/>
-        </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
         <Grid Background="White" Grid.Row="1" x:Name="ContentRoot">
-            <ListView
+            <Pivot>
+                <PivotItem Header="Forums">
+                    <ListView
                 AutomationProperties.AutomationId="ItemGridView"
                 AutomationProperties.Name="Grouped Items"
                 Visibility="Visible"
-                
                 ItemsSource="{Binding Source={StaticResource ForumViewSource}}"
-                SelectionMode="Multiple"
-                IsSwipeEnabled="True"
+                SelectionMode="None"
+                IsSwipeEnabled="False"
                 ItemTemplate="{StaticResource ForumTemplate}"
                 IsItemClickEnabled="True"
                 ItemClick="ItemView_ItemClick">
-                                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.GroupStyle>
-                    <GroupStyle HeaderTemplate="{StaticResource HeaderTemplate}">
-                        <GroupStyle.Panel>
-                            <ItemsPanelTemplate>
-                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
-                            </ItemsPanelTemplate>
-                        </GroupStyle.Panel>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-            </ListView>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.GroupStyle>
+                            <GroupStyle HeaderTemplate="{StaticResource HeaderTemplate}">
+                                <GroupStyle.Panel>
+                                    <ItemsPanelTemplate>
+                                        <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                                    </ItemsPanelTemplate>
+                                </GroupStyle.Panel>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+                </PivotItem>
+                <PivotItem Header="Bookmarks">
+
+                </PivotItem>
+                <PivotItem Header="Favorites">
+                    
+                </PivotItem>
+            </Pivot>
         </Grid>
     </Grid>
 </Page>

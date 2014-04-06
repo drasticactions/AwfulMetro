@@ -113,7 +113,7 @@ namespace AwfulMetro.Views
 
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
