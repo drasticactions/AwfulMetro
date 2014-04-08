@@ -35,9 +35,6 @@
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Assets\219.css" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\26.css" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\BadgeLogo.scale-100.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\BadgeLogo.scale-140.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\BadgeLogo.scale-180.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\bbcode.css" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\bookmarkicon.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\bookmarkicon2.png" />
@@ -65,16 +62,9 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\MainSiteTest.html" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\MediumGray.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\shitpost.gif" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\SmallLogo.scale-100.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\SplashScreen.scale-100.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\StoreLogo.scale-100.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\thread.html" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\ui-light-new.css" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\ui-light.css" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Wide310x150Logo.scale-100.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Wide310x150Logo.scale-140.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Wide310x150Logo.scale-180.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Wide310x150Logo.scale-80.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Assets\jquery.mobile-1.4.0.min - Copy.js" />

@@ -14,7 +14,7 @@
     </Page.DataContext>
     <Page.Resources>
         <CollectionViewSource
-            x:Name="itemsViewSource"
+            x:Name="ForumThreadViewSource"
             d:Source="{Binding ForumPageScrollingCollection, Source={d:DesignData /SampleData/ThreadListPageViewModelSampleData.xaml}}"
             Source="{Binding ForumPageScrollingCollection}"/>
         <CollectionViewSource
@@ -553,7 +553,7 @@
             <ListView x:Name="ForumThreadList" SelectionChanged="ForumThreadList_OnSelectionChanged"
                       HorizontalAlignment="Stretch" ItemClick="ForumThreadList_ItemClick"
                       Tapped="ForumThreadList_OnTapped" IsSwipeEnabled="True" Grid.Column="1"
-                      ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="Extended"
+                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="Extended"
                       IsItemClickEnabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -663,7 +663,7 @@
                 </GridView.ItemTemplate>
             </GridView>
             <ListView x:Name="ForumThreadListSnapped" HorizontalAlignment="Left" ItemClick="ForumThreadList_ItemClick"
-                      Grid.Row="1" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" SelectionMode="None"
+                      Grid.Row="1" ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="None"
                       IsItemClickEnabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">

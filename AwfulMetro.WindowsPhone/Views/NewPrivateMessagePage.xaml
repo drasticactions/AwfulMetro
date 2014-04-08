@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="AwfulMetro.Views.NewPrivateMessagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AwfulMetro.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TitlePanel -->
+        <StackPanel Grid.Row="0" Margin="24,17,0,28">
+            <TextBlock Text="New Private Message" Style="{ThemeResource TitleTextBlockStyle}" Typography.Capitals="SmallCaps"/>
+        </StackPanel>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="ContentRoot">
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="170"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="15" Grid.Row="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Post Icon:" Margin="0,0,15,0" FontSize="25" Foreground="Black"/>
+                            <Image x:Name="PostIconImage" Source="..\Assets\shitpost.gif" Stretch="None" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <TextBox x:Name="SubjectTextBox" PlaceholderText="Subject" MaxLength="75" Margin="0,10,0,0" Height="40"/>
+                        <TextBox x:Name="RecipientTextBox" PlaceholderText="Recipient" MaxLength="75" Margin="0,10,0,0" Height="40"/>
+                    </StackPanel>
+                    <TextBox IsSpellCheckEnabled="True" VerticalAlignment="Stretch" AcceptsReturn="True" Grid.Row="1"
+                             HorizontalAlignment="Stretch" Margin="15" x:Name="ReplyText" TextWrapping="Wrap" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="Send" Icon="Send"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

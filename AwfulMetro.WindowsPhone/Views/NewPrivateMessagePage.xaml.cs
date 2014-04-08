@@ -17,22 +17,18 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
-using AwfulMetro.Core.Entity;
-using AwfulMetro.ViewModels;
-using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainForumsPage : Page
+    public sealed partial class NewPrivateMessagePage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private MainForumsPageViewModel _vm;
 
-        public MainForumsPage()
+        public NewPrivateMessagePage()
         {
             this.InitializeComponent();
 
@@ -102,7 +98,6 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm = (MainForumsPageViewModel)DataContext;
             this.navigationHelper.OnNavigatedTo(e);
         }
 
@@ -112,22 +107,5 @@ namespace AwfulMetro.Views
         }
 
         #endregion
-
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var forumEntity = ((ForumEntity)e.ClickedItem);
-            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
-            Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
-        }
-
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void PrivateMessageButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(PrivateMessagePage));
-        }
     }
 }

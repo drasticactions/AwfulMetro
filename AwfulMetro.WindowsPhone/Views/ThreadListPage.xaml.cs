@@ -26,19 +26,18 @@ namespace AwfulMetro.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainForumsPage : Page
+    public sealed partial class ThreadListPage : Page
     {
-        private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private MainForumsPageViewModel _vm;
-
-        public MainForumsPage()
+        private readonly NavigationHelper _navigationHelper;
+        private ThreadListPageViewModel _vm;
+        private ForumEntity _forumEntity;
+        public ThreadListPage()
         {
             this.InitializeComponent();
 
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            this._navigationHelper = new NavigationHelper(this);
+            this._navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this._navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
         /// <summary>
@@ -46,16 +45,7 @@ namespace AwfulMetro.Views
         /// </summary>
         public NavigationHelper NavigationHelper
         {
-            get { return this.navigationHelper; }
-        }
-
-        /// <summary>
-        /// Gets the view model for this <see cref="Page"/>.
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
+            get { return this._navigationHelper; }
         }
 
         /// <summary>
@@ -71,6 +61,10 @@ namespace AwfulMetro.Views
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            var jsonObjectString = (string)e.NavigationParameter;
+            _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
+            if (_forumEntity == null) return;
+            _vm.Initialize(_forumEntity);
         }
 
         /// <summary>
@@ -102,32 +96,20 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm = (MainForumsPageViewModel)DataContext;
-            this.navigationHelper.OnNavigatedTo(e);
+            _vm = (ThreadListPageViewModel)DataContext;
+            this._navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedFrom(e);
+            this._navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
 
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var forumEntity = ((ForumEntity)e.ClickedItem);
-            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
-            Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
-        }
-
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
-        {
             throw new NotImplementedException();
-        }
-
-        private void PrivateMessageButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(PrivateMessagePage));
         }
     }
 }
