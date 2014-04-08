@@ -16,6 +16,7 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -25,32 +26,22 @@ namespace AwfulMetro.Views
     /// </summary>
     public sealed partial class ReplyView : Page
     {
-        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
         private readonly NavigationHelper _navigationHelper;
-        private readonly ReplyManager _replyManager = new ReplyManager();
-        private readonly SmileManager _smileManager = new SmileManager();
-        private IEnumerable<BBCodeCategoryEntity> _bbCodeList = new List<BBCodeCategoryEntity>();
-        private ForumReplyEntity _forumReply = new ForumReplyEntity();
+
+        private ReplyViewModel _vm;
+        
         private ForumThreadEntity _forumThread;
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
         private int _zoomSize;
-        private List<SmileCategoryEntity> _smileCategoryList = new List<SmileCategoryEntity>();
+
 
         public ReplyView()
         {
             InitializeComponent();
             _navigationHelper = new NavigationHelper(this);
-            PreviewLastPostWebView.ScriptNotify += PreviousPostsWebView_ScriptNotify;
+            //PreviewLastPostWebView.ScriptNotify += PreviousPostsWebView_ScriptNotify;
             _navigationHelper.LoadState += navigationHelper_LoadState;
             _navigationHelper.SaveState += navigationHelper_SaveState;
-        }
-
-        /// <summary>
-        ///     This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return _defaultViewModel; }
         }
 
         /// <summary>
@@ -66,6 +57,7 @@ namespace AwfulMetro.Views
         {
             string stringJson = e.Value;
             var command = JsonConvert.DeserializeObject<ReplyView.ThreadCommand>(stringJson);
+            var replyManager = new ReplyManager();
             switch (command.Command)
             {
                 case "profile":
@@ -79,7 +71,7 @@ namespace AwfulMetro.Views
                     break;
                 case "quote":
                       loadingProgressBar.Visibility = Visibility.Visible;
-                        string quoteString = await _replyManager.GetQuoteString(Convert.ToInt64(command.Id));
+                      string quoteString = await replyManager.GetQuoteString(Convert.ToInt64(command.Id));
                         quoteString = string.Concat(Environment.NewLine, quoteString);
                         string replyText = string.IsNullOrEmpty(ReplyText.Text) ? string.Empty : ReplyText.Text;
                     if (replyText != null) ReplyText.Text = replyText.Insert(ReplyText.Text.Length, quoteString);
@@ -89,7 +81,7 @@ namespace AwfulMetro.Views
                     if (_localSettings.Values.ContainsKey("zoomSize"))
                     {
                         _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
-                        PreviewLastPostWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                        //PreviewLastPostWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
                     }
                     else
                     {
@@ -142,35 +134,12 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
             var jsonObjectString = (string) e.NavigationParameter;
-            long threadId = 0;
-            try
-            {
-                _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
-            }
-            catch (Exception)
-            {
-                threadId = Convert.ToInt64(jsonObjectString);
-            }
-            if (_forumThread != null)
-            {
-                _forumReply = await _replyManager.GetReplyCookies(_forumThread);
-            }
-            else
-            {
-                _forumReply = await _replyManager.GetReplyCookies(threadId);
-            }
-            if (_forumReply == null)
-            {
-                var msgDlg = new MessageDialog("You can't reply in this thread!");
-                await msgDlg.ShowAsync();
-                Frame.GoBack();
-                return;
-            }
-            ReplyText.Text = _forumReply.Quote;
-            PreviewLastPostWebView.NavigateToString(_forumReply.PreviousPostsRaw);
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            bool result = await _vm.Initialize(jsonObjectString);
+            if (result) return;
+            var msgDlg = new MessageDialog("You can't reply in this thread!");
+            await msgDlg.ShowAsync();
+            Frame.GoBack();
         }
 
         /// <summary>
@@ -190,9 +159,9 @@ namespace AwfulMetro.Views
         private async void PostButton_Click(object sender, RoutedEventArgs e)
         {
             loadingProgressBar.Visibility = Visibility.Visible;
-            _forumReply.MapMessage(ReplyText.Text);
+            _vm.ForumReplyEntity.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
-            bool result = await replyManager.SendPost(_forumReply);
+            bool result = await replyManager.SendPost(_vm.ForumReplyEntity);
             if (result)
             {
                 Frame.GoBack();
@@ -207,30 +176,10 @@ namespace AwfulMetro.Views
 
         private async void SimilesButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            ItemGridViewContainer.Visibility = Visibility.Visible;
-            PreviewLastPostWebView.Visibility = Visibility.Collapsed;
-            FilterBox.Visibility = Visibility.Visible;
-            if (!_smileCategoryList.Any())
-            {
-                _smileCategoryList = await _smileManager.GetSmileList();
-            }
-            DefaultViewModel["Groups"] = _smileCategoryList;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void BBcodeButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            ItemGridViewContainer.Visibility = Visibility.Visible;
-            PreviewLastPostWebView.Visibility = Visibility.Collapsed;
-            FilterBox.Visibility = Visibility.Collapsed;
-            if (!_bbCodeList.Any())
-            {
-                _bbCodeList = BBCodeManager.BBCodes;
-            }
-            DefaultViewModel["Groups"] = _bbCodeList;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -260,16 +209,16 @@ namespace AwfulMetro.Views
 
         private async void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            ItemGridViewContainer.Visibility = Visibility.Collapsed;
-            PreviewLastPostWebView.Visibility = Visibility.Visible;
+            //ItemGridViewContainer.Visibility = Visibility.Collapsed;
+            //PreviewLastPostWebView.Visibility = Visibility.Visible;
 
-            _forumReply.MapMessage(ReplyText.Text);
+            //_forumReply.MapMessage(ReplyText.Text);
             var replyManager = new ReplyManager();
-            string result = await replyManager.CreatePreviewPost(_forumReply);
+            string result = await replyManager.CreatePreviewPost(_vm.ForumReplyEntity);
             if (!string.IsNullOrEmpty(result))
             {
-                PreviewLastPostWebView.NavigateToString(result);
-                PreviewLastPostWebView.Visibility = Visibility.Visible;
+                //PreviewLastPostWebView.NavigateToString(result);
+                //PreviewLastPostWebView.Visibility = Visibility.Visible;
             }
             else
             {
@@ -285,9 +234,6 @@ namespace AwfulMetro.Views
 
         private void LastPostsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            PreviewLastPostWebView.NavigateToString(_forumReply.PreviousPostsRaw);
-            ItemGridViewContainer.Visibility = Visibility.Collapsed;
-            PreviewLastPostWebView.Visibility = Visibility.Visible;
         }
 
         private async void ImageUploadButton_OnClick(object sender, RoutedEventArgs e)
@@ -335,8 +281,8 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            _vm = (ReplyViewModel) DataContext;
             _navigationHelper.OnNavigatedTo(e);
-            Rect bounds = Window.Current.Bounds;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -354,49 +300,17 @@ namespace AwfulMetro.Views
 
         private void FilterBox_OnSuggestionsRequested(SearchBox sender, SearchBoxSuggestionsRequestedEventArgs args)
         {
-            if (_smileCategoryList == null) return;
-            string queryText = args.QueryText;
-            if (string.IsNullOrEmpty(queryText)) return;
-            var suggestionCollection = args.Request.SearchSuggestionCollection;
-            foreach (var smile in _smileCategoryList.SelectMany(smileCategory => smileCategory.List.Where(smile => smile.Title.Contains(queryText))))
-            {
-                suggestionCollection.AppendQuerySuggestion(smile.Title);
-            }
+
         }
 
         private void FilterBox_OnQuerySubmitted(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
         {
-            if (_smileCategoryList == null) return;
-            string queryText = args.QueryText;
-            if (string.IsNullOrEmpty(queryText)) return;
-            var result = _smileCategoryList.SelectMany(
-                smileCategory => smileCategory.List.Where(smile => smile.Title.Equals(queryText))).FirstOrDefault();
-            if (result == null)
-            {
-                return;
-            }
-            ReplyText.Text = ReplyText.Text.Insert(ReplyText.Text.Length, result.Title);
-            FilterBox.QueryText = string.Empty;
+
         }
 
         private void FilterBox_OnQueryChanged(SearchBox sender, SearchBoxQueryChangedEventArgs args)
         {
-            if (_smileCategoryList == null) return;
-            string queryText = args.QueryText;
-            if (string.IsNullOrEmpty(queryText))
-            {
-                DefaultViewModel["Groups"] = _smileCategoryList;
-                return;
-            }
-            var result = _smileCategoryList.SelectMany(
-                smileCategory => smileCategory.List.Where(smile => smile.Title.Equals(queryText))).FirstOrDefault();
-            if (result != null) return;
-            var searchList = _smileCategoryList.SelectMany(
-                smileCategory => smileCategory.List.Where(smile => smile.Title.Contains(queryText)));
-            List<SmileEntity> smileListEntities = searchList.ToList();
-            var searchSmileCategory = new SmileCategoryEntity("Search", smileListEntities);
-            var fakeSmileCategoryList = new List<SmileCategoryEntity> {searchSmileCategory};
-            DefaultViewModel["Groups"] = fakeSmileCategoryList;
+
         }
     }
 }
