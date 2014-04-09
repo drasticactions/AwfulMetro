@@ -61,16 +61,18 @@ namespace AwfulMetro.Core.Entity
         /// <param name="threadNode">The thread HTML node.</param>
         public void Parse(HtmlNode threadNode)
         {
+           var titleNode = threadNode.Descendants("a")
+               .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")) ??
+                           threadNode.Descendants("a")
+                   .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("announcement"));
+
             Name =
-                WebUtility.HtmlDecode(
-                    threadNode.Descendants("a")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title"))
-                        .InnerText);
+                titleNode != null ? WebUtility.HtmlDecode(titleNode.InnerText) : "BLANK TITLE?!?";
 
             KilledBy =
                 threadNode.Descendants("a")
-                    .LastOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author"))
-                    .InnerText;
+                    .LastOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author")) != null ? threadNode.Descendants("a")
+                    .LastOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author")).InnerText : string.Empty;
             IsSticky =
                 threadNode.Descendants("td")
                     .Any(node => node.GetAttributeValue("class", string.Empty).Contains("title_sticky"));
@@ -90,7 +92,11 @@ namespace AwfulMetro.Core.Entity
                             .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("count"))
                             .InnerText);
             }
-            ReplyCount =
+
+            // TODO: Remove cheap hack used in order to get forum parsing working again.
+            try
+            {
+                ReplyCount =
                 threadNode.Descendants("td")
                     .Any(node => node.GetAttributeValue("class", string.Empty).Contains("replies"))
                     ? Convert.ToInt32(
@@ -98,14 +104,28 @@ namespace AwfulMetro.Core.Entity
                             .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("replies"))
                             .InnerText)
                     : 1;
-            ViewCount =
-                threadNode.Descendants("td")
-                    .Any(node => node.GetAttributeValue("class", string.Empty).Contains("views"))
-                    ? Convert.ToInt32(
-                        threadNode.Descendants("td")
-                            .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("views"))
-                            .InnerText)
-                    : 1;
+            }
+            catch (Exception)
+            {
+                ReplyCount = 0;
+            }
+
+            try
+            {
+                ViewCount =
+               threadNode.Descendants("td")
+                   .Any(node => node.GetAttributeValue("class", string.Empty).Contains("views"))
+                   ? Convert.ToInt32(
+                       threadNode.Descendants("td")
+                           .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("views"))
+                           .InnerText)
+                   : 1;
+            }
+            catch (Exception)
+            {
+                ViewCount = 0;
+            }
+
             RatingImage =
                 threadNode.Descendants("td")
                     .Any(node => node.GetAttributeValue("class", string.Empty).Contains("rating")) &&
@@ -121,16 +141,21 @@ namespace AwfulMetro.Core.Entity
                     : null;
             // TODO: Make this user configurable
             TotalPages = (ReplyCount/40) + 1;
-            Location = Constants.BASE_URL +
-                       threadNode.Descendants("a")
-                           .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title"))
-                           .GetAttributeValue("href", string.Empty) + Constants.PER_PAGE;
-            ThreadId =
-                Convert.ToInt64(
-                    threadNode.Descendants("a")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title"))
-                        .GetAttributeValue("href", string.Empty)
-                        .Split('=')[1]);
+
+
+            if (titleNode != null)
+            {
+                Location = Constants.BASE_URL +
+                        titleNode.GetAttributeValue("href", string.Empty) + Constants.PER_PAGE;
+
+                ThreadId =
+    Convert.ToInt64(
+        titleNode
+            .GetAttributeValue("href", string.Empty)
+            .Split('=')[1]);
+
+            }
+
             HtmlNode first =
                 threadNode.Descendants("td")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon"));

@@ -68,6 +68,7 @@ namespace AwfulMetro.Core.Manager
             // TODO: This is a temp solution. Every post should use HttpWebRequest or HttpClient, but not both. 
             var handler = new HttpClientHandler
             {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
                 CookieContainer = await _localStorageManager.LoadCookie(Constants.COOKIE_FILE),
                 UseCookies = true,
                 UseDefaultCredentials = false
@@ -82,6 +83,7 @@ namespace AwfulMetro.Core.Manager
         {
             var handler = new HttpClientHandler
             {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
                 CookieContainer = await _localStorageManager.LoadCookie(Constants.COOKIE_FILE),
                 UseCookies = true,
                 UseDefaultCredentials = false

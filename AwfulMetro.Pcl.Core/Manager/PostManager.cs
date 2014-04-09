@@ -56,23 +56,35 @@ namespace AwfulMetro.Core.Manager
             HtmlNode threadNode =
                 doc.DocumentNode.Descendants("div")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("pages top"));
-            threadNode =
-                threadNode.Descendants("option")
-                    .FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
-            if (forumThread.CurrentPage <= 0)
+            if (threadNode != null)
             {
-                forumThread.CurrentPage = GetPageNumber(threadNode);
+                threadNode =
+               threadNode.Descendants("option")
+                   .FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
+                if (forumThread.CurrentPage <= 0)
+                {
+                    forumThread.CurrentPage = GetPageNumber(threadNode);
+                }
             }
+           
 
             HtmlNode[] pageNodes = doc.DocumentNode.Descendants("div").ToArray();
             HtmlNode pageNode =
                 pageNodes.FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("pages top"));
+
+            var threadManager = new ThreadManager();
+
+            if (pageNode == null)
+            {
+                forumThread.TotalPages = 1;
+                return await threadManager.GetThreadHtml(doc); ;
+            }
             pageNode = pageNode.Descendants("option").LastOrDefault();
             forumThread.TotalPages = pageNode == null
                 ? 1
                 : Convert.ToInt32(pageNode.GetAttributeValue("value", string.Empty));
 
-            var threadManager = new ThreadManager();
+            
             return await threadManager.GetThreadHtml(doc);
         }
 
@@ -123,14 +135,19 @@ namespace AwfulMetro.Core.Manager
             threadNode =
                 doc.DocumentNode.Descendants("div")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("pages top"));
-            threadNode =
-                threadNode.Descendants("option")
-                    .FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
-
-            if (forumThread.CurrentPage <= 0)
+            if (threadNode != null)
             {
-                forumThread.CurrentPage = GetPageNumber(threadNode);
+                threadNode =
+    threadNode.Descendants("option")
+        .FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
+
+                if (forumThread.CurrentPage <= 0)
+                {
+                    forumThread.CurrentPage = GetPageNumber(threadNode);
+                }
             }
+
+
 
             HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
             forumThread.TotalPages = forumThread.CurrentPage <= 1
