@@ -137,7 +137,11 @@ namespace AwfulMetro.Views
             var jsonObjectString = (string) e.NavigationParameter;
             bool result = await _vm.Initialize(jsonObjectString);
             _vm.GetSmilies();
-            if (result) return;
+            if (result)
+            {
+                ReplyText.Text = _vm.ForumReplyEntity.Quote;
+                return;
+            }
             var msgDlg = new MessageDialog("You can't reply in this thread!");
             await msgDlg.ShowAsync();
             Frame.GoBack();

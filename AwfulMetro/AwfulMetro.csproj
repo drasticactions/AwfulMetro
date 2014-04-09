@@ -14,10 +14,10 @@
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>AwfulMetro_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>AwfulMetro_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>D12681557DBD742BCA1D2F87BF61DFB6AFFE3886</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>B19EC65E2B2A4C18F57E402CD7054E591BFAD0FC</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
     <ExpressionBlendVersion>12.0.50203.70</ExpressionBlendVersion>
   </PropertyGroup>
@@ -168,8 +168,8 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="AwfulMetro_StoreKey.pfx" />
     <None Include="AwfulMetro_TemporaryKey.pfx" />
-    <None Include="AwfulMetro_TemporaryKey.pfx.snk" />
     <None Include="Package.StoreAssociation.xml" />
     <DesignData Include="SampleData\MainForumsPageViewModelSampleData.xaml">
       <SubType>Designer</SubType>
@@ -297,7 +297,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AwfulMetro_TemporaryKey.pfx.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
