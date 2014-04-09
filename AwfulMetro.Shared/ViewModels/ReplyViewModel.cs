@@ -31,7 +31,8 @@ namespace AwfulMetro.ViewModels
             }
         }
 
-        public IEnumerable<SmileCategoryEntity> SimileCategoryList
+        public IEnumerable<SmileCategoryEntity> FullSmileCategoryEntities = new List<SmileCategoryEntity>();
+        public IEnumerable<SmileCategoryEntity> SmilieCategoryList
         {
             get { return _smileCategoryList; }
             set
@@ -59,6 +60,13 @@ namespace AwfulMetro.ViewModels
                 SetProperty(ref _forumReplyEntity, value);
                 OnPropertyChanged();
             }
+        }
+
+        public async void GetSmilies()
+        {
+            var smiliesManager = new SmileManager();
+            SmilieCategoryList = await smiliesManager.GetSmileList();
+            FullSmileCategoryEntities = SmilieCategoryList;
         }
 
         public async Task<bool> Initialize(string jsonObjectString)

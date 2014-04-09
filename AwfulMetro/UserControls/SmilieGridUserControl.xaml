@@ -1,0 +1,89 @@
+﻿<UserControl
+    x:Class="AwfulMetro.UserControls.SmilieGridUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AwfulMetro.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:AwfulMetro.ViewModels"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.DataContext>
+        <viewModels:ReplyViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <CollectionViewSource
+            x:Name="SmilieCollectionViewSource"
+            IsSourceGrouped="True"
+            Source="{Binding SimileCategoryList}"
+            ItemsPath="List"
+            />
+    </UserControl.Resources>
+    <Popup x:Name="ParentPopup" Width="400" Height="300" IsOpen="False" IsLightDismissEnabled="True">
+        <Popup.ChildTransitions>
+            <TransitionCollection>
+                <PopupThemeTransition />
+            </TransitionCollection>
+        </Popup.ChildTransitions>
+        <Border BorderBrush="Black" BorderThickness="1">
+            <Grid>
+                <Grid.Background>
+                    <SolidColorBrush Color="#DBDEE7" Opacity="0.8" />
+                </Grid.Background>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <SearchBox x:Name="FilterBox" Margin="15" PlaceholderText="Filter..." SuggestionsRequested="FilterBox_OnSuggestionsRequested" QuerySubmitted="FilterBox_OnQuerySubmitted" QueryChanged="FilterBox_OnQueryChanged" HorizontalAlignment="Stretch" Grid.Row="0"/>
+                <GridView
+               x:Name="SmilieGridView"
+                 Margin="15"
+                 ItemClick="SmilieGridView_OnItemClick"
+                 AutomationProperties.AutomationId="ItemGridView"
+                 AutomationProperties.Name="Grouped Items"
+                 Grid.Row="1"
+                Padding="0,0,0,0"
+                 ItemsSource="{Binding Source={StaticResource SmilieCollectionViewSource} }"
+                 SelectionMode="None"
+                IsSwipeEnabled="false"
+                IsItemClickEnabled="True"
+                 HorizontalAlignment="Left">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Left" Width="125" Height="125">
+                                <StackPanel VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                    <Border Height="50" Background="#FF415B64">
+                                        <Image Source="{Binding ImageUrl}" Stretch="None" />
+                                    </Border>
+                                    <TextBlock Text="{Binding Title}" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="1,0,0,6">
+                                        <Button Foreground="{StaticResource ApplicationHeaderForegroundThemeBrush}"
+                                             AutomationProperties.Name="Group Title"
+                                             Style="{StaticResource TextBlockButtonStyle}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Category}" Margin="3,-7,10,10"
+                                                      Style="{StaticResource SubheaderTextBlockStyle}"
+                                              TextWrapping="NoWrap" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </GridView.GroupStyle>
+                </GridView>
+            </Grid>
+        </Border>
+    </Popup>
+        
+</UserControl>
