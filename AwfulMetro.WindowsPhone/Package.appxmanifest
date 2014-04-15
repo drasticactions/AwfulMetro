@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="AwfulMetro.WindowsPhone.App">
-      <m3:VisualElements DisplayName="Awful Forums Reader" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="AwfulMetro.WindowsPhone" ForegroundText="light" BackgroundColor="#1E72C9" ToastCapable="true">
+      <m3:VisualElements DisplayName="Awful Forums Reader" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="AwfulMetro.WindowsPhone" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
         <m3:LockScreen Notification="badge" BadgeLogo="Assets\BadgeLogo.png" />
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>
@@ -28,17 +28,6 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClientServer" />
-    <m3:Capability Name="appointments" />
-    <m3:Capability Name="contacts" />
-    <Capability Name="enterpriseAuthentication" />
-    <Capability Name="musicLibrary" />
-    <Capability Name="picturesLibrary" />
-    <Capability Name="removableStorage" />
-    <Capability Name="sharedUserCertificates" />
-    <Capability Name="videosLibrary" />
-    <DeviceCapability Name="location" />
     <DeviceCapability Name="microphone" />
-    <DeviceCapability Name="proximity" />
-    <DeviceCapability Name="webcam" />
   </Capabilities>
 </Package>

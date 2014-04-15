@@ -1,4 +1,5 @@
-﻿using AwfulMetro.Common;
+﻿using Windows.UI.Popups;
+using AwfulMetro.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,26 +19,25 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
 using AwfulMetro.ViewModels;
-using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ThreadListPage : Page
+    public sealed partial class NewThreadView : Page
     {
-        private readonly NavigationHelper _navigationHelper;
-        private ThreadListPageViewModel _vm;
-        private ForumEntity _forumEntity;
-        public ThreadListPage()
+        private NavigationHelper navigationHelper;
+        private NewThreadViewModel _vm;
+        public NewThreadView()
         {
             this.InitializeComponent();
 
-            this._navigationHelper = new NavigationHelper(this);
-            this._navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this._navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace AwfulMetro.Views
         /// </summary>
         public NavigationHelper NavigationHelper
         {
-            get { return this._navigationHelper; }
+            get { return this.navigationHelper; }
         }
 
         /// <summary>
@@ -59,12 +59,16 @@ namespace AwfulMetro.Views
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             var jsonObjectString = (string)e.NavigationParameter;
-            _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
-            if (_forumEntity == null) return;
-            _vm.Initialize(_forumEntity);
+            var result =  await _vm.Initialize(jsonObjectString);
+            if (!result)
+            {
+                var msgDlg = new MessageDialog("You can't make a new thread in this forum!");
+                await msgDlg.ShowAsync();
+                Frame.GoBack();
+            }
         }
 
         /// <summary>
@@ -96,33 +100,33 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm = (ThreadListPageViewModel)DataContext;
-            this._navigationHelper.OnNavigatedTo(e);
+            _vm = (NewThreadViewModel) DataContext;
+            this.navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            this._navigationHelper.OnNavigatedFrom(e);
+            this.navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
 
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void NewThread_OnClick(object sender, RoutedEventArgs e)
         {
-            var forumEntity = ((ForumEntity)e.ClickedItem);
-            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
-            Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
-        }
-
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            _vm.Initialize(_forumEntity);
-        }
-
-        private void NewThreadButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            string jsonObjectString = JsonConvert.SerializeObject(_forumEntity);
-            Frame.Navigate(typeof(NewThreadView), jsonObjectString);
+            _vm.PostIcon = (PostIconEntity)PostIconComboBox.SelectedItem ??
+                           new PostIconEntity { Id = 0, Title = "Shit" };
+            _vm.NewThreadEntity.MapTo(SubjectTextBox.Text, ReplyText.Text, _vm.ForumEntity, _vm.PostIcon);
+            ThreadManager threadManager = new ThreadManager();
+            bool result = await threadManager.CreateNewThread(_vm.NewThreadEntity);
+            if (result)
+            {
+                Frame.GoBack();
+            }
+            else
+            {
+                var msgDlg = new MessageDialog("Error making thread!");
+                await msgDlg.ShowAsync();
+            }
         }
     }
 }

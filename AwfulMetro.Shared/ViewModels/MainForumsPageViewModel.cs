@@ -22,9 +22,20 @@ namespace AwfulMetro.ViewModels
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
         private ObservableCollection<ForumCategoryEntity> _forumGroupList;
         private ObservableCollection<ForumCategoryEntity> _favoriteForumGroupList;
+        private bool _isLoading;
         public MainForumsPageViewModel()
         {
             Initialize();
+        }
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                SetProperty(ref _isLoading, value);
+                OnPropertyChanged();
+            }
         }
 
         public ObservableCollection<ForumCategoryEntity> ForumGroupList
@@ -70,8 +81,10 @@ namespace AwfulMetro.ViewModels
 
         private async void Initialize()
         {
+            IsLoading = true;
             ForumGroupList = await _forumManager.GetForumCategoryMainPage();
             GetFavoriteForums();
+            IsLoading = false;
         }
 
         private static string SerializeListToXml(List<long> list)
