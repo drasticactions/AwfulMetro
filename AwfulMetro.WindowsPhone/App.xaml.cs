@@ -62,11 +62,15 @@ namespace AwfulMetro
                 switch (voiceCommandName)
                 {
                     case "sendPmCommand":
-                        rootFrame.Navigate(typeof (NewPrivateMessagePage), vcArgs.Result);
+                       // rootFrame.Navigate(typeof (NewPrivateMessagePage), vcArgs.Result);
+                        break;
+                    case "createNewThreadCommand":
+                        //rootFrame.Navigate(typeof(NewThreadView), vcArgs.Result);
                         break;
                 }
             }
             base.OnActivated(args);
+
         }
 
         private async void RegisterVoiceCommands()
