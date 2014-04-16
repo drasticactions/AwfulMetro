@@ -60,6 +60,11 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Label="Send" Icon="Send" Click="NewThread_OnClick"/>
+            <AppBarButton Label="Smilies" Click="SmiliesIcon_OnClick" >
+                <AppBarButton.Icon>
+                    <SymbolIcon/>
+                </AppBarButton.Icon>
+            </AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

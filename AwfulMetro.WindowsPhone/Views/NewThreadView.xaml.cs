@@ -128,5 +128,10 @@ namespace AwfulMetro.Views
                 await msgDlg.ShowAsync();
             }
         }
+
+        private void SmiliesIcon_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -34,13 +34,22 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="170"/>
+                        <RowDefinition Height="190"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Margin="15" Grid.Row="0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Post Icon:" Margin="0,0,15,0" FontSize="25" Foreground="Black"/>
-                            <Image x:Name="PostIconImage" Source="..\Assets\shitpost.gif" Stretch="None" Margin="0,5,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <TextBlock Text="Icon:" VerticalAlignment="Center" Margin="0,0,15,0" FontSize="25"/>
+                            <ComboBox x:Name="PostIconComboBox" Width="150" ItemsSource="{Binding PostIconList}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="60" Height="15" Source="{Binding Path=ImageUrl}" />
+                                            <TextBlock Margin="15,0,0,0" Text="{Binding Path=Title}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                             </ComboBox>
                         </StackPanel>
                         <TextBox x:Name="SubjectTextBox" PlaceholderText="Subject" MaxLength="75" Margin="0,10,0,0" Height="40"/>
                         <TextBox x:Name="RecipientTextBox" PlaceholderText="Recipient" MaxLength="75" Margin="0,10,0,0" Height="40"/>

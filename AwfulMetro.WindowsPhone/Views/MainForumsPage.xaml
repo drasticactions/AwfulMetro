@@ -87,8 +87,35 @@
                         </ListView.GroupStyle>
                     </ListView>
                 </PivotItem>
-                <PivotItem Header="Bookmarks">
-
+                <PivotItem x:Name="BookmarksPivotItem" Header="Bookmarks">
+                    <PivotItem.DataContext>
+                        <viewModels:ThreadListPageViewModel />
+                    </PivotItem.DataContext>
+                    <PivotItem.Resources>
+                        <CollectionViewSource
+            x:Name="ForumThreadViewSource"
+            d:Source="{Binding ForumPageScrollingCollection, Source={d:DesignData /SampleData/ThreadListPageViewModelSampleData.xaml}}"
+            Source="{Binding ForumPageScrollingCollection}"/>
+                    </PivotItem.Resources>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <ProgressBar IsIndeterminate="True" Visibility="{Binding ForumPageScrollingCollection.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ListView x:Name="ForumThreadList"
+                      HorizontalAlignment="Stretch"
+                       ItemTemplate="{StaticResource ForumThreadTemplate}"
+                      IsSwipeEnabled="True" Grid.Row="1"
+                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="Extended"
+                      IsItemClickEnabled="True">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Grid>
                 </PivotItem>
                 <PivotItem Header="Favorites">
                     

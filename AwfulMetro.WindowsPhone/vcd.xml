@@ -11,7 +11,7 @@
       <ListenFor>Send a PM</ListenFor>
       <ListenFor>Send PM</ListenFor>
       <Feedback>Hope you got plat...</Feedback>
-      <Navigate Target="App.xaml"/>
+      <Navigate Target="VoiceHandlePage.xaml"/>
     </Command>
     
     <Command Name="createNewThreadCommand">
@@ -21,7 +21,7 @@
       <ListenFor>Post a new thread in {dictatedVoiceCommandText}</ListenFor>
       <ListenFor>Post new thread</ListenFor>
       <Feedback>Your new thread better not be awful.</Feedback>
-      <Navigate Target="App.xaml"/>
+      <Navigate Target="VoiceHandlePage.xaml"/>
     </Command>
 
     <PhraseTopic Label="dictatedVoiceCommandText" Scenario="Dictation">

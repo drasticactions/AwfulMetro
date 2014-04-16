@@ -58,16 +58,7 @@ namespace AwfulMetro
             {
                 VoiceCommandActivatedEventArgs vcArgs = (VoiceCommandActivatedEventArgs) args;
                 string voiceCommandName = vcArgs.Result.RulePath.First();
-
-                switch (voiceCommandName)
-                {
-                    case "sendPmCommand":
-                       // rootFrame.Navigate(typeof (NewPrivateMessagePage), vcArgs.Result);
-                        break;
-                    case "createNewThreadCommand":
-                        //rootFrame.Navigate(typeof(NewThreadView), vcArgs.Result);
-                        break;
-                }
+                rootFrame.Navigate(typeof(VoiceHandlePage), vcArgs.Result);
             }
             base.OnActivated(args);
 
