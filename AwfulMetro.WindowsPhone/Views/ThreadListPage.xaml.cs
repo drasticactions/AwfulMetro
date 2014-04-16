@@ -124,5 +124,12 @@ namespace AwfulMetro.Views
             string jsonObjectString = JsonConvert.SerializeObject(_forumEntity);
             Frame.Navigate(typeof(NewThreadView), jsonObjectString);
         }
+
+        private void ForumThreadList_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var forumThread = ((ForumThreadEntity)e.ClickedItem);
+            string jsonObjectString = JsonConvert.SerializeObject(forumThread);
+            Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+        }
     }
 }

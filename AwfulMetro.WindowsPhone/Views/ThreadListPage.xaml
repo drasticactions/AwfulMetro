@@ -61,6 +61,7 @@
                       HorizontalAlignment="Stretch"
                        ItemTemplate="{StaticResource ForumThreadTemplate}"
                       IsSwipeEnabled="True" Grid.Row="1"
+                      ItemClick="ForumThreadList_OnItemClick"
                       ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="Extended"
                       IsItemClickEnabled="True">
                             <ListView.ItemContainerStyle>
