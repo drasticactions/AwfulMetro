@@ -4,7 +4,7 @@ using System.Net;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 
-namespace AwfulMetro.Core.Entity
+namespace AwfulMetro.Pcl.Core.Entity
 {
     /// <summary>
     ///     Represents an individual post in a thread.
@@ -51,25 +51,18 @@ namespace AwfulMetro.Core.Entity
                 Int64.Parse(postNode.GetAttributeValue("id", string.Empty)
                     .Replace("post", string.Empty)
                     .Replace("#", string.Empty));
-            PostFormatted =
-                WebUtility.HtmlDecode(
-                    postNode.Descendants("td")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"))
-                        .InnerHtml).WithoutNewLines();
             PostHtml =
-                FixPostHtml(
                     WebUtility.HtmlDecode(
                         postNode.Descendants("td")
                             .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"))
-                            .InnerHtml));
+                            .InnerHtml);
+            HtmlNode profileLinksNode =
+                    postNode.Descendants("td")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
 
-            /*
-             * Attempts to find the height of the post by counting the new lines and 
-             * multiplying by twenty. Maybe a good way to get more posts on the screen?
-             * Eh. Maybe not. (\/_\/)
-             */
-            //this.PostHeight = PostHtml.Count(p => p == '\n') * 20;
-            PostHeight = 400;
+            User.IsCurrentUserPost =
+                profileLinksNode.Descendants("img")
+                    .FirstOrDefault(node => node.GetAttributeValue("alt", string.Empty).Equals("Edit")) != null;
         }
 
         /// <summary>

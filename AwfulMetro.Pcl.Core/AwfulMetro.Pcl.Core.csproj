@@ -89,6 +89,7 @@
     <Compile Include="Tools\CookieSerializer.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\HtmlButtonBuilder.cs" />
+    <Compile Include="Tools\HtmlFormater.cs" />
     <Compile Include="Tools\NotifyStatusTile.cs" />
     <Compile Include="Tools\PageScrollingCollection.cs" />
     <Compile Include="Tools\PrivateMessageScrollingCollection.cs" />

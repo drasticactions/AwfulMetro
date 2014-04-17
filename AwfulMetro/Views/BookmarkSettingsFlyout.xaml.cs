@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Controls;
 using AwfulMetro.Core.Tools;
 
 // The Settings Flyout item template is documented at http://go.microsoft.com/fwlink/?LinkId=273769
+using AwfulMetro.Pcl.Core.Tools;
 
 namespace AwfulMetro.Views
 {

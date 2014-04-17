@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AwfulMetro.Core.Entity;
+using AwfulMetro.Pcl.Core.Entity;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 

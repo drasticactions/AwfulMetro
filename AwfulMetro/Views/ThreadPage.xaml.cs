@@ -14,6 +14,8 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Manager;
+using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.Views
@@ -23,7 +25,7 @@ namespace AwfulMetro.Views
     /// </summary>
     public sealed partial class ThreadPage : Page
     {
-        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private ThreadViewModel _vm;
         private readonly NavigationHelper _navigationHelper;
         private readonly PostManager _postManager = new PostManager();
         private readonly ThreadManager _threadManager = new ThreadManager();
@@ -38,16 +40,6 @@ namespace AwfulMetro.Views
             ThreadSnapView.ScriptNotify += WebView_ScriptNotify;
             _navigationHelper.LoadState += navigationHelper_LoadState;
             _navigationHelper.SaveState += navigationHelper_SaveState;
-        }
-
-        //TODO: inject this
-
-        /// <summary>
-        ///     This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return _defaultViewModel; }
         }
 
         /// <summary>
@@ -142,23 +134,17 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            
             var jsonObjectString = (string) e.NavigationParameter;
             _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
-            pageTitle.Text = _forumThread.Name;
-            string html = await _postManager.GetThreadPostInformation(_forumThread);
-            ThreadFullView.NavigateToString(html);
-            ThreadSnapView.NavigateToString(html);
+            _vm.GetForumPosts(_forumThread);
             CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
             CurrentPageSelector.SelectedValue = _forumThread.CurrentPage;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
             ReplyButton.IsEnabled = !_forumThread.IsLocked;
             ReplyButtonSnap.IsEnabled = !_forumThread.IsLocked;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
-            
+
             // Set the default focus on the page to either one of the web views.
             CheckOrientation();
 
@@ -344,6 +330,7 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            _vm = (ThreadViewModel) DataContext;
             _navigationHelper.OnNavigatedTo(e);
             Rect bounds = Window.Current.Bounds;
             ChangeViewTemplate(bounds.Width);

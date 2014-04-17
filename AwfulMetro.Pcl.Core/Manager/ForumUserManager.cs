@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Entity;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Manager

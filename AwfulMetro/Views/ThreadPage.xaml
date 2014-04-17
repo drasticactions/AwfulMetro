@@ -1,7 +1,6 @@
 ﻿<Page
     x:Name="pageRoot"
     x:Class="AwfulMetro.Views.ThreadPage"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AwfulMetro.Views"
@@ -9,8 +8,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:web="using:AwfulMetro.Core.Tools"
+    xmlns:viewModels="using:AwfulMetro.ViewModels"
     mc:Ignorable="d">
-
+    <Page.DataContext>
+        <viewModels:ThreadViewModel />
+    </Page.DataContext>
     <Page.Resources>
         <CollectionViewSource
             x:Name="itemsViewSource"
@@ -76,8 +78,8 @@
                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center"
                        RequestedTheme="Dark" />
         </Grid>
-        <Grid Grid.Row="0" Canvas.ZIndex="99">
-            <ProgressBar x:Name="loadingProgressBar" IsIndeterminate="True" Visibility="Collapsed" Width="Auto"
+        <Grid Grid.Row="1" Canvas.ZIndex="99">
+            <ProgressBar x:Name="loadingProgressBar"  IsIndeterminate="True" Visibility="{Binding IsLoading, Converter={StaticResource booleanToVisibilityConverter}}"
                          Height="10" VerticalAlignment="Top" />
         </Grid>
         <Grid Grid.Row="1" x:Name="ThreadViewFullScreen">
@@ -102,7 +104,7 @@
                     </ItemsPanelTemplate>
                 </ComboBox>
             </StackPanel>
-            <WebView  DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" Grid.Column="0" x:Name="ThreadFullView" />
+            <WebView  DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" web:WebViewHelper.Html="{Binding Html}"  Grid.Column="0" x:Name="ThreadFullView" />
         </Grid>
 
 
@@ -126,7 +128,7 @@
                     </ItemsPanelTemplate>
                 </ComboBox>
             </StackPanel>
-            <WebView Grid.Row="1" DOMContentLoaded="ThreadSnapView_OnDOMContentLoaded" x:Name="ThreadSnapView" />
+            <WebView Grid.Row="1" DOMContentLoaded="ThreadSnapView_OnDOMContentLoaded" web:WebViewHelper.Html="{Binding Html}"  x:Name="ThreadSnapView" />
         </Grid>
 
     </Grid>

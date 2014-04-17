@@ -5,6 +5,9 @@ using System.Text;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Pcl.Core.Entity;
+using AwfulMetro.Pcl.Core.Manager;
+using AwfulMetro.Pcl.Core.Tools;
 
 namespace AwfulMetro.ViewModels
 {
@@ -53,8 +56,8 @@ namespace AwfulMetro.ViewModels
             IsLoading = true;
             ThreadTitle = forumThreadEntity.Name;
             PostManager postManager = new PostManager();
-            //_postEntities = await postManager.GetThreadPosts(forumThreadEntity);
-            Html = await postManager.GetThreadPostInformation(forumThreadEntity);
+            _postEntities = await postManager.GetThreadPosts(forumThreadEntity);
+            Html = await HtmlFormater.FormatThreadHtml(_postEntities);
             IsLoading = false;
         }
     }

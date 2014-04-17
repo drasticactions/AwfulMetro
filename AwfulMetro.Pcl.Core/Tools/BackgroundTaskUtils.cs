@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
 
-namespace AwfulMetro.Core.Tools
+namespace AwfulMetro.Pcl.Core.Tools
 {
     public class BackgroundTaskUtils
     {

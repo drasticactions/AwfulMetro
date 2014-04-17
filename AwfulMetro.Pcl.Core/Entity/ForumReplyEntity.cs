@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using AwfulMetro.Pcl.Core.Entity;
 
 namespace AwfulMetro.Core.Entity
 {

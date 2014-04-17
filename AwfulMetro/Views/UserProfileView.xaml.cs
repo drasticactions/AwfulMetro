@@ -9,6 +9,7 @@ using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 
 // The Hub Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=286574
+using AwfulMetro.Pcl.Core.Entity;
 
 namespace AwfulMetro.Views
 {

@@ -5,7 +5,7 @@ using System.Net;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 
-namespace AwfulMetro.Core.Entity
+namespace AwfulMetro.Pcl.Core.Entity
 {
     // Food for thought: This might be better served as a ForumUser entity, with a ForumUserProfile subclass.
     public class ForumUserEntity
@@ -50,6 +50,8 @@ namespace AwfulMetro.Core.Entity
 
         public bool IsMod { get; private set; }
 
+        public bool IsCurrentUserPost { get; set; }
+
         public long Id { get; private set; }
 
         public string PostRate { get; private set; }
@@ -85,7 +87,7 @@ namespace AwfulMetro.Core.Entity
             }
             if (avatarImage != null)
             {
-                user.AvatarLink = FixPostHtmlImage(avatarImage.OuterHtml);
+                user.AvatarLink = avatarImage.GetAttributeValue("src", string.Empty);
             }
             user.Id =
                 Convert.ToInt64(
@@ -124,7 +126,7 @@ namespace AwfulMetro.Core.Entity
             }
             if (avatarImage != null)
             {
-                AvatarLink = FixPostHtmlImage(avatarImage.OuterHtml);
+                AvatarLink = avatarImage.GetAttributeValue("src", string.Empty);
             }
         }
 

@@ -1,0 +1,27 @@
+﻿#threadView
+{
+    padding-left: 45px;
+    padding-right: 45px;
+    margin-bottom: 150px;
+}
+
+#threadView article > header
+{
+    overflow: auto;
+    width: 100%;
+    padding-bottom: 25px;
+    border-bottom: 1px solid green;
+}
+
+#threadView article > header .av
+{
+   width: 96px;
+   height: 96px;
+   margin-right: 25px;
+   float: left;
+}
+
+input[type=submit]{
+ background-color: gray;
+ color: white;
+}

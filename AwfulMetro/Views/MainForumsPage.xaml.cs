@@ -17,6 +17,7 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Tools;
 using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
