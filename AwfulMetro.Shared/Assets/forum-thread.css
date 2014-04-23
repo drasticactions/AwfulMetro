@@ -1,7 +1,7 @@
 ﻿#threadView
 {
-    padding-left: 45px;
-    padding-right: 45px;
+    padding-left: 10px;
+    padding-right: 10px;
     margin-bottom: 150px;
 }
 
@@ -13,10 +13,14 @@
     border-bottom: 1px solid green;
 }
 
+#threadView h2 {
+    font-size: 150%;
+}
+
 #threadView article > header .av
 {
-   width: 96px;
-   height: 96px;
+   width: 92px;
+   height: 92px;
    margin-right: 25px;
    float: left;
 }
@@ -24,4 +28,5 @@
 input[type=submit]{
  background-color: gray;
  color: white;
+    margin-top: 5px;
 }

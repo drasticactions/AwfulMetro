@@ -30,7 +30,9 @@ namespace AwfulMetro.Pcl.Core.Tools
 
             foreach (ForumPostEntity post in postEntities)
             {
-                string userAvatar = string.Concat("<img src=\"", post.User.AvatarLink, "\" alt=\"\" class=\"av\" border=\"0\"");
+                string userAvatar = string.Empty;
+                if(!string.IsNullOrEmpty(post.User.AvatarLink))
+                userAvatar = string.Concat("<img src=\"", post.User.AvatarLink, "\" alt=\"\" class=\"av\" border=\"0\"");
                 string username = string.Format("<h2 class=\"text article-title win-type-ellipsis\"><span class=\"author\">{0}</span><h2>", post.User.Username);
                 string postData = string.Format("<h4 class=\"text article-title win-type-ellipsis\"><span class=\"registered\">{0}</span><h4>", post.PostDate);
                 string postBody = string.Format("<div class=\"postbody\">{0}</div>", post.PostHtml);
@@ -47,15 +49,7 @@ namespace AwfulMetro.Pcl.Core.Tools
 
         private static string CreateButtons(ForumPostEntity post)
         {
-            string clickHandler = string.Format("window.ForumCommand('profile', '{0}')", string.Empty);
-
-            string profileButton = HtmlButtonBuilder.CreateSubmitButton("Profile", clickHandler);
-
-            clickHandler = string.Format("window.ForumCommand('rap_sheet', '{0}')", string.Empty);
-
-            string rapSheetButton = HtmlButtonBuilder.CreateSubmitButton("Rap Sheet", clickHandler);
-
-            clickHandler = string.Format("window.ForumCommand('quote', '{0}')", post.PostId);
+            var clickHandler = string.Format("window.ForumCommand('quote', '{0}')", post.PostId);
 
             string quoteButton = HtmlButtonBuilder.CreateSubmitButton("Quote", clickHandler);
 
@@ -63,18 +57,14 @@ namespace AwfulMetro.Pcl.Core.Tools
 
             string editButton = HtmlButtonBuilder.CreateSubmitButton("Edit", clickHandler);
 
-            clickHandler = string.Format("window.ForumCommand('post_history', '{0}')", string.Empty);
-
-            string postHistoryButton = HtmlButtonBuilder.CreateSubmitButton("Post History", clickHandler);
-
             clickHandler = string.Format("window.ForumCommand('markAsLastRead', '{0}')", string.Empty);
 
-            string markAsLastReadButton = HtmlButtonBuilder.CreateSubmitButton("Mark As Last Read", clickHandler);
+            string markAsLastReadButton = HtmlButtonBuilder.CreateSubmitButton("Last Read", clickHandler);
 
             return post.User.IsCurrentUserPost
-                    ? string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton,
+                    ? string.Concat("<ul class=\"profilelinks\">",
                         quoteButton, markAsLastReadButton, editButton, "</ul>")
-                    : string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton,
+                    : string.Concat("<ul class=\"profilelinks\">",
                         quoteButton, markAsLastReadButton, "</ul>");
         }
     }
