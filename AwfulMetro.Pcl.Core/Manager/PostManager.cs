@@ -91,7 +91,7 @@ namespace AwfulMetro.Pcl.Core.Manager
             return await threadManager.GetThreadHtml(doc);
         }
 
-        public async Task<ObservableCollection<ForumPostEntity>> GetThreadPosts(ForumThreadEntity forumThread)
+        public async Task<ForumThreadEntity> GetThreadPosts(ForumThreadEntity forumThread)
         {
             try
             {
@@ -109,19 +109,9 @@ namespace AwfulMetro.Pcl.Core.Manager
                 var forumThreadPosts = new ObservableCollection<ForumPostEntity>();
 
                 //TEMP CODE
-                WebManager.Result result = await _webManager.DownloadHtml(url);
-                HtmlDocument doc = result.Document;
-                string responseUri = result.AbsoluteUri;
+                var threadManager = new ThreadManager();
+                var doc = await threadManager.GetThread(forumThread, url);
 
-                /* TODO: The following checks the thread URL for "pti" (which indicated which post to scroll to)
-                 * Having it in the post manager though, is wrong. This needs to be refactored and a better method of 
-                 * getting this needs to be put in.
-                 */
-                string[] test = responseUri.Split('#');
-                if (test.Length > 1 && test[1].Contains("pti"))
-                {
-                    forumThread.ScrollToPost = Int32.Parse(Regex.Match(responseUri.Split('#')[1], @"\d+").Value) - 1;
-                }
                 HtmlNode threadNode =
                     doc.DocumentNode.Descendants("div")
                         .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
@@ -150,17 +140,8 @@ namespace AwfulMetro.Pcl.Core.Manager
                         forumThread.CurrentPage = GetPageNumber(threadNode);
                     }
                 }
-
-
-
-                HtmlNode pageNode = doc.DocumentNode.Descendants("select").FirstOrDefault();
-                forumThread.TotalPages = forumThread.CurrentPage <= 1
-                    ? 1
-                    : Convert.ToInt32(pageNode.Descendants("option")
-                        .LastOrDefault()
-                        .GetAttributeValue("value", string.Empty));
-
-                return forumThreadPosts;
+                forumThread.ForumPosts = forumThreadPosts;
+                return forumThread;
             }
             catch (Exception)
             {

@@ -122,5 +122,7 @@
         <tools:RatingVisibilityConverter x:Key="RatingVisibilityConverter" />
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <tools:RepliesSinceLastOpenedColorConverter x:Key="RepliesSinceLastOpenedColorConverter" />
+        <tools:BackButtonEnableConverter x:Key="BackButtonEnableConverter" />
+        <tools:ForwardButtonEnableConverter x:Key="ForwardButtonEnableConverter" />
     </Application.Resources>
 </Application>

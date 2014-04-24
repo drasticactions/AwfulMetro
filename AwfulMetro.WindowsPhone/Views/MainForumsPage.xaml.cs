@@ -30,13 +30,12 @@ namespace AwfulMetro.Views
     public sealed partial class MainForumsPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private MainForumsPageViewModel _vm;
         private ThreadListPageViewModel _threadVm;
         public MainForumsPage()
         {
             this.InitializeComponent();
-
+            this.NavigationCacheMode = NavigationCacheMode.Enabled;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -48,15 +47,6 @@ namespace AwfulMetro.Views
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
-        }
-
-        /// <summary>
-        /// Gets the view model for this <see cref="Page"/>.
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
         }
 
         /// <summary>

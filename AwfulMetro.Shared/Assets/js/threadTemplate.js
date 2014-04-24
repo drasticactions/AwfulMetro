@@ -10,10 +10,19 @@ var ScrollToBottom = function() {
     $('html, body').animate({ scrollTop: $(document).height() }, 0);
 };
 
-var ScrollToDiv = function(pti) {
-    $('html, body').animate({
-        scrollTop: $(pti).offset().top
-    }, 0);
+var ScrollToDiv = function (pti) {
+    var test = $(pti);
+    if (test != null) {
+        try {
+            $('html, body').animate({
+                scrollTop: $(pti).offset().top
+            }, 0);
+        }
+        catch (err) {
+            // Ignore, we're probably at the bottom of the page.
+            // Besides, if it fails, it just won't scroll.
+        }
+    }
 };
 
 var ScrollToTable = function (pti) {

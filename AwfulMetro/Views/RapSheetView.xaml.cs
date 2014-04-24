@@ -72,7 +72,7 @@ namespace AwfulMetro.Views
                     // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
                     // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
                     var threadManager = new ThreadManager();
-                    var thread = await threadManager.GetThread(command.Id);
+                    var thread = await threadManager.GetThread(new ForumThreadEntity(), command.Id);
                     if (thread == null)
                     {
                         var error = new MessageDialog("Specified post was not found in the live forums.")

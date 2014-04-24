@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using Windows.Data.Html;
 using Windows.UI.Xaml.Controls;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Entity;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Entity
@@ -54,6 +56,8 @@ namespace AwfulMetro.Core.Entity
         public long ThreadId { get; set; }
 
         public int ForumId { get; set; }
+
+        public ObservableCollection<ForumPostEntity> ForumPosts { get; set; }
 
         /// <summary>
         ///     Parses a thread HTML node to extract the information from it.

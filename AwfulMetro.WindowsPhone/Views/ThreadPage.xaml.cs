@@ -1,4 +1,5 @@
-﻿using AwfulMetro.Common;
+﻿using Windows.UI.Popups;
+using AwfulMetro.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,8 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
@@ -31,11 +34,13 @@ namespace AwfulMetro.Views
         private NavigationHelper navigationHelper;
         private ThreadViewModel _vm;
         private ForumThreadEntity _forumThread;
+        private readonly ThreadManager _threadManager = new ThreadManager();
         public ThreadPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
+            ThreadWebView.ScriptNotify += WebView_ScriptNotify;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
@@ -65,6 +70,67 @@ namespace AwfulMetro.Views
             _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
             _vm.GetForumPosts(_forumThread);
+        }
+
+        private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
+        {
+            string stringJson = e.Value;
+            var command = JsonConvert.DeserializeObject<ThreadCommand>(stringJson);
+            switch (command.Command)
+            {
+                case "quote":
+                    //Frame.Navigate(typeof(ReplyView), command.Id);
+                    break;
+                case "edit":
+                    //Frame.Navigate(typeof(EditReplyPage), command.Id);
+                    break;
+                case "setFont":
+                    break;
+                case "scrollToPost":
+                    if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
+                    await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
+                    break;
+                case "markAsLastRead":
+                    await _threadManager.MarkPostAsLastRead(_forumThread, Convert.ToInt32(command.Id));
+                    int nextPost = Convert.ToInt32(command.Id) + 1;
+                    await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
+                    var message = new MessageDialog("Post marked as last read! Now go on and live your life!")
+                        {
+                            DefaultCommandIndex = 1
+                        };
+                    await message.ShowAsync();
+                    break;
+                case "openThread":
+                    // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
+                    // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
+                    var threadManager = new ThreadManager();
+                    var thread = await threadManager.GetThread(new ForumThreadEntity(), command.Id);
+                    if (thread == null)
+                    {
+                        var error = new MessageDialog("Specified post was not found in the live forums.")
+                        {
+                            DefaultCommandIndex = 1
+                        };
+                        await error.ShowAsync();
+                        break;
+                    }
+                    string jsonObjectString = JsonConvert.SerializeObject(thread);
+                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+                    break;
+                default:
+                    var msgDlg = new MessageDialog("Not working yet!")
+                    {
+                        DefaultCommandIndex = 1
+                    };
+                    await msgDlg.ShowAsync();
+                    break;
+            }
+        }
+
+        public class ThreadCommand
+        {
+            public string Command { get; set; }
+            public string Id { get; set; }
         }
 
         /// <summary>
@@ -109,7 +175,36 @@ namespace AwfulMetro.Views
 
         private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            _vm.GetForumPosts(_forumThread);
+        }
+
+        private async void ThreadWebView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
+        {
+            try
+            {
+                if (_forumThread.ScrollToPost > 0)
+                {
+                    await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void BackButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
+            _vm.ForumThreadEntity.CurrentPage--;
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
+        }
+
+        private void ForwardButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
+            _vm.ForumThreadEntity.CurrentPage++;
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
@@ -13,13 +14,35 @@ namespace AwfulMetro.ViewModels
 {
     public class ThreadViewModel : NotifierBase
     {
-        private ObservableCollection<ForumPostEntity> _postEntities;
+        private ForumThreadEntity _forumThreadEntity;
 
         private string _html;
 
         private string _threadTitle;
 
         private bool _isLoading;
+
+        private IEnumerable<int> _pageNumbers;
+
+        public IEnumerable<int> PageNumbers
+        {
+            get { return _pageNumbers; }
+            set
+            {
+                SetProperty(ref _pageNumbers, value);
+                OnPropertyChanged();
+            }
+        }
+
+        public ForumThreadEntity ForumThreadEntity
+        {
+            get { return _forumThreadEntity; }
+            set
+            {
+                SetProperty(ref _forumThreadEntity, value);
+                OnPropertyChanged();
+            }
+        }
 
         public string ThreadTitle
         {
@@ -56,8 +79,10 @@ namespace AwfulMetro.ViewModels
             IsLoading = true;
             ThreadTitle = forumThreadEntity.Name;
             PostManager postManager = new PostManager();
-            _postEntities = await postManager.GetThreadPosts(forumThreadEntity);
-            Html = await HtmlFormater.FormatThreadHtml(_postEntities);
+            await postManager.GetThreadPosts(forumThreadEntity);
+            Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity.ForumPosts);
+            ForumThreadEntity = forumThreadEntity;
+            PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
             IsLoading = false;
         }
     }

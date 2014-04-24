@@ -35,5 +35,7 @@
         <tools:DateTimeParseConverter x:Key="DateTimeParseConverter" />
         <tools:InvertBooleanConverter x:Key="InvertBooleanConverter" />
         <common:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+        <tools:ForwardButtonEnableConverter x:Key="ForwardButtonEnableConverter" />
+        <tools:BackButtonEnableConverter x:Key="BackButtonEnableConverter" />
     </Application.Resources>
 </Application>

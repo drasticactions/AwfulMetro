@@ -72,11 +72,18 @@ namespace AwfulMetro.Views
                 case "edit":
                     Frame.Navigate(typeof (EditReplyPage), command.Id);
                     break;
+                case "scrollToPost":
+                    if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
+                    {
+                        ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
+                        ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
+                    }
+                    break;
                 case "markAsLastRead":
                     await _threadManager.MarkPostAsLastRead(_forumThread, Convert.ToInt32(command.Id));
                     int nextPost = Convert.ToInt32(command.Id) + 1;
-                    await ThreadFullView.InvokeScriptAsync("ScrollToTable", new[] { nextPost.ToString() });
-                    await ThreadSnapView.InvokeScriptAsync("ScrollToTable", new[] { nextPost.ToString() });
+                    await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
+                    await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
                     NotifyStatusTile.CreateToastNotification("Post marked as last read! Now smash this computer and live your life!");
                     break;
                 case "setFont":
@@ -95,7 +102,7 @@ namespace AwfulMetro.Views
                     // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
                     // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
                     var threadManager = new ThreadManager();
-                    var thread =  await threadManager.GetThread(command.Id);
+                    var thread = await threadManager.GetThread(new ForumThreadEntity(), command.Id);
                     if (thread == null)
                     {
                         var error = new MessageDialog("Specified post was not found in the live forums.")
@@ -138,21 +145,10 @@ namespace AwfulMetro.Views
             _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
             _vm.GetForumPosts(_forumThread);
-            CurrentPageSelector.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
-            CurrentPageSelector.SelectedValue = _forumThread.CurrentPage;
-            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButton.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-            ReplyButton.IsEnabled = !_forumThread.IsLocked;
-            ReplyButtonSnap.IsEnabled = !_forumThread.IsLocked;
 
             // Set the default focus on the page to either one of the web views.
             CheckOrientation();
 
-            // TODO: Remove duplicate buttons and find a better way to handle navigation
-            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButtonSnap.IsEnabled = _forumThread.TotalPages != _forumThread.CurrentPage;
-            CurrentPageSelectorSnap.ItemsSource = Enumerable.Range(1, _forumThread.TotalPages).ToArray();
-            CurrentPageSelectorSnap.SelectedValue = _forumThread.CurrentPage;
         }
 
 
@@ -174,20 +170,21 @@ namespace AwfulMetro.Views
         {
             if (_forumThread.CurrentPage <= 1) return;
             // TODO: Remove duplicate buttons and find a better way to handle navigation
-            CurrentPageSelector.SelectedIndex--;
-            CurrentPageSelectorSnap.SelectedIndex--;
+            //CurrentPageSelector.SelectedIndex = _forumThread.CurrentPage - 2;
+            //CurrentPageSelectorSnap.SelectedIndex = _forumThread.CurrentPage - 2;
         }
 
         private void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Remove duplicate buttons and find a better way to handle navigation
             if (_forumThread.CurrentPage == _forumThread.TotalPages) return;
-            CurrentPageSelector.SelectedIndex++;
-            CurrentPageSelectorSnap.SelectedIndex++;
+            //CurrentPageSelector.SelectedIndex = _forumThread.CurrentPage + 2;
+            //CurrentPageSelectorSnap.SelectedIndex = _forumThread.CurrentPage + 2;
         }
 
         private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // TODO: Remove this totally shit code.
             if (CurrentPageSelector == null || CurrentPageSelector.SelectedValue == null) return;
             if (_forumThread.CurrentPage == (int) CurrentPageSelector.SelectedValue) return;
             loadingProgressBar.Visibility = Visibility.Visible;
@@ -198,9 +195,7 @@ namespace AwfulMetro.Views
             ForwardButtonSnap.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
             _forumThread.ScrollToPost = 1;
             _forumThread.ScrollToPostString = "#pti1";
-            string html = await _postManager.GetThreadPostInformation(_forumThread);
-            ThreadFullView.NavigateToString(html);
-            ThreadSnapView.NavigateToString(html);
+            _vm.GetForumPosts(_forumThread);
             CurrentPageSelectorSnap.SelectedValue = CurrentPageSelector.SelectedValue;
             loadingProgressBar.Visibility = Visibility.Collapsed;
         }
@@ -209,7 +204,6 @@ namespace AwfulMetro.Views
         {
             if (CurrentPageSelectorSnap == null || CurrentPageSelectorSnap.SelectedValue == null) return;
             if (_forumThread.CurrentPage == (int) CurrentPageSelectorSnap.SelectedValue) return;
-            loadingProgressBar.Visibility = Visibility.Visible;
             _forumThread.CurrentPage = (int) CurrentPageSelectorSnap.SelectedValue;
             BackButton.IsEnabled = _forumThread.CurrentPage > 1;
             ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
@@ -217,11 +211,8 @@ namespace AwfulMetro.Views
             ForwardButtonSnap.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
             _forumThread.ScrollToPost = 1;
             _forumThread.ScrollToPostString = "#pti1";
-            string html = await _postManager.GetThreadPostInformation(_forumThread);
-            ThreadFullView.NavigateToString(html);
-            ThreadSnapView.NavigateToString(html);
+            _vm.GetForumPosts(_forumThread);
             CurrentPageSelector.SelectedValue = CurrentPageSelectorSnap.SelectedValue;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void ReplyButton_Click(object sender, RoutedEventArgs e)

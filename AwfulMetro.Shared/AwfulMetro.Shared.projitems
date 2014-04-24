@@ -17,14 +17,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\AvatarWebViewConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\BackButtonEnableConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BookmarkSorting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\DateTimeParseConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\ForwardButtonEnableConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\InvertBooleanConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\RatingVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\RepliesSinceLastOpenedColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\SubforumBodyColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\SubforumFontColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\SubforumHeaderColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\ThreadCountConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ThreadHeaderColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainForumsPageViewModel.cs" />

@@ -27,20 +27,31 @@ namespace AwfulMetro.Pcl.Core.Tools
             HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
 
             string threadHtml = string.Empty;
-
-            foreach (ForumPostEntity post in postEntities)
+            if (postEntities == null) return WebUtility.HtmlDecode(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml)) ;
+            for (int index = 0; index < postEntities.Count; index++)
             {
+                ForumPostEntity post = postEntities[index];
                 string userAvatar = string.Empty;
-                if(!string.IsNullOrEmpty(post.User.AvatarLink))
-                userAvatar = string.Concat("<img src=\"", post.User.AvatarLink, "\" alt=\"\" class=\"av\" border=\"0\"");
-                string username = string.Format("<h2 class=\"text article-title win-type-ellipsis\"><span class=\"author\">{0}</span><h2>", post.User.Username);
-                string postData = string.Format("<h4 class=\"text article-title win-type-ellipsis\"><span class=\"registered\">{0}</span><h4>", post.PostDate);
+                if (!string.IsNullOrEmpty(post.User.AvatarLink))
+                    userAvatar = string.Concat("<img src=\"", post.User.AvatarLink,
+                        "\" alt=\"\" class=\"av\" border=\"0\"");
+                string username =
+                    string.Format(
+                        "<h2 class=\"text article-title win-type-ellipsis\"><span class=\"author\">{0}</span><h2>",
+                        post.User.Username);
+                string postData =
+                    string.Format(
+                        "<h4 class=\"text article-title win-type-ellipsis\"><span class=\"registered\">{0}</span><h4>",
+                        post.PostDate);
                 string postBody = string.Format("<div class=\"postbody\">{0}</div>", post.PostHtml);
                 string userInfo = string.Format("<div class=\"userinfo\">{0}{1}</div>", username, postData);
                 string postButtons = CreateButtons(post);
 
                 string footer = string.Format("<tr class=\"postbar\"><td class=\"postlinks\">{0}</td></tr>", postButtons);
-                threadHtml += string.Format("<div id=\"threadView\"><article><header>{0}{1}</header><div class=\"article-content\">{2}</div><footer>{3}</footer></article></div>", userAvatar, userInfo, postBody, footer);
+                threadHtml +=
+                    string.Format(
+                        "<div id={4}><div id={5}><div id=\"threadView\"><article><header>{0}{1}</header><div class=\"article-content\">{2}</div><footer>{3}</footer></article></div></div></div>",
+                        userAvatar, userInfo, postBody, footer, string.Concat("\"pti", index + 1, "\""), string.Concat("\"postId", post.PostIndex, "\""));
             }
 
             bodyNode.InnerHtml = threadHtml;
@@ -57,7 +68,7 @@ namespace AwfulMetro.Pcl.Core.Tools
 
             string editButton = HtmlButtonBuilder.CreateSubmitButton("Edit", clickHandler);
 
-            clickHandler = string.Format("window.ForumCommand('markAsLastRead', '{0}')", string.Empty);
+            clickHandler = string.Format("window.ForumCommand('markAsLastRead', '{0}')", post.PostIndex);
 
             string markAsLastReadButton = HtmlButtonBuilder.CreateSubmitButton("Last Read", clickHandler);
 

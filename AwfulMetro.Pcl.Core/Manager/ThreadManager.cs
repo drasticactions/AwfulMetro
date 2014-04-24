@@ -29,9 +29,8 @@ namespace AwfulMetro.Core.Manager
         {
         }
 
-        public async Task<ForumThreadEntity> GetThread(string url)
+        public async Task<HtmlDocument> GetThread(ForumThreadEntity forumThread, string url)
         {
-            var forumThread = new ForumThreadEntity();
             WebManager.Result result = await _webManager.DownloadHtml(url);
             HtmlDocument doc = result.Document;
             try
@@ -42,14 +41,23 @@ namespace AwfulMetro.Core.Manager
             {
                 return null;
             }
+            string responseUri = result.AbsoluteUri;
+            string[] test = responseUri.Split('#');
+            if (test.Length > 1 && test[1].Contains("pti"))
+            {
+                forumThread.ScrollToPost = Int32.Parse(Regex.Match(responseUri.Split('#')[1], @"\d+").Value) - 1;
+                forumThread.ScrollToPostString = string.Concat("#", responseUri.Split('#')[1]);
+            }
+
             var query = Extensions.ParseQueryString(url);
-            if (!query.ContainsKey("postid")) return forumThread;
+
+            if (!query.ContainsKey("postid")) return doc;
 
             // If we are going to a post, it won't use #pti but instead uses the post id.
 
             forumThread.ScrollToPost = Convert.ToInt32(query["postid"]);
-            forumThread.ScrollToPostString = "#post" + query["postid"];
-            return forumThread;
+            forumThread.ScrollToPostString = "#postId" + query["postid"];
+            return doc;
 
         }
 

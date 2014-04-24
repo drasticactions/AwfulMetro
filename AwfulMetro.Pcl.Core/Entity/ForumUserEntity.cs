@@ -89,12 +89,18 @@ namespace AwfulMetro.Pcl.Core.Entity
             {
                 user.AvatarLink = avatarImage.GetAttributeValue("src", string.Empty);
             }
-            user.Id =
-                Convert.ToInt64(
-                    postNode.DescendantsAndSelf("td")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"))
-                        .GetAttributeValue("class", string.Empty)
-                        .Split('-')[1]);
+            var userIdNode = postNode.DescendantsAndSelf("td")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"));
+            if (userIdNode == null) return user;
+            var splitString = userIdNode
+                .GetAttributeValue("class", string.Empty)
+                .Split('-');
+
+            if (splitString.Length >= 2)
+            {
+                user.Id =
+                    Convert.ToInt64(splitString[1]);
+            }
             return user;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using AwfulMetro.Core.Tools;
 using HtmlAgilityPack;
 
@@ -29,6 +30,10 @@ namespace AwfulMetro.Pcl.Core.Entity
 
         public long PostId { get; private set; }
 
+        public long PostIndex { get; private set; }
+
+        public string PostDivString { get; private set; }
+
         public bool IsQuoting { get; set; }
 
         /// <summary>
@@ -47,6 +52,9 @@ namespace AwfulMetro.Pcl.Core.Entity
             {
                 PostDate = postDateString.WithoutNewLines().Trim();
             }
+
+            PostIndex = ParseInt(postNode.GetAttributeValue("data-idx", string.Empty));
+
             PostId =
                 Int64.Parse(postNode.GetAttributeValue("id", string.Empty)
                     .Replace("post", string.Empty)
@@ -73,6 +81,18 @@ namespace AwfulMetro.Pcl.Core.Entity
         private static string FixPostHtml(String postHtml)
         {
             return "<!DOCTYPE html><html>" + Constants.HTML_HEADER + "<body>" + postHtml + "</body></html>";
+        }
+
+        private int ParseInt(string postClass)
+        {
+            string re1 = ".*?"; // Non-greedy match on filler
+            string re2 = "(\\d+)"; // Integer Number 1
+
+            var r = new Regex(re1 + re2, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Match m = r.Match(postClass);
+            if (!m.Success) return 0;
+            String int1 = m.Groups[1].ToString();
+            return Convert.ToInt32(int1);
         }
     }
 }
