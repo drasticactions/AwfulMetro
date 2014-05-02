@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -7,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Entity;
+using AwfulMetro.Pcl.Core.Tools;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Manager
@@ -53,7 +56,24 @@ namespace AwfulMetro.Core.Manager
 
                 var threadManager = new ThreadManager();
 
-                string htmlThread = await threadManager.GetThreadHtml(doc);
+                var forumThreadPosts = new ObservableCollection<ForumPostEntity>();
+
+                HtmlNode threadNode =
+                   doc.DocumentNode.Descendants("div")
+                       .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+
+
+                foreach (
+                   HtmlNode postNode in
+                       threadNode.Descendants("table")
+                           .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
+                {
+                    var post = new ForumPostEntity();
+                    post.Parse(postNode);
+                    forumThreadPosts.Add(post);
+                }
+
+                string htmlThread = await HtmlFormater.FormatThreadHtml(forumThreadPosts);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try
@@ -102,7 +122,24 @@ namespace AwfulMetro.Core.Manager
                 WebManager.Result result2 = await _webManager.DownloadHtml(url2);
                 HtmlDocument doc2 = result2.Document;
 
-                string htmlThread = await threadManager.GetThreadHtml(doc2);
+                var forumThreadPosts = new ObservableCollection<ForumPostEntity>();
+
+                HtmlNode threadNode =
+                   doc2.DocumentNode.Descendants("div")
+                       .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+
+
+                foreach (
+                   HtmlNode postNode in
+                       threadNode.Descendants("table")
+                           .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
+                {
+                    var post = new ForumPostEntity();
+                    post.Parse(postNode);
+                    forumThreadPosts.Add(post);
+                }
+
+                string htmlThread = await HtmlFormater.FormatThreadHtml(forumThreadPosts);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try
@@ -148,9 +185,24 @@ namespace AwfulMetro.Core.Manager
                 HtmlNode threadIdNode =
                     formNodes.FirstOrDefault(node => node.GetAttributeValue("name", "").Equals("threadid"));
 
-                var threadManager = new ThreadManager();
+                var forumThreadPosts = new ObservableCollection<ForumPostEntity>();
 
-                string htmlThread = await threadManager.GetThreadHtml(doc);
+                HtmlNode threadNode =
+                   doc.DocumentNode.Descendants("div")
+                       .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+
+
+                foreach (
+                   HtmlNode postNode in
+                       threadNode.Descendants("table")
+                           .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
+                {
+                    var post = new ForumPostEntity();
+                    post.Parse(postNode);
+                    forumThreadPosts.Add(post);
+                }
+
+                string htmlThread = await HtmlFormater.FormatThreadHtml(forumThreadPosts);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try

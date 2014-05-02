@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AwfulMetro"
     xmlns:tools="using:AwfulMetro.Tools"
-    xmlns:common="using:AwfulMetro.Common">
+    xmlns:common="using:AwfulMetro.Common"
+    xmlns:tools1="using:AwfulMetro.Core.Tools">
 
     <Application.Resources>
         <SolidColorBrush x:Key="AwfulBlue" Color="#FF1E72C9"/>

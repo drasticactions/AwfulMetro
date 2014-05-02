@@ -31,7 +31,7 @@
                 <TextBlock Margin="5" Text="{Binding ThreadTitle}" Style="{ThemeResource TitleTextBlockStyle}" TextTrimming="CharacterEllipsis" Typography.Capitals="SmallCaps"/>
             </StackPanel>
         </Grid>
-        
+
 
         <!--TODO: Content should be placed within the following grid-->
         <Grid Grid.Row="1" x:Name="ContentRoot">
@@ -41,8 +41,12 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Reply" Click="ReplyButton_OnClick"/>
+            </CommandBar.SecondaryCommands>
             <AppBarButton Label="Back" Icon="Back" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter} }" Click="BackButton_OnClick" />
             <AppBarButton Label="Refresh" x:Name="RefreshButton" Click="RefreshButton_OnClick" Icon="Refresh"/>
+            <AppBarButton Label="Scroll to Last Post" Icon="Download" Click="ScrollToLastPostButton_OnClick" />
             <AppBarButton Label="Forward" Icon="Forward" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource ForwardButtonEnableConverter}}" Click="ForwardButton_OnClick" />
         </CommandBar>
     </Page.BottomAppBar>

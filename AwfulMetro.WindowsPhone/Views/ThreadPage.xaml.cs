@@ -79,7 +79,7 @@ namespace AwfulMetro.Views
             switch (command.Command)
             {
                 case "quote":
-                    //Frame.Navigate(typeof(ReplyView), command.Id);
+                    Frame.Navigate(typeof(ReplyPage), command.Id);
                     break;
                 case "edit":
                     //Frame.Navigate(typeof(EditReplyPage), command.Id);
@@ -205,6 +205,17 @@ namespace AwfulMetro.Views
             _vm.ForumThreadEntity.CurrentPage++;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
 
+        }
+
+        private void ScrollToLastPostButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ThreadWebView.InvokeScriptAsync("ScrollToBottom", null);
+        }
+
+        private void ReplyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            string jsonObjectString = JsonConvert.SerializeObject(_forumThread);
+            Frame.Navigate(typeof(ReplyPage), jsonObjectString);
         }
     }
 }

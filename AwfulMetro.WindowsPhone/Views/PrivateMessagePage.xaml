@@ -19,15 +19,16 @@
     <Grid x:Name="LayoutRoot">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- TitlePanel -->
-        <StackPanel Grid.Row="0" Margin="24,17,0,28">
-            <TextBlock Text="Private Messages" Style="{ThemeResource TitleTextBlockStyle}" Typography.Capitals="SmallCaps"/>
-        </StackPanel>
-
+        <Grid Background="#FF1E72C9" RequestedTheme="Dark" Grid.Row="0">
+            <StackPanel VerticalAlignment="Center" Grid.Row="0">
+                <TextBlock Margin="5" Text="Private Messaging" Style="{ThemeResource TitleTextBlockStyle}" TextTrimming="CharacterEllipsis" Typography.Capitals="SmallCaps"/>
+            </StackPanel>
+        </Grid>
         <!--TODO: Content should be placed within the following grid-->
         <Grid Grid.Row="1" x:Name="ContentRoot">
             <Grid>
@@ -41,6 +42,7 @@
                           ItemClick="ForumThreadList_OnItemClick"
                        ItemTemplate="{StaticResource PrivateMessageDataTemplate}"
                       IsSwipeEnabled="True" Grid.Row="1"
+                       
                       ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="Extended"
                       IsItemClickEnabled="True">
                     <ListView.ItemContainerStyle>

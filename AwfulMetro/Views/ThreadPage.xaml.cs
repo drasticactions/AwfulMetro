@@ -238,11 +238,7 @@ namespace AwfulMetro.Views
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            loadingProgressBar.Visibility = Visibility.Visible;
-            string html = await _postManager.GetThreadPostInformation(_forumThread);
-            ThreadFullView.NavigateToString(html);
-            ThreadSnapView.NavigateToString(html);
-            loadingProgressBar.Visibility = Visibility.Collapsed;
+            _vm.GetForumPosts(_forumThread);
         }
 
         private void CheckOrientation()

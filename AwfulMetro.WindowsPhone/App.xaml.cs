@@ -54,6 +54,17 @@ namespace AwfulMetro
                 base.OnActivated(args);
                 return;
             }
+
+            // Return to Reply Page with image.
+
+            var replyPage = rootFrame.Content as ReplyPage;
+            if (replyPage != null && args is FileOpenPickerContinuationEventArgs)
+            {
+                replyPage.ContinueFileOpenPicker(args as FileOpenPickerContinuationEventArgs);
+            }
+
+            // Voice command!111!!!11!
+
             if (args.Kind == ActivationKind.VoiceCommand)
             {
                 VoiceCommandActivatedEventArgs vcArgs = (VoiceCommandActivatedEventArgs) args;

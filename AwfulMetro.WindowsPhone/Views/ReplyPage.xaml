@@ -1,0 +1,89 @@
+﻿<Page
+    x:Class="AwfulMetro.Views.ReplyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AwfulMetro.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:AwfulMetro.ViewModels"
+    xmlns:tools="using:AwfulMetro.Core.Tools"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <viewModels:ReplyViewModel />
+    </Page.DataContext>
+    <Page.Resources>
+        <Flyout x:Key="PreviewFlyout">
+            <WebView x:Name="ThreadWebView" Margin="5" Height="300" tools:WebViewHelper.Html="{Binding Html}"/>
+        </Flyout>
+        <ListPickerFlyout ItemsPicked="SmiliesPickerFlyout_OnItemsPicked" ItemsSource="{Binding SmileList}" x:Key="SmiliesPickerFlyout">
+            <ListPickerFlyout.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch" Margin="5" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Background="#FF415B64">
+                            <Image Source="{Binding ImageUrl}" Stretch="None"
+                                           AutomationProperties.Name="{Binding Title}" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Margin="15,0,0,0" />
+                    </Grid>
+                </DataTemplate>
+            </ListPickerFlyout.ItemTemplate>
+        </ListPickerFlyout>
+        <ListPickerFlyout ItemsSource="{Binding BbCodes}" ItemsPicked="BBCodePickerFlyout_OnItemsPicked" x:Key="BBCodePickerFlyout">
+            <ListPickerFlyout.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch" Margin="5" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Title}" Foreground="Black"
+                                           Style="{StaticResource TitleTextBlockStyle}" Margin="15,0,0,0" FontFamily="Global User Interface" />
+                    </Grid>
+                </DataTemplate>
+            </ListPickerFlyout.ItemTemplate>
+        </ListPickerFlyout>
+    </Page.Resources>
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TitlePanel -->
+        <Grid Background="#FF1E72C9" RequestedTheme="Dark" Grid.Row="0">
+            <StackPanel VerticalAlignment="Center" Grid.Row="0">
+                <TextBlock Margin="5" Text="Reply" Style="{ThemeResource TitleTextBlockStyle}" TextTrimming="CharacterEllipsis" Typography.Capitals="SmallCaps"/>
+            </StackPanel>
+        </Grid>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" FlyoutBase.AttachedFlyout="{StaticResource PreviewFlyout}" x:Name="ContentRoot">
+            <ProgressBar x:Name="LoadingProgressBar" VerticalAlignment="Top" IsIndeterminate="True" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter} }"/>
+            <TextBox AcceptsReturn="True" TextWrapping="Wrap" IsSpellCheckEnabled="True" x:Name="ReplyTextBox" Margin="15" VerticalAlignment="Stretch"/>
+        </Grid>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Click="PostButton_OnClick" Label="Reply" Icon="Send"/>
+            <AppBarButton x:Name="SmiliesButton" Click="SmiliesButton_OnClick" FlyoutBase.AttachedFlyout="{StaticResource SmiliesPickerFlyout}" Label="Smilies" Icon="Emoji"/>
+            <AppBarButton x:Name="BbCodesButton" Click="BbCodesButton_OnClick" Label="BBCode" Icon="Edit" FlyoutBase.AttachedFlyout="{StaticResource BBCodePickerFlyout}" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Click="PreviousPostsButton_OnClick" Label="Previous Posts"/>
+                <AppBarButton Click="PreviewPostButton_OnClick" Label="Preview Post"/>
+                <AppBarButton Click="ImageUploadButton_OnClick" Label="Upload to Imgur"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
