@@ -1,4 +1,5 @@
-﻿using Windows.Storage;
+﻿using Windows.ApplicationModel.Background;
+using Windows.Storage;
 using AwfulMetro.Common;
 using System;
 using System.Collections.Generic;
@@ -18,26 +19,31 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
-using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
-using AwfulMetro.ViewModels;
-using Newtonsoft.Json;
+using AwfulMetro.Pcl.Core.Tools;
 
 namespace AwfulMetro.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainForumsPage : Page
+    public sealed partial class SettingsPage : Page
     {
         private NavigationHelper navigationHelper;
-        private MainForumsPageViewModel _vm;
-        private ThreadListPageViewModel _threadVm;
-        private ApplicationDataContainer _localSettings;
-        public MainForumsPage()
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private readonly ApplicationDataContainer _localSettings;
+        public SettingsPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = NavigationCacheMode.Enabled;
+            _localSettings = ApplicationData.Current.LocalSettings;
+            if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_BACKGROUND))
+            {
+                BookmarkLiveTiles.IsOn = (bool)_localSettings.Values[Constants.BOOKMARK_BACKGROUND];
+            }
+            if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_STARTUP))
+            {
+                LoadBookmarksOnLoadSwitch.IsOn = (bool)_localSettings.Values[Constants.BOOKMARK_STARTUP];
+            }
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -49,6 +55,15 @@ namespace AwfulMetro.Views
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
+        }
+
+        /// <summary>
+        /// Gets the view model for this <see cref="Page"/>.
+        /// This can be changed to a strongly typed view model.
+        /// </summary>
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return this.defaultViewModel; }
         }
 
         /// <summary>
@@ -64,17 +79,6 @@ namespace AwfulMetro.Views
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            _localSettings = ApplicationData.Current.LocalSettings;
-            if (_localSettings.Values.ContainsKey(Constants.BOOKMARK_STARTUP))
-            {
-                var bookmarks = (bool) _localSettings.Values[Constants.BOOKMARK_STARTUP];
-                if (bookmarks)
-                {
-                    ForumsPivot.SelectedIndex = 1;
-                }
-            }
-            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            _threadVm.Initialize(forum);
         }
 
         /// <summary>
@@ -106,8 +110,6 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm = (MainForumsPageViewModel)DataContext;
-            _threadVm = (ThreadListPageViewModel) BookmarksPivotItem.DataContext;
             this.navigationHelper.OnNavigatedTo(e);
         }
 
@@ -118,34 +120,48 @@ namespace AwfulMetro.Views
 
         #endregion
 
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private void LoadBookmarksOnLoadSwitch_OnToggled(object sender, RoutedEventArgs e)
         {
-            var forumEntity = ((ForumEntity)e.ClickedItem);
-            string jsonObjectString = JsonConvert.SerializeObject(forumEntity);
-            Frame.Navigate(typeof(ThreadListPage), jsonObjectString);
+            var toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch == null) return;
+            if (toggleSwitch.IsOn)
+            {
+                _localSettings.Values[Constants.BOOKMARK_STARTUP] = true;
+            }
+            else
+            {
+                _localSettings.Values[Constants.BOOKMARK_STARTUP] = false;
+            }
         }
 
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
+        private async void BookmarkLiveTiles_Toggled(object sender, RoutedEventArgs e)
         {
-            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            _threadVm.Initialize(forum);
-        }
-
-        private void PrivateMessageButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(PrivateMessagePage));
-        }
-
-        private void ForumThreadList_OnItemClick(object sender, ItemClickEventArgs e)
-        {
-            var forumThread = ((ForumThreadEntity)e.ClickedItem);
-            string jsonObjectString = JsonConvert.SerializeObject(forumThread);
-            Frame.Navigate(typeof(ThreadPage), jsonObjectString);
-        }
-
-        private void SettingsButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof (SettingsPage));
+            try
+            {
+                var toggleSwitch = sender as ToggleSwitch;
+                if (toggleSwitch == null) return;
+                if (toggleSwitch.IsOn)
+                {
+                    // Run bookmark live tile creator every 15 minutes.
+                    // TODO: Change 15 to user selectable value.
+                    BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
+                    BackgroundTaskRegistration task = await
+                        BackgroundTaskUtils.RegisterBackgroundTask(BackgroundTaskUtils.BackgroundTaskEntryPoint,
+                            BackgroundTaskUtils.BackgroundTaskName,
+                            new TimeTrigger(15, false),
+                            null);
+                    _localSettings.Values[Constants.BOOKMARK_BACKGROUND] = true;
+                }
+                else
+                {
+                    BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
+                    _localSettings.Values[Constants.BOOKMARK_BACKGROUND] = false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

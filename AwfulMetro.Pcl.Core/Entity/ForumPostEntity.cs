@@ -34,6 +34,8 @@ namespace AwfulMetro.Pcl.Core.Entity
 
         public string PostDivString { get; private set; }
 
+        public bool HasSeen { get; private set; }
+
         public bool IsQuoting { get; set; }
 
         /// <summary>
@@ -59,18 +61,41 @@ namespace AwfulMetro.Pcl.Core.Entity
                 Int64.Parse(postNode.GetAttributeValue("id", string.Empty)
                     .Replace("post", string.Empty)
                     .Replace("#", string.Empty));
+            var postBodyNode = postNode.Descendants("td")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"));
+            this.FixQuotes(postBodyNode);
             PostHtml =
                     WebUtility.HtmlDecode(
-                        postNode.Descendants("td")
-                            .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"))
-                            .InnerHtml);
+                        postBodyNode.InnerHtml);
             HtmlNode profileLinksNode =
                     postNode.Descendants("td")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
+            HtmlNode postRow =
+                postNode.Descendants("tr").FirstOrDefault();
+
+            if (postRow != null)
+            {
+                HasSeen = postRow.GetAttributeValue("class", string.Empty).Contains("seen");
+            }
 
             User.IsCurrentUserPost =
                 profileLinksNode.Descendants("img")
                     .FirstOrDefault(node => node.GetAttributeValue("alt", string.Empty).Equals("Edit")) != null;
+        }
+
+        private void FixQuotes(HtmlNode postNode)
+        {
+            var quoteList =
+                postNode.Descendants("a")
+                    .Where(node => node.GetAttributeValue("class", string.Empty).Contains("quote_link"));
+            foreach (var quote in quoteList)
+            {
+                int postId = ParseInt(quote.GetAttributeValue("href", string.Empty));
+                quote.Attributes.Remove("href");
+                quote.Attributes.Append("href", "javascript:void(0)");
+                string postIdFormat = string.Concat("'#postId", postId, "'");
+                quote.Attributes.Add("onclick", string.Format("window.ForumCommand('scrollToPost', '{0}')", postId));
+            }
         }
 
         /// <summary>

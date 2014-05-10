@@ -44,7 +44,6 @@ var OpenLink = function(link) {
     switch(file)
     {
         case 'showthread.php':
-            //$.url('?threadid', link)
             ForumCommand('openThread', link);
             break;
         case 'member.php':

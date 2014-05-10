@@ -88,7 +88,7 @@
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1" HorizontalAlignment="Right" Background="#FFC5C5C5">
-                <AppBarButton x:Name="ReplyButton" IsEnabled="False" Label="Reply" Icon="Upload"
+                <AppBarButton x:Name="ReplyButton" Label="Reply" Icon="Upload"
                               Click="ReplyButton_Click" />
                 <AppBarButton x:Name="BackButton" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter} }" Click="BackButton_Click" Label="Back Page"
                               Icon="Back" />
@@ -97,14 +97,9 @@
                 <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh" />
                 <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click"
                               Label="Go To Last Post On Page" Icon="Download" />
-                <ComboBox x:Name="CurrentPageSelector" ItemsSource="{Binding PageNumbers}" SelectionChanged="CurrentPageSelector_SelectionChanged"
-                          Width="79" Height="30">
-                    <ItemsPanelTemplate>
-                        <CarouselPanel />
-                    </ItemsPanelTemplate>
-                </ComboBox>
+
             </StackPanel>
-            <WebView  DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" web:WebViewHelper.Html="{Binding Html}"  Grid.Column="0" x:Name="ThreadFullView" />
+            <WebView IsRightTapEnabled="True" DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" web:WebViewHelper.Html="{Binding Html}"  Grid.Column="0" x:Name="ThreadFullView" />
         </Grid>
 
 
@@ -114,19 +109,13 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Background="#FFC5C5C5" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <AppBarButton x:Name="ReplyButtonSnap" Label="Reply" IsEnabled="False" Icon="Upload"
+                <AppBarButton x:Name="ReplyButtonSnap" Label="Reply" Icon="Upload"
                               Click="ReplyButton_Click" />
                 <AppBarButton x:Name="BackButtonSnap" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter}}" Click="BackButton_Click" Label="Back Page"
                               Icon="Back" />
                 <AppBarButton x:Name="ForwardButtonSnap" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource ForwardButtonEnableConverter}}"  Click="ForwardButton_Click"
                               Label="Forward Page" Icon="Forward" />
                 <AppBarButton x:Name="RefreshButtonSnap" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh" />
-                <ComboBox x:Name="CurrentPageSelectorSnap" ItemsSource="{Binding PageNumbers}"  SelectionChanged="CurrentPageSelectorSnap_SelectionChanged"
-                          Width="79" Height="30">
-                    <ItemsPanelTemplate>
-                        <CarouselPanel />
-                    </ItemsPanelTemplate>
-                </ComboBox>
             </StackPanel>
             <WebView Grid.Row="1" DOMContentLoaded="ThreadSnapView_OnDOMContentLoaded" web:WebViewHelper.Html="{Binding Html}"  x:Name="ThreadSnapView" />
         </Grid>

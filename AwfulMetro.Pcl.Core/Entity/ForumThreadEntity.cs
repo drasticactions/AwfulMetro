@@ -57,6 +57,8 @@ namespace AwfulMetro.Core.Entity
 
         public int ForumId { get; set; }
 
+        public bool HasSeen { get; private set; }
+
         public ObservableCollection<ForumPostEntity> ForumPosts { get; set; }
 
         /// <summary>
@@ -65,6 +67,8 @@ namespace AwfulMetro.Core.Entity
         /// <param name="threadNode">The thread HTML node.</param>
         public void Parse(HtmlNode threadNode)
         {
+           HasSeen = threadNode.GetAttributeValue("class", string.Empty).Contains("seen");
+
            var titleNode = threadNode.Descendants("a")
                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("thread_title")) ??
                            threadNode.Descendants("a")

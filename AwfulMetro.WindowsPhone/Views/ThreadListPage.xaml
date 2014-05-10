@@ -22,7 +22,7 @@
             Source="{Binding SubForumEntities}" />
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
         <DataTemplate x:Key="ForumTemplate">
-            <Grid Width="350" Margin="5" HorizontalAlignment="Stretch">
+            <Grid RequestedTheme="Light" Width="350" Margin="5" HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10"/>
                     <RowDefinition Height="*"/>
@@ -43,9 +43,11 @@
         </Grid.RowDefinitions>
 
         <!-- TitlePanel -->
-        <StackPanel Grid.Row="0" Margin="24,17,0,28">
-            <TextBlock Text="{Binding ForumTitle}" Style="{ThemeResource TitleTextBlockStyle}" Typography.Capitals="SmallCaps"/>
-        </StackPanel>
+        <Grid Background="#FF1E72C9" RequestedTheme="Dark" Grid.Row="0">
+            <StackPanel VerticalAlignment="Center" Grid.Row="0">
+                <TextBlock Margin="5" Text="{Binding ForumTitle}" Style="{ThemeResource TitleTextBlockStyle}" TextTrimming="CharacterEllipsis" Typography.Capitals="SmallCaps"/>
+            </StackPanel>
+        </Grid>
 
         <!--TODO: Content should be placed within the following grid-->
         <Grid Grid.Row="1" x:Name="ContentRoot">

@@ -73,7 +73,12 @@ namespace AwfulMetro.Views
                     Frame.Navigate(typeof (EditReplyPage), command.Id);
                     break;
                 case "scrollToPost":
-                    if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
+                    if (command.Id != null)
+                    {
+                        await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", command.Id) });
+                        await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", command.Id) });
+                    }
+                    else if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
                     {
                         ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
                         ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
@@ -102,7 +107,8 @@ namespace AwfulMetro.Views
                     // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
                     // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
                     var threadManager = new ThreadManager();
-                    var thread = await threadManager.GetThread(new ForumThreadEntity(), command.Id);
+                    var newThreadEntity = new ForumThreadEntity();
+                    var thread = await threadManager.GetThread(newThreadEntity, command.Id);
                     if (thread == null)
                     {
                         var error = new MessageDialog("Specified post was not found in the live forums.")
@@ -112,8 +118,8 @@ namespace AwfulMetro.Views
                         await error.ShowAsync();
                         break;
                     }
-                    string jsonObjectString = JsonConvert.SerializeObject(thread);
-                    Frame.Navigate(typeof (ThreadPage), jsonObjectString);
+                    string jsonObjectString = JsonConvert.SerializeObject(newThreadEntity);
+                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
                     break;
                 default:
                     var msgDlg = new MessageDialog("Not working yet!")
@@ -168,52 +174,19 @@ namespace AwfulMetro.Views
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_forumThread.CurrentPage <= 1) return;
-            // TODO: Remove duplicate buttons and find a better way to handle navigation
-            //CurrentPageSelector.SelectedIndex = _forumThread.CurrentPage - 2;
-            //CurrentPageSelectorSnap.SelectedIndex = _forumThread.CurrentPage - 2;
+            if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
+            _vm.ForumThreadEntity.CurrentPage--;
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Remove duplicate buttons and find a better way to handle navigation
-            if (_forumThread.CurrentPage == _forumThread.TotalPages) return;
-            //CurrentPageSelector.SelectedIndex = _forumThread.CurrentPage + 2;
-            //CurrentPageSelectorSnap.SelectedIndex = _forumThread.CurrentPage + 2;
+            if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
+            _vm.ForumThreadEntity.CurrentPage++;
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
-        private async void CurrentPageSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // TODO: Remove this totally shit code.
-            if (CurrentPageSelector == null || CurrentPageSelector.SelectedValue == null) return;
-            if (_forumThread.CurrentPage == (int) CurrentPageSelector.SelectedValue) return;
-            loadingProgressBar.Visibility = Visibility.Visible;
-            _forumThread.CurrentPage = (int) CurrentPageSelector.SelectedValue;
-            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
-            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButtonSnap.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
-            _forumThread.ScrollToPost = 1;
-            _forumThread.ScrollToPostString = "#pti1";
-            _vm.GetForumPosts(_forumThread);
-            CurrentPageSelectorSnap.SelectedValue = CurrentPageSelector.SelectedValue;
-            loadingProgressBar.Visibility = Visibility.Collapsed;
-        }
 
-        private async void CurrentPageSelectorSnap_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CurrentPageSelectorSnap == null || CurrentPageSelectorSnap.SelectedValue == null) return;
-            if (_forumThread.CurrentPage == (int) CurrentPageSelectorSnap.SelectedValue) return;
-            _forumThread.CurrentPage = (int) CurrentPageSelectorSnap.SelectedValue;
-            BackButton.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButton.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
-            BackButtonSnap.IsEnabled = _forumThread.CurrentPage > 1;
-            ForwardButtonSnap.IsEnabled = _forumThread.CurrentPage != _forumThread.TotalPages;
-            _forumThread.ScrollToPost = 1;
-            _forumThread.ScrollToPostString = "#pti1";
-            _vm.GetForumPosts(_forumThread);
-            CurrentPageSelector.SelectedValue = CurrentPageSelectorSnap.SelectedValue;
-        }
 
         private void ReplyButton_Click(object sender, RoutedEventArgs e)
         {

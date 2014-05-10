@@ -37,5 +37,6 @@
         <common:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
         <tools:ForwardButtonEnableConverter x:Key="ForwardButtonEnableConverter" />
         <tools:BackButtonEnableConverter x:Key="BackButtonEnableConverter" />
+        <tools:HasSeenThreadConverter x:Key="HasSeenThreadConverter" />
     </Application.Resources>
 </Application>

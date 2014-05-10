@@ -19,8 +19,9 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+        <tools:HasSeenThreadConverter x:Key="HasSeenThreadConverter" />
         <DataTemplate x:Key="ForumThreadTemplate">
-            <Grid Margin="3">
+            <Grid Margin="3" RequestedTheme="Light" Background="{Binding HasSeen, Converter={StaticResource HasSeenThreadConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />

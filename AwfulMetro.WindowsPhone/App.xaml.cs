@@ -43,7 +43,7 @@ namespace AwfulMetro
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
             Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-            RegisterVoiceCommands();
+            //RegisterVoiceCommands();
         }
 
         protected override void OnActivated(IActivatedEventArgs args)
