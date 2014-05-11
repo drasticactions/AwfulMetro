@@ -29,17 +29,8 @@ namespace AwfulMetro.Views
     {
 
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private PrivateMessageEntity _privateMessageEntity;
         private readonly PrivateMessageManager _privateMessageManager = new PrivateMessageManager();
-
-        /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
 
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 

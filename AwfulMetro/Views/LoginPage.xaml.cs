@@ -30,6 +30,7 @@ namespace AwfulMetro.Views
         private void OnLoginSuccessful(object sender, EventArgs e)
         {
             Frame.Navigate(typeof (MainForumsPage));
+            Frame.BackStack.Clear(); 
         }
 
         private static async void OnLoginFailed(object sender, EventArgs e)

@@ -57,10 +57,19 @@ namespace AwfulMetro.Pcl.Core.Entity
 
             PostIndex = ParseInt(postNode.GetAttributeValue("data-idx", string.Empty));
 
-            PostId =
-                Int64.Parse(postNode.GetAttributeValue("id", string.Empty)
-                    .Replace("post", string.Empty)
-                    .Replace("#", string.Empty));
+            var postId = postNode.GetAttributeValue("id", string.Empty);
+            if (!string.IsNullOrEmpty(postId) && postId.Contains("#"))
+            {
+                PostId =
+                    Int64.Parse(postNode.GetAttributeValue("id", string.Empty)
+                        .Replace("post", string.Empty)
+                        .Replace("#", string.Empty));
+            }
+            else
+            {
+                PostId = 0;
+            }
+         
             var postBodyNode = postNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"));
             this.FixQuotes(postBodyNode);

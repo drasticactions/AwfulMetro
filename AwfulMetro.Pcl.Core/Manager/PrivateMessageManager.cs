@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Entity;
+using AwfulMetro.Pcl.Core.Tools;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Manager
@@ -95,57 +98,17 @@ namespace AwfulMetro.Core.Manager
             IEnumerable<HtmlNode> postNodes =
                 threadNode.Descendants("table")
                     .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post"));
-
-            // Some thread pages have malformed HTML, which causes HTML Agility pack to get extra nodes we don't want
-            // So instead of directly editing the node, we'll get each post and create a new Html string.
-            string postHtml = string.Empty;
-
-            foreach (HtmlNode post in postNodes)
+          ObservableCollection<ForumPostEntity> postList = new ObservableCollection<ForumPostEntity>();
+            foreach (
+     HtmlNode postNode in
+         postNodes)
             {
-                HtmlNode userInfoNode =
-                    post.Descendants("td")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo")) ??
-                    post.Descendants("dl")
-                            .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"));
-
-                int userId = ParseInt(userInfoNode.GetAttributeValue("class", string.Empty));
-
-                //TODO: Create HTML Render engine to handle this, rather than hard coding. That way it can be used for the front page or other web views.
-
-                HtmlNode profileLinksNode =
-                    post.Descendants("td")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
-
-                profileLinksNode.InnerHtml = string.Empty;
-
-                string clickHandler = string.Format("window.ForumCommand('profile', '{0}')", userId);
-
-                string profileButton = HtmlButtonBuilder.CreateSubmitButton("Profile", clickHandler);
-
-                clickHandler = string.Format("window.ForumCommand('rap_sheet', '{0}')", userId);
-
-                string rapSheetButton = HtmlButtonBuilder.CreateSubmitButton("Rap Sheet", clickHandler);
-
-                clickHandler = string.Format("window.ForumCommand('post_history', '{0}')", userId);
-
-                string postHistoryButton = HtmlButtonBuilder.CreateSubmitButton("Post History", clickHandler);
-
-
-                profileLinksNode.InnerHtml = string.Concat("<ul class=\"profilelinks\">", profileButton, postHistoryButton, rapSheetButton, "</ul>");
-
-                HtmlNode postDateNode = post.Descendants("td")
-                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postdate"));
-                string postDate = postDateNode.InnerText;
-
-
-                //postDateNode.InnerHtml = string.Concat("<div style=\"display: inline-block;\">", toPostButton, usersPostsInThreadButton, "</div>", postDate);
-                postDateNode.InnerHtml = postDate;
-                postHtml += post.OuterHtml;
+                var post = new ForumPostEntity();
+                post.Parse(postNode);
+                postList.Add(post);
             }
 
-            bodyNode.InnerHtml = postHtml;
-
-            return WebUtility.HtmlDecode(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml));
+            return await HtmlFormater.FormatThreadHtml(postList);
         }
 
         private int ParseInt(string postClass)

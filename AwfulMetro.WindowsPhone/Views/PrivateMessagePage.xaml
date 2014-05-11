@@ -31,7 +31,7 @@
         </Grid>
         <!--TODO: Content should be placed within the following grid-->
         <Grid Grid.Row="1" x:Name="ContentRoot">
-            <Grid>
+            <Grid RequestedTheme="Light">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15"/>
                     <RowDefinition Height="*"/>

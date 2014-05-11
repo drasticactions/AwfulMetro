@@ -1,4 +1,5 @@
 ﻿using Windows.Storage;
+using Windows.UI.Popups;
 using AwfulMetro.Common;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,9 @@ using Windows.UI.Xaml.Navigation;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 using AwfulMetro.Core.Entity;
+using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Tools;
 using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
@@ -146,6 +149,49 @@ namespace AwfulMetro.Views
         private void SettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof (SettingsPage));
+        }
+
+        private void LogoutButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var message = string.Format("Are you sure you want to logout?{0}I mean, I could care less. It's up to you...", Environment.NewLine);
+            var msgBox =
+                new MessageDialog(message,
+                    "Make all your wildest dreams come true...");
+            var okButton = new UICommand("Of course!") { Invoked = OkButtonClick };
+            var cancelButton = new UICommand("Never!") { Invoked = cancelButtonClick };
+            msgBox.Commands.Add(okButton);
+            msgBox.Commands.Add(cancelButton);
+            msgBox.ShowAsync();
+        }
+
+        private async void OkButtonClick(IUICommand command)
+        {
+            var authenticationManager = new AuthenticationManager();
+            var result = await authenticationManager.Logout();
+            var localSettings = ApplicationData.Current.LocalSettings;
+
+            if (localSettings.Values.ContainsKey(Constants.BOOKMARK_BACKGROUND))
+            {
+                BackgroundTaskUtils.UnregisterBackgroundTasks(BackgroundTaskUtils.BackgroundTaskName);
+                localSettings.Values[Constants.BOOKMARK_BACKGROUND] = false;
+            }
+
+            if (result)
+            {
+                Frame.Navigate(typeof(LoginPage));
+            }
+            else
+            {
+                var msgBox =
+                new MessageDialog("Could not log you out! You're stuck here forever! HA HA HA!",
+                    "Logout error");
+                msgBox.ShowAsync();
+            }
+        }
+
+        private void cancelButtonClick(IUICommand command)
+        {
+            return;
         }
     }
 }

@@ -185,9 +185,8 @@
         <CommandBar>
             <AppBarButton Label="Refresh" x:Name="RefreshButton" Click="RefreshButton_OnClick" Icon="Refresh"/>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Private Messages" x:Name="PrivateMessageButton" Click="PrivateMessageButton_OnClick" IsCompact="True"/>
                 <AppBarButton Label="Settings" Click="SettingsButton_OnClick"/>
-                <AppBarButton Label="Fulfill Your Dreams" IsCompact="True"/>
+                <AppBarButton Label="Fulfill Your Dreams" Click="LogoutButton_OnClick" IsCompact="True"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
