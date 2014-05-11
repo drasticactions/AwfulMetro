@@ -66,12 +66,24 @@ namespace AwfulMetro.Pcl.Core.Entity
                     WebUtility.HtmlDecode(
                         postNode.Descendants("dt")
                             .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author"))
-                            .InnerHtml),
-                DateJoined =
-                    DateTime.Parse(postNode.Descendants("dd")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("registered"))
-                        .InnerHtml)
+                            .InnerHtml)
             };
+            var dateTimeNode = postNode.Descendants("dd")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("registered"));
+            if (dateTimeNode != null)
+            {
+                try
+                {
+                    user.DateJoined = DateTime.Parse(dateTimeNode.InnerHtml);
+                }
+                catch (Exception)
+                {
+                    // Parsing failed, so say they joined today.
+                    // I blame SA for any parsing failures.
+                    user.DateJoined = DateTime.UtcNow;
+                }
+                
+            }
             HtmlNode avatarTitle =
                 postNode.Descendants("dd")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("title"));
@@ -90,8 +102,11 @@ namespace AwfulMetro.Pcl.Core.Entity
                 user.AvatarLink = avatarImage.GetAttributeValue("src", string.Empty);
             }
             var userIdNode = postNode.DescendantsAndSelf("td")
-                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"));
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo")) ??
+                             postNode.DescendantsAndSelf("div")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo"));
             if (userIdNode == null) return user;
+
             var splitString = userIdNode
                 .GetAttributeValue("class", string.Empty)
                 .Split('-');
@@ -101,6 +116,9 @@ namespace AwfulMetro.Pcl.Core.Entity
                 user.Id =
                     Convert.ToInt64(splitString[1]);
             }
+            // Remove the UserInfo node after we are done with it, because
+            // some forums (FYAD) use it in the body of posts. Why? Who knows!11!1
+            userIdNode.Remove();
             return user;
         }
 

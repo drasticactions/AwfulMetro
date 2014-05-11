@@ -65,6 +65,12 @@ namespace AwfulMetro.Pcl.Core.Entity
                         .Replace("post", string.Empty)
                         .Replace("#", string.Empty));
             }
+            else if (!string.IsNullOrEmpty(postId) && postId.Contains("post"))
+            {
+                PostId =
+                    Int64.Parse(postNode.GetAttributeValue("id", string.Empty)
+                        .Replace("post", string.Empty));
+            }
             else
             {
                 PostId = 0;

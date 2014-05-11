@@ -64,7 +64,7 @@ namespace AwfulMetro.Views
             var jsonObjectString = (string)e.NavigationParameter;
             _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (_forumEntity == null) return;
-            if(_vm.ForumPageScrollingCollection == null)
+            if (_vm.ForumEntity == null || _vm.ForumEntity.ForumId != _forumEntity.ForumId)
             _vm.Initialize(_forumEntity);
         }
 

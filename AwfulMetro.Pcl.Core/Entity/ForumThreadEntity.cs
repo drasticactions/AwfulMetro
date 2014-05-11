@@ -175,8 +175,15 @@ namespace AwfulMetro.Core.Entity
             HtmlNode second =
                 threadNode.Descendants("td")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon2"));
-            if (second != null)
+            if (second == null) return;
+            try
+            {
                 StoreImageIconLocation = second.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
+            }
+            catch (Exception)
+            {
+                StoreImageIconLocation = null;
+            }
         }
 
         /// <summary>

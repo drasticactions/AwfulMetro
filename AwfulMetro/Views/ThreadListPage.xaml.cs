@@ -82,8 +82,8 @@ namespace AwfulMetro.Views
             var jsonObjectString = (string) e.NavigationParameter;
             _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (_forumEntity == null) return;
-            if(_vm.ForumPageScrollingCollection == null)
-            _vm.Initialize(_forumEntity);
+            if (_vm.ForumEntity == null || _vm.ForumEntity.ForumId != _forumEntity.ForumId || _forumEntity.IsBookmarks)
+                _vm.Initialize(_forumEntity);
 
             // TODO: This is stupid shit that should be removed.
             ViewStateStringFullScreen = "FullScreen" + GetViewStateString(_forumEntity.ForumId);

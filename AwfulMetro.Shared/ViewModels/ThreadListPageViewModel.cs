@@ -24,7 +24,7 @@ namespace AwfulMetro.ViewModels
         private ApplicationDataContainer _localSettings;
         private string _forumTitle;
         private bool _isBookmarks;
-
+        public ForumEntity ForumEntity { get; set; }
         public ThreadListPageViewModel()
         {
             this.UnreadCommand = new UnreadCommand(ExecuteUnreadCommand);
@@ -73,8 +73,10 @@ namespace AwfulMetro.ViewModels
 
         public async void Initialize(ForumEntity forumEntity)
         {
+            this.ForumEntity = forumEntity;
             IsBookmarks = forumEntity.IsBookmarks;
             ForumTitle = forumEntity.Name;
+            SubForumEntities = new ObservableCollection<ForumEntity>();
             if (forumEntity.IsBookmarks)
             {
                 _localSettings = ApplicationData.Current.LocalSettings;
