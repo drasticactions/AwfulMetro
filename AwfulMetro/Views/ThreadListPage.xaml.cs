@@ -82,6 +82,7 @@ namespace AwfulMetro.Views
             var jsonObjectString = (string) e.NavigationParameter;
             _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (_forumEntity == null) return;
+            if(_vm.ForumPageScrollingCollection == null)
             _vm.Initialize(_forumEntity);
 
             // TODO: This is stupid shit that should be removed.
@@ -330,6 +331,7 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if(_vm == null)
             _vm = (ThreadListPageViewModel)DataContext;
             _navigationHelper.OnNavigatedTo(e);
             SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;

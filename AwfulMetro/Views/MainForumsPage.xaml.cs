@@ -125,6 +125,7 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if(_vm == null)
             _vm = (MainForumsPageViewModel)DataContext;
             NavigationHelper.OnNavigatedTo(e);
         }
