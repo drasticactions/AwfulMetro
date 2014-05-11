@@ -562,7 +562,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="#FFF1F1F1">
+                        <Grid Background="{Binding HasSeen, Converter={StaticResource HasSeenThreadConverter}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
@@ -672,7 +672,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Background="#FFF1F1F1">
+                        <Grid Background="{Binding HasSeen, Converter={StaticResource HasSeenThreadConverter}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
@@ -731,4 +731,15 @@
                          Height="10" VerticalAlignment="Top" />
         </Grid>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="Refresh" Icon="Refresh" Click="RefreshBarButton_OnClick"/>
+            <AppBarButton Click="AddThreadButton_Click" Icon="Add" Label="New Thread" />
+            <AppBarButton Click="ReturnToMainButton_OnClick" Label="Return to Main Forums">
+                <AppBarButton.Icon>
+                    <SymbolIcon/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
