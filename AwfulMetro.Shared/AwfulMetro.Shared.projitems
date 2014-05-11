@@ -9,6 +9,8 @@
     <Import_RootNamespace>AwfulMetro</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\IBookmarkCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\IUnreadCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\AsyncDelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
@@ -19,10 +21,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tools\AvatarWebViewConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BackButtonEnableConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BookmarkSorting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\BookmarkTextConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\DateTimeParseConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ForwardButtonEnableConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\HasSeenThreadConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\InvertBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\OpenMenuFlyoutAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\RatingVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\RepliesSinceLastOpenedColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\SubforumBodyColorConverter.cs" />

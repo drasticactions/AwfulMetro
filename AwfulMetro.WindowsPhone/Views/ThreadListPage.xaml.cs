@@ -64,6 +64,7 @@ namespace AwfulMetro.Views
             var jsonObjectString = (string)e.NavigationParameter;
             _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (_forumEntity == null) return;
+            if(_vm.ForumPageScrollingCollection == null)
             _vm.Initialize(_forumEntity);
         }
 
@@ -96,6 +97,7 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if(_vm == null)
             _vm = (ThreadListPageViewModel)DataContext;
             this._navigationHelper.OnNavigatedTo(e);
         }

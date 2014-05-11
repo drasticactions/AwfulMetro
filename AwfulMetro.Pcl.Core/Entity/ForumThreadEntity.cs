@@ -57,7 +57,9 @@ namespace AwfulMetro.Core.Entity
 
         public int ForumId { get; set; }
 
-        public bool HasSeen { get; private set; }
+        public bool HasSeen { get; set; }
+
+        public bool IsBookmark { get; set; }
 
         public ObservableCollection<ForumPostEntity> ForumPosts { get; set; }
 

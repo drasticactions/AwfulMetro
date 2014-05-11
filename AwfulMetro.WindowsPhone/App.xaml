@@ -5,7 +5,9 @@
     xmlns:local="using:AwfulMetro"
     xmlns:tools="using:AwfulMetro.Tools"
     xmlns:common="using:AwfulMetro.Common"
-    xmlns:tools1="using:AwfulMetro.Core.Tools">
+    xmlns:tools1="using:AwfulMetro.Core.Tools"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
 
     <Application.Resources>
         <SolidColorBrush x:Key="AwfulBlue" Color="#FF1E72C9"/>
@@ -20,6 +22,7 @@
             </Grid>
         </DataTemplate>
         <tools:HasSeenThreadConverter x:Key="HasSeenThreadConverter" />
+        <tools:BookmarkTextConverter x:Key="BookmarkTextConverter" />
         <DataTemplate x:Key="ForumThreadTemplate">
             <Grid Margin="3" RequestedTheme="Light" Background="{Binding HasSeen, Converter={StaticResource HasSeenThreadConverter}}">
                 <Grid.RowDefinitions>
@@ -78,6 +81,17 @@
                         </StackPanel>
                     </Border>
                 </Grid>
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="Holding">
+                        <tools:OpenMenuFlyoutAction />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+                <FlyoutBase.AttachedFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Command="{Binding DataContext.UnreadCommand, ElementName=ForumThreadList}"  CommandParameter="{Binding ThreadId}" Text="Unread"/>
+                        <MenuFlyoutItem Command="{Binding DataContext.BookmarkCommand, ElementName=ForumThreadList}" CommandParameter="{Binding}" Text="{Binding IsBookmark, Converter={StaticResource BookmarkTextConverter}}"/>
+                    </MenuFlyout>
+                </FlyoutBase.AttachedFlyout>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PrivateMessageDataTemplate">

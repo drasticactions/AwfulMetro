@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Popups;
+using AwfulMetro.Commands;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
@@ -25,6 +27,8 @@ namespace AwfulMetro.ViewModels
 
         public ThreadListPageViewModel()
         {
+            this.UnreadCommand = new UnreadCommand(ExecuteUnreadCommand);
+            this.BookmarkCommand = new BookmarkCommand(ExecuteBookmarkCommand);
         }
 
         public string ForumTitle
@@ -81,6 +85,60 @@ namespace AwfulMetro.ViewModels
                 ForumPageScrollingCollection = new PageScrollingCollection(forumEntity, 1);
                 SubForumEntities = await _forumManager.GetSubForums(forumEntity);
             }
+        }
+
+        public IUnreadCommand UnreadCommand { protected set; get; }
+
+        public IBookmarkCommand BookmarkCommand { protected set; get; }
+
+        private async void ExecuteUnreadCommand(object param)
+        {
+            var threadId = (Int64)param;
+            var thread = ForumPageScrollingCollection.FirstOrDefault(node => node.ThreadId == threadId);
+            if (thread == null)
+                return;
+            var threadManager = new ThreadManager();
+            await threadManager.MarkThreadUnread(new List<long> { thread.ThreadId });
+            thread.HasBeenViewed = false;
+            thread.HasSeen = false;
+            thread.ReplyCount = 0;
+            var msgDlg =
+                    new MessageDialog(
+                        string.Format("'{0}' is now \"Unread\"! Now go outside and do something productive!{1}{2}",
+                            thread.Name, Environment.NewLine, Constants.ASCII_1))
+                    {
+                        DefaultCommandIndex = 1
+                    };
+            await msgDlg.ShowAsync();
+        }
+
+        private async void ExecuteBookmarkCommand(object param)
+        {
+            var thread = param as ForumThreadEntity;
+            if (thread == null)
+                return;
+            var threadManager = new ThreadManager();
+            if (thread.IsBookmark)
+            {
+                await threadManager.RemoveBookmarks(new List<long> { thread.ThreadId });
+                ForumPageScrollingCollection.Remove(thread);
+                var msgDlg =
+                       new MessageDialog(string.Format("'{0}' has been removed from your bookmarks! I love you!{1}{2}",
+                           thread.Name, Environment.NewLine, Constants.ASCII_1))
+                       {
+                           DefaultCommandIndex = 1
+                       };
+                await msgDlg.ShowAsync();
+                return;
+            }
+            await threadManager.AddBookmarks(new List<long> { thread.ThreadId });
+            var msgDlg2 =
+                   new MessageDialog(string.Format("'{0}' has been added to your bookmarks! I love you!{1}{2}",
+                       thread.Name, Environment.NewLine, Constants.ASCII_1))
+                   {
+                       DefaultCommandIndex = 1
+                   };
+            await msgDlg2.ShowAsync();
         }
     }
 }

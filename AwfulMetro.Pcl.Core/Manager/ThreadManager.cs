@@ -115,6 +115,7 @@ namespace AwfulMetro.Core.Manager
             {
                 var threadEntity = new ForumThreadEntity();
                 threadEntity.Parse(threadNode);
+                threadEntity.IsBookmark = true;
                 forumThreadList.Add(threadEntity);
             }
             return forumThreadList;

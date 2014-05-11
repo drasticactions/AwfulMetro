@@ -3,9 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AwfulMetro.Views"
+    NavigationCacheMode="Enabled"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
+    x:Name="PageRoot"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
@@ -155,7 +157,7 @@
                         <CollectionViewSource
             x:Name="ForumThreadViewSource"
             d:Source="{Binding ForumPageScrollingCollection, Source={d:DesignData /SampleData/ThreadListPageViewModelSampleData.xaml}}"
-            Source="{Binding ForumPageScrollingCollection}"/>
+            Source="{Binding ForumPageScrollingCollection, Mode=TwoWay}"/>
                     </PivotItem.Resources>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -168,7 +170,7 @@
                        ItemTemplate="{StaticResource ForumThreadTemplate}"
                       IsSwipeEnabled="True" Grid.Row="1"
                                   ItemClick="ForumThreadList_OnItemClick"
-                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="Extended"
+                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}, Mode=TwoWay}" SelectionMode="Extended"
                       IsItemClickEnabled="True">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">

@@ -6,11 +6,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Xml.Serialization;
 using Windows.Storage;
+using Windows.UI.Popups;
+using AwfulMetro.Commands;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 
 namespace AwfulMetro.ViewModels
 {

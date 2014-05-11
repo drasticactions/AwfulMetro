@@ -77,6 +77,7 @@ namespace AwfulMetro.Views
                 }
             }
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+            if(_threadVm.ForumPageScrollingCollection == null)
             _threadVm.Initialize(forum);
         }
 
@@ -109,7 +110,9 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if(_vm == null)
             _vm = (MainForumsPageViewModel)DataContext;
+            if(_threadVm == null)
             _threadVm = (ThreadListPageViewModel) BookmarksPivotItem.DataContext;
             this.navigationHelper.OnNavigatedTo(e);
         }

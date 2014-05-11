@@ -19,7 +19,7 @@
         <m2:DefaultTile ShortName="Awful Forums Reader" Wide310x150Logo="Assets\Wide310x150Logo.png">
         </m2:DefaultTile>
         <m2:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png" />
-        <m2:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="white" />
+        <m2:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#1E72C9" />
       </m2:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="AwfulMetro.BackgroundStatus.BackgroundNotifyStatus">
