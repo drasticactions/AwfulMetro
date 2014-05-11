@@ -39,11 +39,11 @@ namespace AwfulMetro.Pcl.Core.Tools
                 string userAvatar = string.Empty;
                 if (!string.IsNullOrEmpty(post.User.AvatarLink))
                     userAvatar = string.Concat("<img src=\"", post.User.AvatarLink,
-                        "\" alt=\"\" class=\"av\" border=\"0\" onclick=\"window.ForumCommand('profile','", post.User.Id, "');\">");
+                        "\" alt=\"\" class=\"av\" border=\"0\">");
                 string username =
                     string.Format(
-                        "<h2 class=\"text article-title onclick=\"window.ForumCommand('profile, '{1}');\" win-type-ellipsis\"><span class=\"author\">{0}</span><h2>",
-                        post.User.Username, post.User.Id);
+                        "<h2 class=\"text article-title win-type-ellipsis\"><span class=\"author\">{0}</span><h2>",
+                        post.User.Username);
                 string postData =
                     string.Format(
                         "<h4 class=\"text article-title win-type-ellipsis\"><span class=\"registered\">{0}</span><h4>",
