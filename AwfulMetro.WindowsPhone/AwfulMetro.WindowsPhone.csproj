@@ -85,6 +85,10 @@
       <Project>{5fbcefb5-672f-45f5-a7d8-5788d3565b28}</Project>
       <Name>AwfulMetro.Pcl.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BackgroundStatus\AwfulMetro.BackgroundStatus.csproj">
+      <Project>{d7fba7ee-e522-41e8-b47c-0d49292d4848}</Project>
+      <Name>AwfulMetro.BackgroundStatus</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
