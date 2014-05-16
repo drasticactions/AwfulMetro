@@ -7,7 +7,8 @@
     xmlns:common="using:AwfulMetro.Common"
     xmlns:tools1="using:AwfulMetro.Core.Tools"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core">
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:userControls="using:AwfulMetro.UserControls">
 
     <Application.Resources>
         <SolidColorBrush x:Key="AwfulBlue" Color="#FF1E72C9"/>
@@ -25,6 +26,11 @@
         <tools:BookmarkTextConverter x:Key="BookmarkTextConverter" />
         <DataTemplate x:Key="ForumThreadTemplate">
             <Grid Margin="3" RequestedTheme="Light" Background="{Binding HasSeen, Converter={StaticResource HasSeenThreadConverter}}">
+                <Grid.Transitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition/>
+                    </TransitionCollection>
+                </Grid.Transitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -40,11 +46,11 @@
                     </Grid.ColumnDefinitions>
                     <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                         Grid.Column="0" Width="60" Height="15">
-                        <Image Source="{Binding ImageIconLocation}"
+                        <userControls:ImageLoader Source="{Binding ImageIconLocation}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Border>
                     <Grid Grid.Column="1" >
-                        <Image Margin="0,0,10,0" Source="{Binding StoreImageIconLocation}"
+                        <userControls:ImageLoader Margin="0,0,10,0" Source="{Binding StoreImageIconLocation}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Grid>
                     <StackPanel Grid.Column="2">
@@ -66,7 +72,7 @@
                                         Visibility="{Binding RatingImage, Converter={StaticResource RatingVisibilityConverter}}"
                                         HorizontalAlignment="Left" Margin="0,0,0,0" Background="Transparent" Width="46"
                                         Height="20">
-                            <Image Source="{Binding RatingImage}"
+                            <userControls:ImageLoader Source="{Binding RatingImage}"
                                                AutomationProperties.Name="{Binding Title}" />
                         </Border>
                     </StackPanel>
@@ -110,12 +116,12 @@
                     </Grid.ColumnDefinitions>
                     <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                         Grid.Column="0" Width="16" Height="16">
-                        <Image Source="{Binding Status}"
+                        <userControls:ImageLoader Source="{Binding Status}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Border>
                     <Border Background="Transparent"
                                         Grid.Column="1" Width="60" Height="15">
-                        <Image Source="{Binding Icon}"
+                        <userControls:ImageLoader Source="{Binding Icon}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Border>
                     <StackPanel Grid.Column="2">

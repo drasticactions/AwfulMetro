@@ -34,6 +34,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tools\SubforumHeaderColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ThreadCountConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ThreadHeaderColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserControls\ImageLoader.xaml.cs">
+      <DependentUpon>ImageLoader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainForumsPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NewThreadViewModel.cs" />
@@ -83,6 +86,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)UserControls\ImageLoader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,6 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
+    xmlns:userControls="using:AwfulMetro.UserControls"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewModels:ThreadListPageViewModel />
@@ -564,6 +565,11 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="{Binding HasSeen, Converter={StaticResource HasSeenThreadConverter}}">
+                            <Grid.Transitions>
+                                <TransitionCollection>
+                                    <EntranceThemeTransition/>
+                                </TransitionCollection>
+                            </Grid.Transitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
@@ -579,11 +585,11 @@
                                 </Grid.ColumnDefinitions>
                                 <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                         Grid.Column="0" Width="60" Height="15">
-                                    <Image Source="{Binding ImageIconLocation}"
+                                    <userControls:ImageLoader Source="{Binding ImageIconLocation}"
                                            AutomationProperties.Name="{Binding Title}" />
                                 </Border>
                                 <Grid Grid.Column="1" >
-                                    <Image Margin="0,0,10,0" Source="{Binding StoreImageIconLocation}"
+                                    <userControls:ImageLoader Margin="0,0,10,0" Source="{Binding StoreImageIconLocation}"
                                            AutomationProperties.Name="{Binding Title}" />
                                 </Grid>
                                 <StackPanel Grid.Column="2">
@@ -605,7 +611,7 @@
                                         Visibility="{Binding RatingImage, Converter={StaticResource RatingVisibilityConverter}}"
                                         HorizontalAlignment="Left" Margin="0,0,0,0" Background="Transparent" Width="46"
                                         Height="20">
-                                        <Image Source="{Binding RatingImage}"
+                                        <userControls:ImageLoader Source="{Binding RatingImage}"
                                                AutomationProperties.Name="{Binding Title}" />
                                     </Border>
                                 </StackPanel>

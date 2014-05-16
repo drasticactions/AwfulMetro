@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
+    xmlns:userControls="using:AwfulMetro.UserControls"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewModels:PrivateMessageViewModel />
@@ -87,7 +88,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                         Grid.Column="0" Width="16" Height="16">
-                                    <Image Source="{Binding Status}"
+                                    <userControls:ImageLoader Source="{Binding Status}"
                                            AutomationProperties.Name="{Binding Title}" />
                                 </Border>
                                 <Border Background="Transparent"
