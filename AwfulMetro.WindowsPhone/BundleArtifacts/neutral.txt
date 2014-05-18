@@ -1,0 +1,4 @@
+MainPackage=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro.WindowsPhone\bin\Release\AwfulMetro.WindowsPhone_1.1.0.2_Bundle\AwfulMetro.WindowsPhone_1.1.0.2_AnyCPU.appx
+SymbolPackage=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro.WindowsPhone\AppPackages\AwfulMetro.WindowsPhone_1.1.0.2_Test\AwfulMetro.WindowsPhone_1.1.0.2_AnyCPU.appxsym
+ResourcePack=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro.WindowsPhone\bin\Release\AwfulMetro.WindowsPhone_1.1.0.2_Bundle\AwfulMetro.WindowsPhone_1.1.0.2_scale-100.appx
+ResourcePack=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro.WindowsPhone\bin\Release\AwfulMetro.WindowsPhone_1.1.0.2_Bundle\AwfulMetro.WindowsPhone_1.1.0.2_scale-140.appx

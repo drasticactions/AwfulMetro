@@ -1,6 +1,7 @@
 ﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Storage;
@@ -269,14 +270,23 @@ namespace AwfulMetro.Views
             StorageFile file = await openPicker.PickSingleFileAsync();
             if (file == null) return;
             IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
-            ImgurEntity result = await UploadManager.UploadImgur(stream);
+            ImgurEntity result = null;
+            try
+            {
+                result = await UploadManager.UploadImgur(stream);
+            }
+            catch (Exception)
+            {
+
+                Debug.WriteLine("Error with Imgur *SHOCK*");
+            }
             if (result == null)
             {
-                var msgDlg = new MessageDialog("Something went wrong with the upload. :-(.");
+                var msgDlg = new MessageDialog("Something went wrong with the upload. My heart bleeds for you.");
                 msgDlg.ShowAsync();
-                loadingProgressBar.Visibility = Visibility.Collapsed;
                 return;
             }
+            
 
             // We have got an image up on Imgur! Time to get it into the reply box!
 

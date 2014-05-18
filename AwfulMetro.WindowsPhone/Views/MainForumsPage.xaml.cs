@@ -112,7 +112,6 @@ namespace AwfulMetro.Views
         {
             if(_vm == null)
             _vm = (MainForumsPageViewModel)DataContext;
-            if(_threadVm == null)
             _threadVm = (ThreadListPageViewModel) BookmarksPivotItem.DataContext;
             this.navigationHelper.OnNavigatedTo(e);
         }

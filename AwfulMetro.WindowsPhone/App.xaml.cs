@@ -63,6 +63,12 @@ namespace AwfulMetro
                 replyPage.ContinueFileOpenPicker(args as FileOpenPickerContinuationEventArgs);
             }
 
+            var editPage = rootFrame.Content as EditPage;
+            if (editPage != null && args is FileOpenPickerContinuationEventArgs)
+            {
+                editPage.ContinueFileOpenPicker(args as FileOpenPickerContinuationEventArgs);
+            }
+
             // Voice command!111!!!11!
 
             if (args.Kind == ActivationKind.VoiceCommand)

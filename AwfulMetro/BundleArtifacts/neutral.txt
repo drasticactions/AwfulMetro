@@ -1,4 +1,4 @@
-MainPackage=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\bin\Release\AwfulMetro_1.6.0.45_Bundle\AwfulMetro_1.6.0.45_AnyCPU.appx
-SymbolPackage=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\AppPackages\AwfulMetro_1.6.0.45_Test\AwfulMetro_1.6.0.45_AnyCPU.appxsym
-ResourcePack=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\bin\Release\AwfulMetro_1.6.0.45_Bundle\AwfulMetro_1.6.0.45_scale-140.appx
-ResourcePack=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\bin\Release\AwfulMetro_1.6.0.45_Bundle\AwfulMetro_1.6.0.45_scale-180.appx
+MainPackage=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\bin\Release\AwfulMetro_2.0.0.49_Bundle\AwfulMetro_2.0.0.49_AnyCPU.appx
+SymbolPackage=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\AppPackages\AwfulMetro_2.0.0.49_Test\AwfulMetro_2.0.0.49_AnyCPU.appxsym
+ResourcePack=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\bin\Release\AwfulMetro_2.0.0.49_Bundle\AwfulMetro_2.0.0.49_scale-140.appx
+ResourcePack=C:\Users\Timothy\Documents\GitHub\AwfulMetro\AwfulMetro\bin\Release\AwfulMetro_2.0.0.49_Bundle\AwfulMetro_2.0.0.49_scale-180.appx

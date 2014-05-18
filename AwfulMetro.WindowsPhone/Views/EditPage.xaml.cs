@@ -34,18 +34,19 @@ namespace AwfulMetro.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ReplyPage : Page
+    public sealed partial class EditPage : Page
     {
         private NavigationHelper navigationHelper;
         private ReplyViewModel _vm;
-        public ReplyPage()
+        public EditPage()
         {
             this.InitializeComponent();
-            _vm = (ReplyViewModel) DataContext;
+            _vm = (ReplyViewModel)DataContext;
             this.navigationHelper = new NavigationHelper(this);
             ThreadWebView.ScriptNotify += ThreadWebView_ScriptNotify;
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+        
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace AwfulMetro.Views
             }
             catch (Exception)
             {
-
+                
                 Debug.WriteLine("Error with Imgur *SHOCK*");
             }
             if (result == null)
@@ -102,14 +103,14 @@ namespace AwfulMetro.Views
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             var jsonObjectString = (string)e.NavigationParameter;
-            bool result = await _vm.Initialize(jsonObjectString);
+            bool result = await _vm.InitializeEdit(jsonObjectString);
             _vm.GetSmiliesPhone();
             if (result)
             {
                 ReplyTextBox.Text = _vm.ForumReplyEntity.Quote;
                 return;
             }
-            var msgDlg = new MessageDialog("You can't reply in this thread!");
+            var msgDlg = new MessageDialog("You can't edit posts!");
             await msgDlg.ShowAsync();
             Frame.GoBack();
         }
@@ -123,7 +124,7 @@ namespace AwfulMetro.Views
         private async void ThreadWebView_ScriptNotify(object sender, NotifyEventArgs e)
         {
             string stringJson = e.Value;
-            var command = JsonConvert.DeserializeObject<ThreadCommand>(stringJson);
+            var command = JsonConvert.DeserializeObject<EditPage.ThreadCommand>(stringJson);
             var replyManager = new ReplyManager();
             switch (command.Command)
             {
@@ -166,19 +167,6 @@ namespace AwfulMetro.Views
                     break;
             }
         }
-
-        /// <summary>
-        /// Preserves state associated with this page in case the application is suspended or the
-        /// page is discarded from the navigation cache.  Values must conform to the serialization
-        /// requirements of <see cref="SuspensionManager.SessionState"/>.
-        /// </summary>
-        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
-        /// <param name="e">Event data that provides an empty dictionary to be populated with
-        /// serializable state.</param>
-        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
-        {
-        }
-
         #region NavigationHelper registration
 
         /// <summary>
@@ -208,7 +196,7 @@ namespace AwfulMetro.Views
 
         private async void PreviewPostButton_OnClick(object sender, RoutedEventArgs e)
         {
-            bool result = await _vm.GetPreviewPost(ReplyTextBox.Text);
+            bool result = await _vm.GetPreviewEditPost(ReplyTextBox.Text);
             if (!result)
             {
                 string messageText =
@@ -247,7 +235,7 @@ namespace AwfulMetro.Views
             LoadingProgressBar.Visibility = Visibility.Visible;
             _vm.ForumReplyEntity.MapMessage(ReplyTextBox.Text);
             var replyManager = new ReplyManager();
-            bool result = await replyManager.SendPost(_vm.ForumReplyEntity);
+            bool result = await replyManager.SendUpdatePost(_vm.ForumReplyEntity);
             if (result)
             {
                 Frame.GoBack();
@@ -255,7 +243,7 @@ namespace AwfulMetro.Views
             else
             {
                 LoadingProgressBar.Visibility = Visibility.Collapsed;
-                var msgDlg = new MessageDialog("Error making reply!");
+                var msgDlg = new MessageDialog("Error making edit!");
                 await msgDlg.ShowAsync();
             }
         }
@@ -295,5 +283,19 @@ namespace AwfulMetro.Views
                 if (replyText != null) ReplyTextBox.Text = replyText.Insert(ReplyTextBox.SelectionStart, text);
             }
         }
+
+        /// <summary>
+        /// Preserves state associated with this page in case the application is suspended or the
+        /// page is discarded from the navigation cache.  Values must conform to the serialization
+        /// requirements of <see cref="SuspensionManager.SessionState"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
+        /// <param name="e">Event data that provides an empty dictionary to be populated with
+        /// serializable state.</param>
+        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        {
+        }
+
+
     }
 }

@@ -82,7 +82,7 @@ namespace AwfulMetro.Views
                     Frame.Navigate(typeof(ReplyPage), command.Id);
                     break;
                 case "edit":
-                    //Frame.Navigate(typeof(EditReplyPage), command.Id);
+                    Frame.Navigate(typeof(EditPage), command.Id);
                     break;
                 case "setFont":
                     break;

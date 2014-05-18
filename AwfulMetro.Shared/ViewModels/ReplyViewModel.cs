@@ -150,6 +150,18 @@ namespace AwfulMetro.ViewModels
 
         }
 
+        public async Task<bool> InitializeEdit(string jsonObjectString)
+        {
+            IsLoading = true;
+            long threadId = Convert.ToInt64(jsonObjectString); ;
+            var replyManager = new ReplyManager();
+                ForumReplyEntity = await replyManager.GetReplyCookiesForEdit(threadId);
+            IsLoading = false;
+            return ForumReplyEntity != null;
+
+        }
+
+
         public async Task<bool> GetPreviewPost(string replyText)
         {
             Html = string.Empty;
@@ -157,6 +169,17 @@ namespace AwfulMetro.ViewModels
             ForumReplyEntity.MapMessage(replyText);
             var replyManager = new ReplyManager();
             Html = await replyManager.CreatePreviewPost(ForumReplyEntity);
+            IsLoading = false;
+            return !string.IsNullOrEmpty(Html);
+        }
+
+        public async Task<bool> GetPreviewEditPost(string replyText)
+        {
+            Html = string.Empty;
+            IsLoading = true;
+            ForumReplyEntity.MapMessage(replyText);
+            var replyManager = new ReplyManager();
+            Html = await replyManager.CreatePreviewEditPost(ForumReplyEntity);
             IsLoading = false;
             return !string.IsNullOrEmpty(Html);
         }

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="b08da576-bcc3-414d-9023-0e0b0f23ec0e" Publisher="CN=Timothy" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="b08da576-bcc3-414d-9023-0e0b0f23ec0e" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="52978DrasticActions.AwfulForumsReader" Publisher="CN=49056560-3A92-41D0-8509-DF4FE44F646C" Version="1.1.0.2" />
+  <mp:PhoneIdentity PhoneProductId="55ffc8e1-4f48-40da-be33-b60db9276a3a" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>AwfulMetro.WindowsPhone</DisplayName>
-    <PublisherDisplayName>Timothy</PublisherDisplayName>
+    <DisplayName>Awful Forums Reader</DisplayName>
+    <PublisherDisplayName>ティム・ミラー</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
