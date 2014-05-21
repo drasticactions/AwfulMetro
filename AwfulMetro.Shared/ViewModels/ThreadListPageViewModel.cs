@@ -104,14 +104,6 @@ namespace AwfulMetro.ViewModels
             thread.HasBeenViewed = false;
             thread.HasSeen = false;
             thread.ReplyCount = 0;
-            var msgDlg =
-                    new MessageDialog(
-                        string.Format("'{0}' is now \"Unread\"! Now go outside and do something productive!{1}{2}",
-                            thread.Name, Environment.NewLine, Constants.ASCII_1))
-                    {
-                        DefaultCommandIndex = 1
-                    };
-            await msgDlg.ShowAsync();
         }
 
         private async void ExecuteBookmarkCommand(object param)
@@ -123,14 +115,6 @@ namespace AwfulMetro.ViewModels
             if (thread.IsBookmark)
             {
                 await threadManager.RemoveBookmarks(new List<long> { thread.ThreadId });
-                ForumPageScrollingCollection.Remove(thread);
-                var msgDlg =
-                       new MessageDialog(string.Format("'{0}' has been removed from your bookmarks! I love you!{1}{2}",
-                           thread.Name, Environment.NewLine, Constants.ASCII_1))
-                       {
-                           DefaultCommandIndex = 1
-                       };
-                await msgDlg.ShowAsync();
                 return;
             }
             await threadManager.AddBookmarks(new List<long> { thread.ThreadId });

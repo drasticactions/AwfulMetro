@@ -10,6 +10,7 @@ namespace AwfulMetro.ViewModels
         private readonly IAuthenticationManager _authManager;
         private string _password;
         private string _userName;
+        private bool _isLoading;
 
         public LoginPageViewModel(IAuthenticationManager authManager)
         {
@@ -20,6 +21,17 @@ namespace AwfulMetro.ViewModels
 
         public LoginPageViewModel() : this(new AuthenticationManager())
         {
+        }
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                if (_isLoading == value) return;
+                _isLoading = value;
+                OnPropertyChanged();
+            }
         }
 
         public string UserName
@@ -62,6 +74,7 @@ namespace AwfulMetro.ViewModels
         public async Task ClickLoginButton()
         {
             bool loginResult;
+            IsLoading = true;
             try
             {
                 loginResult = await _authManager.Authenticate(UserName, Password);
@@ -71,7 +84,7 @@ namespace AwfulMetro.ViewModels
                 // TODO: The failure message should be bubbled up to the user; this is a different scenario than login failing due to bad credentials, and they should know that
                 loginResult = false;
             }
-
+            IsLoading = false;
             base.RaiseEvent(loginResult ? LoginSuccessful : LoginFailed, EventArgs.Empty);
         }
     }

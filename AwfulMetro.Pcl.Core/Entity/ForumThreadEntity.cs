@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using Windows.Data.Html;
 using Windows.UI.Xaml.Controls;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Annotations;
 using AwfulMetro.Pcl.Core.Entity;
 using HtmlAgilityPack;
 
@@ -13,7 +16,7 @@ namespace AwfulMetro.Core.Entity
     /// <summary>
     ///     Represents a thread in a forum.
     /// </summary>
-    public class ForumThreadEntity
+    public class ForumThreadEntity : INotifyPropertyChanged
     {
         public string Name { get; set; }
 
@@ -25,7 +28,20 @@ namespace AwfulMetro.Core.Entity
 
         public string Author { get; set; }
 
-        public int ReplyCount { get; set; }
+        private int _replyCount;
+
+        public int ReplyCount
+        {
+            get
+            {
+                return _replyCount;
+            }
+            set
+            {
+                _replyCount = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int ViewCount { get; set; }
 
@@ -39,7 +55,20 @@ namespace AwfulMetro.Core.Entity
 
         public bool IsLocked { get; set; }
 
-        public bool HasBeenViewed { get; set; }
+        private bool _hasBeenViewed;
+
+        public bool HasBeenViewed
+        {
+            get
+            {
+                return _hasBeenViewed;
+            }
+            set
+            {
+                _hasBeenViewed = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool CanMarkAsUnread { get; set; }
 
@@ -57,7 +86,20 @@ namespace AwfulMetro.Core.Entity
 
         public int ForumId { get; set; }
 
-        public bool HasSeen { get; set; }
+        private bool _hasSeen;
+
+        public bool HasSeen
+        {
+            get
+            {
+                return _hasSeen;
+            }
+            set
+            {
+                _hasSeen = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsBookmark { get; set; }
 
@@ -234,6 +276,15 @@ namespace AwfulMetro.Core.Entity
             ThreadId = threadId;
             Location = string.Format(Constants.THREAD_PAGE, threadId);
             CurrentPage = 0;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
