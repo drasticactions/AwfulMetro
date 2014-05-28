@@ -1,6 +1,6 @@
 body {
 	background-color: black;
-	color: #57FF57;
+	color: black;
 }
 
 button, input[type=button], input[type=reset], input[type=submit] {
@@ -12,6 +12,20 @@ button, input[type=button], input[type=reset], input[type=submit] {
 button[type=submit]:hover, input[type=submit]:hover {
     background-clip: border-box;
     background-color: #C6D9FB;
+    border-color: transparent;
+	animation-name:animes;
+	animation-duration:1s;
+	animation-iteration-count:infinite;
+	animation-direction:alternate;
+	animation-timing-function:ease-in-out;
+}
+
+a, a:hover, a:visited{
+    color: #C6D9FB;
+	text-decoration: underline;
+}
+
+a:hover, input[type=submit]:hover {
     border-color: transparent;
 	animation-name:animes;
 	animation-duration:1s;
@@ -68,3 +82,27 @@ body, tr, th, .postbody, p, li, blockquote, h4, .author,.breadcrumbs {
 @keyframes animes {
     0%{background:#57ff57;color:#000}50%{background:#000;color:#57ff57}100%{background:#57ff57;color:#000}
 }
+
+.seen1
+{
+background-color: #114211!important;
+background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAARSURBVBhXYwACQSdBMGZgAAAFhgDJcI5nugAAAABJRU5ErkJggg==')!important;
+background-repeat: repeat!important;
+}
+
+.seen2
+{
+background-color: #114211!important;
+background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAARSURBVBhXYwACQSdBMGZgAAAFhgDJcI5nugAAAABJRU5ErkJggg==')!important;
+background-repeat: repeat!important;
+}
+
+.postCount1 {
+    background-color: black;
+}
+
+.postCount2 {
+    background-color: black;
+}
+
+.bbc-block{background: transparent!important;border-top:1px solid #57FF57!important;border-bottom:1px solid #57FF57!important;border-left:0!important;border-right:0!important;border-radius:0!important;}

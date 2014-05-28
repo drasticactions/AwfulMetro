@@ -80,7 +80,7 @@ namespace AwfulMetro.ViewModels
             ThreadTitle = forumThreadEntity.Name;
             PostManager postManager = new PostManager();
             await postManager.GetThreadPosts(forumThreadEntity);
-            Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity.ForumPosts);
+            Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
             ForumThreadEntity = forumThreadEntity;
             PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
             IsLoading = false;

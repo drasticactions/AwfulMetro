@@ -73,7 +73,9 @@ namespace AwfulMetro.Core.Manager
                     forumThreadPosts.Add(post);
                 }
 
-                string htmlThread = await HtmlFormater.FormatThreadHtml(forumThreadPosts);
+                forumThread.ForumPosts = forumThreadPosts;
+
+                string htmlThread = await HtmlFormater.FormatThreadHtml(forumThread);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try
@@ -139,7 +141,12 @@ namespace AwfulMetro.Core.Manager
                     forumThreadPosts.Add(post);
                 }
 
-                string htmlThread = await HtmlFormater.FormatThreadHtml(forumThreadPosts);
+                ForumThreadEntity threadEntity = new ForumThreadEntity()
+                {
+                    ForumPosts = forumThreadPosts
+                };
+
+                string htmlThread = await HtmlFormater.FormatThreadHtml(threadEntity);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try
@@ -202,7 +209,12 @@ namespace AwfulMetro.Core.Manager
                     forumThreadPosts.Add(post);
                 }
 
-                string htmlThread = await HtmlFormater.FormatThreadHtml(forumThreadPosts);
+                ForumThreadEntity threadEntity = new ForumThreadEntity()
+                {
+                    ForumPosts = forumThreadPosts
+                };
+
+                string htmlThread = await HtmlFormater.FormatThreadHtml(threadEntity);
 
                 var forumReplyEntity = new ForumReplyEntity();
                 try

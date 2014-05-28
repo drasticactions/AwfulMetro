@@ -107,8 +107,11 @@ namespace AwfulMetro.Core.Manager
                 post.Parse(postNode);
                 postList.Add(post);
             }
-
-            return await HtmlFormater.FormatThreadHtml(postList);
+            ForumThreadEntity threadEntity = new ForumThreadEntity()
+            {
+                ForumPosts = postList
+            };
+            return await HtmlFormater.FormatThreadHtml(threadEntity);
         }
 
         private int ParseInt(string postClass)

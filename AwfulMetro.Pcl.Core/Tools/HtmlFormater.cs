@@ -15,14 +15,28 @@ namespace AwfulMetro.Pcl.Core.Tools
 {
     public static class HtmlFormater
     {
-        public static async Task<string> FormatThreadHtml(ObservableCollection<ForumPostEntity> postEntities )
+        public static async Task<string> FormatThreadHtml(ForumThreadEntity forumThreadEntity )
         {
-
+            ObservableCollection<ForumPostEntity> postEntities = forumThreadEntity.ForumPosts;
             string html = await PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
 
             var doc2 = new HtmlDocument();
 
             doc2.LoadHtml(html);
+
+            
+            HtmlNode head = doc2.DocumentNode.Descendants("head").FirstOrDefault();
+
+            switch (forumThreadEntity.ForumId)
+            {
+                case 219:
+
+                    head.InnerHtml += "<link href=\"ms-appx-web:///Assets/219.css\" type=\"text/css\" media=\"all\" rel=\"stylesheet\">";
+                    break;
+                case 26:
+                    break;
+
+            }
 
             HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
 

@@ -20,6 +20,10 @@ html, body {
     width: 100%;
 }
 
+#thread {
+    overflow-x: hidden;
+}
+
 .bbc-block { background-color: #f4f4f4; }
 
 body { -ms-content-zooming: none; }
