@@ -72,7 +72,20 @@ namespace AwfulMetro.Core.Entity
 
         public bool CanMarkAsUnread { get; set; }
 
-        public int RepliesSinceLastOpened { get; set; }
+        private int _repliesSinceLastOpened;
+
+        public int RepliesSinceLastOpened
+        {
+            get
+            {
+                return _repliesSinceLastOpened;
+            }
+            set
+            {
+                _repliesSinceLastOpened = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int TotalPages { get; set; }
 

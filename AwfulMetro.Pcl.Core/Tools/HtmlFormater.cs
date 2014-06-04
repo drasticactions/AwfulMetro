@@ -30,7 +30,6 @@ namespace AwfulMetro.Pcl.Core.Tools
             switch (forumThreadEntity.ForumId)
             {
                 case 219:
-
                     head.InnerHtml += "<link href=\"ms-appx-web:///Assets/219.css\" type=\"text/css\" media=\"all\" rel=\"stylesheet\">";
                     break;
                 case 26:

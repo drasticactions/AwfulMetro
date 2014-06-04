@@ -74,5 +74,34 @@ namespace AwfulMetro.Core.Tools
             IsLoading = false;
             return new LoadMoreItemsResult {Count = count};
         }
+
+        public async Task<LoadMoreItemsResult> RefreshBookmarkedThreads()
+        {
+            IsLoading = true;
+            var threadManager = new ThreadManager();
+            for (var index = 1; index <= PageCount; index ++)
+            {
+                ObservableCollection<ForumThreadEntity> forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, index);
+                if (!forumThreadEntities.Any()) continue;
+                for (int i = 0; i < this.Count; i++)
+                {
+                    var updatedThread = forumThreadEntities.FirstOrDefault(node => node.ThreadId == this[i].ThreadId);
+                    if (updatedThread != null)
+                    {
+                        // Rather than update the entire thread, just update the important bits.
+                        this[i].RepliesSinceLastOpened = updatedThread.RepliesSinceLastOpened;
+                        this[i].ReplyCount = updatedThread.ReplyCount;
+                        this[i].HasSeen = updatedThread.HasSeen;
+                    }
+                    else
+                    {
+                        // Item was removed from bookmarks outside of the app. Seeing that it's not there anymore, get rid of it from the list!
+                        this.RemoveItem(i);
+                    }
+                }
+            }
+            IsLoading = false;
+            return new LoadMoreItemsResult { Count = 0 };
+        }
     }
 }

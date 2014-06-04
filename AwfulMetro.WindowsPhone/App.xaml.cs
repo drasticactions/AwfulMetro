@@ -1,29 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
+// The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
+using AwfulMetro.Views;
+using System;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media.SpeechRecognition;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using AwfulMetro.Core.Entity;
-using AwfulMetro.Core.Manager;
-using AwfulMetro.Core.Tools;
-
-// The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
-using AwfulMetro.Views;
 
 namespace AwfulMetro
 {

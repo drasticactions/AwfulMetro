@@ -81,6 +81,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\ui-light-new.css" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Assets\jquery.lazyload.js" />
     <None Include="$(MSBuildThisFileDirectory)Assets\jquery.mobile-1.4.0.min - Copy.js" />
     <None Include="$(MSBuildThisFileDirectory)Common\ReadMe.txt" />
   </ItemGroup>

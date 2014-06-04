@@ -71,6 +71,15 @@ namespace AwfulMetro.ViewModels
             }
         }
 
+        public async void RefreshForum(ForumEntity forumEntity)
+        {
+            if (ForumPageScrollingCollection == null) return;
+            if (forumEntity.Name.Equals("Bookmarks"))
+            {
+                await ForumPageScrollingCollection.RefreshBookmarkedThreads();
+            }
+        }
+
         public async void Initialize(ForumEntity forumEntity)
         {
             this.ForumEntity = forumEntity;
