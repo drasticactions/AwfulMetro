@@ -88,6 +88,20 @@
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1" HorizontalAlignment="Right" Background="#FFC5C5C5">
+                <Button HorizontalAlignment="Stretch" x:Name="CurrentPageButton" IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBooleanConverter}}" Content="{Binding ForumThreadEntity.CurrentPage}">
+                    <Button.Flyout>
+                        <Flyout Placement="Left">
+                            <StackPanel>
+                                <Viewbox Margin="5" Height="40">
+                                    <TextBlock Text="{Binding ForumThreadEntity.TotalPages, Converter={StaticResource TotalPageConverter}}"/>
+                                </Viewbox>
+                                <TextBox KeyDown="PageNumberTextBox_OnKeyDown" Margin="5" x:Name="PageNumberTextBox"/>
+                                <Button Margin="5" x:Name="PageNumberButton" Click="PageNumberButton_OnClick" Content="Change Page"/>
+                            </StackPanel>
+                        </Flyout>
+</Button.Flyout></Button>
+                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click"
+                              Label="Go To Last Post On Page" Icon="Download" />
                 <AppBarButton x:Name="ReplyButton" Label="Reply" Icon="Upload"
                               Click="ReplyButton_Click" />
                 <AppBarButton x:Name="BackButton" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter} }" Click="BackButton_Click" Label="Back Page"
@@ -95,8 +109,6 @@
                 <AppBarButton x:Name="ForwardButton" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource ForwardButtonEnableConverter}}" Click="ForwardButton_Click" Label="Forward Page"
                               Icon="Forward" />
                 <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh" />
-                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click"
-                              Label="Go To Last Post On Page" Icon="Download" />
 
             </StackPanel>
             <WebView IsRightTapEnabled="True" DOMContentLoaded="ThreadFullView_OnDOMContentLoaded" web:WebViewHelper.Html="{Binding Html}"  Grid.Column="0" x:Name="ThreadFullView" />

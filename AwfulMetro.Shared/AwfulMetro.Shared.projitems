@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tools\SubforumHeaderColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ThreadCountConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ThreadHeaderColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\TotalPageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\ImageLoader.xaml.cs">
       <DependentUpon>ImageLoader.xaml</DependentUpon>
     </Compile>

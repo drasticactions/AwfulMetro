@@ -77,14 +77,7 @@ namespace AwfulMetro.Views
                 }
             }
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            if (_threadVm.ForumPageScrollingCollection == null)
-            {
-                _threadVm.Initialize(forum);
-            }
-            else
-            {
-                _threadVm.RefreshForum(forum);
-            }
+            _threadVm.Initialize(forum);
         }
 
         /// <summary>
@@ -139,7 +132,7 @@ namespace AwfulMetro.Views
         private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
         {
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            _threadVm.RefreshForum(forum);
+            _threadVm.Initialize(forum);
         }
 
         private void PrivateMessageButton_OnClick(object sender, RoutedEventArgs e)

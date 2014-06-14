@@ -1,6 +1,7 @@
 ﻿// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Storage;
@@ -9,6 +10,7 @@ using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
@@ -337,6 +339,37 @@ namespace AwfulMetro.Views
             ThreadFullView.InvokeScriptAsync("RemoveCustomStyle", null);
             ThreadSnapView.InvokeScriptAsync("RemoveCustomStyle", null);
             _localSettings.Values["zoomSize"] = null;
+        }
+
+        private void PageNumberButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ChangePage();
+        }
+
+        private void PageNumberTextBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                ChangePage();
+            }
+        }
+
+        private void ChangePage()
+        {
+            int userInputPageNumber = 0;
+            try
+            {
+                userInputPageNumber = Convert.ToInt32(PageNumberTextBox.Text);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("User Inputted invalid value. Ignore the error.");
+            }
+
+            if (userInputPageNumber < 1 || userInputPageNumber > _vm.ForumThreadEntity.TotalPages) return;
+            if (CurrentPageButton.Flyout != null) CurrentPageButton.Flyout.Hide();
+            _vm.ForumThreadEntity.CurrentPage = userInputPageNumber;
+            _vm.GetForumPosts(_forumThread);
         }
     }
 }

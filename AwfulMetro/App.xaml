@@ -37,5 +37,6 @@
         <tools:ForwardButtonEnableConverter x:Key="ForwardButtonEnableConverter" />
         <tools:BackButtonEnableConverter x:Key="BackButtonEnableConverter" />
         <tools:HasSeenThreadConverter x:Key="HasSeenThreadConverter" />
+        <tools:TotalPageConverter x:Key="TotalPageConverter" />
     </Application.Resources>
 </Application>

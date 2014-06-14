@@ -58,7 +58,7 @@ namespace AwfulMetro.Core.Tools
             {
                 forumThreadEntities = await threadManager.GetForumThreads(ForumEntity, PageCount);
             }
-            foreach (ForumThreadEntity forumThreadEntity in forumThreadEntities)
+            foreach (ForumThreadEntity forumThreadEntity in forumThreadEntities.Where(forumThreadEntity => !forumThreadEntity.IsAnnouncement))
             {
                 Add(forumThreadEntity);
             }
@@ -88,14 +88,22 @@ namespace AwfulMetro.Core.Tools
                     var updatedThread = forumThreadEntities.FirstOrDefault(node => node.ThreadId == this[i].ThreadId);
                     if (updatedThread != null)
                     {
-                        // Rather than update the entire thread, just update the important bits.
-                        this[i].RepliesSinceLastOpened = updatedThread.RepliesSinceLastOpened;
-                        this[i].ReplyCount = updatedThread.ReplyCount;
-                        this[i].HasSeen = updatedThread.HasSeen;
+                        if (forumThreadEntities[i].ThreadId == this[i].ThreadId)
+                        {
+                            // Rather than update the entire thread, just update
+                            this[i].RepliesSinceLastOpened = updatedThread.RepliesSinceLastOpened;
+                            this[i].ReplyCount = updatedThread.ReplyCount;
+                            this[i].HasSeen = updatedThread.HasSeen;
+                            this[i].KilledBy = updatedThread.KilledBy;
+                        }
+                        else
+                        {
+                            // Replace the reference
+                            this[i] = updatedThread;
+                        }
                     }
                     else
                     {
-                        // Item was removed from bookmarks outside of the app. Seeing that it's not there anymore, get rid of it from the list!
                         this.RemoveItem(i);
                     }
                 }

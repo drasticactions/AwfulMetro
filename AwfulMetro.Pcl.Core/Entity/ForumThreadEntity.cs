@@ -49,11 +49,26 @@ namespace AwfulMetro.Core.Entity
 
         public string RatingImage { get; set; }
 
-        public string KilledBy { get; set; }
+        private string _killedBy;
+
+        public string KilledBy
+        {
+            get
+            {
+                return _killedBy;
+            }
+            set
+            {
+                _killedBy = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsSticky { get; set; }
 
         public bool IsLocked { get; set; }
+
+        public bool IsAnnouncement { get; set; }
 
         private bool _hasBeenViewed;
 
@@ -131,6 +146,9 @@ namespace AwfulMetro.Core.Entity
                            threadNode.Descendants("a")
                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("announcement"));
 
+           IsAnnouncement = titleNode != null &&
+                titleNode.GetAttributeValue("class", string.Empty).Equals("announcement");
+
             Name =
                 titleNode != null ? WebUtility.HtmlDecode(titleNode.InnerText) : "BLANK TITLE?!?";
 
@@ -138,6 +156,7 @@ namespace AwfulMetro.Core.Entity
                 threadNode.Descendants("a")
                     .LastOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author")) != null ? threadNode.Descendants("a")
                     .LastOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author")).InnerText : string.Empty;
+
             IsSticky =
                 threadNode.Descendants("td")
                     .Any(node => node.GetAttributeValue("class", string.Empty).Contains("title_sticky"));
