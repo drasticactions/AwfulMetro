@@ -28,7 +28,7 @@
                             <Image Source="{Binding ImageUrl}" Stretch="None"
                                            AutomationProperties.Name="{Binding Title}" />
                         </Border>
-                        <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="Black"
+                        <TextBlock Grid.Column="1" Text="{Binding Title}"
                                            Style="{StaticResource TitleTextBlockStyle}" Margin="15,0,0,0" />
                     </Grid>
                 </DataTemplate>
@@ -41,7 +41,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Title}" Foreground="Black"
+                        <TextBlock Grid.Column="0" Text="{Binding Title}"
                                            Style="{StaticResource TitleTextBlockStyle}" Margin="15,0,0,0" FontFamily="Global User Interface" />
                     </Grid>
                 </DataTemplate>
