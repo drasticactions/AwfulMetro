@@ -7,12 +7,29 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:tools="using:AwfulMetro.Tools"
     x:Name="PageRoot"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <interactivity:Interaction.Behaviors>
+        <tools:StatusBarBehavior IsVisible="True" 
+                                 BackgroundColor="#FF1E72C9"
+                                 ForegroundColor="White"/>
+    </interactivity:Interaction.Behaviors>
     <Page.DataContext>
         <viewModels:MainForumsPageViewModel />
     </Page.DataContext>
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <ContinuumNavigationTransitionInfo>
+                    </ContinuumNavigationTransitionInfo>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
     <Page.Resources>
         <CollectionViewSource
             x:Name="ForumViewSource"
@@ -43,8 +60,8 @@
                 <Rectangle Grid.Row="1" Fill="GreenYellow" Height="1" Margin="0,7,0,0"/>
             </Grid>
         </DataTemplate>
-        <Thickness x:Key="PivotPortraitThemePadding">19,38,0,0</Thickness>
-        <Thickness x:Key="PivotLandscapeThemePadding">19,25,0,0</Thickness>
+        <Thickness x:Key="PivotPortraitThemePadding">19,24,0,0</Thickness>
+        <Thickness x:Key="PivotLandscapeThemePadding">19,0,0,0</Thickness>
         <Style x:Key="PivotMainPageStyle" TargetType="Pivot">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="0"/>
@@ -105,13 +122,6 @@
         </Style>
     </Page.Resources>
     <Grid x:Name="LayoutRoot">
-
-        <Grid.ChildrenTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition/>
-            </TransitionCollection>
-        </Grid.ChildrenTransitions>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -168,6 +178,13 @@
             Source="{Binding ForumPageScrollingCollection, Mode=TwoWay}"/>
                     </PivotItem.Resources>
                     <Grid>
+
+                        <Grid.ChildrenTransitions>
+                            <TransitionCollection>
+                                <EntranceThemeTransition/>
+                            </TransitionCollection>
+                        </Grid.ChildrenTransitions>
+
                         <Grid.RowDefinitions>
                             <RowDefinition Height="15"/>
                             <RowDefinition Height="*"/>
