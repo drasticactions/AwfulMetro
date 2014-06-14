@@ -73,7 +73,7 @@ namespace AwfulMetro.Pcl.Core.Tools
             }
 
             bodyNode.InnerHtml = threadHtml;
-            return WebUtility.HtmlDecode(WebUtility.HtmlDecode(doc2.DocumentNode.OuterHtml));
+            return doc2.DocumentNode.OuterHtml;
         }
 
         private static string CreateButtons(ForumPostEntity post)

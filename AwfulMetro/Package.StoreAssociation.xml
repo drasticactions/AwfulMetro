@@ -363,17 +363,17 @@
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>1.6.0.45</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.0.0.49</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>1.6.0.45</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.0.0.49</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>1.6.0.45</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.0.0.49</PackageMaxArchitectureVersion>
       </PackageInfo>
     </BundleInfo>
   </PackageInfoList>

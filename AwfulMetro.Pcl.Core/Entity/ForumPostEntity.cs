@@ -79,9 +79,7 @@ namespace AwfulMetro.Pcl.Core.Entity
             var postBodyNode = postNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"));
             this.FixQuotes(postBodyNode);
-            PostHtml =
-                    WebUtility.HtmlDecode(
-                        postBodyNode.InnerHtml);
+            PostHtml = postBodyNode.InnerHtml;
             HtmlNode profileLinksNode =
                     postNode.Descendants("td")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
