@@ -9,6 +9,7 @@
     xmlns:viewModels="using:AwfulMetro.ViewModels"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:tools="using:AwfulMetro.Tools"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     x:Name="PageRoot"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -32,6 +33,13 @@
     </Page.Transitions>
     <Page.Resources>
         <CollectionViewSource
+            x:Name="FavoriteForumViewSource"
+            IsSourceGrouped="True"
+            Source="{Binding FavoriteForumGroupList}"
+            d:Source="{Binding FavoriteForumGroupList, Source={d:DesignData /SampleData/MainForumsPageViewModelSampleData.xaml}}"
+            ItemsPath="ForumList"
+            />
+        <CollectionViewSource
             x:Name="ForumViewSource"
             Source="{Binding ForumGroupList}"
             IsSourceGrouped="true"
@@ -51,7 +59,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="HeaderTemplate">
-            <Grid Margin="5,0,0,5" Width="225">
+            <Grid Margin="5,0,0,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -137,7 +145,7 @@
                             <RowDefinition Height="15"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <ProgressBar VerticalAlignment="Top" IsIndeterminate="True" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ProgressBar HorizontalAlignment="Stretch" VerticalAlignment="Top" IsIndeterminate="True" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <ListView
                             Grid.Row="1"
                 AutomationProperties.AutomationId="ItemGridView"

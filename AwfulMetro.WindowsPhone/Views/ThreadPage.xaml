@@ -16,8 +16,7 @@
         <TransitionCollection>
             <NavigationThemeTransition>
                 <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                    <ContinuumNavigationTransitionInfo>
-                    </ContinuumNavigationTransitionInfo>
+                    <SlideNavigationTransitionInfo/>
                 </NavigationThemeTransition.DefaultNavigationTransitionInfo>
             </NavigationThemeTransition>
         </TransitionCollection>
@@ -44,7 +43,7 @@
 
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="1" x:Name="ContentRoot">
+        <Grid Background="#f1f1f1" Grid.Row="1" x:Name="ContentRoot">
             <ProgressRing  IsActive="{Binding IsLoading}" Height="100" Width="100" Canvas.ZIndex="5"/>
             <WebView  DOMContentLoaded="ThreadWebView_OnDOMContentLoaded" x:Name="ThreadWebView" tools:WebViewHelper.Html="{Binding Html}"/>
         </Grid>
