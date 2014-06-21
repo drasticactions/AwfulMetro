@@ -91,7 +91,7 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<FrontPageWebArticleEntity> GetArticleMetaData(string url)
         {
-            HtmlDocument articleDoc = (await _webManager.DownloadHtml(url)).Document;
+            HtmlDocument articleDoc = (await _webManager.GetData(url)).Document;
             string articleHtml = await ParseArticleHtml(articleDoc);
             var frontPageArticleEntity = new FrontPageWebArticleEntity();
             frontPageArticleEntity.MapTo(WebUtility.HtmlDecode(articleHtml), 1);
@@ -135,7 +135,7 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<HtmlDocument> GetFrontPage()
         {
-            return (await _webManager.DownloadHtml(Constants.FRONT_PAGE)).Document;
+            return (await _webManager.GetData(Constants.FRONT_PAGE)).Document;
         }
     }
 }

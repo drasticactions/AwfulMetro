@@ -26,7 +26,7 @@ namespace AwfulMetro.Core.Manager
         public async Task<IEnumerable<PostIconCategoryEntity>> GetPostIcons(ForumEntity forum)
         {
             string url = string.Format(Constants.NEW_THREAD, forum.ForumId);
-            WebManager.Result result = await _webManager.DownloadHtml(url);
+            WebManager.Result result = await _webManager.GetData(url);
             HtmlDocument doc = result.Document;
             HtmlNode[] pageNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", string.Empty).Equals("posticon")).ToArray();
             var postIconEntityList = new List<PostIconEntity>();
@@ -44,7 +44,7 @@ namespace AwfulMetro.Core.Manager
         public async Task<IEnumerable<PostIconEntity>> GetPostIconList(ForumEntity forum)
         {
             string url = string.Format(Constants.NEW_THREAD, forum.ForumId);
-            WebManager.Result result = await _webManager.DownloadHtml(url);
+            WebManager.Result result = await _webManager.GetData(url);
             HtmlDocument doc = result.Document;
             HtmlNode[] pageNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", string.Empty).Equals("posticon")).ToArray();
             var postIconEntityList = new List<PostIconEntity>();
@@ -60,7 +60,7 @@ namespace AwfulMetro.Core.Manager
         public async Task<IEnumerable<PostIconCategoryEntity>> GetPmPostIcons()
         {
             string url = Constants.NEW_PRIVATE_MESSAGE;
-            WebManager.Result result = await _webManager.DownloadHtml(url);
+            WebManager.Result result = await _webManager.GetData(url);
             HtmlDocument doc = result.Document;
             HtmlNode[] pageNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", string.Empty).Equals("posticon")).ToArray();
             var postIconEntityList = new List<PostIconEntity>();

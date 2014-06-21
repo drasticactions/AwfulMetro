@@ -23,7 +23,7 @@ namespace AwfulMetro.Core.Manager
         public async Task<ForumUserEntity> GetUserFromProfilePage(long userId)
         {
             string url = Constants.BASE_URL + string.Format(Constants.USER_PROFILE, userId);
-            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.GetData(url)).Document;
 
             /*Get the user profile HTML from the user profile page,
              once we get it, get the nodes for each section of the page and parse them.*/

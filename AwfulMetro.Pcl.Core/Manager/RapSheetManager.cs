@@ -26,7 +26,7 @@ namespace AwfulMetro.Core.Manager
         {
             try
             {
-                HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+                HtmlDocument doc = (await _webManager.GetData(url)).Document;
 
                 string html = await PathIO.ReadTextAsync("ms-appx:///Assets/thread.html");
 

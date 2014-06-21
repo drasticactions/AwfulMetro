@@ -85,6 +85,9 @@
 
         public const string LOGIN_URL = "http://forums.somethingawful.com/account.php?";
 
+        // SA only seems to accept a limit of 30, so we'll hard code it.
+        public const string SEARCH_URL = BASE_URL + "/f/json/usercomplete?q={0}&limit=30&timestamp=0";
+
         public const string ASCII_2 = @"☆ *　. 　☆ 
 　　☆　. ∧＿∧　∩　* ☆ 
 ｷﾀ━━━( ・∀・)/ . ━━━君はバカだな！！ 

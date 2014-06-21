@@ -25,7 +25,7 @@ namespace AwfulMetro.Core.Manager
             var tagList = new List<TagEntity>();
 
             //inject this
-            HtmlDocument doc = (await _webManager.DownloadHtml(string.Format(Constants.NEW_THREAD, forumId))).Document;
+            HtmlDocument doc = (await _webManager.GetData(string.Format(Constants.NEW_THREAD, forumId))).Document;
 
             IEnumerable<HtmlNode> icons =
                 doc.DocumentNode.Descendants("div")

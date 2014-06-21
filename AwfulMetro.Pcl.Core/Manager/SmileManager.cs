@@ -26,7 +26,7 @@ namespace AwfulMetro.Core.Manager
             var smileCategoryList = new List<SmileCategoryEntity>();
 
             //inject this
-            HtmlDocument doc = (await _webManager.DownloadHtml(Constants.SMILE_URL)).Document;
+            HtmlDocument doc = (await _webManager.GetData(Constants.SMILE_URL)).Document;
 
             IEnumerable<HtmlNode> smileCategoryTitles =
                 doc.DocumentNode.Descendants("div")

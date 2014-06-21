@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Pcl.Core.Exceptions;
 
 namespace AwfulMetro.ViewModels
 {

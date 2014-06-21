@@ -18,7 +18,7 @@ namespace AwfulMetro.Tests.Unit.Mocks
         public WebManager.Result ResultToReturn { get; set; }
         public bool IsNetworkAvailable { get; set; }
 
-        public Task<WebManager.Result> DownloadHtml(string uri)
+        public Task<WebManager.Result> GetData(string uri)
         {
             return Task.FromResult(ResultToReturn);
         }

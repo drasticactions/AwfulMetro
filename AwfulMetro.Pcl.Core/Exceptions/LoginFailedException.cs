@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AwfulMetro.Core.Manager
+namespace AwfulMetro.Pcl.Core.Exceptions
 {
     public class LoginFailedException : Exception
     {

@@ -59,7 +59,7 @@ namespace AwfulMetro.Core.Manager
                 url = Constants.PRIVATE_MESSAGES + string.Format(Constants.PAGE_NUMBER, page);
             }
 
-            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.GetData(url)).Document;
 
             HtmlNode forumNode =
                 doc.DocumentNode.Descendants("tbody").FirstOrDefault();
@@ -87,7 +87,7 @@ namespace AwfulMetro.Core.Manager
 
             HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
 
-            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.GetData(url)).Document;
 
             HtmlNode[] replyNodes = doc.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("id", "").Equals("thread")).ToArray();
 

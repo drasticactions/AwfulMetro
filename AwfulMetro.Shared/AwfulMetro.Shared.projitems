@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\ImageLoader.xaml.cs">
       <DependentUpon>ImageLoader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ForumSearchPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainForumsPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NewThreadViewModel.cs" />

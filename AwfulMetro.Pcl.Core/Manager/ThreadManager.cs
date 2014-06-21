@@ -31,7 +31,7 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<HtmlDocument> GetThread(ForumThreadEntity forumThread, string url)
         {
-            WebManager.Result result = await _webManager.DownloadHtml(url);
+            WebManager.Result result = await _webManager.GetData(url);
             HtmlDocument doc = result.Document;
             try
             {
@@ -76,7 +76,7 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<bool> MarkPostAsLastRead(ForumThreadEntity threadEntity, int index)
         {
-            await _webManager.DownloadHtml(string.Format(Constants.LAST_READ, index, threadEntity.ThreadId));
+            await _webManager.GetData(string.Format(Constants.LAST_READ, index, threadEntity.ThreadId));
             return true;
         }
 
@@ -101,7 +101,7 @@ namespace AwfulMetro.Core.Manager
                 url = Constants.BOOKMARKS_URL + string.Format(Constants.PAGE_NUMBER, page);
             }
 
-            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.GetData(url)).Document;
 
             HtmlNode forumNode =
                 doc.DocumentNode.Descendants()
@@ -162,7 +162,7 @@ namespace AwfulMetro.Core.Manager
             // TODO: Remove parsing logic from managers. I don't think they have a place here...
             string url = forumCategory.Location + string.Format(Constants.PAGE_NUMBER, page);
 
-            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.GetData(url)).Document;
 
             HtmlNode bodyNode = doc.DocumentNode.Descendants("body").First();
 
@@ -190,7 +190,7 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 string url = string.Format(Constants.NEW_THREAD, forumId);
-                WebManager.Result result = await _webManager.DownloadHtml(url);
+                WebManager.Result result = await _webManager.GetData(url);
                 HtmlDocument doc = result.Document;
 
                 HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();

@@ -30,8 +30,8 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 var forumGroupList = new ObservableCollection<ForumCategoryEntity>();
-
-                HtmlDocument doc = (await _webManager.DownloadHtml(Constants.FORUM_LIST_PAGE)).Document;
+                var result = await _webManager.GetData(Constants.FORUM_LIST_PAGE);
+                HtmlDocument doc = result.Document;
 
                 HtmlNode forumNode =
                     doc.DocumentNode.Descendants("select")
@@ -94,7 +94,7 @@ namespace AwfulMetro.Core.Manager
                     ApplicationData.Current.LocalFolder.CreateFileAsync(forumHtml,
                         CreationCollisionOption.ReplaceExisting);
 
-            HtmlDocument doc = (await _webManager.DownloadHtml(Constants.BASE_URL)).Document;
+            HtmlDocument doc = (await _webManager.GetData(Constants.BASE_URL)).Document;
             using (var memoryStream = new MemoryStream())
             {
                 doc.Save(memoryStream);
@@ -108,7 +108,7 @@ namespace AwfulMetro.Core.Manager
         {
             var subforumList = new List<ForumEntity>();
             string url = forumCategory.Location;
-            HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+            HtmlDocument doc = (await _webManager.GetData(url)).Document;
             if (
                 !doc.DocumentNode.Descendants()
                     .Any(node => node.GetAttributeValue("id", string.Empty).Contains("subforums"))) return null;

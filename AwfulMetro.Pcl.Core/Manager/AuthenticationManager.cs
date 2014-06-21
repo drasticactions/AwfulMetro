@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Exceptions;
 
 namespace AwfulMetro.Core.Manager
 {

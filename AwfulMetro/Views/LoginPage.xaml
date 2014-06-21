@@ -11,6 +11,7 @@
     </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ProgressBar VerticalAlignment="Top" Visibility="{Binding IsLoading, Converter={StaticResource booleanToVisibilityConverter}}" IsIndeterminate="True"/>
         <StackPanel Width="500" VerticalAlignment="Center">
             <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords"
                        Text="WARNING:             THIS APP WILL STEAL YOUR PASSWORD AND AUTO BAN YOU FROM SOMETHING AWFUL."

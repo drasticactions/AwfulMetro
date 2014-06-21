@@ -37,14 +37,14 @@ namespace AwfulMetro.Core.Manager
                 HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
 
                 //inject this
-                HtmlDocument doc = (await _webManager.DownloadHtml(url)).Document;
+                HtmlDocument doc = (await _webManager.GetData(url)).Document;
 
                 HtmlNode searchNode =
                     doc.DocumentNode.Descendants("div")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("inner"));
                 url = string.Format("{0}search.php{1}", Constants.BASE_URL, searchNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty));
 
-                doc = (await _webManager.DownloadHtml(url)).Document;
+                doc = (await _webManager.GetData(url)).Document;
                 var tableNode = doc.DocumentNode.Descendants("table")
                     .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("main_full"));
 

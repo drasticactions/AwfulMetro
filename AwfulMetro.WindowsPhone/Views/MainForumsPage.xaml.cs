@@ -194,5 +194,10 @@ namespace AwfulMetro.Views
         {
             return;
         }
+
+        private void SearchButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof (SearchPage));
+        }
     }
 }

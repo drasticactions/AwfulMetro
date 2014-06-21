@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,16 +80,18 @@ namespace AwfulMetro.Core.Manager
         }
 
 
-        public async Task<Result> DownloadHtml(string url)
+        public async Task<Result> GetData(string url)
         {
             var handler = new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+                
                 CookieContainer = await _localStorageManager.LoadCookie(Constants.COOKIE_FILE),
                 UseCookies = true,
                 UseDefaultCredentials = false
             };
             var httpClient = new HttpClient(handler);
+            httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.UtcNow;
             HttpResponseMessage result = await httpClient.GetAsync(url);
             Stream stream = await result.Content.ReadAsStreamAsync();
             using (var reader = new StreamReader(stream))

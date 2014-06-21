@@ -32,7 +32,7 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 string url = string.Format(Constants.REPLY_BASE, forumThread.ThreadId);
-                WebManager.Result result = await _webManager.DownloadHtml(url);
+                WebManager.Result result = await _webManager.GetData(url);
                 HtmlDocument doc = result.Document;
 
                 HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();
@@ -104,7 +104,7 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 string url = string.Format(Constants.EDIT_BASE, postId);
-                WebManager.Result result = await _webManager.DownloadHtml(url);
+                WebManager.Result result = await _webManager.GetData(url);
                 HtmlDocument doc = result.Document;
 
                 HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();
@@ -121,7 +121,7 @@ namespace AwfulMetro.Core.Manager
 
                 //Get previous posts from quote page.
                 string url2 = string.Format(Constants.QUOTE_BASE, postId);
-                WebManager.Result result2 = await _webManager.DownloadHtml(url2);
+                WebManager.Result result2 = await _webManager.GetData(url2);
                 HtmlDocument doc2 = result2.Document;
 
                 var forumThreadPosts = new ObservableCollection<ForumPostEntity>();
@@ -173,7 +173,7 @@ namespace AwfulMetro.Core.Manager
             try
             {
                 string url = string.Format(Constants.QUOTE_BASE, postId);
-                WebManager.Result result = await _webManager.DownloadHtml(url);
+                WebManager.Result result = await _webManager.GetData(url);
                 HtmlDocument doc = result.Document;
 
                 HtmlNode[] formNodes = doc.DocumentNode.Descendants("input").ToArray();
@@ -374,7 +374,7 @@ namespace AwfulMetro.Core.Manager
         public async Task<string> GetQuoteString(long postId)
         {
             string url = string.Format(Constants.QUOTE_BASE, postId);
-            WebManager.Result result = await _webManager.DownloadHtml(url);
+            WebManager.Result result = await _webManager.GetData(url);
             HtmlDocument doc = result.Document;
 
             HtmlNode[] textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();

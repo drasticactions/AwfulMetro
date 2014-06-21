@@ -63,6 +63,8 @@
     <Compile Include="Entity\TagCategoryEntity.cs" />
     <Compile Include="Entity\TagEntity.cs" />
     <Compile Include="Entity\ThreadReplyEntity.cs" />
+    <Compile Include="Entity\ForumUserSearchEntity.cs" />
+    <Compile Include="Exceptions\ForumListParsingFailedException.cs" />
     <Compile Include="Manager\AuthenticationManager.cs" />
     <Compile Include="Manager\BBCodeManager.cs" />
     <Compile Include="Manager\ForumManager.cs" />
@@ -72,12 +74,13 @@
     <Compile Include="Manager\IAuthenticationManager.cs" />
     <Compile Include="Manager\IWebManager.cs" />
     <Compile Include="Manager\LocalStorageManager.cs" />
-    <Compile Include="Manager\LoginFailedException.cs" />
+    <Compile Include="Exceptions\LoginFailedException.cs" />
     <Compile Include="Manager\PostIconManager.cs" />
     <Compile Include="Manager\PostManager.cs" />
     <Compile Include="Manager\PrivateMessageManager.cs" />
     <Compile Include="Manager\RapSheetManager.cs" />
     <Compile Include="Manager\ReplyManager.cs" />
+    <Compile Include="Manager\SearchManager.cs" />
     <Compile Include="Manager\SmileManager.cs" />
     <Compile Include="Manager\TagManager.cs" />
     <Compile Include="Manager\ThreadManager.cs" />
@@ -107,9 +110,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
