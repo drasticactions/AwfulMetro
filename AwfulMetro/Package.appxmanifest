@@ -20,6 +20,7 @@
         </m2:DefaultTile>
         <m2:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\BadgeLogo.png" />
         <m2:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#f4f4f4" />
+        <m2:ApplicationView MinWidth="width320" />
       </m2:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="AwfulMetro.BackgroundStatus.BackgroundNotifyStatus">

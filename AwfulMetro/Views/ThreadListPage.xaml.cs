@@ -262,7 +262,6 @@ namespace AwfulMetro.Views
 
         private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
             NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
         }
 
