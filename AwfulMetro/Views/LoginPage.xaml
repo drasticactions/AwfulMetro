@@ -10,11 +10,12 @@
         <vm:LoginPageViewModel />
     </Page.DataContext>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid     Background="#f4f4f4">
         <ProgressBar VerticalAlignment="Top" Visibility="{Binding IsLoading, Converter={StaticResource booleanToVisibilityConverter}}" IsIndeterminate="True"/>
         <StackPanel Width="500" VerticalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="WrapWholeWords"
-                       Text="WARNING:             THIS APP WILL STEAL YOUR PASSWORD AND AUTO BAN YOU FROM SOMETHING AWFUL."
+            <Image Source="../Assets/Dontrel-Awful2.png" Height="300"/>
+            <TextBlock HorizontalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" Foreground="Black" TextAlignment="Center" TextWrapping="WrapWholeWords"
+                       Text="Awful Forums Reader"
                        FontSize="50" Margin="0,0,0,25" VerticalAlignment="Center" />
             <StackPanel Width="300">
                 <TextBox x:Name="Username" PlaceholderText="Username" Margin="0,0,0,15"

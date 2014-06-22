@@ -38,5 +38,6 @@
         <tools:BackButtonEnableConverter x:Key="BackButtonEnableConverter" />
         <tools:HasSeenThreadConverter x:Key="HasSeenThreadConverter" />
         <tools:TotalPageConverter x:Key="TotalPageConverter" />
+        <tools:BookmarkTextConverter x:Key="BookmarkTextConverter" />
     </Application.Resources>
 </Application>

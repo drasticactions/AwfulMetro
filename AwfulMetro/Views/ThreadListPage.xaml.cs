@@ -195,7 +195,6 @@ namespace AwfulMetro.Views
 
         private async void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
         {
-            UnreadButton.IsEnabled = false;
             RefreshBarButton.IsEnabled = false;
             var threadlist = new List<ForumThreadEntity>();
             if (ForumThreadList.SelectedItems.Any())
@@ -223,14 +222,12 @@ namespace AwfulMetro.Views
                 };
                 await msgDlg.ShowAsync();
             }
-            UnreadButton.IsEnabled = true;
             RefreshBarButton.IsEnabled = true;
         }
 
         private async void UnreadButton_OnClick(object sender, RoutedEventArgs e)
         {
             var threadlist = new List<ForumThreadEntity>();
-            UnreadButton.IsEnabled = false;
             RefreshBarButton.IsEnabled = false;
             if (ForumThreadList.SelectedItems.Any())
             {
@@ -260,14 +257,12 @@ namespace AwfulMetro.Views
                 };
                 await msgDlg.ShowAsync();
             }
-            UnreadButton.IsEnabled = true;
             RefreshBarButton.IsEnabled = true;
         }
 
         private void ForumThreadList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FavoriteButton.IsEnabled = ForumThreadList.SelectedItems.Any();
-            UnreadButton.IsEnabled = ForumThreadList.SelectedItems.Any();
             NotificationButton.IsEnabled = ForumThreadList.SelectedItems.Any();
         }
 

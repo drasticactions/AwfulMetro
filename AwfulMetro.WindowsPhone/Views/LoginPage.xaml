@@ -31,9 +31,7 @@
                 <TextBox Name="Username" Header="Username" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <PasswordBox  Name="Password" Header="Password" Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <Button Command="{Binding ClickLoginButtonCommand}" x:Name="LoginButton" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Content="Login"/>
-                <TextBlock HorizontalAlignment="Center" LineHeight="50" TextAlignment="Left" TextWrapping="Wrap"
-                       Text="WARNING:&#x0a;THIS APP WILL STEAL YOUR PASSWORD AND AUTO BAN YOU FROM SOMETHING AWFUL."
-                       FontSize="40"  VerticalAlignment="Center" />
+                <Image Source="../Assets/Dontrel-Awful2.png"/>
             </StackPanel>
         </Grid>
     </Grid>

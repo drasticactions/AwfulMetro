@@ -10,6 +10,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
     xmlns:userControls="using:AwfulMetro.UserControls"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:tools="using:AwfulMetro.Tools"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewModels:ThreadListPageViewModel />
@@ -507,15 +510,6 @@
                         </BitmapIcon>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="UnreadButton" IsEnabled="False" Click="UnreadButton_OnClick" Label="Unread">
-                    <AppBarButton.Icon>
-                        <BitmapIcon UriSource="ms-appx:///Assets/clearicon.png" RenderTransformOrigin="0.5,0.5">
-                            <BitmapIcon.RenderTransform>
-                                <CompositeTransform ScaleX="0.75" ScaleY="0.75" />
-                            </BitmapIcon.RenderTransform>
-                        </BitmapIcon>
-                    </AppBarButton.Icon>
-                </AppBarButton>
                 <AppBarButton x:Name="RefreshBarButton" IsEnabled="{Binding ForumPageScrollingCollection.IsLoading, Converter={StaticResource InvertBooleanConverter}}" Click="RefreshBarButton_OnClick"
                               Label="Refresh" Icon="Refresh" />
                 <AppBarButton x:Name="NotificationButton" Click="NotificationButton_OnClick" Visibility="Collapsed"
@@ -555,7 +549,7 @@
             <ListView x:Name="ForumThreadList" SelectionChanged="ForumThreadList_OnSelectionChanged"
                       HorizontalAlignment="Stretch" ItemClick="ForumThreadList_ItemClick"
                       Tapped="ForumThreadList_OnTapped" IsSwipeEnabled="True" Grid.Column="1"
-                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="Extended"
+                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="None"
                       IsItemClickEnabled="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -629,6 +623,17 @@
                                     </StackPanel>
                                 </Border>
                             </Grid>
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="Holding">
+                                    <tools:OpenMenuFlyoutAction />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Command="{Binding DataContext.UnreadCommand, ElementName=ForumThreadList}"  CommandParameter="{Binding ThreadId}" Text="Unread"/>
+                                    <MenuFlyoutItem Command="{Binding DataContext.BookmarkCommand, ElementName=ForumThreadList}" CommandParameter="{Binding}" Text="{Binding IsBookmark, Converter={StaticResource BookmarkTextConverter}}"/>
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
