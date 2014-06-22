@@ -55,14 +55,7 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Row="0" Background="#FFC5C5C5" HorizontalAlignment="Right" Grid.Column="1">
-                <AppBarButton x:Name="NewMessageButton" Label="New PM" Icon="Add"
-                              Click="NewMessageButton_OnClick" />
-                <AppBarButton x:Name="RefreshBarButton" IsEnabled="{Binding PrivateMessageScrollingCollection.IsLoading, Converter={StaticResource InvertBooleanConverter}}" Click="RefreshBarButton_OnClick"
-                              Label="Refresh" Icon="Refresh" />
-            </StackPanel>
             <ListView RequestedTheme="Light"  x:Name="PrivateMessageList" ItemsSource="{Binding PrivateMessageScrollingCollection}"
                       HorizontalAlignment="Stretch" ItemClick="PrivateMessageList_OnItemClick" IsSwipeEnabled="True" Grid.Column="0" SelectionMode="Extended"
                       IsItemClickEnabled="True">
@@ -119,4 +112,12 @@
                          Height="10" VerticalAlignment="Top" />
         </Grid>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="NewMessageButton" Label="New PM" Icon="Add"
+                              Click="NewMessageButton_OnClick" />
+            <AppBarButton x:Name="RefreshBarButton" IsEnabled="{Binding PrivateMessageScrollingCollection.IsLoading, Converter={StaticResource InvertBooleanConverter}}" Click="RefreshBarButton_OnClick"
+                              Label="Refresh" Icon="Refresh" />
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>
