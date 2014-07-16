@@ -28,7 +28,6 @@ namespace AwfulMetro.Views
     /// </summary>
     public sealed partial class MainForumsPage : Page, IDisposable
     {
-        private MainForumsPageViewModel _vm;
         private ForumCategoryEntity _favoritesEntity;
         public MainForumsPage()
         {
@@ -125,8 +124,6 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(_vm == null)
-            _vm = (MainForumsPageViewModel)DataContext;
             NavigationHelper.OnNavigatedTo(e);
         }
 
@@ -196,12 +193,12 @@ namespace AwfulMetro.Views
                 {
                     ForumList = forumList
                 };
-                _vm.SetFavoriteForums(new ObservableCollection<ForumCategoryEntity> { _favoritesEntity }); 
+                Locator.ViewModels.MainForumsPageVm.SetFavoriteForums(new ObservableCollection<ForumCategoryEntity> { _favoritesEntity }); 
             }
             else
             {
                 localSettings.Values["_forumIds"] = null;
-                _vm.SetFavoriteForums(null);
+                Locator.ViewModels.MainForumsPageVm.SetFavoriteForums(null);
             }
         }
 

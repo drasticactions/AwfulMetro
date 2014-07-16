@@ -12,12 +12,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\IBookmarkCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\IUnreadCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\AsyncDelegateCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\AutoFacConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NotifierBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Locator\ViewModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\AvatarWebViewConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BackButtonEnableConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BookmarkSorting.cs" />

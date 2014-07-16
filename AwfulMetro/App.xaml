@@ -5,6 +5,8 @@
     xmlns:local="using:AwfulMetro"
     xmlns:tools="using:AwfulMetro.Tools"
     xmlns:common="using:AwfulMetro.Common"
+    xmlns:system="using:System"
+    xmlns:locator="using:AwfulMetro.Locator"
     RequestedTheme="Light">
 
     <Application.Resources>
@@ -39,5 +41,6 @@
         <tools:HasSeenThreadConverter x:Key="HasSeenThreadConverter" />
         <tools:TotalPageConverter x:Key="TotalPageConverter" />
         <tools:BookmarkTextConverter x:Key="BookmarkTextConverter" />
+        <locator:ViewModels x:Name="Locator" />
     </Application.Resources>
 </Application>

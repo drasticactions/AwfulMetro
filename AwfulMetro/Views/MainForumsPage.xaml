@@ -9,10 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
+    DataContext="{Binding Source={StaticResource Locator}, Path=MainForumsPageVm}"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <viewModels:MainForumsPageViewModel />
-    </Page.DataContext>
     <Page.Resources>
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
@@ -139,7 +137,7 @@
                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Margin="0,0,0,0"
                        Height="20" Style="{StaticResource MiniHeader}"/>
         </Grid>
-<ProgressRing Grid.Row="1" IsActive="True" Height="100"  Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <ProgressRing Grid.Row="1" IsActive="True" Height="100"  Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <!-- Main content -->
         <Grid Background="#f4f4f4" Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -332,7 +330,8 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="42*" />
+                <ColumnDefinition Width="139*"/>
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
         </Grid>

@@ -10,6 +10,7 @@ using Windows.UI.Notifications;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Autofac;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
@@ -26,6 +27,9 @@ namespace AwfulMetro
     /// </summary>
     sealed partial class App : Application
     {
+
+        public static IContainer Container;
+
         /// <summary>
         ///     Initializes the singleton Application object.  This is the first line of authored code
         ///     executed, and as such is the logical equivalent of main() or WinMain().
@@ -34,6 +38,7 @@ namespace AwfulMetro
         {
             InitializeComponent();
             Suspending += OnSuspending;
+            Container = AutoFacConfiguration.Configure();
         }
 
         /// <summary>

@@ -29,6 +29,7 @@ namespace AwfulMetro.ViewModels
         private bool _isLoading;
         public MainForumsPageViewModel()
         {
+            if (ForumGroupList == null)
             Initialize();
         }
 

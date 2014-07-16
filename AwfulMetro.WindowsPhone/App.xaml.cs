@@ -1,4 +1,6 @@
-﻿using AwfulMetro.Core.Manager;
+﻿using Autofac;
+using AwfulMetro.Common;
+using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 using AwfulMetro.Views;
@@ -22,6 +24,7 @@ namespace AwfulMetro
     public sealed partial class App : Application
     {
         private TransitionCollection transitions;
+        public static IContainer Container;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -33,6 +36,7 @@ namespace AwfulMetro
             this.Suspending += this.OnSuspending;
             Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             //RegisterVoiceCommands();
+            Container = AutoFacConfiguration.Configure();
         }
 
         protected override void OnActivated(IActivatedEventArgs args)

@@ -62,7 +62,7 @@ namespace AwfulMetro.Core.Tools
             {
                 Add(forumThreadEntity);
             }
-            if (forumThreadEntities.Any())
+            if (forumThreadEntities.Any(node => !node.IsAnnouncement))
             {
                 HasMoreItems = true;
                 PageCount++;
