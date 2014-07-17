@@ -9,10 +9,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:web="using:AwfulMetro.Core.Tools"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ThreadVm}"
     mc:Ignorable="d">
-    <Page.DataContext>
-        <viewModels:ThreadViewModel />
-    </Page.DataContext>
     <Page.Resources>
         <CollectionViewSource
             x:Name="itemsViewSource"
@@ -104,9 +102,9 @@
                               Label="Go To Last Post On Page" Icon="Download" />
                 <AppBarButton x:Name="ReplyButton" Label="Reply" Icon="Upload"
                               Click="ReplyButton_Click" />
-                <AppBarButton x:Name="BackButton" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter} }" Click="BackButton_Click" Label="Back Page"
+                <AppBarButton x:Name="BackButton" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter}, Mode=TwoWay }" Click="BackButton_Click" Label="Back Page"
                               Icon="Back" />
-                <AppBarButton x:Name="ForwardButton" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource ForwardButtonEnableConverter}}" Click="ForwardButton_Click" Label="Forward Page"
+                <AppBarButton x:Name="ForwardButton" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource ForwardButtonEnableConverter}, Mode=TwoWay}" Click="ForwardButton_Click" Label="Forward Page"
                               Icon="Forward" />
                 <AppBarButton x:Name="RefreshButton" Click="RefreshButton_Click" Icon="Refresh" Label="Refresh" />
 

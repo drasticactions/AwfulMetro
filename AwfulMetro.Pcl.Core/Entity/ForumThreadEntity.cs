@@ -104,7 +104,20 @@ namespace AwfulMetro.Core.Entity
 
         public int TotalPages { get; set; }
 
-        public int CurrentPage { get; set; }
+        private int _currentPage { get; set; }
+
+        public int CurrentPage
+        {
+            get
+            {
+                return _currentPage;
+            }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged();
+            }
+        }
 
         public int ScrollToPost { get; set; }
 

@@ -27,7 +27,7 @@ namespace AwfulMetro.Views
     /// </summary>
     public sealed partial class ThreadPage : Page
     {
-        private ThreadViewModel _vm;
+        private ThreadViewModel _vm = Locator.ViewModels.ThreadVm;
         private readonly NavigationHelper _navigationHelper;
         private readonly PostManager _postManager = new PostManager();
         private readonly ThreadManager _threadManager = new ThreadManager();
@@ -102,7 +102,7 @@ namespace AwfulMetro.Views
                     }
                     else
                     {
-                        _zoomSize = 14;
+                        _zoomSize = 20;
                     }
                     break;
                 case "openThread":
@@ -150,9 +150,7 @@ namespace AwfulMetro.Views
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             var jsonObjectString = (string) e.NavigationParameter;
-            _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
-            if (_forumThread == null) return;
-            _vm.GetForumPosts(_forumThread);
+            _vm.GetForumPosts();
 
             // Set the default focus on the page to either one of the web views.
             CheckOrientation();
@@ -178,14 +176,14 @@ namespace AwfulMetro.Views
         {
             if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
             _vm.ForumThreadEntity.CurrentPage--;
-            _vm.GetForumPosts(_vm.ForumThreadEntity);
+            _vm.GetForumPosts();
         }
 
         private void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
             if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
             _vm.ForumThreadEntity.CurrentPage++;
-            _vm.GetForumPosts(_vm.ForumThreadEntity);
+            _vm.GetForumPosts();
         }
 
 
@@ -213,7 +211,7 @@ namespace AwfulMetro.Views
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            _vm.GetForumPosts(_forumThread);
+            _vm.GetForumPosts();
         }
 
         private void CheckOrientation()
@@ -292,7 +290,6 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm = (ThreadViewModel) DataContext;
             _navigationHelper.OnNavigatedTo(e);
             Rect bounds = Window.Current.Bounds;
             ChangeViewTemplate(bounds.Width);
@@ -303,6 +300,8 @@ namespace AwfulMetro.Views
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            _vm.Html = string.Empty;
+            _vm.ThreadTitle = string.Empty;
             _navigationHelper.OnNavigatedFrom(e);
         }
 
@@ -369,7 +368,7 @@ namespace AwfulMetro.Views
             if (userInputPageNumber < 1 || userInputPageNumber > _vm.ForumThreadEntity.TotalPages) return;
             if (CurrentPageButton.Flyout != null) CurrentPageButton.Flyout.Hide();
             _vm.ForumThreadEntity.CurrentPage = userInputPageNumber;
-            _vm.GetForumPosts(_forumThread);
+            _vm.GetForumPosts();
         }
     }
 }

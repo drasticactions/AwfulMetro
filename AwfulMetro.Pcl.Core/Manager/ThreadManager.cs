@@ -51,12 +51,23 @@ namespace AwfulMetro.Core.Manager
 
             var query = Extensions.ParseQueryString(url);
 
-            if (!query.ContainsKey("postid")) return doc;
+            if (query.ContainsKey("pagenumber"))
+            {
+                forumThread.CurrentPage = Convert.ToInt32(query["pagenumber"]);
+            }
+
+            if (!query.ContainsKey("postid"))
+            {
+                forumThread.ScrollToPost = 0;
+                forumThread.ScrollToPostString = string.Empty;
+                return doc;
+            }
 
             // If we are going to a post, it won't use #pti but instead uses the post id.
 
             forumThread.ScrollToPost = Convert.ToInt32(query["postid"]);
             forumThread.ScrollToPostString = "#postId" + query["postid"];
+
             return doc;
 
         }

@@ -74,15 +74,24 @@ namespace AwfulMetro.ViewModels
             }
         }
 
-        public async void GetForumPosts(ForumThreadEntity forumThreadEntity)
+        public async void GetForumPosts()
         {
             IsLoading = true;
-            ThreadTitle = forumThreadEntity.Name;
+            ThreadTitle = ForumThreadEntity.Name;
             PostManager postManager = new PostManager();
-            await postManager.GetThreadPosts(forumThreadEntity);
-            Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
-            ForumThreadEntity = forumThreadEntity;
-            PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
+            await postManager.GetThreadPosts(ForumThreadEntity);
+            // Get the current reply count
+            if (ForumThreadEntity.ScrollToPost != 0)
+            {
+                ForumThreadEntity.RepliesSinceLastOpened = ForumThreadEntity.RepliesSinceLastOpened - (40 - ForumThreadEntity.ScrollToPost);
+            }
+            else
+            {
+                ForumThreadEntity.RepliesSinceLastOpened = ForumThreadEntity.RepliesSinceLastOpened - ForumThreadEntity.ForumPosts.Count;
+            }
+            Html = await HtmlFormater.FormatThreadHtml(ForumThreadEntity);
+            PageNumbers = Enumerable.Range(1, ForumThreadEntity.TotalPages).ToArray();
+            OnPropertyChanged("ForumThreadEntity");
             IsLoading = false;
         }
     }
