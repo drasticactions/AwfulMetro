@@ -2,7 +2,7 @@
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace AwfulMetro.Tests.Unit
+namespace AwfulMetro.Windows8.Tests.Unit
 {
     [TestClass]
     // ReSharper disable InconsistentNaming

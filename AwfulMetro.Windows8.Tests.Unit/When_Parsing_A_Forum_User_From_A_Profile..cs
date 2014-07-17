@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
-using AwfulMetro.Core.Entity;
 using AwfulMetro.Pcl.Core.Entity;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace AwfulMetro.Tests.Unit
+namespace AwfulMetro.Windows8.Tests.Unit
 {
     // ReSharper disable InconsistentNaming
     // This is only testing the properties currently parsed -- more tests should be added (ideally in TDD fashion) as additional properties are parsed
