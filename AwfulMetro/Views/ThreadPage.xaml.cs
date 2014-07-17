@@ -123,7 +123,7 @@ namespace AwfulMetro.Views
                     }
                     else
                     {
-                        _zoomSize = 20;
+                       // _zoomSize = 20;
                     }
                     break;
                 case "openThread":
@@ -312,6 +312,7 @@ namespace AwfulMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             _vm.Html = string.Empty;
+            _forumThread = Locator.ViewModels.ThreadVm.ForumThreadEntity;
             _navigationHelper.OnNavigatedTo(e);
             Rect bounds = Window.Current.Bounds;
             ChangeViewTemplate(bounds.Width);

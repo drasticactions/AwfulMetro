@@ -78,8 +78,6 @@ namespace AwfulMetro.Core.Manager
 
             if (!query.ContainsKey("postid"))
             {
-                forumThread.ScrollToPost = 0;
-                forumThread.ScrollToPostString = string.Empty;
                 return doc;
             }
 
