@@ -11,6 +11,7 @@
     xmlns:tools="using:AwfulMetro.Tools"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     x:Name="PageRoot"
+    DataContext="{Binding Source={StaticResource Locator}, Path=MainForumsPageVm}"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <interactivity:Interaction.Behaviors>
@@ -18,9 +19,6 @@
                                  BackgroundColor="#FF1E72C9"
                                  ForegroundColor="White"/>
     </interactivity:Interaction.Behaviors>
-    <Page.DataContext>
-        <viewModels:MainForumsPageViewModel />
-    </Page.DataContext>
     <Page.Transitions>
         <TransitionCollection>
             <NavigationThemeTransition>

@@ -1,0 +1,58 @@
+﻿#threadView
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#threadView header
+{
+    overflow: auto;
+    width: 100%;
+    padding-bottom: 25px;
+    border-bottom: 1px solid green;
+}
+
+#threadView h2 {
+    font-size: 150%;
+}
+
+#threadView header .av
+{
+   width: 92px;
+   height: 92px;
+   margin-right: 25px;
+   float: left;
+}
+
+input[type=submit]{
+ background-color: gray;
+ color: white;
+    margin-top: 5px;
+}
+
+.seen2 {
+    background-color: rgb(188, 212, 237);
+}
+
+.seen1 {
+    background-color: rgb(212, 225, 238);
+}
+
+.postCount1 {
+    background-color: rgb(244, 244, 244);
+}
+
+.postCount2 {
+    background-color: rgb(232, 232, 232);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+footer {
+    overflow: hidden;
+}

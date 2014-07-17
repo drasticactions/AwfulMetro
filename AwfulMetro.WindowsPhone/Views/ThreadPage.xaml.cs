@@ -52,7 +52,7 @@ namespace AwfulMetro.Views
     public sealed partial class ThreadPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ThreadViewModel _vm;
+        private ThreadViewModel _vm = Locator.ViewModels.ThreadVm;
         private ForumThreadEntity _forumThread;
         private readonly ThreadManager _threadManager = new ThreadManager();
         public ThreadPage()
@@ -86,8 +86,6 @@ namespace AwfulMetro.Views
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var jsonObjectString = (string) e.NavigationParameter;
-            _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
             _vm.GetForumPosts();
         }
@@ -182,7 +180,8 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm = (ThreadViewModel) DataContext;
+            _vm.Html = string.Empty;
+            _forumThread = Locator.ViewModels.ThreadVm.ForumThreadEntity;
             this.navigationHelper.OnNavigatedTo(e);
         }
 

@@ -49,7 +49,7 @@ namespace AwfulMetro.Views
     public sealed partial class ThreadListPage : Page
     {
         private readonly NavigationHelper _navigationHelper;
-        private ThreadListPageViewModel _vm;
+        private ThreadListPageViewModel _vm = Locator.ViewModels.ThreadListPageVm;
         private ForumEntity _forumEntity;
         public ThreadListPage()
         {
@@ -117,8 +117,6 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(_vm == null)
-            _vm = (ThreadListPageViewModel)DataContext;
             this._navigationHelper.OnNavigatedTo(e);
         }
 
@@ -149,9 +147,9 @@ namespace AwfulMetro.Views
 
         private void ForumThreadList_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            var forumThread = ((ForumThreadEntity)e.ClickedItem);
-            string jsonObjectString = JsonConvert.SerializeObject(forumThread);
-            Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+            var itemId = ((ForumThreadEntity)e.ClickedItem);
+            Locator.ViewModels.ThreadVm.ForumThreadEntity = itemId;
+            Frame.Navigate(typeof(ThreadPage));
         }
     }
 }

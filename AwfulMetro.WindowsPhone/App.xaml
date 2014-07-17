@@ -8,9 +8,11 @@
     xmlns:tools1="using:AwfulMetro.Core.Tools"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:userControls="using:AwfulMetro.UserControls">
+    xmlns:userControls="using:AwfulMetro.UserControls"
+    xmlns:locator="using:AwfulMetro.Locator">
 
     <Application.Resources>
+        <locator:ViewModels x:Name="Locator" />
         <SolidColorBrush x:Key="AwfulBlue" Color="#FF1E72C9"/>
         <DataTemplate x:Key="ForumTemplate">
             <Grid Margin="5" HorizontalAlignment="Stretch" Height="60">

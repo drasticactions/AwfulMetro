@@ -8,10 +8,8 @@
     xmlns:viewModels="using:AwfulMetro.ViewModels"
     xmlns:tools="using:AwfulMetro.Core.Tools"
     mc:Ignorable="d"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ThreadVm}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.DataContext>
-        <viewModels:ThreadViewModel />
-    </Page.DataContext>
     <Page.Transitions>
         <TransitionCollection>
             <NavigationThemeTransition>

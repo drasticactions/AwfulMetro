@@ -104,11 +104,7 @@ namespace AwfulMetro.ViewModels
             // Get the current reply count
             if (ForumThreadEntity.ScrollToPost != 0)
             {
-                ForumThreadEntity.RepliesSinceLastOpened = ForumThreadEntity.RepliesSinceLastOpened - (40 - ForumThreadEntity.ScrollToPost);
-            }
-            else
-            {
-                ForumThreadEntity.RepliesSinceLastOpened = ForumThreadEntity.RepliesSinceLastOpened - ForumThreadEntity.ForumPosts.Count;
+                ForumThreadEntity.RepliesSinceLastOpened = ForumThreadEntity.RepliesSinceLastOpened - (ForumThreadEntity.ForumPosts.Count - ForumThreadEntity.ScrollToPost);
             }
             Html = await HtmlFormater.FormatThreadHtml(ForumThreadEntity);
             PageNumbers = Enumerable.Range(1, ForumThreadEntity.TotalPages).ToArray();

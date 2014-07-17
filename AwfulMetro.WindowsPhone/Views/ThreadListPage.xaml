@@ -8,10 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
     mc:Ignorable="d"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ThreadListPageVm}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Page.DataContext>
-        <viewModels:ThreadListPageViewModel />
-    </Page.DataContext>
     <Page.Resources>
         <CollectionViewSource
             x:Name="ForumThreadViewSource"
