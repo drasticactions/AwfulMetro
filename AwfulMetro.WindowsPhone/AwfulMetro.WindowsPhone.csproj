@@ -157,6 +157,7 @@
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-240.png" />
     <Content Include="Assets\WideLogo.scale-240.png" />
+    <None Include="AwfulMetro.licenseheader" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="vcd.xml" />
   </ItemGroup>

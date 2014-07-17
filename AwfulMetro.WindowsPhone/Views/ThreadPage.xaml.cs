@@ -1,4 +1,24 @@
-﻿using Windows.UI.Popups;
+﻿#region copyright
+/*
+Awful Metro - A Modern UI Something Awful Forums Viewer
+Copyright (C) 2014  Tim Miller
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+*/
+#endregion
+using Windows.UI.Popups;
 using AwfulMetro.Common;
 using System;
 using System.Collections.Generic;
@@ -69,7 +89,7 @@ namespace AwfulMetro.Views
             var jsonObjectString = (string) e.NavigationParameter;
             _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
-            _vm.GetForumPosts(_forumThread);
+            _vm.GetForumPosts();
         }
 
         private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
@@ -175,7 +195,7 @@ namespace AwfulMetro.Views
 
         private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _vm.GetForumPosts(_forumThread);
+            _vm.GetForumPosts();
         }
 
         private async void ThreadWebView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
@@ -196,14 +216,14 @@ namespace AwfulMetro.Views
         {
             if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
             _vm.ForumThreadEntity.CurrentPage--;
-            _vm.GetForumPosts(_vm.ForumThreadEntity);
+            _vm.GetForumPosts();
         }
 
         private void ForwardButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
             _vm.ForumThreadEntity.CurrentPage++;
-            _vm.GetForumPosts(_vm.ForumThreadEntity);
+            _vm.GetForumPosts();
 
         }
 

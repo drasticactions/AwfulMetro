@@ -1,4 +1,6 @@
-﻿#region copyright
+extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+#region copyright
 /*
 Awful Metro - A Modern UI Something Awful Forums Viewer
 Copyright (C) 2014  Tim Miller
@@ -18,30 +20,13 @@ along with this program; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 #endregion
-
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
-using AwfulMetro.ViewModels;
-using AwfulMetro.Views;
-
-namespace AwfulMetro.Common
-{
-    public class AutoFacConfiguration
-    {
-        public static IContainer Configure()
-        {
-            var builder = new ContainerBuilder();
-
-            // Register View Models
-            builder.RegisterType<ThreadViewModel>().SingleInstance();
-            builder.RegisterType<MainForumsPageViewModel>().SingleInstance();
-            builder.RegisterType<ThreadListPageViewModel>().SingleInstance();
-            builder.RegisterType<PrivateMessageViewModel>().SingleInstance();
-
-            builder.RegisterType<MainForumsPage>();
-            return builder.Build();
-        }
-    }
-}
+extensions: .aspx .ascx
+<%-- 
+Sample license text.
+--%>
+extensions: .vb
+'Sample license text.
+extensions:  .xml .config .xsd
+<!--
+Sample license text.
+-->

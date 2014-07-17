@@ -1,4 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Sample license text.
+-->
 <StoreAssociation xmlns="http://schemas.microsoft.com/appx/2010/storeassociation">
   <Publisher>CN=49056560-3A92-41D0-8509-DF4FE44F646C</Publisher>
   <PublisherDisplayName>ティム・ミラー</PublisherDisplayName>

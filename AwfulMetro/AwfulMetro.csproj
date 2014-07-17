@@ -168,6 +168,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="AwfulMetro.licenseheader" />
     <None Include="AwfulMetro_StoreKey.pfx" />
     <None Include="AwfulMetro_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
