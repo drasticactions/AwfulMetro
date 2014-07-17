@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  
+  <Identity Name="a43d6c8b-a811-46be-aa61-f1d8a0a5f4b8"
+            Publisher="CN=Timothy"
+            Version="1.0.0.0" />
+  
+  <Properties>
+    <DisplayName>AwfulMetro.Windows8.Tests.Unit</DisplayName>
+    <PublisherDisplayName>Timothy</PublisherDisplayName>
+    <Logo>Images\UnitTestStoreLogo.png</Logo>
+    <Description>AwfulMetro.Windows8.Tests.Unit</Description>
+  </Properties>
+  
+  <Prerequisites>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+  </Prerequisites>
+  
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+  
+  <Applications>
+    <Application Id="vstest.executionengine.App" 
+        Executable="vstest.executionengine.appcontainer.exe" 
+        EntryPoint="vstest.executionengine.App">
+        <VisualElements 
+            DisplayName="NoUIEntryPoints"
+            Logo="Images\UnitTestLogo.png"
+            SmallLogo="Images\UnitTestSmallLogo.png"
+            Description="vstest.executionengine.App"
+            ForegroundText="light"
+            BackgroundColor="#0084FF">
+            <SplashScreen Image="Images\UnitTestSplashScreen.png" />
+        </VisualElements>
+    </Application>
+
+    <Application Id="vstest.executionengine.x86.App" 
+        Executable="vstest.executionengine.appcontainer.x86.exe" 
+        EntryPoint="vstest.executionengine.x86.App">
+        <VisualElements 
+            DisplayName="NoUIEntryPoints"
+            Logo="Images\UnitTestLogo.png"
+            SmallLogo="Images\UnitTestSmallLogo.png"
+            Description="vstest.executionengine.x86.App"
+            ForegroundText="light"
+            BackgroundColor="#0084FF">
+            <SplashScreen Image="Images\UnitTestSplashScreen.png" />
+        </VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
