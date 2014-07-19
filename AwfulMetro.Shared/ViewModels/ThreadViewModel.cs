@@ -37,6 +37,8 @@ namespace AwfulMetro.ViewModels
     {
         private ForumThreadEntity _forumThreadEntity;
 
+        private List<ForumThreadEntity> _linkedThreads = new List<ForumThreadEntity>(); 
+
         private string _html;
 
         private string _threadTitle;
@@ -55,14 +57,19 @@ namespace AwfulMetro.ViewModels
             }
         }
 
-        public ForumThreadEntity ForumThreadEntity
+        public List<ForumThreadEntity> LinkedThreads
         {
-            get { return _forumThreadEntity; }
+            get { return _linkedThreads; }
             set
             {
-                SetProperty(ref _forumThreadEntity, value);
+                SetProperty(ref _linkedThreads, value);
                 OnPropertyChanged();
             }
+        }
+
+        public ForumThreadEntity ForumThreadEntity
+        {
+            get { return LinkedThreads.LastOrDefault(); }
         }
 
         public string ThreadTitle

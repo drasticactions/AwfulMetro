@@ -35,6 +35,11 @@ namespace AwfulMetro.Pcl.Core.Tools
 {
     public static class HtmlFormater
     {
+        public static async Task<string> FormatPostHtml(ForumPostEntity forumPostEntity)
+        {
+           return string.Format("<div class=\"postbody\">{0}</div>", forumPostEntity.PostHtml);
+        }
+
         public static async Task<string> FormatThreadHtml(ForumThreadEntity forumThreadEntity )
         {
             ObservableCollection<ForumPostEntity> postEntities = forumThreadEntity.ForumPosts;

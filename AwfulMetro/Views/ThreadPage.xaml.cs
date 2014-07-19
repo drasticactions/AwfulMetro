@@ -37,6 +37,7 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Entity;
 using AwfulMetro.Pcl.Core.Manager;
 using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
@@ -83,6 +84,8 @@ namespace AwfulMetro.Views
                 case "profile":
                     Frame.Navigate(typeof (UserProfileView), command.Id);
                     break;
+                case "openPost":
+                    break;
                 case "post_history":
                     Frame.Navigate(typeof (UserPostHistoryPage), command.Id);
                     break;
@@ -127,11 +130,16 @@ namespace AwfulMetro.Views
                     }
                     break;
                 case "openThread":
-                    // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
-                    // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
+                     var query = Extensions.ParseQueryString(command.Id);
+                    if (query.ContainsKey("action") && query["action"].Equals("showPost"))
+                    {
+                        var postManager = new PostManager();
+                        var html = await postManager.GetPost(Convert.ToInt32(query["postid"]));
+                        return;
+                    }
                     var threadManager = new ThreadManager();
-                    var newThreadEntity = new ForumThreadEntity();
-                    var thread = await threadManager.GetThread(newThreadEntity, command.Id);
+                    var threadEntity = new ForumThreadEntity();
+                    var thread = await threadManager.GetThread(threadEntity, command.Id);
                     if (thread == null)
                     {
                         var error = new MessageDialog("Specified post was not found in the live forums.")
@@ -141,8 +149,8 @@ namespace AwfulMetro.Views
                         await error.ShowAsync();
                         break;
                     }
-                    string jsonObjectString = JsonConvert.SerializeObject(newThreadEntity);
-                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+                    Locator.ViewModels.ThreadVm.LinkedThreads.Add(threadEntity);
+                    Frame.Navigate(typeof(ThreadPage));
                     break;
                 default:
                     var msgDlg = new MessageDialog("Not working yet!")
@@ -153,6 +161,8 @@ namespace AwfulMetro.Views
                     break;
             }
         }
+
+       
 
 
         /// <summary>
@@ -177,7 +187,6 @@ namespace AwfulMetro.Views
             CheckOrientation();
 
         }
-
 
         /// <summary>
         ///     Preserves state associated with this page in case the application is suspended or the
@@ -323,6 +332,10 @@ namespace AwfulMetro.Views
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            if (Locator.ViewModels.ThreadVm.LinkedThreads.Last().ThreadId == _forumThread.ThreadId)
+            {
+                Locator.ViewModels.ThreadVm.LinkedThreads.RemoveAt(Locator.ViewModels.ThreadVm.LinkedThreads.Count - 1);
+            }
             _navigationHelper.OnNavigatedFrom(e);
         }
 

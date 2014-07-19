@@ -158,7 +158,7 @@ namespace AwfulMetro.Views
         private void ForumThreadList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((ForumThreadEntity) e.ClickedItem);
-            Locator.ViewModels.ThreadVm.ForumThreadEntity = itemId;
+            Locator.ViewModels.ThreadVm.LinkedThreads.Add(itemId);
             Frame.Navigate(typeof (ThreadPage));
         }
 

@@ -28,6 +28,7 @@ using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 using AwfulMetro.Pcl.Core.Entity;
+using AwfulMetro.Pcl.Core.Tools;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Pcl.Core.Manager
@@ -43,6 +44,29 @@ namespace AwfulMetro.Pcl.Core.Manager
 
         public PostManager() : this(new WebManager())
         {
+        }
+
+        public async Task<string> GetPost(int postId)
+        {
+            try
+            {
+                string url = string.Format(Constants.SHOW_POST, postId);
+                WebManager.Result result = await _webManager.GetData(url);
+                HtmlDocument doc = result.Document;
+                HtmlNode threadNode =
+                    doc.DocumentNode.Descendants("div")
+                        .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+                HtmlNode postNode =
+                    threadNode.Descendants("table")
+                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("post"));
+                var post = new ForumPostEntity();
+                post.Parse(postNode);
+                return await HtmlFormater.FormatPostHtml(post);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public async Task<ForumThreadEntity> GetThreadPosts(ForumThreadEntity forumThread)

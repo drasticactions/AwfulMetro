@@ -58,12 +58,12 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <ProgressBar IsIndeterminate="True" Visibility="{Binding ForumPageScrollingCollection.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                        <ListView x:Name="ForumThreadList"
-                      HorizontalAlignment="Stretch"
+                        <ListView  x:Name="ForumThreadList"
+                      HorizontalAlignment="Stretch"          
                        ItemTemplate="{StaticResource ForumThreadTemplate}"
                       IsSwipeEnabled="True" Grid.Row="1"
                       ItemClick="ForumThreadList_OnItemClick"
-                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="Extended"
+                      ItemsSource="{Binding Source={StaticResource ForumThreadViewSource}}" SelectionMode="None"
                       IsItemClickEnabled="True">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">

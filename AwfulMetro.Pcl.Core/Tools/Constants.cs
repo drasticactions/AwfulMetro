@@ -92,6 +92,8 @@ namespace AwfulMetro.Core.Tools
 
         public const string SMILE_URL = BASE_URL + "misc.php?action=showsmilies";
 
+        public const string SHOW_POST = BASE_URL + "showthread.php?action=showpost&postid={0}";
+
         public const string USER_CP = "usercp.php?";
 
         public const string HTML_FILE = "{0}.html";

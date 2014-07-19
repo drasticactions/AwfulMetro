@@ -46,7 +46,7 @@ namespace AwfulMetro.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ThreadListPage : Page
+    public sealed partial class ThreadListPage : Page, IDisposable
     {
         private readonly NavigationHelper _navigationHelper;
         private ThreadListPageViewModel _vm = Locator.ViewModels.ThreadListPageVm;
@@ -148,8 +148,13 @@ namespace AwfulMetro.Views
         private void ForumThreadList_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((ForumThreadEntity)e.ClickedItem);
-            Locator.ViewModels.ThreadVm.ForumThreadEntity = itemId;
+            Locator.ViewModels.ThreadVm.LinkedThreads.Add(itemId);
             Frame.Navigate(typeof(ThreadPage));
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }
