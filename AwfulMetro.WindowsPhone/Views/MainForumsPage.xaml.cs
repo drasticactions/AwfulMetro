@@ -161,9 +161,9 @@ namespace AwfulMetro.Views
 
         private void ForumThreadList_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            var itemId = ((ForumThreadEntity)e.ClickedItem);
-            Locator.ViewModels.ThreadVm.LinkedThreads.Add(itemId);
-            Frame.Navigate(typeof(ThreadPage));
+            var forumThread = ((ForumThreadEntity)e.ClickedItem);
+            string jsonObjectString = JsonConvert.SerializeObject(forumThread);
+            Frame.Navigate(typeof(ThreadPage), jsonObjectString);
         }
 
         private void SettingsButton_OnClick(object sender, RoutedEventArgs e)

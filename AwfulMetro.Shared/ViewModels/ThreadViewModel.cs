@@ -69,7 +69,12 @@ namespace AwfulMetro.ViewModels
 
         public ForumThreadEntity ForumThreadEntity
         {
-            get { return LinkedThreads.LastOrDefault(); }
+            get { return _forumThreadEntity; }
+            set
+            {
+                SetProperty(ref _forumThreadEntity, value);
+                OnPropertyChanged();
+            }
         }
 
         public string ThreadTitle
@@ -102,20 +107,15 @@ namespace AwfulMetro.ViewModels
             }
         }
 
-        public async void GetForumPosts()
+        public async void GetForumPosts(ForumThreadEntity forumThreadEntity)
         {
             IsLoading = true;
-            ThreadTitle = ForumThreadEntity.Name;
+            ThreadTitle = forumThreadEntity.Name;
             PostManager postManager = new PostManager();
-            await postManager.GetThreadPosts(ForumThreadEntity);
-            // Get the current reply count
-            if (ForumThreadEntity.ScrollToPost != 0)
-            {
-                ForumThreadEntity.RepliesSinceLastOpened = ForumThreadEntity.RepliesSinceLastOpened - (ForumThreadEntity.ForumPosts.Count - ForumThreadEntity.ScrollToPost);
-            }
-            Html = await HtmlFormater.FormatThreadHtml(ForumThreadEntity);
-            PageNumbers = Enumerable.Range(1, ForumThreadEntity.TotalPages).ToArray();
-            OnPropertyChanged("ForumThreadEntity");
+            await postManager.GetThreadPosts(forumThreadEntity);
+            Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
+            ForumThreadEntity = forumThreadEntity;
+            PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
             IsLoading = false;
         }
     }

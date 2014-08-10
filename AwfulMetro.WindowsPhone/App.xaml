@@ -48,11 +48,11 @@
                     </Grid.ColumnDefinitions>
                     <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
                                         Grid.Column="0" Width="60" Height="15">
-                        <userControls:ImageLoader Source="{Binding ImageIconLocation}"
+                        <Image Source="{Binding ImageIconLocation}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Border>
                     <Grid Grid.Column="1" >
-                        <userControls:ImageLoader Margin="0,0,10,0" Source="{Binding StoreImageIconLocation}"
+                        <Image Margin="0,0,10,0" Source="{Binding StoreImageIconLocation}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Grid>
                     <StackPanel Grid.Column="2">
@@ -74,7 +74,7 @@
                                         Visibility="{Binding RatingImage, Converter={StaticResource RatingVisibilityConverter}}"
                                         HorizontalAlignment="Left" Margin="0,0,0,0" Background="Transparent" Width="46"
                                         Height="20">
-                            <userControls:ImageLoader Source="{Binding RatingImage}"
+                            <Image Source="{Binding RatingImage}"
                                                AutomationProperties.Name="{Binding Title}" />
                         </Border>
                     </StackPanel>
@@ -123,7 +123,7 @@
                     </Border>
                     <Border Background="Transparent"
                                         Grid.Column="1" Width="60" Height="15">
-                        <userControls:ImageLoader Source="{Binding Icon}"
+                        <Image Source="{Binding Icon}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Border>
                     <StackPanel Grid.Column="2">

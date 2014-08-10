@@ -53,7 +53,7 @@ namespace AwfulMetro.Views
     public sealed partial class ThreadPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ThreadViewModel _vm = Locator.ViewModels.ThreadVm;
+        private ThreadViewModel _vm;
         private ForumThreadEntity _forumThread;
         private readonly ThreadManager _threadManager = new ThreadManager();
         public ThreadPage()
@@ -87,8 +87,10 @@ namespace AwfulMetro.Views
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            var jsonObjectString = (string)e.NavigationParameter;
+            _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_forumThread);
         }
 
         private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
@@ -127,8 +129,6 @@ namespace AwfulMetro.Views
                         var html = await postManager.GetPost(Convert.ToInt32(query["postid"]));
                         return;
                     }
-                    // Because we are coming from an existing thread, rather than the thread lists, we need to get the thread information beforehand.
-                    // However, right now the managers are not set up to support this. The thread is getting downloaded twice, when it really only needs to happen once.
                     var threadManager = new ThreadManager();
                     var threadEntity = new ForumThreadEntity();
                     var thread = await threadManager.GetThread(threadEntity, command.Id);
@@ -141,8 +141,8 @@ namespace AwfulMetro.Views
                         await error.ShowAsync();
                         break;
                     }
-                    Locator.ViewModels.ThreadVm.LinkedThreads.Add(threadEntity);
-                    Frame.Navigate(typeof(ThreadPage));
+                    string jsonObjectString = JsonConvert.SerializeObject(threadEntity);
+                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
                     break;
                 default:
                     var msgDlg = new MessageDialog("Not working yet!")
@@ -189,17 +189,12 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _vm.Html = string.Empty;
-            _forumThread = Locator.ViewModels.ThreadVm.ForumThreadEntity;
+            _vm = (ThreadViewModel)DataContext;
             this.navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            if (Locator.ViewModels.ThreadVm.LinkedThreads.Last().ThreadId == _forumThread.ThreadId)
-            {
-                Locator.ViewModels.ThreadVm.LinkedThreads.RemoveAt(Locator.ViewModels.ThreadVm.LinkedThreads.Count - 1);
-            }
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
@@ -207,7 +202,7 @@ namespace AwfulMetro.Views
 
         private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private async void ThreadWebView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
@@ -228,14 +223,14 @@ namespace AwfulMetro.Views
         {
             if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
             _vm.ForumThreadEntity.CurrentPage--;
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private void ForwardButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
             _vm.ForumThreadEntity.CurrentPage++;
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
 
         }
 

@@ -49,6 +49,30 @@ namespace AwfulMetro.Core.Manager
         {
         }
 
+        public async Task<ForumThreadEntity> GetThread(string url)
+        {
+            var forumThread = new ForumThreadEntity();
+            WebManager.Result result = await _webManager.GetData(url);
+            HtmlDocument doc = result.Document;
+            try
+            {
+                forumThread.ParseFromThread(doc);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            var query = Extensions.ParseQueryString(url);
+            if (!query.ContainsKey("postid")) return forumThread;
+
+            // If we are going to a post, it won't use #pti but instead uses the post id.
+
+            forumThread.ScrollToPost = Convert.ToInt32(query["postid"]);
+            forumThread.ScrollToPostString = "#post" + query["postid"];
+            return forumThread;
+
+        }
+
         public async Task<HtmlDocument> GetThread(ForumThreadEntity forumThread, string url)
         {
             WebManager.Result result = await _webManager.GetData(url);

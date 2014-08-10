@@ -149,8 +149,8 @@ namespace AwfulMetro.Views
                         await error.ShowAsync();
                         break;
                     }
-                    Locator.ViewModels.ThreadVm.LinkedThreads.Add(threadEntity);
-                    Frame.Navigate(typeof(ThreadPage));
+                    string jsonObjectString = JsonConvert.SerializeObject(threadEntity);
+                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
                     break;
                 default:
                     var msgDlg = new MessageDialog("Not working yet!")
@@ -180,8 +180,10 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var jsonObjectString = (string) e.NavigationParameter;
-            _vm.GetForumPosts();
+            var jsonObjectString = (string)e.NavigationParameter;
+            _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
+            if (_forumThread == null) return;
+            _vm.GetForumPosts(_forumThread);
 
             // Set the default focus on the page to either one of the web views.
             CheckOrientation();
@@ -206,14 +208,14 @@ namespace AwfulMetro.Views
         {
             if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
             _vm.ForumThreadEntity.CurrentPage--;
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private void ForwardButton_Click(object sender, RoutedEventArgs e)
         {
             if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
             _vm.ForumThreadEntity.CurrentPage++;
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
 
@@ -241,7 +243,7 @@ namespace AwfulMetro.Views
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private void CheckOrientation()
@@ -332,10 +334,6 @@ namespace AwfulMetro.Views
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            if (Locator.ViewModels.ThreadVm.LinkedThreads.Last().ThreadId == _forumThread.ThreadId)
-            {
-                Locator.ViewModels.ThreadVm.LinkedThreads.RemoveAt(Locator.ViewModels.ThreadVm.LinkedThreads.Count - 1);
-            }
             _navigationHelper.OnNavigatedFrom(e);
         }
 
@@ -402,7 +400,12 @@ namespace AwfulMetro.Views
             if (userInputPageNumber < 1 || userInputPageNumber > _vm.ForumThreadEntity.TotalPages) return;
             if (CurrentPageButton.Flyout != null) CurrentPageButton.Flyout.Hide();
             _vm.ForumThreadEntity.CurrentPage = userInputPageNumber;
-            _vm.GetForumPosts();
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
+        }
+
+        private void BackButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ThreadListPage));
         }
     }
 }

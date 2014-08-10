@@ -50,18 +50,7 @@ namespace AwfulMetro.Core.Entity
 
         private int _replyCount;
 
-        public int ReplyCount
-        {
-            get
-            {
-                return _replyCount;
-            }
-            set
-            {
-                _replyCount = value;
-                OnPropertyChanged();
-            }
-        }
+        public int ReplyCount { get; set; }
 
         public int ViewCount { get; set; }
 
@@ -71,18 +60,7 @@ namespace AwfulMetro.Core.Entity
 
         private string _killedBy;
 
-        public string KilledBy
-        {
-            get
-            {
-                return _killedBy;
-            }
-            set
-            {
-                _killedBy = value;
-                OnPropertyChanged();
-            }
-        }
+        public string KilledBy { get; set; }
 
         public bool IsSticky { get; set; }
 
@@ -92,52 +70,19 @@ namespace AwfulMetro.Core.Entity
 
         private bool _hasBeenViewed;
 
-        public bool HasBeenViewed
-        {
-            get
-            {
-                return _hasBeenViewed;
-            }
-            set
-            {
-                _hasBeenViewed = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool HasBeenViewed { get; set; }
 
         public bool CanMarkAsUnread { get; set; }
 
         private int _repliesSinceLastOpened;
 
-        public int RepliesSinceLastOpened
-        {
-            get
-            {
-                return _repliesSinceLastOpened;
-            }
-            set
-            {
-                _repliesSinceLastOpened = value;
-                OnPropertyChanged();
-            }
-        }
+        public int RepliesSinceLastOpened { get; set; }
 
         public int TotalPages { get; set; }
 
         private int _currentPage { get; set; }
 
-        public int CurrentPage
-        {
-            get
-            {
-                return _currentPage;
-            }
-            set
-            {
-                _currentPage = value;
-                OnPropertyChanged();
-            }
-        }
+        public int CurrentPage { get; set; }
 
         public int ScrollToPost { get; set; }
 
@@ -149,18 +94,7 @@ namespace AwfulMetro.Core.Entity
 
         private bool _hasSeen;
 
-        public bool HasSeen
-        {
-            get
-            {
-                return _hasSeen;
-            }
-            set
-            {
-                _hasSeen = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool HasSeen { get; set; }
 
         public bool IsBookmark { get; set; }
 
