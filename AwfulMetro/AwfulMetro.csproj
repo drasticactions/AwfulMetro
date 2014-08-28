@@ -110,6 +110,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MainForumsPageViewModel.cs" />
     <Compile Include="Views\ArticleViewer.xaml.cs">
       <DependentUpon>ArticleViewer.xaml</DependentUpon>
     </Compile>

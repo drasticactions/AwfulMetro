@@ -42,7 +42,6 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ForumSearchPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginPageViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainForumsPageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NewThreadViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PrivateMessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ReplyViewModel.cs" />

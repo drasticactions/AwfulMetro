@@ -54,7 +54,7 @@ namespace AwfulMetro.Views
     public sealed partial class MainForumsPage : Page
     {
         private NavigationHelper navigationHelper;
-        private MainForumsPageViewModel _vm;
+        private MainForumsPageViewModel _vm = Locator.ViewModels.MainForumsPageVm;
         private ThreadListPageViewModel _threadVm = Locator.ViewModels.ThreadListPageVm;
         private ApplicationDataContainer _localSettings;
         public MainForumsPage()
@@ -97,8 +97,11 @@ namespace AwfulMetro.Views
                 }
             }
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            if(_threadVm.ForumEntity == null || !_threadVm.ForumEntity.IsBookmarks)
-            _threadVm.Initialize(forum);
+            if (_vm.ThreadListPageViewModel != null) return;
+            _vm.ThreadListPageViewModel = new ThreadListPageViewModel();
+            _vm.ThreadListPageViewModel.Initialize(forum);
+            BookmarksPivotItem.DataContext = _vm.ThreadListPageViewModel;
+
         }
 
         /// <summary>
@@ -130,7 +133,6 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            BookmarksPivotItem.DataContext = _threadVm;
             this.navigationHelper.OnNavigatedTo(e);
         }
 
