@@ -49,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ThreadViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\WindowsPhone-Default.css" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\219.css" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\26.css" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\bbcode.css" />

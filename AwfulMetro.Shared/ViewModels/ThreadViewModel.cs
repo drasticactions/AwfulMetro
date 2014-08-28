@@ -113,6 +113,9 @@ namespace AwfulMetro.ViewModels
             ThreadTitle = forumThreadEntity.Name;
             PostManager postManager = new PostManager();
             await postManager.GetThreadPosts(forumThreadEntity);
+#if WINDOWS_PHONE_APP
+            forumThreadEntity.PlatformIdentifier = PlatformIdentifier.WindowsPhone;
+#endif
             Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
             ForumThreadEntity = forumThreadEntity;
             PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();

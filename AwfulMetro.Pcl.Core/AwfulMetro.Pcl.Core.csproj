@@ -96,6 +96,7 @@
     <Compile Include="Tools\HtmlFormater.cs" />
     <Compile Include="Tools\NotifyStatusTile.cs" />
     <Compile Include="Tools\PageScrollingCollection.cs" />
+    <Compile Include="Tools\PlatformIdentifier.cs" />
     <Compile Include="Tools\PrivateMessageScrollingCollection.cs" />
     <Compile Include="Tools\WebViewHelper.cs" />
   </ItemGroup>

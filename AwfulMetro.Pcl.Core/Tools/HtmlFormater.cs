@@ -52,6 +52,13 @@ namespace AwfulMetro.Pcl.Core.Tools
             
             HtmlNode head = doc2.DocumentNode.Descendants("head").FirstOrDefault();
 
+            switch (forumThreadEntity.PlatformIdentifier)
+            {
+                case PlatformIdentifier.WindowsPhone:
+                    head.InnerHtml += "<link href=\"ms-appx-web:///Assets/WindowsPhone-Default.css\" type=\"text/css\" media=\"all\" rel=\"stylesheet\">";
+                    break;
+            }
+
             switch (forumThreadEntity.ForumId)
             {
                 case 219:

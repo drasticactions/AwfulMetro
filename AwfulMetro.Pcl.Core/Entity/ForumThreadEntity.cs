@@ -29,6 +29,7 @@ using Windows.UI.Xaml.Controls;
 using AwfulMetro.Core.Tools;
 using AwfulMetro.Pcl.Core.Annotations;
 using AwfulMetro.Pcl.Core.Entity;
+using AwfulMetro.Pcl.Core.Tools;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Entity
@@ -97,6 +98,8 @@ namespace AwfulMetro.Core.Entity
         public bool HasSeen { get; set; }
 
         public bool IsBookmark { get; set; }
+
+        public PlatformIdentifier PlatformIdentifier { get; set; } 
 
         public ObservableCollection<ForumPostEntity> ForumPosts { get; set; }
 
