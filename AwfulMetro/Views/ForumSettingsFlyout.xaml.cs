@@ -30,11 +30,11 @@ using AwfulMetro.Pcl.Core.Tools;
 
 namespace AwfulMetro.Views
 {
-    public sealed partial class BookmarkSettingsFlyout : SettingsFlyout
+    public sealed partial class ForumSettingsFlyout
     {
         private readonly ApplicationDataContainer _localSettings;
 
-        public BookmarkSettingsFlyout()
+        public ForumSettingsFlyout()
         {
             InitializeComponent();
             _localSettings = ApplicationData.Current.LocalSettings;
@@ -53,6 +53,10 @@ namespace AwfulMetro.Views
             else
             {
                 FilterComboBox.SelectedIndex = 0;
+            }
+            if (_localSettings.Values.ContainsKey(Constants.DARK_MODE))
+            {
+                DarkLightThemeSwitch.IsOn = (bool)_localSettings.Values[Constants.DARK_MODE];
             }
         }
 
@@ -102,6 +106,20 @@ namespace AwfulMetro.Views
             if (FilterComboBox == null) return;
             // TODO: Make Enum.
             _localSettings.Values[Constants.BOOKMARK_DEFAULT] = FilterComboBox.SelectedIndex;
+        }
+
+        private void DarkLightThemeSwitch_OnToggled(object sender, RoutedEventArgs e)
+        {
+            var toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch == null) return;
+            if (toggleSwitch.IsOn)
+            {
+                _localSettings.Values[Constants.DARK_MODE] = true;
+            }
+            else
+            {
+                _localSettings.Values[Constants.DARK_MODE] = false;
+            }
         }
     }
 }

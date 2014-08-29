@@ -1,13 +1,13 @@
 ﻿<SettingsFlyout
-    x:Class="AwfulMetro.Views.BookmarkSettingsFlyout"
+    x:Class="AwfulMetro.Views.ForumSettingsFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:AwfulMetro.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    IconSource="Assets/SmallLogo.png"
-    Title="Bookmarks"
+    IconSource="../Assets/SmallLogo.png"
+    Title="Settings"
     d:DesignWidth="346">
 
     <!-- This StackPanel acts as a root panel for vertical layout of the content sections -->
@@ -50,6 +50,16 @@
                 <ComboBoxItem Content="Forums Default"/>
                 <ComboBoxItem Content="Most Unread First"/>
             </ComboBox>
+
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Dark Mode" />
+
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">
+                <TextBlock.Text>
+                    Enables the dark theme for forum threads.
+                </TextBlock.Text>
+            </TextBlock>
+
+            <ToggleSwitch x:Name="DarkLightThemeSwitch" Toggled="DarkLightThemeSwitch_OnToggled" />
 
         </StackPanel>
     </StackPanel>

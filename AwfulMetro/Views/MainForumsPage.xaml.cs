@@ -29,6 +29,7 @@ using System.Linq;
 using System.ServiceModel.Channels;
 using System.Xml.Serialization;
 using Windows.Storage;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -145,7 +146,19 @@ namespace AwfulMetro.Views
         /// in addition to page state preserved during an earlier session.
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
             NavigationHelper.OnNavigatedTo(e);
+        }
+
+        private void OnCommandsRequested(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            var forumsCommand = new SettingsCommand("forumSettings", "Settings",
+handler =>
+{
+    var up = new ForumSettingsFlyout();
+    up.Show();
+});
+            args.Request.ApplicationCommands.Add(forumsCommand);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

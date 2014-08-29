@@ -64,6 +64,15 @@ namespace AwfulMetro.Views
             {
                 LoadBookmarksOnLoadSwitch.IsOn = (bool)_localSettings.Values[Constants.BOOKMARK_STARTUP];
             }
+            if (_localSettings.Values.ContainsKey(Constants.DARK_MODE))
+            {
+                DarkLightThemeSwitch.IsOn = (bool) _localSettings.Values[Constants.DARK_MODE];
+            }
+            else
+            {
+                // If the mode was never set, it's automatically true unless the user actually sets it to false.
+                DarkLightThemeSwitch.IsOn = true;
+            }
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -181,6 +190,20 @@ namespace AwfulMetro.Views
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        private void DarkLightThemeSwitch_OnToggled(object sender, RoutedEventArgs e)
+        {
+            var toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch == null) return;
+            if (toggleSwitch.IsOn)
+            {
+                _localSettings.Values[Constants.DARK_MODE] = true;
+            }
+            else
+            {
+                _localSettings.Values[Constants.DARK_MODE] = false;
             }
         }
     }

@@ -24,9 +24,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Windows.Storage;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Core.Tools;
 using AwfulMetro.Pcl.Core.Entity;
 using AwfulMetro.Pcl.Core.Manager;
 using AwfulMetro.Pcl.Core.Tools;
@@ -115,11 +117,30 @@ namespace AwfulMetro.ViewModels
             await postManager.GetThreadPosts(forumThreadEntity);
 #if WINDOWS_PHONE_APP
             forumThreadEntity.PlatformIdentifier = PlatformIdentifier.WindowsPhone;
+#else
+            forumThreadEntity.PlatformIdentifier = PlatformIdentifier.Windows8;
 #endif
+            GetDarkModeSetting(forumThreadEntity);
             Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
             ForumThreadEntity = forumThreadEntity;
             PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
             IsLoading = false;
+        }
+
+        private void GetDarkModeSetting(ForumThreadEntity forumThreadEntity)
+        {
+            var localSettings = ApplicationData.Current.LocalSettings;
+            if (!localSettings.Values.ContainsKey(Constants.DARK_MODE)) return;
+            var darkMode = (bool) localSettings.Values[Constants.DARK_MODE];
+            switch (darkMode)
+            {
+                case true:
+                    forumThreadEntity.PlatformIdentifier = PlatformIdentifier.WindowsPhone;
+                    break;
+                case false:
+                    forumThreadEntity.PlatformIdentifier = PlatformIdentifier.Windows8;
+                    break;
+            }
         }
     }
 }

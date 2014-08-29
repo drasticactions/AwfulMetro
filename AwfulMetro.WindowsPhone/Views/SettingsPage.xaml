@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    RequestedTheme="Light" 
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid x:Name="LayoutRoot">
@@ -55,6 +54,15 @@
 
                     <ToggleSwitch x:Name="LoadBookmarksOnLoadSwitch" Toggled="LoadBookmarksOnLoadSwitch_OnToggled" />
 
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Dark Mode" />
+
+                    <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">
+                        <TextBlock.Text>
+                            Enables the dark theme for forum threads.
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <ToggleSwitch x:Name="DarkLightThemeSwitch" Toggled="DarkLightThemeSwitch_OnToggled" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>

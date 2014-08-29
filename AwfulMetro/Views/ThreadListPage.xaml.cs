@@ -138,23 +138,6 @@ namespace AwfulMetro.Views
         {
         }
 
-        /// <summary>
-        ///     Handler for the CommandsRequested event. Add custom SettingsCommands here.
-        /// </summary>
-        /// <param name="settingsPane">The settings pane.</param>
-        /// <param name="e">Event data that includes a vector of commands (ApplicationCommands)</param>
-        private void OnCommandsRequested(SettingsPane settingsPane, SettingsPaneCommandsRequestedEventArgs e)
-        {
-            if (!_forumEntity.IsBookmarks) return;
-            var bookmarksCommand = new SettingsCommand("bookmarkSettings", "Bookmarks",
-                handler =>
-                {
-                    var up = new BookmarkSettingsFlyout();
-                    up.Show();
-                });
-            e.Request.ApplicationCommands.Add(bookmarksCommand);
-        }
-
         private void ForumThreadList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var forumThread = ((ForumThreadEntity)e.ClickedItem);
@@ -205,7 +188,7 @@ namespace AwfulMetro.Views
 
         private void BookmarkSettings_Click(object sender, RoutedEventArgs e)
         {
-            var up = new BookmarkSettingsFlyout();
+            var up = new ForumSettingsFlyout();
             up.Show();
         }
 
@@ -347,7 +330,6 @@ namespace AwfulMetro.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             _navigationHelper.OnNavigatedTo(e);
-            SettingsPane.GetForCurrentView().CommandsRequested += OnCommandsRequested;
             Rect bounds = Window.Current.Bounds;
             ChangeViewTemplate(bounds.Width);
 
@@ -357,7 +339,6 @@ namespace AwfulMetro.Views
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            SettingsPane.GetForCurrentView().CommandsRequested -= OnCommandsRequested;
             _navigationHelper.OnNavigatedFrom(e);
         }
 

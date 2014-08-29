@@ -114,8 +114,8 @@
     <Compile Include="Views\ArticleViewer.xaml.cs">
       <DependentUpon>ArticleViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookmarkSettingsFlyout.xaml.cs">
-      <DependentUpon>BookmarkSettingsFlyout.xaml</DependentUpon>
+    <Compile Include="Views\ForumSettingsFlyout.xaml.cs">
+      <DependentUpon>ForumSettingsFlyout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Views\EditReplyPage.xaml.cs">
@@ -183,7 +183,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BookmarkSettingsFlyout.xaml">
+    <Page Include="Views\ForumSettingsFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
