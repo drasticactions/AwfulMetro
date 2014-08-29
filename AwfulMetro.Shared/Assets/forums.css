@@ -95,7 +95,6 @@ div.forumbar {
 #thread .seen1 .bbc-block, #thread .seen2 .bbc-block {
     background: #f5faff none repeat-x;
     border: 1px solid #8A9BAD;
-    box-shadow: 2px 2px 9px #94A6BA;
 }
 
 #thread dl.userinfo {
