@@ -18,6 +18,8 @@ along with this program; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 #endregion
+
+using System.Diagnostics;
 using Windows.UI.Popups;
 using AwfulMetro.Common;
 using System;
@@ -243,6 +245,24 @@ namespace AwfulMetro.Views
         {
             string jsonObjectString = JsonConvert.SerializeObject(_forumThread);
             Frame.Navigate(typeof(ReplyPage), jsonObjectString);
+        }
+
+        private void PageNumberButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var userInputPageNumber = 0;
+            try
+            {
+                userInputPageNumber = Convert.ToInt32(PageNumberTextBox.Text);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("User Inputted invalid value. Ignore the error.");
+            }
+
+            if (userInputPageNumber < 1 || userInputPageNumber > _vm.ForumThreadEntity.TotalPages) return;
+            if (CurrentPageButton.Flyout != null) CurrentPageButton.Flyout.Hide();
+            _vm.ForumThreadEntity.CurrentPage = userInputPageNumber;
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
     }
 }

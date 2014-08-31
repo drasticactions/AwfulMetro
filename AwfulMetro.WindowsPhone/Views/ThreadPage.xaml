@@ -52,6 +52,19 @@
         <CommandBar>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Reply" Click="ReplyButton_OnClick"/>
+                <AppBarButton HorizontalAlignment="Stretch" x:Name="CurrentPageButton" Label="Change Page">
+                    <Button.Flyout>
+                        <Flyout Placement="Left">
+                            <StackPanel>
+                                <Viewbox Margin="5" Height="40">
+                                    <TextBlock Text="{Binding ForumThreadEntity, Converter={StaticResource TotalPageConverter}}"/>
+                                </Viewbox>
+                                <TextBox Margin="5" x:Name="PageNumberTextBox"/>
+                                <Button Margin="5" x:Name="PageNumberButton" Click="PageNumberButton_OnClick" Content="Change Page"/>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </AppBarButton>
             </CommandBar.SecondaryCommands>
             <AppBarButton Label="Back" Icon="Back" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter} }" Click="BackButton_OnClick" />
             <AppBarButton Label="Refresh" x:Name="RefreshButton" Click="RefreshButton_OnClick" Icon="Refresh"/>

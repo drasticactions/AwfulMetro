@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Windows.UI.Xaml.Data;
+using AwfulMetro.Core.Entity;
 
 namespace AwfulMetro.Tools
 {
@@ -30,8 +31,8 @@ namespace AwfulMetro.Tools
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            int totalPages = (int) value;
-            return string.Concat("1/", totalPages);
+            var threadEntity = value as ForumThreadEntity;
+            return threadEntity == null ? string.Empty : string.Format("{0}/{1}", threadEntity.CurrentPage, threadEntity.TotalPages);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
