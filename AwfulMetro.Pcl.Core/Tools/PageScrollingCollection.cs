@@ -102,30 +102,19 @@ namespace AwfulMetro.Core.Tools
             for (var index = 1; index <= PageCount; index ++)
             {
                 ObservableCollection<ForumThreadEntity> forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, index);
-                if (!forumThreadEntities.Any()) continue;
-                for (int i = 0; i < this.Count; i++)
+                if (!forumThreadEntities.Any())
                 {
-                    var updatedThread = forumThreadEntities.FirstOrDefault(node => node.ThreadId == this[i].ThreadId);
-                    if (updatedThread != null)
-                    {
-                        if (forumThreadEntities[i].ThreadId == this[i].ThreadId)
-                        {
-                            // Rather than update the entire thread, just update
-                            this[i].RepliesSinceLastOpened = updatedThread.RepliesSinceLastOpened;
-                            this[i].ReplyCount = updatedThread.ReplyCount;
-                            this[i].HasSeen = updatedThread.HasSeen;
-                            this[i].KilledBy = updatedThread.KilledBy;
-                        }
-                        else
-                        {
-                            // Replace the reference
-                            this[i] = updatedThread;
-                        }
-                    }
-                    else
-                    {
-                        this.RemoveItem(i);
-                    }
+                    continue;
+                }
+                
+                if(index == 1)
+                {
+                    Clear();
+                }
+
+                foreach (ForumThreadEntity forumThreadEntity in forumThreadEntities.Where(forumThreadEntity => !forumThreadEntity.IsAnnouncement))
+                {
+                    Add(forumThreadEntity);
                 }
             }
             IsLoading = false;

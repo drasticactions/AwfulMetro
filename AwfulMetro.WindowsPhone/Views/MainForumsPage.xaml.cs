@@ -153,7 +153,7 @@ namespace AwfulMetro.Views
         private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
         {
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
-            _vm.ThreadListPageViewModel.Initialize(forum);
+            _vm.ThreadListPageViewModel.RefreshForum(forum);
         }
 
         private void PrivateMessageButton_OnClick(object sender, RoutedEventArgs e)

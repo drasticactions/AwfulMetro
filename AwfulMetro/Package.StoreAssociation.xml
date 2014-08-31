@@ -1,9 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<!--
-Sample license text.
--->
-
 <StoreAssociation xmlns="http://schemas.microsoft.com/appx/2010/storeassociation">
   <Publisher>CN=49056560-3A92-41D0-8509-DF4FE44F646C</Publisher>
   <PublisherDisplayName>ティム・ミラー</PublisherDisplayName>
@@ -359,6 +354,7 @@ Sample license text.
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
+    <MainPackageIdentityName>52978DrasticActions.AwfulMusic</MainPackageIdentityName>
     <MainPackageIdentityName>52978DrasticActions.FoulPlayTheUnofficialPlayStati</MainPackageIdentityName>
     <MainPackageIdentityName>52978DrasticActions.Slowbeef</MainPackageIdentityName>
     <MainPackageIdentityName>52978DrasticActions.388975AE0B893</MainPackageIdentityName>
@@ -368,17 +364,17 @@ Sample license text.
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.0.0.49</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.0.54</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.0.0.49</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.0.54</PackageMaxArchitectureVersion>
       </PackageInfo>
       <PackageInfo>
         <OsMinVersion>6.3.0.0</OsMinVersion>
         <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>2.0.0.49</PackageMaxArchitectureVersion>
+        <PackageMaxArchitectureVersion>2.1.0.54</PackageMaxArchitectureVersion>
       </PackageInfo>
     </BundleInfo>
   </PackageInfoList>
