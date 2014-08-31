@@ -217,7 +217,6 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Label="Refresh" x:Name="RefreshButton" Click="RefreshButton_OnClick" Icon="Refresh"/>
-            <AppBarButton x:Name="SearchButton" Click="SearchButton_OnClick" Label="Search" Icon="Find"/>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Settings" Click="SettingsButton_OnClick"/>
                 <AppBarButton Label="Fulfill Your Dreams" Click="LogoutButton_OnClick" IsCompact="True"/>
