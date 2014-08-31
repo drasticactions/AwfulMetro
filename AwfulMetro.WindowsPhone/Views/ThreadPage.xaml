@@ -43,9 +43,9 @@
 
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Background="#f1f1f1" Grid.Row="1" x:Name="ContentRoot">
+        <Grid Grid.Row="1" x:Name="ContentRoot">
             <ProgressRing  IsActive="{Binding IsLoading}" Height="100" Width="100" Canvas.ZIndex="5"/>
-            <WebView  DOMContentLoaded="ThreadWebView_OnDOMContentLoaded" x:Name="ThreadWebView" tools:WebViewHelper.Html="{Binding Html}"/>
+            <WebView Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityInverter}}"  DOMContentLoaded="ThreadWebView_OnDOMContentLoaded" x:Name="ThreadWebView" tools:WebViewHelper.Html="{Binding Html}"/>
         </Grid>
     </Grid>
     <Page.BottomAppBar>
