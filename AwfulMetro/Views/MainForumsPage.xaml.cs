@@ -163,6 +163,7 @@ handler =>
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            SettingsPane.GetForCurrentView().CommandsRequested -= OnCommandsRequested;
             NavigationHelper.OnNavigatedFrom(e);
         }
 
