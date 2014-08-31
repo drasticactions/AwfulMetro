@@ -91,7 +91,7 @@
                         <Flyout Placement="Left">
                             <StackPanel>
                                 <Viewbox Margin="5" Height="40">
-                                    <TextBlock Text="{Binding ForumThreadEntity.TotalPages, Converter={StaticResource TotalPageConverter}}"/>
+                                    <TextBlock Text="{Binding ForumThreadEntity, Converter={StaticResource TotalPageConverter}}"/>
                                 </Viewbox>
                                 <TextBox KeyDown="PageNumberTextBox_OnKeyDown" Margin="5" x:Name="PageNumberTextBox"/>
                                 <Button Margin="5" x:Name="PageNumberButton" Click="PageNumberButton_OnClick" Content="Change Page"/>
