@@ -148,5 +148,6 @@
         <tools:RepliesSinceLastOpenedColorConverter x:Key="RepliesSinceLastOpenedColorConverter" />
         <tools:BackButtonEnableConverter x:Key="BackButtonEnableConverter" />
         <tools:ForwardButtonEnableConverter x:Key="ForwardButtonEnableConverter" />
+        <common:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
     </Application.Resources>
 </Application>

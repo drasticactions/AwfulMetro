@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\IUnreadCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\AsyncDelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\AutoFacConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityInverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NotifierBase.cs" />
