@@ -69,7 +69,7 @@
             </CommandBar.SecondaryCommands>
             <AppBarButton Label="Back" Icon="Back" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter} }" Click="BackButton_OnClick" />
             <AppBarButton Label="Refresh" x:Name="RefreshButton" Click="RefreshButton_OnClick" Icon="Refresh"/>
-            <AppBarButton Label="Last Post" Icon="Download" Click="ScrollToLastPostButton_OnClick" />
+            <AppBarButton Label="Last Post"  IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBooleanConverter}}" Icon="Download" Click="ScrollToLastPostButton_OnClick" />
             <AppBarButton Label="Forward" Icon="Forward" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource ForwardButtonEnableConverter}}" Click="ForwardButton_OnClick" />
         </CommandBar>
     </Page.BottomAppBar>

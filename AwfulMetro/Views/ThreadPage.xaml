@@ -98,7 +98,7 @@
                             </StackPanel>
                         </Flyout>
 </Button.Flyout></Button>
-                <AppBarButton x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click"
+                <AppBarButton  IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBooleanConverter}}" x:Name="GoToLastPostButton" Click="GoToLastPostButton_Click"
                               Label="Go To Last Post On Page" Icon="Download" />
                 <AppBarButton x:Name="ReplyButton" Label="Reply" Icon="Upload"
                               Click="ReplyButton_Click" />

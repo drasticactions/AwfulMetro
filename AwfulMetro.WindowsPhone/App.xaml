@@ -151,5 +151,6 @@
         <tools:ForwardButtonEnableConverter x:Key="ForwardButtonEnableConverter" />
         <common:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
         <tools:TotalPageConverter x:Key="TotalPageConverter" />
+        <tools:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Application.Resources>
 </Application>
