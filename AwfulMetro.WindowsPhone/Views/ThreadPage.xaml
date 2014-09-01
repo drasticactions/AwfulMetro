@@ -59,7 +59,7 @@
                                 <Viewbox Margin="5" Height="40">
                                     <TextBlock Text="{Binding ForumThreadEntity, Converter={StaticResource TotalPageConverter}}"/>
                                 </Viewbox>
-                                <TextBox Margin="5" x:Name="PageNumberTextBox"/>
+                                <TextBox InputScope="Number" Margin="5" x:Name="PageNumberTextBox"/>
                                 <Button Margin="5" x:Name="PageNumberButton" Click="PageNumberButton_OnClick" Content="Change Page"/>
                             </StackPanel>
                         </Flyout>
