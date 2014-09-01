@@ -64,6 +64,12 @@ namespace AwfulMetro.Views
             {
                 LoadBookmarksOnLoadSwitch.IsOn = (bool)_localSettings.Values[Constants.BOOKMARK_STARTUP];
             }
+
+            if (_localSettings.Values.ContainsKey(Constants.AUTO_REFRESH))
+            {
+                AutoReloadSwitch.IsOn = (bool)_localSettings.Values[Constants.AUTO_REFRESH];
+            }
+
             if (_localSettings.Values.ContainsKey(Constants.DARK_MODE))
             {
                 DarkLightThemeSwitch.IsOn = (bool) _localSettings.Values[Constants.DARK_MODE];
@@ -204,6 +210,20 @@ namespace AwfulMetro.Views
             else
             {
                 _localSettings.Values[Constants.DARK_MODE] = false;
+            }
+        }
+
+        private void AutoReloadSwitch_OnToggled(object sender, RoutedEventArgs e)
+        {
+            var toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch == null) return;
+            if (toggleSwitch.IsOn)
+            {
+                _localSettings.Values[Constants.AUTO_REFRESH] = true;
+            }
+            else
+            {
+                _localSettings.Values[Constants.AUTO_REFRESH] = false;
             }
         }
     }
