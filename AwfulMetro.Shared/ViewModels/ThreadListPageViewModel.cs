@@ -27,11 +27,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using AwfulMetro.Commands;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Views;
+using Newtonsoft.Json;
 
 namespace AwfulMetro.ViewModels
 {
@@ -48,7 +52,8 @@ namespace AwfulMetro.ViewModels
         public ForumEntity ForumEntity { get; set; }
         public ThreadListPageViewModel()
         {
-            this.UnreadCommand = new UnreadCommand(ExecuteUnreadCommand);
+            this.UnreadCommand = new ThreadCommand(ExecuteUnreadCommand);
+            this.LastPageCommand = new ThreadCommand(ExecuteLastPageCommand);
             this.BookmarkCommand = new BookmarkCommand(ExecuteBookmarkCommand);
         }
 
@@ -119,7 +124,9 @@ namespace AwfulMetro.ViewModels
             }
         }
 
-        public IUnreadCommand UnreadCommand { protected set; get; }
+        public IThreadCommand UnreadCommand { protected set; get; }
+
+        public IThreadCommand LastPageCommand { protected set; get; }
 
         public IBookmarkCommand BookmarkCommand { protected set; get; }
 
@@ -134,6 +141,17 @@ namespace AwfulMetro.ViewModels
             thread.HasBeenViewed = false;
             thread.HasSeen = false;
             thread.ReplyCount = 0;
+        }
+
+        private async void ExecuteLastPageCommand(object param)
+        {
+            var thread = (ForumThreadEntity)param;
+            if (thread == null)
+                return;
+            thread.CurrentPage = thread.TotalPages;
+            string jsonObjectString = JsonConvert.SerializeObject(thread);
+            var rootFrame = Window.Current.Content as Frame;
+            if (rootFrame != null) rootFrame.Navigate(typeof(ThreadPage), jsonObjectString);
         }
 
         private async void ExecuteBookmarkCommand(object param)

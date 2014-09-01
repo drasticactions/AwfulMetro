@@ -26,24 +26,24 @@ using System.Windows.Input;
 
 namespace AwfulMetro.Commands
 {
-    public interface IUnreadCommand : ICommand
+    public interface IThreadCommand : ICommand
     {
         void RaiseCanExecuteChanged();
     }
 
-    public class UnreadCommand : IUnreadCommand
+    public class ThreadCommand : IThreadCommand
     {
         readonly Action<object> _execute;
         readonly Func<object, bool> _canExecute;
 
         #region Constructors
-        public UnreadCommand(Action<object> execute, Func<object, bool> canExecute)
+        public ThreadCommand(Action<object> execute, Func<object, bool> canExecute)
         {
             this._execute = execute;
             this._canExecute = canExecute;
         }
 
-        public UnreadCommand(Action<object> execute)
+        public ThreadCommand(Action<object> execute)
         {
             this._execute = execute;
             this._canExecute = this.AlwaysCanExecute;

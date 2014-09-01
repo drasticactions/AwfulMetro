@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Commands\IBookmarkCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Commands\IUnreadCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\IThreadCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\AsyncDelegateCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\AutoFacConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\BooleanToVisibilityInverter.cs" />

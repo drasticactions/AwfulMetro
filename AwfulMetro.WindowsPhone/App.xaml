@@ -96,6 +96,7 @@
                 </interactivity:Interaction.Behaviors>
                 <FlyoutBase.AttachedFlyout>
                     <MenuFlyout>
+                        <MenuFlyoutItem Command="{Binding DataContext.LastPageCommand, ElementName=ForumThreadList}" CommandParameter="{Binding}" Text="Jump to Last Page"/>
                         <MenuFlyoutItem Command="{Binding DataContext.UnreadCommand, ElementName=ForumThreadList}"  CommandParameter="{Binding ThreadId}" Text="Unread"/>
                         <MenuFlyoutItem Command="{Binding DataContext.BookmarkCommand, ElementName=ForumThreadList}" CommandParameter="{Binding}" Text="{Binding IsBookmark, Converter={StaticResource BookmarkTextConverter}}"/>
                     </MenuFlyout>

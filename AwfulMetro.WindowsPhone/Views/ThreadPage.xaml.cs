@@ -264,5 +264,11 @@ namespace AwfulMetro.Views
             _vm.ForumThreadEntity.CurrentPage = userInputPageNumber;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
+
+        private void JumpToLastPageButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _vm.ForumThreadEntity.CurrentPage = _vm.ForumThreadEntity.TotalPages;
+            _vm.GetForumPosts(_vm.ForumThreadEntity);
+        }
     }
 }

@@ -52,6 +52,7 @@
         <CommandBar>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Reply" Click="ReplyButton_OnClick"/>
+                <AppBarButton Label="Jump to Last Page" Click="JumpToLastPageButton_OnClick"/>
                 <AppBarButton HorizontalAlignment="Stretch" x:Name="CurrentPageButton" Label="Change Page">
                     <Button.Flyout>
                         <Flyout Placement="Left">
