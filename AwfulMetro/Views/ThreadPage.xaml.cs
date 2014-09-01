@@ -118,6 +118,7 @@ namespace AwfulMetro.Views
                     NotifyStatusTile.CreateToastNotification("Post marked as last read! Now smash this computer and live your life!");
                     break;
                 case "setFont":
+                    _vm.IsLoading = false;
                     if (_localSettings.Values.ContainsKey("zoomSize"))
                     {
                         _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);

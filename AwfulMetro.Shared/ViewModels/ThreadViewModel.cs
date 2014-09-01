@@ -124,7 +124,6 @@ namespace AwfulMetro.ViewModels
             Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
             ForumThreadEntity = forumThreadEntity;
             PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
-            IsLoading = false;
         }
 
         private void GetDarkModeSetting(ForumThreadEntity forumThreadEntity)

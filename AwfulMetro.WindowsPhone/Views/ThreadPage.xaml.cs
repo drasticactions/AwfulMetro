@@ -108,6 +108,9 @@ namespace AwfulMetro.Views
                     Frame.Navigate(typeof(EditPage), command.Id);
                     break;
                 case "setFont":
+                    // Called after page has fully loaded, so now we can show the webview.
+                    // TODO: Move to "IsLoaded" event.
+                    _vm.IsLoading = false;
                     break;
                 case "scrollToPost":
                     if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
