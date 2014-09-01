@@ -133,6 +133,19 @@ namespace AwfulMetro.Views
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            // TODO: Move to seperate method.
+            if (_vm.ThreadListPageViewModel != null && _vm.ThreadListPageViewModel.ForumPageScrollingCollection.Any())
+            {
+                if (_localSettings.Values.ContainsKey(Constants.AUTO_REFRESH))
+                {
+                    var autoRefresh = (bool)_localSettings.Values[Constants.AUTO_REFRESH];
+                    if (autoRefresh)
+                    {
+                        var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+                        _vm.ThreadListPageViewModel.RefreshForum(forum);
+                    }
+                }
+            }
             this.navigationHelper.OnNavigatedTo(e);
         }
 
