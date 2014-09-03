@@ -20,6 +20,7 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 #endregion
 
 using System.Diagnostics;
+using Windows.Storage;
 using Windows.UI.Popups;
 using AwfulMetro.Common;
 using System;
@@ -57,6 +58,8 @@ namespace AwfulMetro.Views
         private NavigationHelper navigationHelper;
         private ThreadViewModel _vm;
         private ForumThreadEntity _forumThread;
+        private int _zoomSize;
+        private readonly ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
         private readonly ThreadManager _threadManager = new ThreadManager();
         public ThreadPage()
         {
@@ -108,9 +111,7 @@ namespace AwfulMetro.Views
                     Frame.Navigate(typeof(EditPage), command.Id);
                     break;
                 case "setFont":
-                    // Called after page has fully loaded, so now we can show the webview.
-                    // TODO: Move to "IsLoaded" event.
-                    _vm.IsLoading = false;
+                    SetFontSize();
                     break;
                 case "scrollToPost":
                     if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
@@ -156,6 +157,19 @@ namespace AwfulMetro.Views
                     };
                     await msgDlg.ShowAsync();
                     break;
+            }
+        }
+
+        private void SetFontSize()
+        {
+            if (_localSettings.Values.ContainsKey("zoomSize"))
+            {
+                _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
+                ThreadWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            }
+            else
+            {
+                _zoomSize = 14;
             }
         }
 
@@ -214,10 +228,12 @@ namespace AwfulMetro.Views
         {
             try
             {
+                SetFontSize();
                 if (_forumThread.ScrollToPost > 0)
                 {
                     await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
                 }
+                _vm.IsLoading = false;
             }
             catch (Exception)
             {
@@ -272,6 +288,27 @@ namespace AwfulMetro.Views
         {
             _vm.ForumThreadEntity.CurrentPage = _vm.ForumThreadEntity.TotalPages;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
+        }
+
+        private void FontIncrease_Click(object sender, RoutedEventArgs e)
+        {
+            _zoomSize += 1;
+            ThreadWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            _localSettings.Values["zoomSize"] = _zoomSize;
+        }
+
+        private void FontDecrease_Click(object sender, RoutedEventArgs e)
+        {
+            _zoomSize -= 1;
+            ThreadWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+            _localSettings.Values["zoomSize"] = _zoomSize;
+        }
+
+        private void RemoveStyle_Click(object sender, RoutedEventArgs e)
+        {
+            _zoomSize = 14;
+            ThreadWebView.InvokeScriptAsync("RemoveCustomStyle", null);
+            _localSettings.Values["zoomSize"] = null;
         }
     }
 }
