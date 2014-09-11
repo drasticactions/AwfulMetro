@@ -36,6 +36,7 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Tools;
 
 namespace AwfulMetro.ViewModels
 {
@@ -109,10 +110,19 @@ namespace AwfulMetro.ViewModels
             SetFavoriteForums(new ObservableCollection<ForumCategoryEntity> { _favoritesEntity });
         }
 
-        private async void Initialize()
+        public async void Initialize()
         {
             IsLoading = true;
-            ForumGroupList = await _forumManager.GetForumCategoryMainPage();
+            try
+            {
+                ForumGroupList = await _forumManager.GetForumCategoryMainPage();
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("Failed to initialize the main forums list.", ex);
+                IsLoading = false;
+                return;
+            }
             GetFavoriteForums();
             IsLoading = false;
         }

@@ -70,13 +70,23 @@ namespace AwfulMetro.Core.Tools
             IsLoading = true;
             var threadManager = new ThreadManager();
             ObservableCollection<ForumThreadEntity> forumThreadEntities;
-            if (ForumEntity.IsBookmarks)
+            try
             {
-                forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, PageCount);
+                if (ForumEntity.IsBookmarks)
+                {
+                    forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, PageCount);
+                }
+                else
+                {
+                    forumThreadEntities = await threadManager.GetForumThreads(ForumEntity, PageCount);
+                }
             }
-            else
+            catch (Exception)
             {
-                forumThreadEntities = await threadManager.GetForumThreads(ForumEntity, PageCount);
+                // TODO: Capture error and give it back to the UI.
+                HasMoreItems = false;
+                IsLoading = false;
+                return new LoadMoreItemsResult { Count = count };
             }
             foreach (ForumThreadEntity forumThreadEntity in forumThreadEntities.Where(forumThreadEntity => !forumThreadEntity.IsAnnouncement))
             {
@@ -101,7 +111,16 @@ namespace AwfulMetro.Core.Tools
             var threadManager = new ThreadManager();
             for (var index = 1; index <= PageCount; index ++)
             {
-                ObservableCollection<ForumThreadEntity> forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, index);
+                ObservableCollection<ForumThreadEntity> forumThreadEntities;
+                try
+                {
+                   forumThreadEntities = await threadManager.GetBookmarks(ForumEntity, index);
+                }
+                catch (Exception)
+                {
+                    IsLoading = false;
+                    throw;
+                }
                 if (!forumThreadEntities.Any())
                 {
                     continue;

@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locator\ViewModels.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\AvatarWebViewConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\AwfulDebugger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BackButtonEnableConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BookmarkSorting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\BookmarkTextConverter.cs" />

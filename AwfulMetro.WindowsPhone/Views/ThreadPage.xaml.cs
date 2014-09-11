@@ -45,6 +45,7 @@ using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 using AwfulMetro.Pcl.Core.Manager;
+using AwfulMetro.Tools;
 using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
@@ -90,18 +91,38 @@ namespace AwfulMetro.Views
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             var jsonObjectString = (string)e.NavigationParameter;
             _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
-            _vm.GetForumPosts(_forumThread);
+            await _vm.GetForumPosts(_forumThread);
         }
 
         private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
         {
+            if (_vm.ForumThreadEntity == null)
+            {
+                return;
+            }
+            if (e == null)
+            {
+                return;
+            }
             string stringJson = e.Value;
-            var command = JsonConvert.DeserializeObject<ThreadCommand>(stringJson);
+            ThreadCommand command = null;
+            try
+            {
+                command = JsonConvert.DeserializeObject<ThreadCommand>(stringJson);
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("A thread javascript command failed", ex);
+            }
+            if (command == null)
+            {
+                return;
+            }
             switch (command.Command)
             {
                 case "quote":
@@ -115,12 +136,28 @@ namespace AwfulMetro.Views
                     break;
                 case "scrollToPost":
                     if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
-                    await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
+                        try
+                        {
+                            await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
+                        }
+                        catch (Exception ex)
+                        {
+                            AwfulDebugger.SendMessageDialogAsync("A thread javascript command failed", ex);
+                        }
                     break;
                 case "markAsLastRead":
                     await _threadManager.MarkPostAsLastRead(_forumThread, Convert.ToInt32(command.Id));
                     int nextPost = Convert.ToInt32(command.Id) + 1;
-                    await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
+
+                    try
+                    {
+                        await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
+                    }
+                    catch (Exception ex)
+                    {
+                        AwfulDebugger.SendMessageDialogAsync("A thread javascript command failed", ex);
+                        return;
+                    }
                     var message = new MessageDialog("Post marked as last read! Now go on and live your life!")
                         {
                             DefaultCommandIndex = 1
@@ -132,7 +169,15 @@ namespace AwfulMetro.Views
                     if (query.ContainsKey("action") && query["action"].Equals("showPost"))
                     {
                         var postManager = new PostManager();
-                        var html = await postManager.GetPost(Convert.ToInt32(query["postid"]));
+                        try
+                        {
+                            var html = await postManager.GetPost(Convert.ToInt32(query["postid"]));
+                        }
+                        catch (Exception ex)
+                        {
+                            AwfulDebugger.SendMessageDialogAsync("A thread javascript command failed", ex);
+                            return;
+                        }
                         return;
                     }
                     var threadManager = new ThreadManager();
@@ -165,7 +210,14 @@ namespace AwfulMetro.Views
             if (_localSettings.Values.ContainsKey("zoomSize"))
             {
                 _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
-                ThreadWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                try
+                {
+                    ThreadWebView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                }
+                catch (Exception ex)
+                {
+                    AwfulDebugger.SendMessageDialogAsync("A thread javascript command failed", ex);
+                }
             }
             else
             {
@@ -219,9 +271,9 @@ namespace AwfulMetro.Views
 
         #endregion
 
-        private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
+        private async void RefreshButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _vm.GetForumPosts(_vm.ForumThreadEntity);
+           await _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private async void ThreadWebView_OnDOMContentLoaded(WebView sender, WebViewDOMContentLoadedEventArgs args)
@@ -229,9 +281,16 @@ namespace AwfulMetro.Views
             try
             {
                 SetFontSize();
-                if (_forumThread.ScrollToPost > 0)
+                if (_forumThread != null && _forumThread.ScrollToPost > 0)
                 {
-                    await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                    try
+                    {
+                        await ThreadWebView.InvokeScriptAsync("ScrollToDiv", new[] { _forumThread.ScrollToPostString });
+                    }
+                    catch (Exception ex)
+                    {
+                        AwfulDebugger.SendMessageDialogAsync("A thread javascript command failed", ex);
+                    }
                 }
                 _vm.IsLoading = false;
             }
@@ -240,15 +299,25 @@ namespace AwfulMetro.Views
             }
         }
 
-        private void BackButton_OnClick(object sender, RoutedEventArgs e)
+        private async void BackButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_vm.ForumThreadEntity == null)
+            {
+                await AwfulDebugger.SendMessageDialogAsync("Can't reply in this thread, refresh and try again.", new Exception("ForumThreadEntitiy is Null"));
+                return;
+            }
             if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
             _vm.ForumThreadEntity.CurrentPage--;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
-        private void ForwardButton_OnClick(object sender, RoutedEventArgs e)
+        private async void ForwardButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_vm.ForumThreadEntity == null)
+            {
+                await AwfulDebugger.SendMessageDialogAsync("Can't reply in this thread, refresh and try again.", new Exception("ForumThreadEntitiy is Null"));
+                return;
+            }
             if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
             _vm.ForumThreadEntity.CurrentPage++;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
@@ -260,14 +329,20 @@ namespace AwfulMetro.Views
             ThreadWebView.InvokeScriptAsync("ScrollToBottom", null);
         }
 
-        private void ReplyButton_OnClick(object sender, RoutedEventArgs e)
+        private async void ReplyButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_vm.ForumThreadEntity == null)
+            {
+                await AwfulDebugger.SendMessageDialogAsync("Can't reply in this thread, refresh and try again.", new Exception("ForumThreadEntitiy is Null"));
+                return;
+            }
             string jsonObjectString = JsonConvert.SerializeObject(_forumThread);
             Frame.Navigate(typeof(ReplyPage), jsonObjectString);
         }
 
         private void PageNumberButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_vm.ForumThreadEntity == null) return;
             var userInputPageNumber = 0;
             try
             {
@@ -286,6 +361,7 @@ namespace AwfulMetro.Views
 
         private void JumpToLastPageButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_vm.ForumThreadEntity == null) return;
             _vm.ForumThreadEntity.CurrentPage = _vm.ForumThreadEntity.TotalPages;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
         }

@@ -71,60 +71,53 @@ namespace AwfulMetro.Pcl.Core.Manager
 
         public async Task<ForumThreadEntity> GetThreadPosts(ForumThreadEntity forumThread)
         {
-            try
+            string url = forumThread.Location;
+
+            if (forumThread.CurrentPage > 0)
             {
-                string url = forumThread.Location;
+                url = forumThread.Location + string.Format(Constants.PAGE_NUMBER, forumThread.CurrentPage);
+            }
+            else if (forumThread.HasBeenViewed)
+            {
+                url = forumThread.Location + Constants.GOTO_NEW_POST;
+            }
 
-                if (forumThread.CurrentPage > 0)
-                {
-                    url = forumThread.Location + string.Format(Constants.PAGE_NUMBER, forumThread.CurrentPage);
-                }
-                else if (forumThread.HasBeenViewed)
-                {
-                    url = forumThread.Location + Constants.GOTO_NEW_POST;
-                }
+            var forumThreadPosts = new ObservableCollection<ForumPostEntity>();
 
-                var forumThreadPosts = new ObservableCollection<ForumPostEntity>();
+            //TEMP CODE
+            var threadManager = new ThreadManager();
+            var doc = await threadManager.GetThread(forumThread, url);
 
-                //TEMP CODE
-                var threadManager = new ThreadManager();
-                var doc = await threadManager.GetThread(forumThread, url);
+            HtmlNode threadNode =
+                doc.DocumentNode.Descendants("div")
+                    .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
 
-                HtmlNode threadNode =
-                    doc.DocumentNode.Descendants("div")
-                        .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+            foreach (
+                HtmlNode postNode in
+                    threadNode.Descendants("table")
+                        .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
+            {
+                var post = new ForumPostEntity();
+                post.Parse(postNode);
+                forumThreadPosts.Add(post);
+            }
 
-                foreach (
-                    HtmlNode postNode in
-                        threadNode.Descendants("table")
-                            .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
-                {
-                    var post = new ForumPostEntity();
-                    post.Parse(postNode);
-                    forumThreadPosts.Add(post);
-                }
-
+            threadNode =
+                doc.DocumentNode.Descendants("div")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("pages top"));
+            if (threadNode != null)
+            {
                 threadNode =
-                    doc.DocumentNode.Descendants("div")
-                        .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("pages top"));
-                if (threadNode != null)
-                {
-                    threadNode =
-        threadNode.Descendants("option")
-            .FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
+                    threadNode.Descendants("option")
+                        .FirstOrDefault(node => node.GetAttributeValue("selected", string.Empty).Contains("selected"));
 
-                    if (forumThread.CurrentPage <= 0)
-                    {
-                        forumThread.CurrentPage = GetPageNumber(threadNode);
-                    }
+                if (forumThread.CurrentPage <= 0)
+                {
+                    forumThread.CurrentPage = GetPageNumber(threadNode);
                 }
-                forumThread.ForumPosts = forumThreadPosts;
-                return forumThread;
             }
-            catch (Exception)
-            {
-                return null;
-            }
+            forumThread.ForumPosts = forumThreadPosts;
+            return forumThread;
         }
 
         private static int GetPageNumber(HtmlNode threadNode)

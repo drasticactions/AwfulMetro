@@ -128,11 +128,11 @@ namespace AwfulMetro.Views
             if (result)
             {
                 ReplyTextBox.Text = _vm.ForumReplyEntity.Quote;
-                return;
             }
-            var msgDlg = new MessageDialog("You can't edit posts!");
-            await msgDlg.ShowAsync();
-            Frame.GoBack();
+            else
+            {
+                Frame.GoBack();
+            }
         }
 
         private class ThreadCommand

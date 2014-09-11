@@ -55,7 +55,6 @@ namespace AwfulMetro.Views
     {
         private NavigationHelper navigationHelper;
         private MainForumsPageViewModel _vm = Locator.ViewModels.MainForumsPageVm;
-        private ThreadListPageViewModel _threadVm = Locator.ViewModels.ThreadListPageVm;
         private ApplicationDataContainer _localSettings;
         public MainForumsPage()
         {
@@ -165,6 +164,10 @@ namespace AwfulMetro.Views
 
         private void RefreshButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_vm.ForumGroupList == null || _vm.ForumGroupList.Any())
+            {
+                _vm.Initialize();
+            }
             var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
             _vm.ThreadListPageViewModel.RefreshForum(forum);
         }

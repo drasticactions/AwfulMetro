@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Tools;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.ViewModels
@@ -138,9 +139,14 @@ namespace AwfulMetro.ViewModels
         public async void GetPostIcons()
         {
             PostIconManager postIconManager = new PostIconManager();
-            if (!PostIconList.Any())
+            if (PostIconList.Any()) return;
+            try
             {
                 PostIconList = await postIconManager.GetPostIconList(_forumEntity);
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("Could not get post icons", ex);
             }
         }
 

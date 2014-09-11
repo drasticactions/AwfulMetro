@@ -46,6 +46,7 @@ using Windows.UI.Xaml.Navigation;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Tools;
 using AwfulMetro.ViewModels;
 using Newtonsoft.Json;
 
@@ -127,11 +128,12 @@ namespace AwfulMetro.Views
             if (result)
             {
                 ReplyTextBox.Text = _vm.ForumReplyEntity.Quote;
-                return;
             }
-            var msgDlg = new MessageDialog("You can't reply in this thread!");
-            await msgDlg.ShowAsync();
-            Frame.GoBack();
+            else
+            {
+                await AwfulDebugger.SendMessageDialogAsync("You can't post in this thread!", new Exception("Could not get reply cookies."));
+                Frame.GoBack();
+            }
         }
 
         private class ThreadCommand

@@ -34,6 +34,7 @@ using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Tools;
 using AwfulMetro.Views;
 using Newtonsoft.Json;
 
@@ -100,9 +101,14 @@ namespace AwfulMetro.ViewModels
         public async void RefreshForum(ForumEntity forumEntity)
         {
             if (ForumPageScrollingCollection == null) return;
-            if (forumEntity.Name.Equals("Bookmarks"))
+            if (!forumEntity.Name.Equals("Bookmarks")) return;
+            try
             {
                 await ForumPageScrollingCollection.RefreshBookmarkedThreads();
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("Failed to refresh bookmarks", ex);
             }
         }
 
@@ -112,15 +118,22 @@ namespace AwfulMetro.ViewModels
             IsBookmarks = forumEntity.IsBookmarks;
             ForumTitle = forumEntity.Name;
             SubForumEntities = new ObservableCollection<ForumEntity>();
-            if (forumEntity.IsBookmarks)
+            try
             {
-                _localSettings = ApplicationData.Current.LocalSettings;
-                ForumPageScrollingCollection = new PageScrollingCollection(forumEntity, 1);
+                if (forumEntity.IsBookmarks)
+                {
+                    _localSettings = ApplicationData.Current.LocalSettings;
+                    ForumPageScrollingCollection = new PageScrollingCollection(forumEntity, 1);
+                }
+                else
+                {
+                    ForumPageScrollingCollection = new PageScrollingCollection(forumEntity, 1);
+                    SubForumEntities = await _forumManager.GetSubForums(forumEntity);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ForumPageScrollingCollection = new PageScrollingCollection(forumEntity, 1);
-                SubForumEntities = await _forumManager.GetSubForums(forumEntity);
+                AwfulDebugger.SendMessageDialogAsync("Failed to initialize threads", ex);
             }
         }
 

@@ -65,6 +65,7 @@
     <Compile Include="Entity\ThreadReplyEntity.cs" />
     <Compile Include="Entity\ForumUserSearchEntity.cs" />
     <Compile Include="Exceptions\ForumListParsingFailedException.cs" />
+    <Compile Include="Exceptions\WebManagerException.cs" />
     <Compile Include="Manager\AuthenticationManager.cs" />
     <Compile Include="Manager\BBCodeManager.cs" />
     <Compile Include="Manager\ForumManager.cs" />

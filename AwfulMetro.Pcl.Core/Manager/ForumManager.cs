@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Exceptions;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Manager
@@ -47,16 +48,16 @@ namespace AwfulMetro.Core.Manager
 
         public async Task<ObservableCollection<ForumCategoryEntity>> GetForumCategoryMainPage()
         {
-            try
-            {
-                var forumGroupList = new ObservableCollection<ForumCategoryEntity>();
-                var result = await _webManager.GetData(Constants.FORUM_LIST_PAGE);
-                HtmlDocument doc = result.Document;
+            var forumGroupList = new ObservableCollection<ForumCategoryEntity>();
+            var result = await _webManager.GetData(Constants.FORUM_LIST_PAGE);
+            HtmlDocument doc = result.Document;
 
-                HtmlNode forumNode =
-                    doc.DocumentNode.Descendants("select")
-                        .FirstOrDefault(node => node.GetAttributeValue("name", string.Empty).Equals("forumid"));
-                if (forumNode != null)
+            HtmlNode forumNode =
+                doc.DocumentNode.Descendants("select")
+                    .FirstOrDefault(node => node.GetAttributeValue("name", string.Empty).Equals("forumid"));
+            if (forumNode != null)
+            {
+                try
                 {
                     IEnumerable<HtmlNode> forumNodes = forumNode.Descendants("option");
 
@@ -67,7 +68,8 @@ namespace AwfulMetro.Core.Manager
                         if (!int.TryParse(value, out id) || id <= -1) continue;
                         if (node.NextSibling.InnerText.Contains("--"))
                         {
-                            string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
+                            string forumName =
+                                WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
                             bool isSubforum = node.NextSibling.InnerText.Count(c => c == '-') > 2;
                             var forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value),
                                 string.Empty, isSubforum);
@@ -76,23 +78,24 @@ namespace AwfulMetro.Core.Manager
                         else
                         {
                             string forumName = WebUtility.HtmlDecode(node.NextSibling.InnerText);
-                            var forumGroup = new ForumCategoryEntity(forumName, string.Format(Constants.FORUM_PAGE, value));
+                            var forumGroup = new ForumCategoryEntity(forumName,
+                                string.Format(Constants.FORUM_PAGE, value));
                             forumGroupList.Add(forumGroup);
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    throw new Exception("Main Forum Parsing Error: " + ex.StackTrace);
+                }
+            }
 
 #if DEBUG
+            if (forumGroupList.Any())
                 forumGroupList[3].ForumList.Add(AddDebugForum());
 #endif
 
-                return forumGroupList;
-            }
-                // TODO: Expand catch for specific errors.
-            catch (Exception)
-            {
-                return null;
-            }
+            return forumGroupList;
         }
 
         public async Task<HtmlDocument> GetForumFrontPageHtml()

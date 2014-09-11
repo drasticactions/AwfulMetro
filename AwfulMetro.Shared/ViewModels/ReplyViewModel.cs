@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
+using AwfulMetro.Tools;
 using Newtonsoft.Json;
 
 namespace AwfulMetro.ViewModels
@@ -127,7 +128,16 @@ namespace AwfulMetro.ViewModels
         public async void GetSmilies()
         {
             var smiliesManager = new SmileManager();
-            SmilieCategoryList = await smiliesManager.GetSmileList();
+            try
+            {
+                SmilieCategoryList = await smiliesManager.GetSmileList();
+
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("Can't get smilies list. :(", ex);
+                return;
+            }
             FullSmileCategoryEntities = SmilieCategoryList;
         }
 
@@ -135,7 +145,16 @@ namespace AwfulMetro.ViewModels
         {
             var smiliesManager = new SmileManager();
             var smileList = new List<SmileEntity>();
-            SmilieCategoryList = await smiliesManager.GetSmileList();
+            try
+            {
+                SmilieCategoryList = await smiliesManager.GetSmileList();
+
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("Can't get smilies list. :(", ex);
+                return;
+            }
             foreach (var category in SmilieCategoryList)
             {
                 smileList.AddRange(category.List);
@@ -148,7 +167,6 @@ namespace AwfulMetro.ViewModels
             IsLoading = true;
             long threadId = 0;
             var replyManager = new ReplyManager();
-
             try
             {
                _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
@@ -158,13 +176,20 @@ namespace AwfulMetro.ViewModels
                 threadId = Convert.ToInt64(jsonObjectString);
             }
 
-            if (_forumThread != null)
+            try
             {
-                ForumReplyEntity = await replyManager.GetReplyCookies(_forumThread);
+                if (_forumThread != null)
+                {
+                    ForumReplyEntity = await replyManager.GetReplyCookies(_forumThread);
+                }
+                else
+                {
+                    ForumReplyEntity = await replyManager.GetReplyCookies(threadId);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ForumReplyEntity = await replyManager.GetReplyCookies(threadId);
+                ForumReplyEntity = null;
             }
             IsLoading = false;
             return ForumReplyEntity != null;
@@ -175,8 +200,15 @@ namespace AwfulMetro.ViewModels
         {
             IsLoading = true;
             long threadId = Convert.ToInt64(jsonObjectString); ;
-            var replyManager = new ReplyManager();
+            try
+            {
+                var replyManager = new ReplyManager();
                 ForumReplyEntity = await replyManager.GetReplyCookiesForEdit(threadId);
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("You can't edit this post!", ex);
+            }
             IsLoading = false;
             return ForumReplyEntity != null;
 
@@ -189,7 +221,14 @@ namespace AwfulMetro.ViewModels
             IsLoading = true;
             ForumReplyEntity.MapMessage(replyText);
             var replyManager = new ReplyManager();
-            Html = await replyManager.CreatePreviewPost(ForumReplyEntity);
+            try
+            {
+                Html = await replyManager.CreatePreviewPost(ForumReplyEntity);
+            }
+            catch (Exception ex)
+            {
+                 AwfulDebugger.SendMessageDialogAsync("Could not create preview HTML", ex);
+            }
             IsLoading = false;
             return !string.IsNullOrEmpty(Html);
         }
@@ -200,7 +239,14 @@ namespace AwfulMetro.ViewModels
             IsLoading = true;
             ForumReplyEntity.MapMessage(replyText);
             var replyManager = new ReplyManager();
-            Html = await replyManager.CreatePreviewEditPost(ForumReplyEntity);
+            try
+            {
+                Html = await replyManager.CreatePreviewEditPost(ForumReplyEntity);
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("Could not create preview HTML", ex);
+            }
             IsLoading = false;
             return !string.IsNullOrEmpty(Html);
         }

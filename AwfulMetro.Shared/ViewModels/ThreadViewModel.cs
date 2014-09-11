@@ -20,18 +20,22 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.Storage;
 using AwfulMetro.Common;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
 using AwfulMetro.Pcl.Core.Entity;
+using AwfulMetro.Pcl.Core.Exceptions;
 using AwfulMetro.Pcl.Core.Manager;
 using AwfulMetro.Pcl.Core.Tools;
+using AwfulMetro.Tools;
 
 namespace AwfulMetro.ViewModels
 {
@@ -109,22 +113,45 @@ namespace AwfulMetro.ViewModels
             }
         }
 
-        public async void GetForumPosts(ForumThreadEntity forumThreadEntity)
+        public async Task GetForumPosts(ForumThreadEntity forumThreadEntity)
         {
             IsLoading = true;
+            bool isSuccess;
+            string errorMessage = string.Empty;
             ThreadTitle = forumThreadEntity.Name;
             PostManager postManager = new PostManager();
-            await postManager.GetThreadPosts(forumThreadEntity);
+            try
+            {
+                await postManager.GetThreadPosts(forumThreadEntity);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                IsLoading = false;
+                isSuccess = false;
+                errorMessage = ex.Message;
+            }
+            if (!isSuccess)
+            {
+                await AwfulDebugger.SendMessageDialogAsync("Failed to get thread posts.", new Exception(errorMessage));
+                return;
+            }
 #if WINDOWS_PHONE_APP
             forumThreadEntity.PlatformIdentifier = PlatformIdentifier.WindowsPhone;
 #else
             forumThreadEntity.PlatformIdentifier = PlatformIdentifier.Windows8;
 #endif
-            GetDarkModeSetting(forumThreadEntity);
-            Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
-            ForumThreadEntity = forumThreadEntity;
-            PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
-            // TODO: Remove when we find a better way to find that the page is fully loaded.
+            try
+            {
+                GetDarkModeSetting(forumThreadEntity);
+                Html = await HtmlFormater.FormatThreadHtml(forumThreadEntity);
+                ForumThreadEntity = forumThreadEntity;
+                PageNumbers = Enumerable.Range(1, forumThreadEntity.TotalPages).ToArray();
+            }
+            catch (Exception ex)
+            {
+                AwfulDebugger.SendMessageDialogAsync("An error occured creating the thread HTML", ex);
+            }
         }
 
         private void GetDarkModeSetting(ForumThreadEntity forumThreadEntity)

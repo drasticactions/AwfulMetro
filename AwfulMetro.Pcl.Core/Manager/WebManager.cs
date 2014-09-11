@@ -28,6 +28,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using AwfulMetro.Core.Tools;
+using AwfulMetro.Pcl.Core.Exceptions;
 using HtmlAgilityPack;
 
 namespace AwfulMetro.Core.Manager
@@ -113,6 +114,11 @@ namespace AwfulMetro.Core.Manager
             var httpClient = new HttpClient(handler);
             httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.UtcNow;
             HttpResponseMessage result = await httpClient.GetAsync(url);
+            if (!result.IsSuccessStatusCode)
+            {
+                // TODO: Create error handling manager to directly handle this type of error.
+                throw new WebManagerException(string.Format("Failed to load page: {0}", string.Concat(result.StatusCode, Environment.NewLine, url)));
+            }
             Stream stream = await result.Content.ReadAsStreamAsync();
             using (var reader = new StreamReader(stream))
             {
