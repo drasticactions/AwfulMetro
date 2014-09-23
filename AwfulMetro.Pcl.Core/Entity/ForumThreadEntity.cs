@@ -21,6 +21,7 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -214,7 +215,13 @@ namespace AwfulMetro.Core.Entity
                 threadNode.Descendants("td")
                     .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("icon"));
             if (first != null)
-                ImageIconLocation = first.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
+            {
+                var testImageString = first.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);;
+                if (!string.IsNullOrEmpty(testImageString))
+                {
+                    ImageIconLocation = string.Format("/Assets/ThreadTags/{0}.png", Path.GetFileNameWithoutExtension(testImageString));
+                }
+            }
 
             HtmlNode second =
                 threadNode.Descendants("td")
@@ -222,7 +229,11 @@ namespace AwfulMetro.Core.Entity
             if (second == null) return;
             try
             {
-                StoreImageIconLocation = second.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
+                var testImageString = second.Descendants("img").FirstOrDefault().GetAttributeValue("src", string.Empty);
+                if (!string.IsNullOrEmpty(testImageString))
+                {
+                    StoreImageIconLocation = string.Format("/Assets/ThreadTags/{0}.png", Path.GetFileNameWithoutExtension(testImageString));
+                }
             }
             catch (Exception)
             {

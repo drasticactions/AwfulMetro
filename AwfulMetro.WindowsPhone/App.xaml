@@ -47,7 +47,7 @@
                         <ColumnDefinition Width="50" />
                     </Grid.ColumnDefinitions>
                     <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}"
-                                        Grid.Column="0" Width="60" Height="15">
+                                        Grid.Column="0" Width="60" Height="60">
                         <Image Source="{Binding ImageIconLocation}"
                                            AutomationProperties.Name="{Binding Title}" />
                     </Border>
