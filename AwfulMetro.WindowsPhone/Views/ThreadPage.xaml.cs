@@ -308,6 +308,8 @@ namespace AwfulMetro.Views
             }
             if (_vm.ForumThreadEntity.CurrentPage <= 1) return;
             _vm.ForumThreadEntity.CurrentPage--;
+            _vm.ForumThreadEntity.ScrollToPost = 0;
+            _vm.ForumThreadEntity.ScrollToPostString = string.Empty;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
@@ -320,6 +322,8 @@ namespace AwfulMetro.Views
             }
             if (_vm.ForumThreadEntity.CurrentPage >= _vm.ForumThreadEntity.TotalPages) return;
             _vm.ForumThreadEntity.CurrentPage++;
+            _vm.ForumThreadEntity.ScrollToPost = 0;
+            _vm.ForumThreadEntity.ScrollToPostString = string.Empty;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
 
         }
@@ -356,6 +360,8 @@ namespace AwfulMetro.Views
             if (userInputPageNumber < 1 || userInputPageNumber > _vm.ForumThreadEntity.TotalPages) return;
             if (CurrentPageButton.Flyout != null) CurrentPageButton.Flyout.Hide();
             _vm.ForumThreadEntity.CurrentPage = userInputPageNumber;
+            _vm.ForumThreadEntity.ScrollToPost = 0;
+            _vm.ForumThreadEntity.ScrollToPostString = string.Empty;
             _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
