@@ -33,6 +33,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Autofac;
 using AwfulMetro.Common;
+using AwfulMetro.Context;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
@@ -59,6 +60,14 @@ namespace AwfulMetro
         {
             InitializeComponent();
             Suspending += OnSuspending;
+
+            using (var db = new FavoriteForumContext())
+            {
+                // Migrations are not yet enabled in EF7, so use an
+                // API to create the database if it doesn't exist
+                db.Database.EnsureCreated();
+            }  
+
             Container = AutoFacConfiguration.Configure();
         }
 

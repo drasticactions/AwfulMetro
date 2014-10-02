@@ -9,6 +9,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:AwfulMetro.ViewModels"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:tools="using:AwfulMetro.Tools"
     DataContext="{Binding Source={StaticResource Locator}, Path=MainForumsPageVm}"
     mc:Ignorable="d">
     <Page.Resources>
@@ -93,7 +96,7 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="portraitView" Storyboard.TargetProperty="Visibility">
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PortraitView" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
@@ -187,7 +190,7 @@
                 Visibility="Visible"
                 Padding="0,0,40,46"
                 ItemsSource="{Binding Source={StaticResource ForumViewSource}}"
-                SelectionMode="Multiple"
+                SelectionMode="None"
                 IsSwipeEnabled="True"
                 ItemTemplate="{StaticResource ForumTemplate}"
                 IsItemClickEnabled="True"
@@ -338,7 +341,7 @@
         <ListView
             Grid.Row="1"
             Grid.Column="0"
-            x:Name="portraitView"
+            x:Name="PortraitView"
             AutomationProperties.AutomationId="ItemListView"
             AutomationProperties.Name="Grouped Items"
             Visibility="Collapsed"
@@ -367,6 +370,16 @@
                             <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
                                            Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
                         </StackPanel>
+                        <interactivity:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="Holding">
+                                <tools:OpenMenuFlyoutAction />
+                            </core:EventTriggerBehavior>
+                        </interactivity:Interaction.Behaviors>
+                        <FlyoutBase.AttachedFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Command="{Binding DataContext.AddAsFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Add as Favorite"/>
+                            </MenuFlyout>
+                        </FlyoutBase.AttachedFlyout>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

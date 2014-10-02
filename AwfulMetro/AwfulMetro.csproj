@@ -110,6 +110,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Command\AddAsFavoriteCommand.cs" />
+    <Compile Include="Context\FavoriteForumContext.cs" />
     <Compile Include="ViewModels\MainForumsPageViewModel.cs" />
     <Compile Include="Views\ArticleViewer.xaml.cs">
       <DependentUpon>ArticleViewer.xaml</DependentUpon>
@@ -259,11 +261,53 @@
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.5.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.7.0.0-beta1-11062\lib\portable-net451+win81+wpa81\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Migrations">
+      <HintPath>..\packages\EntityFramework.Migrations.7.0.0-beta1-11062\lib\portable-net451+win81+wpa81\EntityFramework.Migrations.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Relational">
+      <HintPath>..\packages\EntityFramework.Relational.7.0.0-beta1-11062\lib\portable-net451+win81+wpa81\EntityFramework.Relational.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SQLite">
+      <HintPath>..\packages\EntityFramework.SQLite.7.0.0-beta1-11062\lib\portable-net451+win81+wpa81\EntityFramework.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack-PCL">
       <HintPath>..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Data.SQLite">
+      <HintPath>..\packages\Microsoft.Data.SQLite.1.0.0-beta1-10373\lib\portable-net451+win81+wpa81\Microsoft.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Framework.ConfigurationModel">
+      <HintPath>..\packages\Microsoft.Framework.ConfigurationModel.1.0.0-beta1-10382\lib\portable-net451+win81+wpa81\Microsoft.Framework.ConfigurationModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Framework.ConfigurationModel.Shared">
+      <HintPath>..\packages\Microsoft.Framework.ConfigurationModel.Shared.1.0.0-beta1-10382\lib\portable-net451+win81+wpa81\Microsoft.Framework.ConfigurationModel.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Framework.DependencyInjection">
+      <HintPath>..\packages\Microsoft.Framework.DependencyInjection.1.0.0-beta1-10383\lib\portable-net451+win81+wpa81\Microsoft.Framework.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Framework.Logging">
+      <HintPath>..\packages\Microsoft.Framework.Logging.1.0.0-beta1-10369\lib\portable-net451+win81+wpa81\Microsoft.Framework.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Framework.Logging.Interfaces">
+      <HintPath>..\packages\Microsoft.Framework.Logging.Interfaces.1.0.0-beta1-10369\lib\portable-net451+win81+wpa81\Microsoft.Framework.Logging.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.1-beta1\lib\netcore45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Linq">
+      <HintPath>..\packages\Remotion.Linq.1.15.15.0\lib\portable-net45+wp80+wpa81+win\Remotion.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.1.22-beta\lib\portable-net45+win8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Common">
+      <HintPath>..\packages\System.Data.Common.1.0.0-beta1-10359\lib\portable-net451+win81+wpa81\System.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Interactive.Async">
+      <HintPath>..\packages\Ix-Async.1.2.2-withwpa81\lib\portable-windows8+net45+wp8+wpa81\System.Interactive.Async.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -288,13 +332,21 @@
     <Content Include="Assets\Wide310x150Logo.scale-180.png" />
     <Content Include="Assets\Wide310x150Logo.scale-80.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.VCLibs, version=12.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.WinRT81, Version=3.8.6">
+      <Name>SQLite for Windows Runtime %28Windows 8.1%29</Name>
     </SDKReference>
   </ItemGroup>
   <Import Project="..\AwfulMetro.Shared\AwfulMetro.Shared.projitems" Label="Shared" />

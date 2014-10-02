@@ -31,8 +31,10 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using Windows.Storage;
 using Windows.UI.Popups;
+using AwfulMetro.Command;
 using AwfulMetro.Commands;
 using AwfulMetro.Common;
+using AwfulMetro.Context;
 using AwfulMetro.Core.Entity;
 using AwfulMetro.Core.Manager;
 using AwfulMetro.Core.Tools;
@@ -84,25 +86,30 @@ namespace AwfulMetro.ViewModels
             }
         }
 
+        private AddAsFavoriteCommand _addAsFavoriteCommand = new AddAsFavoriteCommand();
+
+        public AddAsFavoriteCommand AddAsFavorite
+        {
+            get { return _addAsFavoriteCommand; }
+            set { SetProperty(ref _addAsFavoriteCommand, value); }
+        }
+
         public void SetFavoriteForums(ObservableCollection<ForumCategoryEntity> favoriteList)
         {
             FavoriteForumGroupList = favoriteList;
         }
 
-        private void GetFavoriteForums()
+        private async void GetFavoriteForums()
         {
-            if (!_localSettings.Values.ContainsKey("_forumIds")) return;
-            DeserializeXmlToList((string)_localSettings.Values["_forumIds"]);
-            var forumEntities = new List<ForumEntity>();
-            foreach (var f in ForumGroupList.Select(forumGroup => forumGroup.ForumList.Where(forum => _forumIds.Contains(forum.ForumId)).ToList()))
+            using (var db = new FavoriteForumContext())
             {
-                forumEntities.AddRange(f);
-            }
-            _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
-            {
-                ForumList = forumEntities
-            };
-            SetFavoriteForums(new ObservableCollection<ForumCategoryEntity> { _favoritesEntity });
+                var forumEntities = await db.Forums.ToListAsync();
+                _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
+                {
+                    ForumList = forumEntities
+                };
+                SetFavoriteForums(new ObservableCollection<ForumCategoryEntity> { _favoritesEntity });
+            }  
         }
 
         private async void Initialize()
