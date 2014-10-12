@@ -149,7 +149,7 @@ namespace AwfulMetro.Core.Manager
         {
             var forumThreadList = new ObservableCollection<ForumThreadEntity>();
             String url = Constants.BOOKMARKS_URL;
-            if (forumCategory.CurrentPage > 0)
+            if (forumCategory.CurrentPage >= 0)
             {
                 url = Constants.BOOKMARKS_URL + string.Format(Constants.PAGE_NUMBER, page);
             }
