@@ -71,8 +71,13 @@ namespace AwfulMetro.Core.Manager
                             string forumName =
                                 WebUtility.HtmlDecode(node.NextSibling.InnerText.Replace("-", string.Empty));
                             bool isSubforum = node.NextSibling.InnerText.Count(c => c == '-') > 2;
-                            var forumSubCategory = new ForumEntity(forumName, string.Format(Constants.FORUM_PAGE, value),
-                                string.Empty, isSubforum);
+                            var forumSubCategory = new ForumEntity
+                            {
+                                Name = forumName.Trim(),
+                                Location = string.Format(Constants.FORUM_PAGE, value),
+                                IsSubforum =  isSubforum
+                            };
+                            forumSubCategory.SetForumId();
                             forumGroupList.LastOrDefault().ForumList.Add(forumSubCategory);
                         }
                         else
@@ -141,13 +146,18 @@ namespace AwfulMetro.Core.Manager
             subforumList.AddRange(from subforumNode in forumNode.Descendants("tr")
                 where subforumNode.Descendants("a").Any()
                 select
-                    new ForumEntity(WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText),
-                        Constants.BASE_URL +
+                    new ForumEntity
+                    {
+                        Name = WebUtility.HtmlDecode(subforumNode.Descendants("a").FirstOrDefault().InnerText).Trim(),
+                        Location = Constants.BASE_URL +
                         subforumNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty),
-                        string.Empty, true));
+                        IsSubforum = true
+                    })
+                        ;
             var obSubforumList = new ObservableCollection<ForumEntity>();
             foreach (var forum in subforumList)
             {
+                forum.SetForumId();
                 obSubforumList.Add(forum);
             }
             return obSubforumList;
@@ -155,8 +165,14 @@ namespace AwfulMetro.Core.Manager
 
         private ForumEntity AddDebugForum()
         {
-            return new ForumEntity("Apps In Developmental States", Constants.BASE_URL + "forumdisplay.php?forumid=261",
-                "Debug Forum", false);
+            var forum = new ForumEntity()
+            {
+                Name = "Apps In Developmental States",
+                Location = Constants.BASE_URL + "forumdisplay.php?forumid=261",
+                IsSubforum = false
+            };
+            forum.SetForumId();
+            return forum;
         }
     }
 }

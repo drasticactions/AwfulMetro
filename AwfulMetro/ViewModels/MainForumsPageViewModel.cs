@@ -94,16 +94,24 @@ namespace AwfulMetro.ViewModels
             set { SetProperty(ref _addAsFavoriteCommand, value); }
         }
 
+        private RemoveFavoriteCommand _removeFavoriteCommand = new RemoveFavoriteCommand();
+
+        public RemoveFavoriteCommand RemoveFavorite
+        {
+            get { return _removeFavoriteCommand; }
+            set { SetProperty(ref _removeFavoriteCommand, value); }
+        }
+
         public void SetFavoriteForums(ObservableCollection<ForumCategoryEntity> favoriteList)
         {
             FavoriteForumGroupList = favoriteList;
         }
 
-        private async void GetFavoriteForums()
+        public async void GetFavoriteForums()
         {
             using (var db = new FavoriteForumContext())
             {
-                var forumEntities = await db.Forums.ToListAsync();
+                var forumEntities = db.Forums.ToList();
                 _favoritesEntity = new ForumCategoryEntity("Favorites", "forumid=48")
                 {
                     ForumList = forumEntities

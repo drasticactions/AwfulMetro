@@ -97,9 +97,6 @@ namespace AwfulMetro.Views
         /// </param>
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: Assign a bindable collection of items to this.DefaultViewModel["Items"]
-            //loadingProgressBar.Visibility = Visibility.Visible;
-
             var jsonObjectString = (string) e.NavigationParameter;
             _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (_forumEntity == null) return;

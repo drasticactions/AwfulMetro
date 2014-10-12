@@ -11,13 +11,20 @@ namespace AwfulMetro.Command
 {
     public class AddAsFavoriteCommand : AlwaysExecutableCommand
     {
-        public override void Execute(object parameter)
+        public async override void Execute(object parameter)
         {
-            var forumCategoryEntity = (ForumCategoryEntity) parameter;
+            var forumEntity = (ForumEntity) parameter;
+            if (Locator.ViewModels.MainForumsPageVm.FavoriteForumGroupList.First().ForumList.Any(forum => forum.ForumId == forumEntity.ForumId))
+            {
+                return;
+            }
             using (var db = new FavoriteForumContext())
             {
-                db.Add(forumCategoryEntity);
+                db.Add(forumEntity);
+                await db.SaveChangesAsync();
+                Locator.ViewModels.MainForumsPageVm.GetFavoriteForums();
             }
+            
         }
     }
 }

@@ -137,7 +137,12 @@ namespace AwfulMetro
                     var localSettings = ApplicationData.Current.LocalSettings;
                     if (localSettings.Values.ContainsKey(Constants.BOOKMARK_STARTUP) && (bool)localSettings.Values[Constants.BOOKMARK_STARTUP])
                     {
-                            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+                        var forum = new ForumEntity()
+                        {
+                            Name = "Bookmarks",
+                            IsSubforum = false,
+                            Location = Constants.USER_CP
+                        };
                             string jsonObjectString = JsonConvert.SerializeObject(forum);
                             rootFrame.Navigate(typeof(ThreadListPage), jsonObjectString);
                     }

@@ -53,7 +53,14 @@ namespace AwfulMetro.BackgroundStatus
         private async Task Update(IBackgroundTaskInstance taskInstance)
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            var forumCategory = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+            var forumCategory = new ForumEntity()
+            {
+                Name = "Bookmarks",
+                IsSubforum = false,
+                IsBookmarks = true,
+                Location = Constants.USER_CP
+            };
+
             ObservableCollection<ForumThreadEntity> forumThreadEntities = await _threadManager.GetBookmarks(forumCategory, 1);
             CreateBookmarkLiveTiles(forumThreadEntities);
 

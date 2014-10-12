@@ -127,7 +127,13 @@ namespace AwfulMetro.Views
 
         public void BookmarkButton_Click(object sender, RoutedEventArgs e)
         {
-            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+            var forum = new ForumEntity()
+            {
+                Name = "Bookmarks",
+                IsBookmarks = true,
+                IsSubforum = false,
+                Location = Constants.USER_CP
+            };
             string jsonObjectString = JsonConvert.SerializeObject(forum);
             Frame.Navigate(typeof (ThreadListPage), jsonObjectString);
         }

@@ -44,6 +44,16 @@
                     <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
                                            Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
                 </StackPanel>
+                <interactivity:Interaction.Behaviors>
+                    <core:EventTriggerBehavior EventName="RightTapped">
+                        <tools:OpenMenuFlyoutAction />
+                    </core:EventTriggerBehavior>
+                </interactivity:Interaction.Behaviors>
+                <FlyoutBase.AttachedFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Command="{Binding DataContext.AddAsFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Add as Favorite"/>
+                    </MenuFlyout>
+                </FlyoutBase.AttachedFlyout>
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="headerTemplate">
@@ -86,7 +96,13 @@
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
                         </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FavoriteForumFull" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemListView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FavoriteForumsSnapped" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
@@ -94,6 +110,9 @@
                 <VisualState x:Name="PortraitLayout">
                     <Storyboard>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemGridView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FavoriteForumFull" Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PortraitView" Storyboard.TargetProperty="Visibility">
@@ -148,8 +167,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
-            <ScrollViewer ZoomMode="Disabled" VerticalScrollBarVisibility="Hidden" Grid.Column="0">
-                <GridView x:Name="FavoriteForumList" ItemClick="FavoriteForumList_OnItemClick" Grid.Column="0"
+            <ScrollViewer x:Name="FavoriteForumFull" ZoomMode="Disabled" VerticalScrollBarVisibility="Hidden" Grid.Column="0">
+                <GridView ItemClick="FavoriteForumList_OnItemClick" Grid.Column="0"
                       ItemsSource="{Binding Source={StaticResource FavoriteForumViewSource} }" SelectionMode="None"
                       IsItemClickEnabled="True">
                     <GridView.ItemTemplate>
@@ -172,6 +191,16 @@
                                                Margin="15,0,15,10" />
                                     </StackPanel>
                                 </Grid>
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="RightTapped">
+                                        <tools:OpenMenuFlyoutAction />
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                                <FlyoutBase.AttachedFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Command="{Binding DataContext.RemoveFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Remove Favorite"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.AttachedFlyout>
                             </Grid>
                         </DataTemplate>
                     </GridView.ItemTemplate>
@@ -232,7 +261,6 @@
                         </BitmapIcon>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="FavoriteForumButton" Icon="Favorite" Label="Favorite Forum" Click="FavoriteForumButton_OnClick" />
                 <AppBarButton x:Name="PrivateMessagesButton" Label="Private Messages" Click="PrivateMessagesButton_OnClick">
                     <AppBarButton.Icon>
                         <PathIcon Data="M17.3684215545654,26.8421058654785L19.1666831970215,32.5 12.6315793991089,26.8421058654785 10,26.8421058654785 10,11.5789480209351 30.0000019073486,11.5789480209351 30.0000019073486,26.8421058654785 17.3684215545654,26.8421058654785z M13.8289480209351,22.0723686218262L14.9848432540894,21.5546321868896 15.4000005722046,20.5421047210693 15.0671062469482,19.6499996185303 13.8289480209351,18.8368434906006 13.8289480209351,16.9407901763916 15.0223684310913,17.2947368621826 15.0223684310913,16.4144744873047 13.8289480209351,16.184211730957 13.8289480209351,15.4605264663696 13.3236846923828,15.4605264663696 13.3236846923828,16.2000007629395 12.217737197876,16.7368431091309 11.7815790176392,17.7960529327393 12.0671052932739,18.6927909851074 13.3236846923828,19.5184211730957 13.3236846923828,21.3486843109131 12.5197372436523,21.2006855010986 11.8394746780396,20.8342113494873 11.8394746780396,21.7513160705566 13.3236846923828,22.1052646636963 13.3236846923828,22.9644737243652 13.8289480209351,22.9644737243652 13.8289480209351,22.0723686218262z M13.3236846923828,18.6013164520264L12.801947593689,18.2112102508545 12.6539478302002,17.7131576538086 12.8348426818848,17.2243690490723 13.3236846923828,16.9618434906006 13.3236846923828,18.6013164520264z M13.8289480209351,19.7407894134521L14.5289478302002,20.5960540771484 13.8289480209351,21.3236846923828 13.8289480209351,19.7407894134521z M20.7157897949219,17.792106628418L19.7789497375488,17.792106628418 20.1078968048096,16.2092113494873 19.4578952789307,16.2092113494873 19.1210536956787,17.792106628418 18.1263160705566,17.792106628418 18.4500007629395,16.2092113494873 17.788158416748,16.2092113494873 17.4592113494873,17.792106628418 16.456579208374,17.792106628418 16.3368434906006,18.3671054840088 17.3407897949219,18.3671054840088 17.1144752502441,19.5026321411133 16.1605262756348,19.5026321411133 16.0447368621826,20.0776309967041 16.9868431091309,20.0776309967041 16.6657905578613,21.6000003814697 17.3197383880615,21.6000003814697 17.6407909393311,20.0776309967041 18.6355285644531,20.0776309967041 18.3065795898438,21.6000003814697 18.9605274200439,21.6000003814697 19.2973690032959,20.0776309967041 20.292106628418,20.0776309967041 20.4368438720703,19.5026321411133 19.417106628418,19.5026321411133 19.6552639007568,18.3671054840088 20.5881595611572,18.3671054840088 20.7157897949219,17.792106628418z M19.0052642822266,18.3671054840088L18.7631587982178,19.5026321411133 17.7552642822266,19.5026321411133 18.0026340484619,18.3671054840088 19.0052642822266,18.3671054840088z M22.6092109680176,16.2092113494873L21.6421051025391,16.2092113494873 21.7500019073486,20.3697376251221 22.5302639007568,20.3697376251221 22.6092109680176,16.2092113494873z M22.1526317596436,22.1868419647217L22.5657901763916,22.0289478302002 22.7407913208008,21.6447372436523 22.5657901763916,21.2460536956787 22.1526317596436,21.081579208374 21.7328948974609,21.2460536956787 21.5605278015137,21.6447372436523 21.7328948974609,22.0289478302002 22.1526317596436,22.1868419647217z M28.2934226989746,20.0078945159912L28.2934226989746,19.330265045166 26.668420791626,19.330265045166 26.668420791626,17.7013168334961 25.9907894134521,17.7013168334961 25.9907894134521,19.330265045166 24.3657894134521,19.330265045166 24.3657894134521,20.0078945159912 25.9907894134521,20.0078945159912 25.9907894134521,21.6328964233398 26.668420791626,21.6328964233398 26.668420791626,20.0078945159912 28.2934226989746,20.0078945159912z"/>
@@ -246,11 +274,56 @@
         <Grid Grid.Row="1" HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="105" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!-- content -->
+            <ScrollViewer Visibility="Collapsed" x:Name="FavoriteForumsSnapped" ZoomMode="Disabled" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                <GridView ItemClick="FavoriteForumList_OnItemClick" Grid.Column="0"
+                      ItemsSource="{Binding Source={StaticResource FavoriteForumViewSource} }" SelectionMode="None"
+                      IsItemClickEnabled="True">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid HorizontalAlignment="Left" Width="100" Height="100">
+                                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                           AutomationProperties.Name="{Binding Title}" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Bottom"
+                                            Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                        <TextBlock Text="{Binding Name}"
+                                               Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}"
+                                               Style="{StaticResource TitleTextBlockStyle}" Height="60"
+                                               Margin="15,0,15,0" />
+                                        <TextBlock Text="{Binding Description}"
+                                               Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}"
+                                               Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"
+                                               Margin="15,0,15,10" />
+                                    </StackPanel>
+                                </Grid>
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="RightTapped">
+                                        <tools:OpenMenuFlyoutAction />
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                                <FlyoutBase.AttachedFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Command="{Binding DataContext.RemoveFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Remove Favorite"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.AttachedFlyout>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </ScrollViewer>
             <ListView
-                Grid.Row="1"
+                Grid.Row="2"
                 x:Name="itemListView"
                 AutomationProperties.AutomationId="ItemListView"
                 AutomationProperties.Name="Grouped Items"
@@ -272,6 +345,16 @@
                                 <TextBlock Text="{Binding Name}" TextWrapping="WrapWholeWords" TextAlignment="Left" Foreground="Black"
                                            Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
                             </Grid>
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="RightTapped">
+                                    <tools:OpenMenuFlyoutAction />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Command="{Binding DataContext.AddAsFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Add as Favorite"/>
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -326,25 +409,61 @@
         </Grid>
 
         <!-- portrait view -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="PortraitView" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <!-- for when we start pinning fav subforums -->
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="42*" />
-                <ColumnDefinition Width="139*"/>
-                <ColumnDefinition Width="100" />
-            </Grid.ColumnDefinitions>
-        </Grid>
-        <ListView
+            <ScrollViewer ZoomMode="Disabled" VerticalScrollBarVisibility="Hidden" Grid.Column="0" Grid.Row="0">
+                <GridView ItemClick="FavoriteForumList_OnItemClick" Grid.Column="0"
+                      ItemsSource="{Binding Source={StaticResource FavoriteForumViewSource} }" SelectionMode="None"
+                      IsItemClickEnabled="True">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid HorizontalAlignment="Left" Width="100" Height="100">
+                                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                        <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                           AutomationProperties.Name="{Binding Title}" />
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Bottom"
+                                            Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                                        <TextBlock Text="{Binding Name}"
+                                               Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}"
+                                               Style="{StaticResource TitleTextBlockStyle}" Height="60"
+                                               Margin="15,0,15,0" />
+                                        <TextBlock Text="{Binding Description}"
+                                               Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}"
+                                               Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"
+                                               Margin="15,0,15,10" />
+                                    </StackPanel>
+                                </Grid>
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="RightTapped">
+                                        <tools:OpenMenuFlyoutAction />
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                                <FlyoutBase.AttachedFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Command="{Binding DataContext.RemoveFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Remove Favorite"/>
+                                    </MenuFlyout>
+                                </FlyoutBase.AttachedFlyout>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </ScrollViewer>
+            <ListView
             Grid.Row="1"
             Grid.Column="0"
-            x:Name="PortraitView"
             AutomationProperties.AutomationId="ItemListView"
             AutomationProperties.Name="Grouped Items"
-            Visibility="Collapsed"
             Padding="0,0,0,46"
             Margin="0,0,100,0"
             HorizontalAlignment="Stretch"
@@ -353,46 +472,47 @@
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
             ItemClick="ItemView_ItemClick">
-            <!-- Force the list view item to take up whole width of grid. -->
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Stretch" Height="60">
-                        <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
-                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                <!-- Force the list view item to take up whole width of grid. -->
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid IsRightTapEnabled="True" HorizontalAlignment="Stretch" Height="60">
+                            <Border Background="{Binding Converter={StaticResource SubforumHeaderColorConverter}}">
+                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
                                        AutomationProperties.Name="{Binding Title}" />
-                        </Border>
-                        <StackPanel  VerticalAlignment="Bottom" Background="#FFF0F0F0">
-                            <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
+                            </Border>
+                            <StackPanel  VerticalAlignment="Bottom" Background="#FFF0F0F0">
+                                <TextBlock Text="{Binding Name}" TextAlignment="Left" Foreground="Black"
                                            Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,30" />
-                        </StackPanel>
-                        <interactivity:Interaction.Behaviors>
-                            <core:EventTriggerBehavior EventName="Holding">
-                                <tools:OpenMenuFlyoutAction />
-                            </core:EventTriggerBehavior>
-                        </interactivity:Interaction.Behaviors>
-                        <FlyoutBase.AttachedFlyout>
-                            <MenuFlyout>
-                                <MenuFlyoutItem Command="{Binding DataContext.AddAsFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Add as Favorite"/>
-                            </MenuFlyout>
-                        </FlyoutBase.AttachedFlyout>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.GroupStyle>
-                <GroupStyle HeaderTemplate="{StaticResource headerTemplate}">
-                    <GroupStyle.Panel>
-                        <ItemsPanelTemplate>
-                            <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
-                        </ItemsPanelTemplate>
-                    </GroupStyle.Panel>
-                </GroupStyle>
-            </ListView.GroupStyle>
-        </ListView>
+                            </StackPanel>
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="RightTapped">
+                                    <tools:OpenMenuFlyoutAction />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Command="{Binding DataContext.AddAsFavorite, ElementName=PortraitView}"  CommandParameter="{Binding}" Text="Add as Favorite"/>
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.GroupStyle>
+                    <GroupStyle HeaderTemplate="{StaticResource headerTemplate}">
+                        <GroupStyle.Panel>
+                            <ItemsPanelTemplate>
+                                <VariableSizedWrapGrid Orientation="Vertical" Margin="0,0,80,0"/>
+                            </ItemsPanelTemplate>
+                        </GroupStyle.Panel>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+        </Grid>
 
     </Grid>
 </Page>

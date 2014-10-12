@@ -95,7 +95,13 @@ namespace AwfulMetro.Views
                     ForumsPivot.SelectedIndex = 1;
                 }
             }
-            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+            var forum = new ForumEntity()
+            {
+                Name = "Bookmarks",
+                IsSubforum = false,
+                Location = Constants.USER_CP,
+                IsBookmarks = true
+            };
             if (_vm.ThreadListPageViewModel != null) return;
             _vm.ThreadListPageViewModel = new ThreadListPageViewModel();
             _vm.ThreadListPageViewModel.Initialize(forum);
@@ -140,7 +146,13 @@ namespace AwfulMetro.Views
                     var autoRefresh = (bool)_localSettings.Values[Constants.AUTO_REFRESH];
                     if (autoRefresh)
                     {
-                        var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+                        var forum = new ForumEntity()
+                        {
+                            Name = "Bookmarks",
+                            IsSubforum = false,
+                            Location = Constants.USER_CP,
+                            IsBookmarks = true
+                        };
                         _vm.ThreadListPageViewModel.RefreshForum(forum);
                     }
                 }
@@ -168,7 +180,13 @@ namespace AwfulMetro.Views
             {
                 _vm.Initialize();
             }
-            var forum = new ForumEntity("Bookmarks", Constants.USER_CP, string.Empty, false);
+            var forum = new ForumEntity()
+            {
+                Name = "Bookmarks",
+                IsSubforum = false,
+                IsBookmarks = true,
+                Location = Constants.USER_CP
+            };
             _vm.ThreadListPageViewModel.RefreshForum(forum);
         }
 
