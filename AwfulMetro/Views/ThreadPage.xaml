@@ -119,6 +119,19 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Background="#FFC5C5C5" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Button HorizontalAlignment="Stretch" x:Name="CurrentPageButton2" IsEnabled="{Binding IsLoading, Converter={StaticResource InvertBooleanConverter}}" Content="{Binding ForumThreadEntity.CurrentPage}">
+                    <Button.Flyout>
+                        <Flyout Placement="Left">
+                            <StackPanel>
+                                <Viewbox Margin="5" Height="40">
+                                    <TextBlock Text="{Binding ForumThreadEntity, Converter={StaticResource TotalPageConverter}}"/>
+                                </Viewbox>
+                                <TextBox InputScope="Number" x:Name="PageNumberTextBox2" KeyDown="PageNumberTextBox_OnKeyDown" Margin="5"/>
+                                <Button Margin="5" Click="PageNumberButton_OnClick" Content="Change Page"/>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
                 <AppBarButton x:Name="ReplyButtonSnap" Label="Reply" Icon="Upload"
                               Click="ReplyButton_Click" />
                 <AppBarButton x:Name="BackButtonSnap" IsEnabled="{Binding ForumThreadEntity, Converter={StaticResource BackButtonEnableConverter}}" Click="BackButton_Click" Label="Back Page"

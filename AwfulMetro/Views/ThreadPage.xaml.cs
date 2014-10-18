@@ -430,7 +430,14 @@ namespace AwfulMetro.Views
             int userInputPageNumber = 0;
             try
             {
-                userInputPageNumber = Convert.ToInt32(PageNumberTextBox.Text);
+                // TODO: This shit needs to be removed. It should be a user control / command, not crap on the view.
+                // That could be said for all of this code... but still. One step at a time.
+                string test = PageNumberTextBox.Text;
+                if (string.IsNullOrEmpty(PageNumberTextBox.Text))
+                {
+                    test = PageNumberTextBox2.Text;
+                }
+                userInputPageNumber = Convert.ToInt32(test);
             }
             catch (Exception)
             {
