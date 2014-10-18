@@ -77,88 +77,95 @@ namespace AwfulMetro.Views
 
         private async void WebView_ScriptNotify(object sender, NotifyEventArgs e)
         {
-            string stringJson = e.Value;
-            var command = JsonConvert.DeserializeObject<ReplyView.ThreadCommand>(stringJson);
-            switch (command.Command)
+            try
             {
-                case "profile":
-                    Frame.Navigate(typeof (UserProfileView), command.Id);
-                    break;
-                case "openPost":
-                    break;
-                case "post_history":
-                    Frame.Navigate(typeof (UserPostHistoryPage), command.Id);
-                    break;
-                case "rap_sheet":
-                    Frame.Navigate(typeof (RapSheetView), command.Id);
-                    break;
-                case "quote":
-                    Frame.Navigate(typeof (ReplyView), command.Id);
-                    break;
-                case "edit":
-                    Frame.Navigate(typeof (EditReplyPage), command.Id);
-                    break;
-                case "scrollToPost":
-                    if (command.Id != null)
-                    {
-                        await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", command.Id) });
-                        await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", command.Id) });
-                    }
-                    else if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
-                    {
-                        ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
-                        ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
-                    }
-                    break;
-                case "markAsLastRead":
-                    await _threadManager.MarkPostAsLastRead(_forumThread, Convert.ToInt32(command.Id));
-                    int nextPost = Convert.ToInt32(command.Id) + 1;
-                    await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
-                    await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
-                    NotifyStatusTile.CreateToastNotification("Post marked as last read! Now smash this computer and live your life!");
-                    break;
-                case "setFont":
-                    if (_localSettings.Values.ContainsKey("zoomSize"))
-                    {
-                        _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
-                        ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-                        ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-                    }
-                    else
-                    {
-                       // _zoomSize = 20;
-                    }
-                    break;
-                case "openThread":
-                     var query = Extensions.ParseQueryString(command.Id);
-                    if (query.ContainsKey("action") && query["action"].Equals("showPost"))
-                    {
-                        var postManager = new PostManager();
-                        var html = await postManager.GetPost(Convert.ToInt32(query["postid"]));
-                        return;
-                    }
-                    var threadManager = new ThreadManager();
-                    var threadEntity = new ForumThreadEntity();
-                    var thread = await threadManager.GetThread(threadEntity, command.Id);
-                    if (thread == null)
-                    {
-                        var error = new MessageDialog("Specified post was not found in the live forums.")
+                string stringJson = e.Value;
+                var command = JsonConvert.DeserializeObject<ReplyView.ThreadCommand>(stringJson);
+                switch (command.Command)
+                {
+                    case "profile":
+                        Frame.Navigate(typeof(UserProfileView), command.Id);
+                        break;
+                    case "openPost":
+                        break;
+                    case "post_history":
+                        Frame.Navigate(typeof(UserPostHistoryPage), command.Id);
+                        break;
+                    case "rap_sheet":
+                        Frame.Navigate(typeof(RapSheetView), command.Id);
+                        break;
+                    case "quote":
+                        Frame.Navigate(typeof(ReplyView), command.Id);
+                        break;
+                    case "edit":
+                        Frame.Navigate(typeof(EditReplyPage), command.Id);
+                        break;
+                    case "scrollToPost":
+                        if (command.Id != null)
+                        {
+                            await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", command.Id) });
+                            await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", command.Id) });
+                        }
+                        else if (!string.IsNullOrEmpty(_vm.ForumThreadEntity.ScrollToPostString))
+                        {
+                            ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
+                            ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { _vm.ForumThreadEntity.ScrollToPostString });
+                        }
+                        break;
+                    case "markAsLastRead":
+                        await _threadManager.MarkPostAsLastRead(_forumThread, Convert.ToInt32(command.Id));
+                        int nextPost = Convert.ToInt32(command.Id) + 1;
+                        await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
+                        await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] { string.Concat("#postId", nextPost.ToString()) });
+                        NotifyStatusTile.CreateToastNotification("Post marked as last read! Now smash this computer and live your life!");
+                        break;
+                    case "setFont":
+                        if (_localSettings.Values.ContainsKey("zoomSize"))
+                        {
+                            _zoomSize = Convert.ToInt32(_localSettings.Values["zoomSize"]);
+                            ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                            ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                        }
+                        else
+                        {
+                            // _zoomSize = 20;
+                        }
+                        break;
+                    case "openThread":
+                        var query = Extensions.ParseQueryString(command.Id);
+                        if (query.ContainsKey("action") && query["action"].Equals("showPost"))
+                        {
+                            var postManager = new PostManager();
+                            var html = await postManager.GetPost(Convert.ToInt32(query["postid"]));
+                            return;
+                        }
+                        var threadManager = new ThreadManager();
+                        var threadEntity = new ForumThreadEntity();
+                        var thread = await threadManager.GetThread(threadEntity, command.Id);
+                        if (thread == null)
+                        {
+                            var error = new MessageDialog("Specified post was not found in the live forums.")
+                            {
+                                DefaultCommandIndex = 1
+                            };
+                            await error.ShowAsync();
+                            break;
+                        }
+                        string jsonObjectString = JsonConvert.SerializeObject(threadEntity);
+                        Frame.Navigate(typeof(ThreadPage), jsonObjectString);
+                        break;
+                    default:
+                        var msgDlg = new MessageDialog("Not working yet!")
                         {
                             DefaultCommandIndex = 1
                         };
-                        await error.ShowAsync();
+                        await msgDlg.ShowAsync();
                         break;
-                    }
-                    string jsonObjectString = JsonConvert.SerializeObject(threadEntity);
-                    Frame.Navigate(typeof(ThreadPage), jsonObjectString);
-                    break;
-                default:
-                    var msgDlg = new MessageDialog("Not working yet!")
-                    {
-                        DefaultCommandIndex = 1
-                    };
-                    await msgDlg.ShowAsync();
-                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 
@@ -274,8 +281,15 @@ namespace AwfulMetro.Views
 
         private async void GoToLastPostButton_Click(object sender, RoutedEventArgs e)
         {
-            await ThreadFullView.InvokeScriptAsync("ScrollToBottom", null);
-            await ThreadSnapView.InvokeScriptAsync("ScrollToBottom", null);
+            try
+            {
+                await ThreadFullView.InvokeScriptAsync("ScrollToBottom", null);
+                await ThreadSnapView.InvokeScriptAsync("ScrollToBottom", null);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
 
         private async void BookmarkButton_OnClick(object sender, RoutedEventArgs e)
@@ -353,28 +367,49 @@ namespace AwfulMetro.Views
             await msgDlg.ShowAsync();
         }
 
-        private void FontIncrease_Click(object sender, RoutedEventArgs e)
+        private async void FontIncrease_Click(object sender, RoutedEventArgs e)
         {
-            _zoomSize += 1;
-            ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-            ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-            _localSettings.Values["zoomSize"] = _zoomSize;
+            try
+            {
+                _zoomSize += 1;
+                await ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                await ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                _localSettings.Values["zoomSize"] = _zoomSize;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
 
-        private void FontDecrease_Click(object sender, RoutedEventArgs e)
+        private async void FontDecrease_Click(object sender, RoutedEventArgs e)
         {
-            _zoomSize -= 1;
-            ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-            ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
-            _localSettings.Values["zoomSize"] = _zoomSize;
+            try
+            {
+                _zoomSize -= 1;
+                await ThreadFullView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                await ThreadSnapView.InvokeScriptAsync("ResizeWebviewFont", new[] { _zoomSize.ToString() });
+                _localSettings.Values["zoomSize"] = _zoomSize;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
 
-        private void RemoveStyle_Click(object sender, RoutedEventArgs e)
+        private async void RemoveStyle_Click(object sender, RoutedEventArgs e)
         {
-            _zoomSize = 14;
-            ThreadFullView.InvokeScriptAsync("RemoveCustomStyle", null);
-            ThreadSnapView.InvokeScriptAsync("RemoveCustomStyle", null);
-            _localSettings.Values["zoomSize"] = null;
+            try
+            {
+                _zoomSize = 14;
+                await ThreadFullView.InvokeScriptAsync("RemoveCustomStyle", null);
+                await ThreadSnapView.InvokeScriptAsync("RemoveCustomStyle", null);
+                _localSettings.Values["zoomSize"] = null;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
 
         private void PageNumberButton_OnClick(object sender, RoutedEventArgs e)
@@ -390,7 +425,7 @@ namespace AwfulMetro.Views
             }
         }
 
-        private void ChangePage()
+        private async void ChangePage()
         {
             int userInputPageNumber = 0;
             try
@@ -407,7 +442,7 @@ namespace AwfulMetro.Views
             _vm.ForumThreadEntity.CurrentPage = userInputPageNumber;
             _vm.ForumThreadEntity.ScrollToPost = 0;
             _vm.ForumThreadEntity.ScrollToPostString = string.Empty;
-            _vm.GetForumPosts(_vm.ForumThreadEntity);
+            await _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private void BackButton_OnClick(object sender, RoutedEventArgs e)
