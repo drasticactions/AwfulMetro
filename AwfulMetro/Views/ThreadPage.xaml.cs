@@ -190,7 +190,7 @@ namespace AwfulMetro.Views
             var jsonObjectString = (string)e.NavigationParameter;
             _forumThread = JsonConvert.DeserializeObject<ForumThreadEntity>(jsonObjectString);
             if (_forumThread == null) return;
-            _vm.GetForumPosts(_forumThread);
+            await _vm.GetForumPosts(_forumThread);
 
             // Set the default focus on the page to either one of the web views.
             CheckOrientation();
@@ -254,7 +254,7 @@ namespace AwfulMetro.Views
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            _vm.GetForumPosts(_vm.ForumThreadEntity);
+            await _vm.GetForumPosts(_vm.ForumThreadEntity);
         }
 
         private void CheckOrientation()
@@ -308,8 +308,9 @@ namespace AwfulMetro.Views
                     await ThreadFullView.InvokeScriptAsync("ScrollToDiv", new[] {_forumThread.ScrollToPostString});
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine("Webview Failer {0}", ex);
             }
         }
 
@@ -322,8 +323,9 @@ namespace AwfulMetro.Views
                     await ThreadSnapView.InvokeScriptAsync("ScrollToDiv", new[] {_forumThread.ScrollToPostString});
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine("Webview Failer {0}", ex);
             }
         }
 

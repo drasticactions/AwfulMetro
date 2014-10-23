@@ -38,6 +38,16 @@
 
             <ToggleSwitch x:Name="LoadBookmarksOnLoadSwitch" Toggled="LoadBookmarksOnLoadSwitch_OnToggled" />
 
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Auto-Refresh Bookmarks" />
+            
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">
+                <TextBlock.Text>
+                    Refresh bookmarks when navigating back from a bookmarked thread.
+                </TextBlock.Text>
+            </TextBlock>
+
+            <ToggleSwitch x:Name="AutoReloadSwitch" Toggled="AutoReloadSwitch_OnToggled" />
+
             <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Sort Bookmarks" />
 
             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0,0,0,25" TextWrapping="Wrap">

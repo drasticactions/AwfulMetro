@@ -56,7 +56,7 @@ namespace AwfulMetro.Views
 
 
         private ThreadListPageViewModel _vm = Locator.ViewModels.ThreadListPageVm;
-        private readonly ForumManager _forumManager = new ForumManager();
+        private readonly ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
         private readonly NavigationHelper _navigationHelper;
         private readonly ThreadManager _threadManager = new ThreadManager();
         private ForumEntity _forumEntity;
@@ -101,7 +101,28 @@ namespace AwfulMetro.Views
             _forumEntity = JsonConvert.DeserializeObject<ForumEntity>(jsonObjectString);
             if (_forumEntity == null) return;
             if (_vm.ForumEntity == null || _vm.ForumEntity.ForumId != _forumEntity.ForumId)
+            {
                 _vm.Initialize(_forumEntity);
+            }
+
+            if (_vm.ForumEntity != null && _vm.ForumEntity.IsBookmarks && _vm.ForumPageScrollingCollection.Any())
+            {
+                if (_localSettings.Values.ContainsKey(Constants.AUTO_REFRESH))
+                {
+                    var autoRefresh = (bool)_localSettings.Values[Constants.AUTO_REFRESH];
+                    if (autoRefresh)
+                    {
+                        var forum = new ForumEntity()
+                        {
+                            Name = "Bookmarks",
+                            IsSubforum = false,
+                            Location = Constants.USER_CP,
+                            IsBookmarks = true
+                        };
+                        _vm.RefreshForum(forum);
+                    }
+                }
+            }
 
             // TODO: This is stupid shit that should be removed.
             ViewStateStringFullScreen = "FullScreen" + GetViewStateString(_forumEntity.ForumId);
