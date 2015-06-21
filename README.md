@@ -6,4 +6,5 @@ This app is not endorsed by Something Awful.
 
 Currently, AwfulMetro is targeted to Windows 8.1, so you will need Visual Studio 2013 and Windows 8.1 RTM in order to build it.
 
+NOTE: This is no longer supported. Please use [Awful Forums Reader](https://github.com/drasticactions/Awful-Forums-Reader)
 
